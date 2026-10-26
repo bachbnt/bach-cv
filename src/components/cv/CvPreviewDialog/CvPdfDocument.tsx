@@ -296,6 +296,8 @@ const TimelineTextRow = ({ children }: { children: ReactNode }) => (
 );
 
 const ExperienceItem = ({ item }: { item: CvExperience }) => {
+  if (!item.pdf.visible) return null;
+
   const describedProjects = item.projects.filter(
     (project) => project.description,
   );
@@ -316,40 +318,49 @@ const ExperienceItem = ({ item }: { item: CvExperience }) => {
         </View>
         <View style={styles.timelineRight}>
           <Text style={styles.roleTitle}>{item.title}</Text>
-          {simpleProjects.map((project) => (
-            <Text key={project.name} style={[styles.paragraph, styles.italic]}>
-              {project.technologies?.length
-                ? `${project.name}: ${project.technologies.join(', ')}`
-                : `Projects: ${project.name}`}
-            </Text>
-          ))}
+          {item.pdf.showProjects &&
+            simpleProjects.map((project) => (
+              <Text
+                key={project.name}
+                style={[styles.paragraph, styles.italic]}
+              >
+                {project.technologies?.length
+                  ? `${project.name}: ${project.technologies.join(', ')}`
+                  : `Projects: ${project.name}`}
+              </Text>
+            ))}
           {item.team && <Text style={styles.paragraph}>{item.team}</Text>}
-          <BulletList items={item.roleDetails} />
-          {item.technologies.length > 0 && (
+          {item.pdf.showRoleDetails && <BulletList items={item.roleDetails} />}
+          {item.pdf.showTechnologies && item.technologies.length > 0 && (
             <Text style={[styles.paragraph, styles.italic]}>
               Technologies: {item.technologies.join(', ')}
             </Text>
           )}
-          {(describedProjects.length > 0 ||
-            item.responsibilities.length > 0) && (
+          {((item.pdf.showProjects && describedProjects.length > 0) ||
+            (item.pdf.showResponsibilities &&
+              item.responsibilities.length > 0)) && (
             <Text style={[styles.paragraph, styles.italic]}>
               Responsibilities:
             </Text>
           )}
-          {describedProjects.length > 0 && (
+          {item.pdf.showProjects && describedProjects.length > 0 && (
             <Text style={[styles.paragraph, styles.italic]}>Projects:</Text>
           )}
         </View>
       </View>
-      {describedProjects.map((project) => (
-        <TimelineTextRow key={project.name}>
-          <Text style={styles.bold}>{project.name}: </Text>
-          {project.description}
-        </TimelineTextRow>
-      ))}
-      {item.responsibilities.map((responsibility) => (
-        <TimelineTextRow key={responsibility}>{responsibility}</TimelineTextRow>
-      ))}
+      {item.pdf.showProjects &&
+        describedProjects.map((project) => (
+          <TimelineTextRow key={project.name}>
+            <Text style={styles.bold}>{project.name}: </Text>
+            {project.description}
+          </TimelineTextRow>
+        ))}
+      {item.pdf.showResponsibilities &&
+        item.responsibilities.map((responsibility) => (
+          <TimelineTextRow key={responsibility}>
+            {responsibility}
+          </TimelineTextRow>
+        ))}
       <View style={styles.timelineSpacer} />
     </>
   );

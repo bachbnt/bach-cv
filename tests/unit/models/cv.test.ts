@@ -13,7 +13,7 @@ describe('cvSchema', () => {
     expect(result.metadata.previewTitle).toBe('Bui Ngo Ton Bach CV');
     expect(result.metadata.downloadFileName).toBe('bui-ngo-ton-bach-cv.pdf');
     expect(result.candidate.name).toBe('Bùi Ngô Tôn Bách');
-    expect(result.sections.workExperience).toHaveLength(4);
+    expect(result.sections.workExperience).toHaveLength(6);
     expect(result.sections.projectsAndResearch).toHaveLength(3);
   });
 

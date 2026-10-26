@@ -147,24 +147,80 @@ const MOCK = {
       index: 1,
     },
   },
-  EXPERIENCE: {
-    id: 'test',
-    data: {
-      visible: true,
-      timeVisible: true,
-      position: 'Mobile Developer',
-      responsibility: 'Developing applications',
-      index: 5,
-      image:
-        'https://raw.githubusercontent.com/bachbnt/assets/main/resume/momo.jpeg',
-      imageVisible: true,
-      responsibilityVisible: true,
-      positionVisible: true,
-      time: 'May 2022 - Present',
-      nameVisible: true,
-      name: 'M_Service (MoMo)',
+  EXPERIENCE: [
+    {
+      id: 'fpt_software_team_lead',
+      data: {
+        visible: true,
+        timeVisible: true,
+        position: 'Team Lead',
+        responsibility:
+          'Lead delivery for 9PP - Yamato Transport across 13 Android business modules and 26+ repositories; create and review Detail Design, and build AI workflows for bug fixing, code review and design-to-code sync.',
+        index: 4,
+        image: '',
+        imageVisible: false,
+        responsibilityVisible: true,
+        positionVisible: true,
+        time: 'Jan 2026 - Present',
+        nameVisible: true,
+        name: 'FPT Software',
+      },
     },
-  },
+    {
+      id: 'momo_mobile_developer',
+      data: {
+        visible: true,
+        timeVisible: true,
+        position: 'Senior Mobile App Developer',
+        responsibility:
+          'Led critical MoMo Super App modules, including wearable QR payments, real-time transaction results, FinancialHub and KMM migration for payment mini-apps.',
+        index: 3,
+        image: '',
+        imageVisible: false,
+        responsibilityVisible: true,
+        positionVisible: true,
+        time: 'May 2022 - Jan 2026',
+        nameVisible: true,
+        name: 'MoMo (M_Service)',
+      },
+    },
+    {
+      id: 'american_code_lab_instructor',
+      data: {
+        visible: true,
+        timeVisible: true,
+        position: 'Part-Time Technical Instructor',
+        responsibility:
+          'Designed and taught a Flutter mobile-development course covering Dart, UI, state management, navigation, API integration and hands-on capstone projects.',
+        index: 2,
+        image: '',
+        imageVisible: false,
+        responsibilityVisible: true,
+        positionVisible: true,
+        time: 'May 2023 - Dec 2023',
+        nameVisible: true,
+        name: 'American Code Lab',
+      },
+    },
+    {
+      id: 'devblock_vietnam_mobile_developer',
+      data: {
+        visible: true,
+        timeVisible: true,
+        position: 'Junior Mobile Developer',
+        responsibility:
+          'Built Android, iOS and React Native apps end-to-end, delivering social, fitness, healthcare and IoT features with REST APIs, notifications, real-time chat and NFC integration.',
+        index: 1,
+        image: '',
+        imageVisible: false,
+        responsibilityVisible: true,
+        positionVisible: true,
+        time: 'Mar 2020 - Apr 2022',
+        nameVisible: true,
+        name: 'Devblock Vietnam',
+      },
+    },
+  ],
   PROFILE: {
     covers: [
       {

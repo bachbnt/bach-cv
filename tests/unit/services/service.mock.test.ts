@@ -37,7 +37,8 @@ describe('service mock mode', () => {
   });
 
   it('returns visible mock user collections sorted by index', async () => {
-    const { getContact, getProject, getSkill } = await importMockService();
+    const { getContact, getExperience, getProject, getSkill } =
+      await importMockService();
 
     await expect(getContact()).resolves.toEqual([
       expect.objectContaining({
@@ -51,6 +52,24 @@ describe('service mock mode', () => {
     ]);
     await expect(getSkill()).resolves.toEqual([
       expect.objectContaining({ id: 'test', name: 'ReactJS' }),
+    ]);
+    await expect(getExperience()).resolves.toEqual([
+      expect.objectContaining({
+        id: 'devblock_vietnam_mobile_developer',
+        name: 'Devblock Vietnam',
+      }),
+      expect.objectContaining({
+        id: 'american_code_lab_instructor',
+        name: 'American Code Lab',
+      }),
+      expect.objectContaining({
+        id: 'momo_mobile_developer',
+        name: 'MoMo (M_Service)',
+      }),
+      expect.objectContaining({
+        id: 'fpt_software_team_lead',
+        name: 'FPT Software',
+      }),
     ]);
   });
 

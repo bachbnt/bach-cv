@@ -25,6 +25,22 @@ const cvProjectSummarySchema = z.object({
   technologies: z.array(z.string()).optional(),
 });
 
+const cvExperiencePdfSchema = z
+  .object({
+    visible: z.boolean().default(true),
+    showProjects: z.boolean().default(true),
+    showRoleDetails: z.boolean().default(true),
+    showTechnologies: z.boolean().default(true),
+    showResponsibilities: z.boolean().default(true),
+  })
+  .default({
+    visible: true,
+    showProjects: true,
+    showRoleDetails: true,
+    showTechnologies: true,
+    showResponsibilities: true,
+  });
+
 const cvExperienceSchema = z.object({
   company: z.string().default(''),
   period: periodSchema.default({ start: '', end: '' }),
@@ -34,6 +50,7 @@ const cvExperienceSchema = z.object({
   roleDetails: z.array(z.string()).default([]),
   technologies: z.array(z.string()).default([]),
   responsibilities: z.array(z.string()).default([]),
+  pdf: cvExperiencePdfSchema,
 });
 
 const cvEducationSchema = z.object({
