@@ -47,6 +47,13 @@
           "end": "Present"
         },
         "title": "Team Lead",
+        "pdf": {
+          "visible": true,
+          "showProjects": true,
+          "showRoleDetails": true,
+          "showTechnologies": true,
+          "showResponsibilities": true
+        },
         "projects": [
           {
             "name": "9PP - Yamato Transport",
@@ -88,6 +95,9 @@
           "end": "Present"
         },
         "title": "Mobile Developer",
+        "pdf": {
+          "visible": false
+        },
         "roleDetails": [
           "Designed and built cross-platform mobile apps for individual clients and startups, owning the full cycle from UI/UX implementation to third-party integrations and App Store/Play Store release."
         ],
@@ -132,6 +142,13 @@
           "end": "Jan 2026"
         },
         "title": "Senior Mobile App Developer",
+        "pdf": {
+          "visible": true,
+          "showProjects": true,
+          "showRoleDetails": true,
+          "showTechnologies": true,
+          "showResponsibilities": true
+        },
         "projects": [
           {
             "name": "MoMo Super App",
@@ -164,6 +181,9 @@
           "end": "Dec 2023"
         },
         "title": "Part-Time Technical Instructor",
+        "pdf": {
+          "visible": false
+        },
         "roleDetails": [
           "Designed and taught a Flutter mobile app development course."
         ],
@@ -181,6 +201,13 @@
           "end": "Apr 2022"
         },
         "title": "Junior Mobile Developer",
+        "pdf": {
+          "visible": true,
+          "showProjects": true,
+          "showRoleDetails": true,
+          "showTechnologies": true,
+          "showResponsibilities": true
+        },
         "technologies": [
           "Android",
           "Jetpack Compose",
@@ -222,6 +249,13 @@
           "end": "Sep 2019"
         },
         "title": "Mobile Developer Intern",
+        "pdf": {
+          "visible": true,
+          "showProjects": true,
+          "showRoleDetails": true,
+          "showTechnologies": true,
+          "showResponsibilities": true
+        },
         "team": "Mitel Team",
         "responsibilities": [
           "Built core features for a VoIP application, including authentication, call interface, and SIP integration on Android."

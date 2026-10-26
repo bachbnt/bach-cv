@@ -29,8 +29,10 @@ type MockArrayDocument<T> = {
   data: Omit<T, 'id'>;
 };
 
+type MockArrayDocuments<T> = MockArrayDocument<T> | MockArrayDocument<T>[];
+
 const mockArrayDocuments: Partial<
-  Record<FirestoreDocument, MockArrayDocument<any>>
+  Record<FirestoreDocument, MockArrayDocuments<any>>
 > = {
   [FirestoreDocument.CONTACT]: MOCK.CONTACT,
   [FirestoreDocument.EDUCATION]: MOCK.EDUCATION,
@@ -46,8 +48,15 @@ const getMockArrayData = <T extends { visible?: boolean }>(
 ): T[] => {
   const entry = mockArrayDocuments[document];
   if (!entry) return [];
+  const entries = Array.isArray(entry) ? entry : [entry];
   return sortBy(
-    filter([{ id: entry.id, ...entry.data }], { visible: true }),
+    filter(
+      entries.map((mockEntry) => ({
+        id: mockEntry.id,
+        ...mockEntry.data,
+      })),
+      { visible: true },
+    ),
     Constant.SORT_KEY,
   ) as T[];
 };
