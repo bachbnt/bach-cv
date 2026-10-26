@@ -295,6 +295,18 @@ const TimelineTextRow = ({ children }: { children: ReactNode }) => (
   </View>
 );
 
+const TimelineSectionLabel = ({ children }: { children: ReactNode }) => (
+  <View style={styles.timelineItem} wrap={false}>
+    <View style={styles.timelineLeft} />
+    <View style={styles.timelineRail}>
+      <View style={styles.railLine} />
+    </View>
+    <View style={styles.timelineRight}>
+      <Text style={[styles.paragraph, styles.italic]}>{children}</Text>
+    </View>
+  </View>
+);
+
 const ExperienceItem = ({ item }: { item: CvExperience }) => {
   if (!item.pdf.visible) return null;
 
@@ -336,16 +348,16 @@ const ExperienceItem = ({ item }: { item: CvExperience }) => {
               Technologies: {item.technologies.join(', ')}
             </Text>
           )}
-          {((item.pdf.showProjects && describedProjects.length > 0) ||
-            (item.pdf.showResponsibilities &&
-              item.responsibilities.length > 0)) && (
-            <Text style={[styles.paragraph, styles.italic]}>
-              Responsibilities:
-            </Text>
-          )}
           {item.pdf.showProjects && describedProjects.length > 0 && (
             <Text style={[styles.paragraph, styles.italic]}>Projects:</Text>
           )}
+          {item.pdf.showResponsibilities &&
+            item.responsibilities.length > 0 &&
+            describedProjects.length === 0 && (
+              <Text style={[styles.paragraph, styles.italic]}>
+                Responsibilities:
+              </Text>
+            )}
         </View>
       </View>
       {item.pdf.showProjects &&
@@ -355,6 +367,12 @@ const ExperienceItem = ({ item }: { item: CvExperience }) => {
             {project.description}
           </TimelineTextRow>
         ))}
+      {item.pdf.showProjects &&
+        describedProjects.length > 0 &&
+        item.pdf.showResponsibilities &&
+        item.responsibilities.length > 0 && (
+          <TimelineSectionLabel>Responsibilities:</TimelineSectionLabel>
+        )}
       {item.pdf.showResponsibilities &&
         item.responsibilities.map((responsibility) => (
           <TimelineTextRow key={responsibility}>

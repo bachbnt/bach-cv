@@ -13,7 +13,7 @@
     "visible": true,
     "index": 4
   },
-  "example_experience_id": {
+  "momo": {
     "name": "MoMo (M_Service)",
     "nameVisible": true,
     "position": "Senior Mobile App Developer",
@@ -22,12 +22,12 @@
     "responsibilityVisible": true,
     "time": "May 2022 - Jan 2026",
     "timeVisible": true,
-    "image": "",
-    "imageVisible": false,
+    "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/momo.jpeg",
+    "imageVisible": true,
     "visible": true,
     "index": 3
   },
-  "american_code_lab_instructor": {
+  "american-code-lab": {
     "name": "American Code Lab",
     "nameVisible": true,
     "position": "Part-Time Technical Instructor",
@@ -36,12 +36,12 @@
     "responsibilityVisible": true,
     "time": "May 2023 - Dec 2023",
     "timeVisible": true,
-    "image": "",
-    "imageVisible": false,
+    "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/american-code-lab.png",
+    "imageVisible": true,
     "visible": true,
     "index": 2
   },
-  "devblock_vietnam_mobile_developer": {
+  "devblock": {
     "name": "Devblock Vietnam",
     "nameVisible": true,
     "position": "Junior Mobile Developer",
@@ -50,8 +50,8 @@
     "responsibilityVisible": true,
     "time": "Mar 2020 - Apr 2022",
     "timeVisible": true,
-    "image": "",
-    "imageVisible": false,
+    "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/devblock.jpg",
+    "imageVisible": true,
     "visible": true,
     "index": 1
   }

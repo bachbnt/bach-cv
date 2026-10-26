@@ -1,0 +1,1303 @@
+{
+  "metadata": {
+    "source": "Firestore user collection",
+    "syncedAt": "2026-10-26T13:59:43.155Z",
+    "projectId": "bachbntdev"
+  },
+  "documents": {
+    "certificate": {
+      "google-ai": {
+        "name": "Google AI Professional Certificate",
+        "issuer": "Google / Coursera",
+        "time": "Apr 30, 2026",
+        "url": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-ai.pdf",
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-ai.png",
+        "imageVisible": true,
+        "nameVisible": true,
+        "issuerVisible": true,
+        "timeVisible": true,
+        "visible": true,
+        "index": 1
+      },
+      "google-pm": {
+        "issuer": "Google / Coursera",
+        "issuerVisible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-pm.png",
+        "imageVisible": true,
+        "nameVisible": true,
+        "index": 2,
+        "name": "Google Project Management Professional Certificate",
+        "url": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-pm.pdf",
+        "time": "May 01, 2026",
+        "visible": true,
+        "timeVisible": true
+      }
+    },
+    "contact": {
+      "facebook": {
+        "name": "bachbnt",
+        "index": 1,
+        "type": "social",
+        "url": "https://www.facebook.com/bachbnt/",
+        "visible": true,
+        "nameVisible": true,
+        "urlEnable": true,
+        "icon": "Facebook"
+      },
+      "linkedin": {
+        "name": "bachbnt",
+        "nameVisible": true,
+        "type": "social",
+        "url": "https://www.linkedin.com/in/bachbnt/",
+        "index": 3,
+        "visible": true,
+        "urlEnable": true,
+        "icon": "Linkedin"
+      },
+      "telegram": {
+        "url": "https://t.me/bachbnt",
+        "urlEnable": true,
+        "name": "@bachbnt",
+        "nameVisible": true,
+        "type": "social",
+        "index": 7,
+        "visible": true,
+        "icon": "Telegram"
+      },
+      "phone": {
+        "name": "(+84) 384560623",
+        "nameVisible": true,
+        "index": 2,
+        "visible": true,
+        "url": "tel:(+84) 384560623",
+        "urlEnable": true,
+        "icon": "Phone",
+        "type": "phone"
+      },
+      "address": {
+        "name": "Ho Chi Minh City, Vietnam",
+        "nameVisible": true,
+        "url": "https://www.google.com/maps/place/Ho+Chi+Minh+City/",
+        "index": 1,
+        "visible": true,
+        "urlEnable": true,
+        "icon": "Home",
+        "type": "address"
+      },
+      "email": {
+        "name": "bachbnt@gmail.com",
+        "index": 3,
+        "nameVisible": true,
+        "url": "mailto:bachbnt@gmail.com",
+        "visible": true,
+        "urlEnable": true,
+        "icon": "Mail",
+        "type": "email"
+      },
+      "github": {
+        "nameVisible": true,
+        "icon": "Github",
+        "visible": true,
+        "url": "https://github.com/bachbnt/",
+        "type": "social",
+        "name": "bachbnt",
+        "urlEnable": true,
+        "index": 2
+      },
+      "zalo": {
+        "visible": true,
+        "icon": "Zalo",
+        "nameVisible": true,
+        "index": 5,
+        "urlEnable": true,
+        "name": "Tôn Bách",
+        "url": "https://zalo.me/0384560623",
+        "type": "social"
+      },
+      "gitlab": {
+        "urlEnable": true,
+        "url": "https://gitlab.com/bachbnt",
+        "index": 2,
+        "name": "bachbnt",
+        "nameVisible": true,
+        "type": "social",
+        "icon": "Gitlab",
+        "visible": true
+      },
+      "skype": {
+        "index": 4,
+        "urlEnable": true,
+        "icon": "Skype",
+        "name": "bachbnt",
+        "nameVisible": true,
+        "url": "https://join.skype.com/invite/d0JQcWVZyD8F",
+        "type": "social",
+        "visible": true
+      },
+      "twitter": {
+        "url": "https://twitter.com/bachbnt",
+        "type": "social",
+        "name": "@bachbnt",
+        "index": 6,
+        "urlEnable": true,
+        "icon": "Twitter",
+        "nameVisible": true,
+        "visible": true
+      }
+    },
+    "cv": {
+      "metadata": {
+        "previewTitle": "Bui Ngo Ton Bach CV",
+        "downloadFileName": "bui-ngo-ton-bach-cv.pdf"
+      },
+      "source": {
+        "file": "firestore:user/cv",
+        "pageCount": 3,
+        "createdAt": "2026-05-24",
+        "updatedAt": "2026-07-09",
+        "purpose": "Structured CV backup used as the Firestore seed and local fallback for dynamic PDF preview/download."
+      },
+      "candidate": {
+        "name": "Bùi Ngô Tôn Bách",
+        "headline": "Mobile Software Engineer",
+        "contacts": [
+          {
+            "type": "phone",
+            "value": "(+84) 384560623"
+          },
+          {
+            "type": "email",
+            "value": "bachbnt@gmail.com"
+          },
+          {
+            "type": "location",
+            "value": "Ho Chi Minh City, Vietnam"
+          }
+        ]
+      },
+      "sections": {
+        "summaryAndObjective": {
+          "summary": [
+            "Senior Mobile Engineer with 5+ years of experience building and scaling production-grade mobile applications used by tens of millions of users.",
+            "Strong expertise in React Native and Kotlin Multiplatform Mobile (KMM), specializing in payment systems, real-time transaction flows, and wearable platforms (WearOS, watchOS).",
+            "Proven ability to lead critical modules, design clean and modular architectures, and collaborate cross-functionally to deliver secure, high-performance features in large-scale Super App ecosystems."
+          ],
+          "objective": [
+            "To grow into a Mobile Tech Lead or Project Manager role, focusing on mobile architecture, cross-platform solutions, and high-impact payment systems, while contributing to scalable products and mentoring junior engineers in a collaborative, innovation-driven environment."
+          ]
+        },
+        "workExperience": [
+          {
+            "company": "FPT Software",
+            "period": {
+              "start": "Jan 2026",
+              "end": "Present"
+            },
+            "title": "Team Lead",
+            "pdf": {
+              "visible": true,
+              "showProjects": true,
+              "showRoleDetails": true,
+              "showTechnologies": true,
+              "showResponsibilities": true
+            },
+            "projects": [
+              {
+                "name": "9PP - Yamato Transport",
+                "description": "Next-generation Android app for collection and delivery field operations, built as a multi-repo, multi-module system (domain / UI layers per business function) with Clean Architecture, MVVM and Jetpack Compose."
+              }
+            ],
+            "roleDetails": [
+              "Position: Team Lead - own delivery of the FPT-scope functions, coordinate with QC, BA/design and the external platform vendor, and build the AI-driven engineering tooling the team uses daily."
+            ],
+            "technologies": [
+              "Android",
+              "Kotlin",
+              "MVVM",
+              "Clean Architecture",
+              "Jetpack Compose",
+              "Detail Design",
+              "Claude Code",
+              "Python",
+              "GitLab",
+              "Jira"
+            ],
+            "responsibilities": [
+              "Lead the team delivering 13 business modules (47 functions) across 26+ repositories; split ownership per function, define branch/MR/commit conventions and review gates, and keep the team aligned with QC, BA and vendor-owned components.",
+              "Create and review Detail Design for FPT-scope functions, translating business and UI specifications into implementation-ready flows, interface contracts, edge cases and acceptance criteria with BA, QC and the external platform vendor.",
+              "Designed and built an AI bug-fixing pipeline on Claude Code (14 skills, 2 agents): scans Jira DC for open bugs, filters out non-actionable tickets, traces root cause across source, design docs and device logs, then routes automatically - in-scope defects get a fix branch + GitLab MR with a root-cause comment; vendor-side defects get a structured Q&A; suspected design errors get a design Q&A and paired design/code MRs.",
+              "Integrated the pipeline into Microsoft Teams (Power Automate -> Graph API -> Claude CLI bot) so members trigger tracing, Q&A, resolve, ship and performance-RCA workflows with simple chat commands, with per-command permissions and two-step confirmation for merge/resolve actions.",
+              "Built an AI code-review agent for GitLab MRs: reviews each MR against real source, design specs and project-specific rules, comments findings, marks problematic MRs as Draft and tags the responsible owner; auto-fixes small, well-defined issues in AI-authored MRs and re-reviews them.",
+              "Created a design-to-code sync agent that reads merged design-document diffs and applies the corresponding UseCase / ViewModel / Screen changes across affected repos, pushing per-repo branches and opening MRs with a self-test report.",
+              "Ran cross-function rollouts (TKN) of recurring fixes: inventory script, pilot on one function, then one MR per repo across all modules - covering back-navigation exit handling, navigation-enum unification and resource-clearing checks.",
+              "Automated static-analysis cleanup: a detekt-fix workflow that proves a change is behavior-neutral by token-level diff before committing; cleared lint across 35 repo MRs without suppressions or baselines, enforced by a pre-push gate.",
+              "Added guardrails to keep automation safe at team scale: stale-ticket read guard before commenting, skip rules for cancelled / non-actionable tickets, evidence thresholds before challenging QC expectations or design, and CI gates that block false-pass builds.",
+              "Produced self-test handover packages (business flow -> code mapping, step-by-step scenarios, test data) and performance RCA reports, so members who don't know the domain can verify fixes quickly before hand-off to QC."
+            ]
+          },
+          {
+            "company": "Freelancer",
+            "period": {
+              "start": "Apr 2020",
+              "end": "Present"
+            },
+            "title": "Mobile Developer",
+            "pdf": {
+              "visible": false
+            },
+            "roleDetails": [
+              "Designed and built cross-platform mobile apps for individual clients and startups, owning the full cycle from UI/UX implementation to third-party integrations and App Store/Play Store release."
+            ],
+            "projects": [
+              {
+                "name": "Yoga Lasyn",
+                "description": "Yoga teaching app built with Flutter for iOS and Android - implemented a class library organized by level and focus area, day-by-day guided practice schedules with progress tracking, offline caching of lesson videos via a custom player, and local notification reminders to keep users on their practice streak. Ref: https://apps.apple.com/vn/app/yoga-lasyn-make-life-better/id1534680016",
+                "technologies": ["Flutter", "Dart", "Provider", "SQLite"]
+              },
+              {
+                "name": "Venus AI",
+                "description": "AI avatar generation app built with Flutter for iOS - implemented the photo upload and style-selection flow, integrated a third-party image-generation REST API with async job polling and result caching, and built the in-app purchase/subscription flow for credit-based avatar generations. Ref: https://apps.apple.com/vn/app/venus-ai/id6462872236",
+                "technologies": [
+                  "Flutter",
+                  "Dart",
+                  "REST API",
+                  "In-App Purchase"
+                ]
+              },
+              {
+                "name": "Dirty Coin",
+                "description": "Clothes e-commerce app built with Flutter - implemented product catalog with category filtering and search, shopping cart, multi-step checkout, an order-tracking timeline, and Firebase Cloud Messaging push notifications for order and promotion updates.",
+                "technologies": [
+                  "Flutter",
+                  "Dart",
+                  "Firebase",
+                  "Push Notifications"
+                ]
+              },
+              {
+                "name": "Tiny Fun",
+                "description": "Social network app built with Flutter combining a Tinder-style swipe-based matching feed with a TikTok-style vertical short-video feed - implemented the swipe/match UI and logic, an autoplay video feed with likes and comments, and real-time one-on-one chat between matched users over MQTT, backed by a RESTful API.",
+                "technologies": ["Flutter", "Dart", "MQTT", "RESTful API"]
+              },
+              {
+                "name": "GolfSGMS",
+                "description": "Golf course management and leasing system - implemented calendar-based tee-time booking, course/resource scheduling for staff, and member management (profiles, membership tiers, and billing) for golf course operators."
+              }
+            ],
+            "technologies": ["Flutter", "Dart"],
+            "responsibilities": []
+          },
+          {
+            "company": "MoMo (M_Service)",
+            "period": {
+              "start": "May 2022",
+              "end": "Jan 2026"
+            },
+            "title": "Senior Mobile App Developer",
+            "pdf": {
+              "visible": true,
+              "showProjects": true,
+              "showRoleDetails": true,
+              "showTechnologies": true,
+              "showResponsibilities": true
+            },
+            "projects": [
+              {
+                "name": "MoMo Super App",
+                "technologies": ["React Native", "KMM"]
+              }
+            ],
+            "team": "App Payment / App Platform Team",
+            "technologies": [
+              "React Native",
+              "Kotlin",
+              "KMM",
+              "Clean Architecture",
+              "WearOS",
+              "watchOS"
+            ],
+            "responsibilities": [
+              "Architected and developed a cross-platform payment solution for wearable devices (Apple Watch, WearOS, Huawei, Garmin), enabling QR-based transactions and secure authentication using native payment APIs (Apple Pay, Google Pay).",
+              "Led the Transaction Result module, improving reliability and user experience by implementing real-time transaction status updates via MQTT.",
+              "Led development of the FinancialHub mini-app, a centralized entry point for personal finance features including bank linking, insurance, and investments.",
+              "PayX: Migrated multiple payment mini-apps from React Native to native Android/iOS using Kotlin Multiplatform Mobile (KMM), unifying business logic and reducing feature inconsistency across platforms.",
+              "Enhanced and maintained core mini-apps: Payment, Cash In/Out, Bank Linking, Account Management, and Transaction Result.",
+              "Established real-time performance monitoring with Grafana dashboards, tracking startup time, error rate, and JS thread performance to proactively improve app stability.",
+              "Collaborated closely with backend, product, QA, and UI/UX teams in an Agile environment to deliver high-impact features for millions of users."
+            ]
+          },
+          {
+            "company": "American Code Lab",
+            "period": {
+              "start": "May 2023",
+              "end": "Dec 2023"
+            },
+            "title": "Part-Time Technical Instructor",
+            "pdf": {
+              "visible": false
+            },
+            "roleDetails": [
+              "Designed and taught a Flutter mobile app development course."
+            ],
+            "responsibilities": [
+              "Designed the course curriculum and syllabus from scratch, structuring the program from Dart fundamentals and Flutter widgets through state management, navigation, and API integration.",
+              "Taught weekly sessions on Flutter/Dart fundamentals, layout and UI building, state management (setState, Provider), REST API integration, and local data persistence.",
+              "Prepared hands-on exercises and sample projects for each lesson, and guided students through building and debugging their own Flutter apps.",
+              "Reviewed student projects, gave code-quality feedback, and mentored students through building a capstone app to reinforce the full course curriculum."
+            ]
+          },
+          {
+            "company": "Devblock Vietnam",
+            "period": {
+              "start": "Mar 2020",
+              "end": "Apr 2022"
+            },
+            "title": "Junior Mobile Developer",
+            "pdf": {
+              "visible": true,
+              "showProjects": true,
+              "showRoleDetails": true,
+              "showTechnologies": true,
+              "showResponsibilities": true
+            },
+            "technologies": [
+              "Android",
+              "Jetpack Compose",
+              "iOS",
+              "SwiftUI",
+              "React Native"
+            ],
+            "projects": [
+              {
+                "name": "AppZocial",
+                "description": "Social networking app with separate native clients per platform - built the Android client with Jetpack Compose and the iOS client with SwiftUI, implementing news feed, profile, media upload with image compression, and real-time chat, keeping feature parity across both native codebases.",
+                "technologies": ["Android", "Jetpack Compose", "iOS", "SwiftUI"]
+              },
+              {
+                "name": "Evolve1",
+                "description": "Fitness and communication app connecting coaches and athletes, built with native Android - implemented workout plan tracking and exercise logging, in-app messaging between coach and athlete, and progress data syncing with the backend.",
+                "technologies": ["Android"]
+              },
+              {
+                "name": "HydroAssist",
+                "description": "Hydrocephalus patient tracking app built with React Native - implemented medication and appointment reminders via push notifications, and background synchronization of patient vitals and notes between patients and caregivers through a REST API.",
+                "technologies": ["React Native"]
+              },
+              {
+                "name": "Zera",
+                "description": "IoT companion app for body-temperature tracking via NFC-enabled thermometer stickers, built with React Native - implemented NFC tag scanning and device pairing, a real-time temperature readings display with historical charts, and alerts for abnormal readings.",
+                "technologies": ["React Native"]
+              }
+            ],
+            "responsibilities": [
+              "Implemented UI components, integrated REST APIs, and delivered features end-to-end.",
+              "Followed Agile practices using Git, Jira, and Trello."
+            ]
+          },
+          {
+            "company": "TMA Solutions",
+            "period": {
+              "start": "Jul 2019",
+              "end": "Sep 2019"
+            },
+            "title": "Mobile Developer Intern",
+            "pdf": {
+              "visible": true,
+              "showProjects": true,
+              "showRoleDetails": true,
+              "showTechnologies": true,
+              "showResponsibilities": true
+            },
+            "team": "Mitel Team",
+            "responsibilities": [
+              "Built core features for a VoIP application, including authentication, call interface, and SIP integration on Android."
+            ]
+          }
+        ],
+        "education": [
+          {
+            "period": {
+              "start": "Dec 2020",
+              "end": "Jun 2023"
+            },
+            "degree": "Master of Science",
+            "major": "Physics and Informatics",
+            "school": "University of Science - Vietnam National University Ho Chi Minh City",
+            "thesis": "Stock Price Trend Prediction using Machine Learning",
+            "technologies": ["Python", "Keras", "LSTM", "Matplotlib"],
+            "references": [
+              {
+                "label": "Reference",
+                "url": "http://ir.vnulib.edu.vn/handle/VNUHCM/31347"
+              }
+            ]
+          },
+          {
+            "period": {
+              "start": "Sep 2016",
+              "end": "Sep 2020"
+            },
+            "degree": "Bachelor of Science",
+            "major": "Physics and Informatics",
+            "school": "University of Science - Vietnam National University Ho Chi Minh City",
+            "thesis": "Internal Social Network Application",
+            "technologies": ["Flutter", "React Native"]
+          }
+        ],
+        "certifications": [
+          {
+            "time": "Apr 2026",
+            "name": "Google AI Professional Certificate"
+          },
+          {
+            "time": "May 2026",
+            "name": "Google Project Management Professional Certificate"
+          }
+        ],
+        "skills": [
+          {
+            "group": "Mobile",
+            "items": [
+              "React Native, Flutter, Kotlin, Swift",
+              "Kotlin Multiplatform Mobile (KMM)",
+              "WearOS, watchOS",
+              "MVVM, Clean Architecture"
+            ]
+          },
+          {
+            "group": "Frontend",
+            "items": ["ReactJS, VueJS, NextJS"]
+          },
+          {
+            "group": "Backend",
+            "items": ["NodeJS, ExpressJS, NestJS"]
+          },
+          {
+            "group": "Analytics & Monitoring",
+            "items": ["Firebase Analytics, Firebase Crashlytics, Grafana"]
+          },
+          {
+            "group": "Tools",
+            "items": ["Git, Jira, Confluence"]
+          }
+        ],
+        "projectsAndResearch": [
+          {
+            "name": "DevCmd",
+            "period": {
+              "start": "Feb 2024",
+              "end": "Present"
+            },
+            "role": "Developer",
+            "description": "Interactive development CLI for scaffolding JavaScript, mobile, and Python projects with framework-appropriate defaults. Supports lifecycle commands (install, run, test, build, check, clean, reset), Android emulator and iOS simulator management, custom framework recipes, MCP server for AI agent integration, and shell completion.",
+            "technologies": ["Node.js", "MCP"],
+            "links": [
+              {
+                "label": "GitHub",
+                "url": "https://github.com/bachbnt/dev-cmd"
+              },
+              {
+                "label": "Releases",
+                "url": "https://github.com/bachbnt/dev-cmd/releases"
+              }
+            ]
+          },
+          {
+            "name": "DevPad",
+            "period": {
+              "start": "May 2026",
+              "end": "Present"
+            },
+            "role": "Developer",
+            "description": "Native macOS menu bar utility for developers. Includes JSON/XML/SQL formatter, URL parser, QR generator and scanner, JWT decoder/signer/verifier, Regex tester, Hash generator (8 algorithms), Diff compare, Clipboard history with Pure Paste, and Drop Shelf for batching file drag-and-drop. Supports English and Vietnamese.",
+            "technologies": ["Swift", "SwiftUI", "AppKit", "macOS"],
+            "links": [
+              {
+                "label": "GitHub",
+                "url": "https://github.com/bachbnt/dev-pad"
+              },
+              {
+                "label": "Releases",
+                "url": "https://github.com/bachbnt/dev-pad/releases"
+              }
+            ]
+          },
+          {
+            "name": "FinHub MCP",
+            "period": {
+              "start": "May 2026",
+              "end": "Present"
+            },
+            "role": "Developer",
+            "description": "Local MCP server for financial market data. Covers Vietnam stocks (price, intraday, OHLCV history, market indices), company financials, crypto spot and futures (funding rate, open interest), SJC gold price, Vietcombank forex rates, and price alerts with Telegram notifications. Automatic provider fallback across multiple data sources.",
+            "technologies": ["Python", "MCP", "vnstock", "ccxt"],
+            "links": [
+              {
+                "label": "GitHub",
+                "url": "https://github.com/bachbnt/finhub-mcp"
+              }
+            ]
+          },
+          {
+            "name": "Stock Prices Prediction - MSc Thesis",
+            "period": {
+              "start": "Jan 2022",
+              "end": "Mar 2023"
+            },
+            "role": "Researcher / Developer",
+            "description": "Built an LSTM-based model to predict VN-Index trends.",
+            "technologies": ["Python", "Keras", "Matplotlib"],
+            "links": [
+              {
+                "label": "Source",
+                "url": "https://github.com/bachbnt/stock-prediction-msc"
+              }
+            ]
+          },
+          {
+            "name": "BachCV - Personal Portfolio Website",
+            "period": {
+              "start": "Apr 2021",
+              "end": "Apr 2021"
+            },
+            "role": "Developer",
+            "description": "Designed and developed a personal portfolio website.",
+            "technologies": [
+              "ReactJS",
+              "Material UI",
+              "Firebase Hosting",
+              "CI/CD"
+            ],
+            "links": [
+              {
+                "label": "Live",
+                "url": "https://bachbntdev.web.app"
+              }
+            ]
+          },
+          {
+            "name": "Internal Social Network - BSc Thesis",
+            "period": {
+              "start": "Dec 2019",
+              "end": "Feb 2020"
+            },
+            "role": "Developer",
+            "description": "Developed an internal social networking platform.",
+            "technologies": ["Flutter", "BLoC", "React Native", "Redux"],
+            "links": [
+              {
+                "label": "Source",
+                "url": "https://github.com/bachbnt/pc-dashboard-bsc"
+              }
+            ]
+          }
+        ]
+      },
+      "rawPages": [
+        {
+          "page": 1,
+          "text": "Bùi Ngô Tôn Bách\nMobile Software Engineer\n(+84) 384560623\nbachbnt@gmail.com\nHo Chi Minh City, Vietnam\nSUMMARY & OBJECTIVE\nSUMMARY\nSenior Mobile Engineer with 5+ years of experience building and scaling production-grade mobile applications used by tens of millions of users.\nStrong expertise in React Native and Kotlin Multiplatform Mobile (KMM), specializing in payment systems, real-time transaction flows, and wearable platforms (WearOS, watchOS).\nProven ability to lead critical modules, design clean and modular architectures, and collaborate cross-functionally to deliver secure, high-performance features in large-scale Super App ecosystems.\nOBJECTIVE\nTo grow into a Mobile Tech Lead or Project Manager role, focusing on mobile architecture, cross-platform solutions, and high-impact payment systems, while contributing to scalable products and mentoring junior engineers in a collaborative, innovation-driven environment.\nWORK EXPERIENCE\nFPT SOFTWARE\nJan 2026 - Present\nMOBILE DEVELOPER\nProjects: 9PP\nPosition: Function Leader\nTechnologies: Android, MVVM, Clean Architecture, Jetpack Compose\nResponsibilities:\nMOMO (M_SERVICE)\nMay 2022 - Jan 2026\nSENIOR MOBILE APP DEVELOPER\nMoMo Super App: React Native, KMM\nApp Payment/ App Platform Team\nTechnologies: React Native, Kotlin, KMM, Clean Architecture, WearOS, watchOS\nResponsibilities:\nArchitected and developed a cross-platform payment solution for wearable devices (Apple Watch, WearOS, Huawei, Garmin), enabling QR-based transactions and secure authentication using native payment APIs (Apple Pay, Google Pay).\nLed the Transaction Result module, improving reliability and user experience by implementing real-time transaction status updates via MQTT.\nLed development of the FinancialHub mini-app, a centralized entry point for personal finance features including bank linking, insurance, and investments.\nPayX: Migrated multiple payment mini-apps from React Native to native Android/iOS using Kotlin Multiplatform Mobile (KMM), unifying business logic and reducing feature inconsistency across platforms.\nEnhanced and maintained core mini-apps: Payment, Cash In/Out, Bank Linking, Account Management, and Transaction Result.\nEstablished real-time performance monitoring with Grafana dashboards, tracking startup time, error rate, and JS thread performance to proactively improve app stability.\nCollaborated closely with backend, product, QA, and UI/UX teams in an Agile environment to deliver high-impact features for millions of users.\nDEVBLOCK VIETNAM\nMar 2020 - Apr 2022\nJUNIOR MOBILE DEVELOPER\nTechnologies: React Native, Flutter, Android"
+        },
+        {
+          "page": 2,
+          "text": "Projects:\nAppZocial: Social networking app - implemented media uploads and real-time chat using React Native.\nEvolve1: Fitness and communication app for coaches and athletes - developed core features with Flutter and Firebase backend.\nHydroAssist: Medical tracking app - handled notifications and data synchronization.\nZera: IoT application for body temperature tracking via NFC.\nResponsibilities:\nImplemented UI components, integrated REST APIs, and delivered features end-to-end.\nFollowed Agile practices using Git, Jira, and Trello.\nTMA SOLUTIONS\nJul 2019 - Sep 2019\nMOBILE DEVELOPER INTERN\nMitel Team\nBuilt core features for a VoIP application, including authentication, call interface, and SIP integration on Android.\nEDUCATION\nDec 2020 - Jun 2023\nMASTER OF SCIENCE - PHYSICS AND INFORMATICS\nUNIVERSITY OF SCIENCE - VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY\nThesis: Stock Price Trend Prediction using Machine Learning\nTechnologies: Python, Keras, LSTM, Matplotlib\nReference: http://ir.vnulib.edu.vn/handle/VNUHCM/31347\nSep 2016 - Sep 2020\nBACHELOR OF SCIENCE - PHYSICS AND INFORMATICS\nUNIVERSITY OF SCIENCE - VIETNAM NATIONAL UNIVERSITY HO CHI MINH CITY\nThesis: Internal Social Network Application\nTechnologies: Flutter, React Native\nCERTIFICATIONS\nApr 2026\nGoogle AI Professional Certificate\nMay 2026\nGoogle Project Management Professional Certificate\nSKILLS\nMobile\nReact Native, Flutter, Kotlin, Swift\nKotlin Multiplatform Mobile (KMM)\nWearOS, watchOS\nMVVM, Clean Architecture\nAI\nPrompt and Context Engineering\nLLM, RAG, Fine-tuning\nFrontend\nReactJS, VueJS. NextJS\nBackend\nNodeJS, ExpressJS, NestJS\nDevOps\nCI/CD\nDocker\nAnalytics & Monitoring\nFirebase Analytics, Firebase Crashlytics, Grafana\nTools\nGit, Jira, Confluence\nPROJECTS & RESEARCH\nStock Prices Prediction - MSc Thesis\nJan 2022 - Mar 2023\nResearcher / Developer\nBuilt an LSTM-based model to predict VN-Index trends.\nTechnologies: Python, Keras, Matplotlib"
+        },
+        {
+          "page": 3,
+          "text": "DevCmd\nFeb 2024 - Present\nDeveloper\nInteractive development CLI for scaffolding JavaScript, mobile, and Python projects with framework-appropriate defaults. Supports lifecycle commands (install, run, test, build, check, clean, reset), Android emulator and iOS simulator management, custom framework recipes, MCP server for AI agent integration, and shell completion.\nTechnologies: Node.js, MCP\nGitHub: https://github.com/bachbnt/dev-cmd\nReleases: https://github.com/bachbnt/dev-cmd/releases\nDevPad\nMay 2026 - Present\nDeveloper\nNative macOS menu bar utility for developers. Includes JSON/XML/SQL formatter, URL parser, QR generator and scanner, JWT decoder/signer/verifier, Regex tester, Hash generator (8 algorithms), Diff compare, Clipboard history with Pure Paste, and Drop Shelf for batching file drag-and-drop. Supports English and Vietnamese.\nTechnologies: Swift, SwiftUI, AppKit, macOS\nGitHub: https://github.com/bachbnt/dev-pad\nReleases: https://github.com/bachbnt/dev-pad/releases\nFinHub\nMay 2026 - Present\nDeveloper\nLocal MCP server for financial market data. Covers Vietnam stocks (price, intraday, OHLCV history, market indices), company financials, crypto spot and futures (funding rate, open interest), SJC gold price, Vietcombank forex rates, and price alerts with Telegram notifications. Automatic provider fallback across multiple data sources.\nTechnologies: Python, MCP, vnstock, ccxt\nGitHub: https://github.com/bachbnt/finhub\nJan 2022 Mar 2023 Technologies: Python, Keras, Matplotlib\nSource: https://github.com/bachbnt/learn-stock_prices_prediction-python\nPersonal Portfolio Website\nApr 2021 - Apr 2021\nDeveloper\nDesigned and developed a personal portfolio website.\nTechnologies: ReactJS, Material UI, Firebase Hosting, CI/CD\nLive: https://bachbntdev.web.app\nInternal Social Network - BSc Thesis\nDec 2019 - Feb 2020\nDeveloper\nDeveloped an internal social networking platform.\nTechnologies: Flutter, BLoC, React Native, Redux\nSource: https://github.com/bachbnt/learn-pc_dashboard-flutter_reactnative"
+        }
+      ]
+    },
+    "education": {
+      "bachelor": {
+        "degree": "Bachelor of Science",
+        "time": "Sep 2016 - Sep 2020",
+        "major": "Physics",
+        "degreeVisible": true,
+        "timeVisible": true,
+        "index": 1,
+        "name": "University of Science",
+        "nameVisible": true,
+        "majorVisible": false,
+        "visible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/bachelor.jpg",
+        "imageVisible": true
+      },
+      "master": {
+        "timeVisible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/master.jpeg",
+        "majorVisible": false,
+        "degree": "Master of Science",
+        "time": "Dec 2020 - Dec 2022",
+        "visible": true,
+        "nameVisible": true,
+        "imageVisible": true,
+        "major": "Physics Engineering",
+        "degreeVisible": true,
+        "name": "University of Science",
+        "index": 2
+      }
+    },
+    "experience": {
+      "easy-gds": {
+        "imageVisible": false,
+        "responsibility": "Developing websites",
+        "timeVisible": true,
+        "positionVisible": true,
+        "responsibilityVisible": true,
+        "time": "Mar 2024 - Present",
+        "nameVisible": true,
+        "position": "Frontend Developer",
+        "image": "",
+        "visible": false,
+        "name": "EasyGDS Limited",
+        "index": 4
+      },
+      "freelancer": {
+        "position": "Fullstack Developer",
+        "nameVisible": true,
+        "time": "Apr 2020 - Present",
+        "responsibilityVisible": true,
+        "positionVisible": true,
+        "responsibility": "Developing applications and websites",
+        "timeVisible": true,
+        "imageVisible": true,
+        "name": "Freelancer",
+        "index": 2,
+        "visible": false,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/freelancer.jpg"
+      },
+      "fpt_software_team_lead": {
+        "positionVisible": true,
+        "image": "",
+        "timeVisible": true,
+        "visible": true,
+        "responsibility": "Lead delivery for 9PP - Yamato Transport across 13 Android business modules and 26+ repositories; create and review Detail Design, and build AI workflows for bug fixing, code review and design-to-code sync.",
+        "name": "FPT Software",
+        "index": 4,
+        "nameVisible": true,
+        "position": "Team Lead",
+        "time": "Jan 2026 - Present",
+        "imageVisible": false,
+        "responsibilityVisible": true
+      },
+      "example_experience_id": {
+        "positionVisible": true,
+        "timeVisible": true,
+        "responsibility": "Led critical MoMo Super App modules, including wearable QR payments, real-time transaction results, FinancialHub and KMM migration for payment mini-apps.",
+        "name": "MoMo (M_Service)",
+        "index": 3,
+        "nameVisible": true,
+        "position": "Senior Mobile App Developer",
+        "time": "May 2022 - Jan 2026",
+        "responsibilityVisible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/momo.jpeg",
+        "imageVisible": true,
+        "visible": false
+      },
+      "devblock_vietnam_mobile_developer": {
+        "positionVisible": true,
+        "timeVisible": true,
+        "responsibility": "Built Android, iOS and React Native apps end-to-end, delivering social, fitness, healthcare and IoT features with REST APIs, notifications, real-time chat and NFC integration.",
+        "name": "Devblock Vietnam",
+        "index": 1,
+        "nameVisible": true,
+        "position": "Junior Mobile Developer",
+        "time": "Mar 2020 - Apr 2022",
+        "responsibilityVisible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/devblock.jpg",
+        "imageVisible": true,
+        "visible": false
+      },
+      "devblock": {
+        "timeVisible": true,
+        "responsibilityVisible": true,
+        "positionVisible": true,
+        "time": "Mar 2020 - Apr 2022",
+        "index": 1,
+        "nameVisible": true,
+        "visible": true,
+        "imageVisible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/devblock.jpg",
+        "responsibility": "Built Android, iOS and React Native apps end-to-end, delivering social, fitness, healthcare and IoT features with REST APIs, notifications, real-time chat and NFC integration.",
+        "name": "Devblock Vietnam",
+        "position": "Junior Mobile Developer"
+      },
+      "american-code-lab": {
+        "timeVisible": true,
+        "visible": true,
+        "name": "American Code Lab",
+        "nameVisible": true,
+        "positionVisible": true,
+        "responsibilityVisible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/american-code-lab.png",
+        "imageVisible": true,
+        "time": "May 2023 - Dec 2023",
+        "responsibility": "Designed and taught a Flutter mobile-development course covering Dart, UI, state management, navigation, API integration and hands-on capstone projects.",
+        "index": 2,
+        "position": "Part-Time Technical Instructor"
+      },
+      "american_code_lab_instructor": {
+        "positionVisible": true,
+        "timeVisible": true,
+        "responsibility": "Designed and taught a Flutter mobile-development course covering Dart, UI, state management, navigation, API integration and hands-on capstone projects.",
+        "name": "American Code Lab",
+        "index": 2,
+        "nameVisible": true,
+        "position": "Part-Time Technical Instructor",
+        "time": "May 2023 - Dec 2023",
+        "responsibilityVisible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/american-code-lab.png",
+        "imageVisible": true,
+        "visible": false
+      },
+      "momo": {
+        "responsibilityVisible": true,
+        "timeVisible": true,
+        "positionVisible": true,
+        "nameVisible": true,
+        "visible": true,
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/momo.jpeg",
+        "imageVisible": true,
+        "responsibility": "Led critical MoMo Super App modules, including wearable QR payments, real-time transaction results, FinancialHub and KMM migration for payment mini-apps.",
+        "name": "MoMo (M_Service)",
+        "index": 3,
+        "position": "Senior Mobile App Developer",
+        "time": "May 2022 - Jan 2026"
+      }
+    },
+    "payment": {
+      "bidv": {
+        "name": "BIDV",
+        "index": "1",
+        "accountVisible": true,
+        "logo": "",
+        "type": "bank",
+        "nameVisible": true,
+        "qrCodeVisible": true,
+        "logoVisible": false,
+        "user": "BUI NGO TON BACH",
+        "userVisible": false,
+        "visible": true,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-bidv-v2.jpg",
+        "account": "6010822107"
+      },
+      "momo": {
+        "qrCodeVisible": true,
+        "name": "MoMo",
+        "logo": "",
+        "accountVisible": true,
+        "nameVisible": true,
+        "account": "0384560623",
+        "type": "wallet",
+        "visible": true,
+        "logoVisible": false,
+        "user": "BÙI NGÔ TÔN BÁCH",
+        "userVisible": false,
+        "index": 4,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-momo-v2.png"
+      },
+      "vnpay": {
+        "account": "0384560623",
+        "accountVisible": true,
+        "index": 7,
+        "logo": "",
+        "logoVisible": false,
+        "name": "VNPay",
+        "nameVisible": true,
+        "type": "wallet",
+        "user": "Bùi Ngô Tôn Bách",
+        "userVisible": false,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vnpay.jpeg",
+        "qrCodeVisible": true,
+        "visible": true
+      },
+      "paypal": {
+        "account": "bntbach@gmail.com",
+        "index": 8,
+        "logo": "",
+        "logoVisible": false,
+        "name": "PayPal",
+        "nameVisible": true,
+        "type": "wallet",
+        "user": "BUI NGO TON BACH",
+        "userVisible": false,
+        "accountVisible": true,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-paypal.png",
+        "qrCodeVisible": true,
+        "visible": true
+      },
+      "shopee-pay": {
+        "accountVisible": true,
+        "index": 10,
+        "logo": "",
+        "logoVisible": true,
+        "name": "ShopeePay",
+        "nameVisible": true,
+        "qrCodeVisible": true,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-shopeepay.png",
+        "type": "wallet",
+        "user": "Bùi Ngô Tôn Bách",
+        "userVisible": true,
+        "account": "(+84)384560623",
+        "visible": true
+      },
+      "viettel-money": {
+        "qrCodeVisible": true,
+        "name": "Viettel Money",
+        "index": 5,
+        "accountVisible": true,
+        "logo": "",
+        "nameVisible": true,
+        "type": "wallet",
+        "account": "0384560623",
+        "logoVisible": false,
+        "user": "BUI NGO TON BACH",
+        "userVisible": false,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-viettelmoney.jpg",
+        "visible": true
+      },
+      "binance": {
+        "nameVisible": true,
+        "account": "366454438",
+        "accountVisible": true,
+        "logo": "",
+        "logoVisible": false,
+        "index": 5,
+        "qrCodeVisible": true,
+        "type": "wallet",
+        "name": "Binance",
+        "user": "bntbach",
+        "userVisible": false,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-binance.jpg",
+        "visible": true
+      },
+      "vietcombank": {
+        "accountVisible": true,
+        "account": "1028403549",
+        "name": "Vietcombank",
+        "nameVisible": true,
+        "qrCodeVisible": true,
+        "logo": "",
+        "logoVisible": false,
+        "user": "BUI NGO TON BACH",
+        "userVisible": false,
+        "index": 2,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietcombank-v2.jpg",
+        "type": "bank",
+        "visible": true
+      },
+      "vietinbank": {
+        "userVisible": false,
+        "name": "VietinBank",
+        "accountVisible": true,
+        "logo": "",
+        "nameVisible": true,
+        "type": "bank",
+        "user": "BUI NGO TON BACH",
+        "logoVisible": false,
+        "index": 3,
+        "qrCodeVisible": true,
+        "account": "100877461144",
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietinbank-v2.jpg",
+        "visible": true
+      },
+      "zalopay": {
+        "qrCodeVisible": true,
+        "name": "ZaloPay",
+        "accountVisible": true,
+        "logo": "",
+        "nameVisible": true,
+        "type": "wallet",
+        "account": "0384560623",
+        "logoVisible": false,
+        "user": "Tôn Bách",
+        "userVisible": false,
+        "index": 5,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-zalopay-v2.png",
+        "visible": true
+      }
+    },
+    "profile": {
+      "name": "Bach Bui",
+      "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
+      "covers": [
+        {
+          "visible": true,
+          "index": 1,
+          "url": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/cover1.jpeg"
+        },
+        {
+          "visible": true,
+          "index": 2,
+          "url": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/cover5.jpeg"
+        }
+      ],
+      "summary": "My background is the Master of Science. Because of my passion for programming, I chose Software Engineer as my profession. With knowledge and experience in technology, I want to become a Project Manager in the future.",
+      "specialties": [
+        {
+          "visible": true,
+          "name": "Mobile Developer",
+          "index": 1
+        },
+        {
+          "visible": true,
+          "name": "Web Developer",
+          "index": 2
+        },
+        {
+          "visible": true,
+          "name": "Software Engineer",
+          "index": 0
+        }
+      ],
+      "cv": "https://github.com/bachbnt/core-cv-reactjs/blob/master/public/my-cv.pdf"
+    },
+    "project": {
+      "beli-coffee": {
+        "name": "Beli Coffee",
+        "index": 1,
+        "coverVisible": true,
+        "descriptionVisible": true,
+        "nameVisible": true,
+        "visible": true,
+        "type": "personal",
+        "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/belicoffee.png",
+        "description": "Coffee ordering app.",
+        "technology": "Android, NodeJS, MongoDB, Firebase, WebRTC, SocketIO",
+        "technologyVisible": true
+      },
+      "pc-dashboard": {
+        "name": "P&C Dashboard",
+        "index": 2,
+        "nameVisible": true,
+        "coverVisible": true,
+        "descriptionVisible": true,
+        "visible": true,
+        "type": "personal",
+        "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/pcdashboard.png",
+        "description": "Internal social network app.",
+        "technology": "Flutter, Bloc, React Native, Redux",
+        "technologyVisible": true
+      },
+      "bachbntdev": {
+        "descriptionVisible": true,
+        "index": 4,
+        "nameVisible": true,
+        "coverVisible": true,
+        "visible": true,
+        "type": "personal",
+        "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.png",
+        "description": "Personal web.",
+        "technologyVisible": true,
+        "name": "bachbntdev",
+        "technology": "ReactJS, MaterialUI, Redux Toolkit, Firebase, Webpack",
+        "refs": ["https://bachbntdev.web.app/"]
+      },
+      "yoga-lasyn": {
+        "descriptionVisible": true,
+        "name": "Yoga Lasyn",
+        "index": 3,
+        "nameVisible": true,
+        "coverVisible": true,
+        "visible": true,
+        "type": "freelance",
+        "description": "Yoga teaching app",
+        "technology": "Flutter, Provider, Bloc, Firebase",
+        "technologyVisible": true,
+        "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/yogalasyn.jpeg",
+        "covers": [
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/01.jpg",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/02.jpeg",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/03.jpg",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/04.jpg",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/05.jpg",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/06.jpg"
+        ],
+        "refs": [
+          "https://apps.apple.com/vn/app/yoga-lasyn-make-life-better/id1534680016"
+        ]
+      },
+      "venus-ai": {
+        "name": "VenusAI",
+        "index": 4,
+        "nameVisible": true,
+        "descriptionVisible": true,
+        "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/venusai.png",
+        "coverVisible": true,
+        "technology": "Flutter, Firebase",
+        "technologyVisible": true,
+        "type": "freelance",
+        "visible": true,
+        "description": "AI avatars creation app",
+        "covers": [
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/01.png",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/02.png",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/03.png",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/04.png",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/05.png",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/06.png",
+          "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/07.png"
+        ],
+        "refs": ["https://apps.apple.com/vn/app/venus-ai/id6462872236"]
+      },
+      "comchay-rop": {
+        "descriptionVisible": true,
+        "index": 7,
+        "nameVisible": true,
+        "coverVisible": true,
+        "visible": true,
+        "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/comchayrop.png",
+        "type": "freelance",
+        "description": "Snacks selling and admin web",
+        "technology": "ReactJS, MaterialUI, Redux, NodeJS",
+        "technologyVisible": true,
+        "name": "Com Chay Rop",
+        "refs": ["https://comchayrop.com/"]
+      },
+      "goodmorningcoffeetea": {
+        "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/goodmorningcoffeetea.png",
+        "coverVisible": true,
+        "nameVisible": true,
+        "visible": true,
+        "type": "freelance",
+        "description": "Drinks selling and admin web",
+        "descriptionVisible": true,
+        "technology": "ReactJS, MaterialUI, Redux, NodeJS",
+        "technologyVisible": true,
+        "name": "Good Morning Coffee & Tea",
+        "refs": ["https://goodmorningcoffeetea.com/"]
+      },
+      "devpad": {
+        "visible": true,
+        "descriptionVisible": true,
+        "technologyVisible": true,
+        "description": "Native macOS menu bar utility for developers. Includes JSON/XML/SQL formatter, URL parser, QR generator and scanner, JWT decoder/signer/verifier, Regex tester, Hash generator (8 algorithms), Diff compare, Clipboard history with Pure Paste, and Drop Shelf for batching file drag-and-drop. Supports English and Vietnamese.",
+        "index": 2,
+        "technology": "Swift, SwiftUI, AppKit, macOS",
+        "type": "personal",
+        "cover": "",
+        "refs": [
+          "https://github.com/bachbnt/dev-pad",
+          "https://github.com/bachbnt/dev-pad/releases"
+        ],
+        "name": "DevPad",
+        "nameVisible": true,
+        "coverVisible": false,
+        "covers": []
+      },
+      "devcmd": {
+        "visible": true,
+        "descriptionVisible": true,
+        "technologyVisible": true,
+        "description": "Interactive development CLI for scaffolding JavaScript, mobile, and Python projects with framework-appropriate defaults. Supports lifecycle commands (install, run, test, build, check, clean, reset), Android emulator and iOS simulator management, custom framework recipes, MCP server for AI agent integration, and shell completion.",
+        "index": 1,
+        "technology": "Node.js, MCP",
+        "type": "personal",
+        "cover": "",
+        "refs": [
+          "https://github.com/bachbnt/dev-cmd",
+          "https://github.com/bachbnt/dev-cmd/releases"
+        ],
+        "name": "DevCmd",
+        "nameVisible": true,
+        "coverVisible": false,
+        "covers": []
+      },
+      "finhub": {
+        "descriptionVisible": true,
+        "coverVisible": false,
+        "technologyVisible": true,
+        "nameVisible": true,
+        "visible": true,
+        "name": "FinHub MCP",
+        "technology": "Python, MCP, vnstock, ccxt",
+        "description": "Local MCP server for financial market data. Covers Vietnam stocks (price, intraday, OHLCV history, market indices), company financials, crypto spot and futures (funding rate, open interest), SJC gold price, Vietcombank forex rates, and price alerts with Telegram notifications. Automatic provider fallback across multiple data sources.",
+        "cover": "",
+        "index": 3,
+        "covers": [],
+        "type": "personal",
+        "refs": ["https://github.com/bachbnt/finhub-mcp"]
+      }
+    },
+    "service": {
+      "blog-writing": {
+        "descriptionVisible": true,
+        "name": "Blog Writing",
+        "index": 5,
+        "description": "Writing technical blogs on my personal website.",
+        "nameVisible": true,
+        "visible": true
+      },
+      "open-source": {
+        "descriptionVisible": true,
+        "name": "Open Source",
+        "index": 3,
+        "description": "Working as an open source contributor on GitHub with some forks on various projects by other developers.",
+        "nameVisible": true,
+        "visible": true
+      },
+      "programming-teaching": {
+        "descriptionVisible": true,
+        "name": "Programming Teaching",
+        "description": "Teaching online programming to students.",
+        "index": 4,
+        "nameVisible": true,
+        "visible": true
+      },
+      "app-developement": {
+        "name": "App Development",
+        "index": 1,
+        "descriptionVisible": true,
+        "nameVisible": true,
+        "visible": true,
+        "description": "Developing Android & iOS applications using Flutter & React Native. Be able to work with native applications using Kotlin & Swift."
+      },
+      "web-developement": {
+        "descriptionVisible": true,
+        "name": "Web Developement",
+        "index": 2,
+        "nameVisible": true,
+        "visible": true,
+        "description": "Developing websites using VueJS & ReactJS for frontend, NodeJS for backend and MongoDB & MySQL for database."
+      }
+    },
+    "skill": {
+      "dart": {
+        "visible": true,
+        "name": "Dart",
+        "index": 1,
+        "nameVisible": true,
+        "type": "language",
+        "url": "https://dart.dev/",
+        "urlEnable": true
+      },
+      "flutter": {
+        "name": "Flutter",
+        "index": 1,
+        "type": "framework",
+        "nameVisible": true,
+        "url": "https://flutter.dev/",
+        "visible": true,
+        "urlEnable": true
+      },
+      "git": {
+        "visible": true,
+        "name": "Git (GitHub/ GitLab/ Bitbucket)",
+        "index": 1,
+        "nameVisible": true,
+        "type": "tool",
+        "url": "",
+        "urlEnable": false
+      },
+      "ide": {
+        "visible": true,
+        "index": 2,
+        "nameVisible": true,
+        "type": "tool",
+        "url": "",
+        "name": "IDE (VSCode/ AndroidStudio/ XCode)",
+        "urlEnable": false
+      },
+      "kotlin": {
+        "visible": true,
+        "name": "kotlin",
+        "index": 3,
+        "nameVisible": true,
+        "type": "language",
+        "url": "https://kotlinlang.org/",
+        "urlEnable": true
+      },
+      "reactjs": {
+        "name": "ReactJS",
+        "index": 3,
+        "nameVisible": true,
+        "type": "framework",
+        "visible": true,
+        "url": "https://reactjs.org/",
+        "urlEnable": true
+      },
+      "swift": {
+        "visible": true,
+        "name": "Swift",
+        "index": 4,
+        "nameVisible": true,
+        "type": "language",
+        "url": "https://www.swift.org/",
+        "urlEnable": true
+      },
+      "typescript": {
+        "visible": true,
+        "name": "Typescript",
+        "index": 2,
+        "nameVisible": true,
+        "type": "language",
+        "url": "https://www.typescriptlang.org/",
+        "urlEnable": true
+      },
+      "react-native": {
+        "urlEnable": true,
+        "name": "React Native",
+        "index": 2,
+        "nameVisible": true,
+        "url": "https://reactnative.dev/",
+        "type": "framework",
+        "visible": true
+      },
+      "work-management": {
+        "index": 3,
+        "name": "Work Management (Jira/ Trello)",
+        "name Visible": true,
+        "type": "tool",
+        "url": "",
+        "urlEnable": false,
+        "visible": true
+      },
+      "nodejs": {
+        "nameVisible": true,
+        "type": "framework",
+        "url": "https://nodejs.org/",
+        "visible": true,
+        "urlEnable": true,
+        "name": "NodeJS",
+        "index": 5
+      },
+      "vuejs": {
+        "name": "VueJS",
+        "index": 4,
+        "nameVisible": true,
+        "url": "https://vuejs.org/",
+        "visible": true,
+        "type": "framework",
+        "urlEnable": true
+      },
+      "python": {
+        "name": "Python",
+        "index": 5,
+        "nameVisible": true,
+        "type": "language",
+        "url": "https://www.python.org/",
+        "urlEnable": true,
+        "visible": true
+      },
+      "ios": {
+        "index": 6,
+        "name": "iOS",
+        "nameVisible": true,
+        "type": "framework",
+        "url": "https://developer.apple.com/",
+        "urlEnable": true,
+        "visible": true
+      },
+      "android": {
+        "index": 5,
+        "name": "Android",
+        "nameVisible": true,
+        "type": "framework",
+        "url": "https://developer.android.com/",
+        "urlEnable": true,
+        "visible": true
+      }
+    }
+  }
+}

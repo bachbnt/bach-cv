@@ -167,7 +167,7 @@ const MOCK = {
       },
     },
     {
-      id: 'momo_mobile_developer',
+      id: 'momo',
       data: {
         visible: true,
         timeVisible: true,
@@ -175,8 +175,9 @@ const MOCK = {
         responsibility:
           'Led critical MoMo Super App modules, including wearable QR payments, real-time transaction results, FinancialHub and KMM migration for payment mini-apps.',
         index: 3,
-        image: '',
-        imageVisible: false,
+        image:
+          'https://raw.githubusercontent.com/bachbnt/assets/main/resume/momo.jpeg',
+        imageVisible: true,
         responsibilityVisible: true,
         positionVisible: true,
         time: 'May 2022 - Jan 2026',
@@ -185,7 +186,7 @@ const MOCK = {
       },
     },
     {
-      id: 'american_code_lab_instructor',
+      id: 'american-code-lab',
       data: {
         visible: true,
         timeVisible: true,
@@ -193,8 +194,9 @@ const MOCK = {
         responsibility:
           'Designed and taught a Flutter mobile-development course covering Dart, UI, state management, navigation, API integration and hands-on capstone projects.',
         index: 2,
-        image: '',
-        imageVisible: false,
+        image:
+          'https://raw.githubusercontent.com/bachbnt/assets/main/resume/american-code-lab.png',
+        imageVisible: true,
         responsibilityVisible: true,
         positionVisible: true,
         time: 'May 2023 - Dec 2023',
@@ -203,7 +205,7 @@ const MOCK = {
       },
     },
     {
-      id: 'devblock_vietnam_mobile_developer',
+      id: 'devblock',
       data: {
         visible: true,
         timeVisible: true,
@@ -211,8 +213,9 @@ const MOCK = {
         responsibility:
           'Built Android, iOS and React Native apps end-to-end, delivering social, fitness, healthcare and IoT features with REST APIs, notifications, real-time chat and NFC integration.',
         index: 1,
-        image: '',
-        imageVisible: false,
+        image:
+          'https://raw.githubusercontent.com/bachbnt/assets/main/resume/devblock.jpg',
+        imageVisible: true,
         responsibilityVisible: true,
         positionVisible: true,
         time: 'Mar 2020 - Apr 2022',

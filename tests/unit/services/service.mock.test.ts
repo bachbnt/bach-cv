@@ -55,15 +55,15 @@ describe('service mock mode', () => {
     ]);
     await expect(getExperience()).resolves.toEqual([
       expect.objectContaining({
-        id: 'devblock_vietnam_mobile_developer',
+        id: 'devblock',
         name: 'Devblock Vietnam',
       }),
       expect.objectContaining({
-        id: 'american_code_lab_instructor',
+        id: 'american-code-lab',
         name: 'American Code Lab',
       }),
       expect.objectContaining({
-        id: 'momo_mobile_developer',
+        id: 'momo',
         name: 'MoMo (M_Service)',
       }),
       expect.objectContaining({
