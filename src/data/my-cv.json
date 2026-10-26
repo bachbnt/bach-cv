@@ -7,7 +7,7 @@
     "file": "firestore:user/cv",
     "pageCount": 3,
     "createdAt": "2026-05-24",
-    "updatedAt": "2026-05-24",
+    "updatedAt": "2026-07-09",
     "purpose": "Structured CV backup used as the Firestore seed and local fallback for dynamic PDF preview/download."
   },
   "candidate": {
@@ -46,19 +46,83 @@
           "start": "Jan 2026",
           "end": "Present"
         },
-        "title": "Mobile Developer",
+        "title": "Team Lead",
         "projects": [
           {
-            "name": "9PP"
+            "name": "9PP - Yamato Transport",
+            "description": "Next-generation Android app for collection and delivery field operations, built as a multi-repo, multi-module system (domain / UI layers per business function) with Clean Architecture, MVVM and Jetpack Compose."
           }
         ],
-        "roleDetails": ["Position: Function Leader"],
+        "roleDetails": [
+          "Position: Team Lead - own delivery of the FPT-scope functions, coordinate with QC, BA/design and the external platform vendor, and build the AI-driven engineering tooling the team uses daily."
+        ],
         "technologies": [
           "Android",
+          "Kotlin",
           "MVVM",
           "Clean Architecture",
-          "Jetpack Compose"
+          "Jetpack Compose",
+          "Detail Design",
+          "Claude Code",
+          "Python",
+          "GitLab",
+          "Jira"
         ],
+        "responsibilities": [
+          "Lead the team delivering 13 business modules (47 functions) across 26+ repositories; split ownership per function, define branch/MR/commit conventions and review gates, and keep the team aligned with QC, BA and vendor-owned components.",
+          "Create and review Detail Design for FPT-scope functions, translating business and UI specifications into implementation-ready flows, interface contracts, edge cases and acceptance criteria with BA, QC and the external platform vendor.",
+          "Designed and built an AI bug-fixing pipeline on Claude Code (14 skills, 2 agents): scans Jira DC for open bugs, filters out non-actionable tickets, traces root cause across source, design docs and device logs, then routes automatically - in-scope defects get a fix branch + GitLab MR with a root-cause comment; vendor-side defects get a structured Q&A; suspected design errors get a design Q&A and paired design/code MRs.",
+          "Integrated the pipeline into Microsoft Teams (Power Automate -> Graph API -> Claude CLI bot) so members trigger tracing, Q&A, resolve, ship and performance-RCA workflows with simple chat commands, with per-command permissions and two-step confirmation for merge/resolve actions.",
+          "Built an AI code-review agent for GitLab MRs: reviews each MR against real source, design specs and project-specific rules, comments findings, marks problematic MRs as Draft and tags the responsible owner; auto-fixes small, well-defined issues in AI-authored MRs and re-reviews them.",
+          "Created a design-to-code sync agent that reads merged design-document diffs and applies the corresponding UseCase / ViewModel / Screen changes across affected repos, pushing per-repo branches and opening MRs with a self-test report.",
+          "Ran cross-function rollouts (TKN) of recurring fixes: inventory script, pilot on one function, then one MR per repo across all modules - covering back-navigation exit handling, navigation-enum unification and resource-clearing checks.",
+          "Automated static-analysis cleanup: a detekt-fix workflow that proves a change is behavior-neutral by token-level diff before committing; cleared lint across 35 repo MRs without suppressions or baselines, enforced by a pre-push gate.",
+          "Added guardrails to keep automation safe at team scale: stale-ticket read guard before commenting, skip rules for cancelled / non-actionable tickets, evidence thresholds before challenging QC expectations or design, and CI gates that block false-pass builds.",
+          "Produced self-test handover packages (business flow -> code mapping, step-by-step scenarios, test data) and performance RCA reports, so members who don't know the domain can verify fixes quickly before hand-off to QC."
+        ]
+      },
+      {
+        "company": "Freelancer",
+        "period": {
+          "start": "Apr 2020",
+          "end": "Present"
+        },
+        "title": "Mobile Developer",
+        "roleDetails": [
+          "Designed and built cross-platform mobile apps for individual clients and startups, owning the full cycle from UI/UX implementation to third-party integrations and App Store/Play Store release."
+        ],
+        "projects": [
+          {
+            "name": "Yoga Lasyn",
+            "description": "Yoga teaching app built with Flutter for iOS and Android - implemented a class library organized by level and focus area, day-by-day guided practice schedules with progress tracking, offline caching of lesson videos via a custom player, and local notification reminders to keep users on their practice streak. Ref: https://apps.apple.com/vn/app/yoga-lasyn-make-life-better/id1534680016",
+            "technologies": ["Flutter", "Dart", "Provider", "SQLite"]
+          },
+          {
+            "name": "Venus AI",
+            "description": "AI avatar generation app built with Flutter for iOS - implemented the photo upload and style-selection flow, integrated a third-party image-generation REST API with async job polling and result caching, and built the in-app purchase/subscription flow for credit-based avatar generations. Ref: https://apps.apple.com/vn/app/venus-ai/id6462872236",
+            "technologies": ["Flutter", "Dart", "REST API", "In-App Purchase"]
+          },
+          {
+            "name": "Dirty Coin",
+            "description": "Clothes e-commerce app built with Flutter - implemented product catalog with category filtering and search, shopping cart, multi-step checkout, an order-tracking timeline, and Firebase Cloud Messaging push notifications for order and promotion updates.",
+            "technologies": [
+              "Flutter",
+              "Dart",
+              "Firebase",
+              "Push Notifications"
+            ]
+          },
+          {
+            "name": "Tiny Fun",
+            "description": "Social network app built with Flutter combining a Tinder-style swipe-based matching feed with a TikTok-style vertical short-video feed - implemented the swipe/match UI and logic, an autoplay video feed with likes and comments, and real-time one-on-one chat between matched users over MQTT, backed by a RESTful API.",
+            "technologies": ["Flutter", "Dart", "MQTT", "RESTful API"]
+          },
+          {
+            "name": "GolfSGMS",
+            "description": "Golf course management and leasing system - implemented calendar-based tee-time booking, course/resource scheduling for staff, and member management (profiles, membership tiers, and billing) for golf course operators."
+          }
+        ],
+        "technologies": ["Flutter", "Dart"],
         "responsibilities": []
       },
       {
@@ -94,29 +158,56 @@
         ]
       },
       {
+        "company": "American Code Lab",
+        "period": {
+          "start": "May 2023",
+          "end": "Dec 2023"
+        },
+        "title": "Part-Time Technical Instructor",
+        "roleDetails": [
+          "Designed and taught a Flutter mobile app development course."
+        ],
+        "responsibilities": [
+          "Designed the course curriculum and syllabus from scratch, structuring the program from Dart fundamentals and Flutter widgets through state management, navigation, and API integration.",
+          "Taught weekly sessions on Flutter/Dart fundamentals, layout and UI building, state management (setState, Provider), REST API integration, and local data persistence.",
+          "Prepared hands-on exercises and sample projects for each lesson, and guided students through building and debugging their own Flutter apps.",
+          "Reviewed student projects, gave code-quality feedback, and mentored students through building a capstone app to reinforce the full course curriculum."
+        ]
+      },
+      {
         "company": "Devblock Vietnam",
         "period": {
           "start": "Mar 2020",
           "end": "Apr 2022"
         },
         "title": "Junior Mobile Developer",
-        "technologies": ["React Native", "Flutter", "Android"],
+        "technologies": [
+          "Android",
+          "Jetpack Compose",
+          "iOS",
+          "SwiftUI",
+          "React Native"
+        ],
         "projects": [
           {
             "name": "AppZocial",
-            "description": "Social networking app - implemented media uploads and real-time chat using React Native."
+            "description": "Social networking app with separate native clients per platform - built the Android client with Jetpack Compose and the iOS client with SwiftUI, implementing news feed, profile, media upload with image compression, and real-time chat, keeping feature parity across both native codebases.",
+            "technologies": ["Android", "Jetpack Compose", "iOS", "SwiftUI"]
           },
           {
             "name": "Evolve1",
-            "description": "Fitness and communication app for coaches and athletes - developed core features with Flutter and Firebase backend."
+            "description": "Fitness and communication app connecting coaches and athletes, built with native Android - implemented workout plan tracking and exercise logging, in-app messaging between coach and athlete, and progress data syncing with the backend.",
+            "technologies": ["Android"]
           },
           {
             "name": "HydroAssist",
-            "description": "Medical tracking app - handled notifications and data synchronization."
+            "description": "Hydrocephalus patient tracking app built with React Native - implemented medication and appointment reminders via push notifications, and background synchronization of patient vitals and notes between patients and caregivers through a REST API.",
+            "technologies": ["React Native"]
           },
           {
             "name": "Zera",
-            "description": "IoT application for body temperature tracking via NFC."
+            "description": "IoT companion app for body-temperature tracking via NFC-enabled thermometer stickers, built with React Native - implemented NFC tag scanning and device pairing, a real-time temperature readings display with historical charts, and alerts for abnormal readings.",
+            "technologies": ["React Native"]
           }
         ],
         "responsibilities": [
@@ -188,20 +279,12 @@
         ]
       },
       {
-        "group": "AI",
-        "items": ["Prompt and Context Engineering", "LLM, RAG, Fine-tuning"]
-      },
-      {
         "group": "Frontend",
         "items": ["ReactJS, VueJS, NextJS"]
       },
       {
         "group": "Backend",
         "items": ["NodeJS, ExpressJS, NestJS"]
-      },
-      {
-        "group": "DevOps",
-        "items": ["CI/CD", "Docker"]
       },
       {
         "group": "Analytics & Monitoring",
