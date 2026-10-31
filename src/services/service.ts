@@ -36,6 +36,7 @@ const mockArrayDocuments: Partial<
 > = {
   [FirestoreDocument.CONTACT]: MOCK.CONTACT,
   [FirestoreDocument.EDUCATION]: MOCK.EDUCATION,
+  [FirestoreDocument.CERTIFICATE]: MOCK.CERTIFICATE,
   [FirestoreDocument.EXPERIENCE]: MOCK.EXPERIENCE,
   [FirestoreDocument.PROJECT]: MOCK.PROJECT,
   [FirestoreDocument.SERVICE]: MOCK.SERVICE,

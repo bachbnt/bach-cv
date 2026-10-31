@@ -31,6 +31,19 @@
         "time": "May 01, 2026",
         "visible": true,
         "timeVisible": true
+      },
+      "claude-architect": {
+        "name": "Claude Certified Architect - Professional",
+        "issuer": "Anthropic",
+        "time": "Oct 31, 2026",
+        "url": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.pdf",
+        "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.png",
+        "imageVisible": true,
+        "nameVisible": true,
+        "issuerVisible": true,
+        "timeVisible": true,
+        "visible": true,
+        "index": 3
       }
     },
     "contact": {

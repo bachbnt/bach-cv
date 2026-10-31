@@ -147,6 +147,59 @@ const MOCK = {
       index: 1,
     },
   },
+  CERTIFICATE: [
+    {
+      id: 'google-ai',
+      data: {
+        name: 'Google AI Professional Certificate',
+        issuer: 'Google / Coursera',
+        time: 'Apr 30, 2026',
+        url: 'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-ai.pdf',
+        image:
+          'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-ai.png',
+        imageVisible: true,
+        nameVisible: true,
+        issuerVisible: true,
+        timeVisible: true,
+        visible: true,
+        index: 1,
+      },
+    },
+    {
+      id: 'google-pm',
+      data: {
+        name: 'Google Project Management Professional Certificate',
+        issuer: 'Google / Coursera',
+        time: 'May 01, 2026',
+        url: 'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-pm.pdf',
+        image:
+          'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/google-pm.png',
+        imageVisible: true,
+        nameVisible: true,
+        issuerVisible: true,
+        timeVisible: true,
+        visible: true,
+        index: 2,
+      },
+    },
+    {
+      id: 'claude-architect',
+      data: {
+        name: 'Claude Certified Architect - Professional',
+        issuer: 'Anthropic',
+        time: 'Oct 31, 2026',
+        url: 'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.pdf',
+        image:
+          'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.png',
+        imageVisible: true,
+        nameVisible: true,
+        issuerVisible: true,
+        timeVisible: true,
+        visible: true,
+        index: 3,
+      },
+    },
+  ],
   EXPERIENCE: [
     {
       id: 'fpt_software_team_lead',

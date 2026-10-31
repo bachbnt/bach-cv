@@ -37,9 +37,27 @@ describe('service mock mode', () => {
   });
 
   it('returns visible mock user collections sorted by index', async () => {
-    const { getContact, getExperience, getProject, getSkill } =
+    const { getCertificate, getContact, getExperience, getProject, getSkill } =
       await importMockService();
 
+    await expect(getCertificate()).resolves.toEqual([
+      expect.objectContaining({
+        id: 'google-ai',
+        name: 'Google AI Professional Certificate',
+      }),
+      expect.objectContaining({
+        id: 'google-pm',
+        name: 'Google Project Management Professional Certificate',
+      }),
+      expect.objectContaining({
+        id: 'claude-architect',
+        name: 'Claude Certified Architect - Professional',
+        issuer: 'Anthropic',
+        image:
+          'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.png',
+        url: 'https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.pdf',
+      }),
+    ]);
     await expect(getContact()).resolves.toEqual([
       expect.objectContaining({
         id: 'test',

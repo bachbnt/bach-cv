@@ -7,7 +7,7 @@
     "file": "firestore:user/cv",
     "pageCount": 3,
     "createdAt": "2026-05-24",
-    "updatedAt": "2026-07-09",
+    "updatedAt": "2026-10-31",
     "purpose": "Structured CV backup used as the Firestore seed and local fallback for dynamic PDF preview/download."
   },
   "candidate": {
@@ -300,6 +300,10 @@
       {
         "time": "May 2026",
         "name": "Google Project Management Professional Certificate"
+      },
+      {
+        "time": "Oct 2026",
+        "name": "Claude Certified Architect - Professional"
       }
     ],
     "skills": [

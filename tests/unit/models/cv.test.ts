@@ -14,7 +14,11 @@ describe('cvSchema', () => {
     expect(result.metadata.downloadFileName).toBe('bui-ngo-ton-bach-cv.pdf');
     expect(result.candidate.name).toBe('Bùi Ngô Tôn Bách');
     expect(result.sections.workExperience).toHaveLength(6);
-    expect(result.sections.projectsAndResearch).toHaveLength(3);
+    expect(result.sections.projectsAndResearch).toHaveLength(6);
+    expect(result.sections.certifications).toContainEqual({
+      time: 'Oct 2026',
+      name: 'Claude Certified Architect - Professional',
+    });
   });
 
   it('fills defaults for an empty CV document', () => {

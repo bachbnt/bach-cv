@@ -1,14 +1,15 @@
 {
-  "example_certificate_id": {
-    "name": "Google AI Professional Certificate",
-    "issuer": "Google",
+  "claude-architect": {
+    "name": "Claude Certified Architect - Professional",
+    "issuer": "Anthropic",
+    "time": "Oct 31, 2026",
+    "url": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.pdf",
+    "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.png",
+    "imageVisible": true,
+    "nameVisible": true,
     "issuerVisible": true,
-    "time": "Apr 2026",
     "timeVisible": true,
-    "image": "",
-    "imageVisible": false,
-    "url": "",
     "visible": true,
-    "index": 1
+    "index": 3
   }
 }
