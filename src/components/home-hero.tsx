@@ -15,7 +15,7 @@ import { shell } from '@/lib/content/shell';
 
 const wrap = 'mx-auto w-full max-w-[1200px] px-5 min-[721px]:px-12';
 
-/** The tinted opening block: greeting, title, intro, the CV button, the photo and the pipeline card across its lower edge. */
+/** The tinted opening block: title, intro, the CV button, the photo and the pipeline card across its lower edge. */
 export function HomeHero() {
   const copy = useCopy(homeCopy);
   const { pipeline } = copy;
@@ -25,26 +25,20 @@ export function HomeHero() {
         className={`${wrap} flex flex-wrap items-center gap-14 pt-12 pb-14 min-[721px]:pt-[72px]`}
       >
         <div className='flex min-w-0 flex-[1_1_460px] flex-col gap-8'>
-          <p
-            style={{ '--i': 0 } as CSSProperties}
-            className='hi text-[17px] leading-normal text-[#3a404c]'
-          >
-            {copy.greeting}
-          </p>
           <h1
-            style={{ '--i': 1 } as CSSProperties}
+            style={{ '--i': 0 } as CSSProperties}
             className='hi max-w-[600px] text-[38px] leading-[1.04] min-[721px]:text-[60px]'
           >
             {copy.title}
           </h1>
           <p
-            style={{ '--i': 2 } as CSSProperties}
+            style={{ '--i': 1 } as CSSProperties}
             className='hi max-w-[560px] text-xl leading-[1.55] text-[#2b303a]'
           >
             {copy.intro}
           </p>
           <div
-            style={{ '--i': 3 } as CSSProperties}
+            style={{ '--i': 2 } as CSSProperties}
             className='hi flex flex-col items-stretch gap-3 min-[481px]:flex-row min-[481px]:items-center'
           >
             <DownloadCv
@@ -70,7 +64,7 @@ export function HomeHero() {
 
       <div className={`${wrap} relative z-10 -mb-[88px] max-[900px]:-mb-0`}>
         <div
-          style={{ '--i': 5 } as CSSProperties}
+          style={{ '--i': 4 } as CSSProperties}
           className='hi flex flex-wrap items-start gap-x-12 gap-y-6 rounded-[20px] border bg-white px-8 py-7 shadow-[0_18px_40px_rgba(27,31,39,.14)]'
         >
           <div className='flex-[0_1_300px]'>
