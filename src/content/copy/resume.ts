@@ -36,7 +36,7 @@ export const resumeCopy = defineCopy(
       groups: {
         ai: 'AI and automation',
         mobile: 'Mobile',
-        web: 'Web and backend',
+        web: 'Frontend and backend',
         tools: 'Tools and process',
       },
       empty: 'No skills to show yet.',
@@ -90,7 +90,7 @@ export const resumeCopy = defineCopy(
       groups: {
         ai: 'AI và tự động hóa',
         mobile: 'Mobile',
-        web: 'Web và backend',
+        web: 'Frontend và backend',
         tools: 'Công cụ và quy trình',
       },
       empty: 'Chưa có kỹ năng nào để hiển thị.',

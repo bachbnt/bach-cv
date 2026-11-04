@@ -38,7 +38,7 @@ export const cvCopy = defineCopy(
     },
     skillGroups: {
       mobile: 'Mobile',
-      web: 'Web',
+      web: 'Frontend and backend',
       ai: 'AI & automation',
       tools: 'Tools',
     },
@@ -73,7 +73,7 @@ export const cvCopy = defineCopy(
     },
     skillGroups: {
       mobile: 'Di động',
-      web: 'Web',
+      web: 'Frontend và backend',
       ai: 'AI & tự động hóa',
       tools: 'Công cụ',
     },

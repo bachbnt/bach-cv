@@ -263,7 +263,7 @@ describe('buildCv in Vietnamese', () => {
     const cv = build(vietnamese(), 'vi');
     expect(cv.skills.map((g) => g.title)).toEqual([
       'Di động',
-      'Web',
+      'Frontend và backend',
       'AI & tự động hóa',
       'Công cụ',
     ]);
