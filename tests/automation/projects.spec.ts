@@ -46,7 +46,8 @@ test('the Projects page lists the featured projects by rank, then all projects',
 test('a project without a cover gets an initials tile', async ({ page }) => {
   await page.goto('/projects');
   await expect(page.getByText('FM', { exact: true })).toBeVisible();
-  await expect(page.getByText('DP', { exact: true })).toHaveCount(2);
+  // DevPad has a cover, so no tile stands in for it
+  await expect(page.getByText('DP', { exact: true })).toHaveCount(0);
 });
 
 test('the kind chips filter the grid', async ({ page }) => {

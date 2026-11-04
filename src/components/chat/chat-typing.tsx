@@ -5,14 +5,13 @@
 import { chatCopy } from '@/content/copy/chat';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
-import styles from './chat-widget.module.css';
 
 /** The three dots shown while the answer is on its way. */
 export function ChatTyping({ botName }: { botName: string }) {
   const copy = useCopy(chatCopy);
   return (
     <div
-      className={`${styles.bubble} max-w-[86%] self-start rounded-2xl rounded-bl-[6px] border bg-card px-3.5 py-2.5`}
+      className={`bb-bubble max-w-[86%] self-start rounded-2xl rounded-bl-[6px] border bg-card px-3.5 py-2.5`}
     >
       <span
         aria-hidden='true'
@@ -21,7 +20,7 @@ export function ChatTyping({ botName }: { botName: string }) {
         {[0, 1, 2].map((i) => (
           <i
             key={i}
-            className={`${styles.dot} block size-[7px] rounded-full bg-[#8a92a0]`}
+            className={`bb-dot block size-[7px] rounded-full bg-[#8a92a0]`}
           />
         ))}
       </span>

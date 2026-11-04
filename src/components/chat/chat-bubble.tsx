@@ -5,7 +5,6 @@
 import { chatCopy } from '@/content/copy/chat';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import styles from './chat-widget.module.css';
 
 /** One message. `error` is the red note (with "Try again" when the question can be sent again). */
 export function ChatBubble({
@@ -21,7 +20,7 @@ export function ChatBubble({
   return (
     <div
       className={cn(
-        styles.bubble,
+        'bb-bubble',
         'max-w-[86%] rounded-2xl px-3.5 py-2.5 text-[15px] leading-normal wrap-break-word whitespace-pre-wrap',
         role === 'bot' && 'self-start rounded-bl-[6px] border bg-card',
         role === 'user' && 'self-end rounded-br-[6px] bg-night text-white',

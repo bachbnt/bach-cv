@@ -15,7 +15,6 @@ import { settingsQueryOptions } from '@/lib/query/options';
 import { useLive } from '@/hooks/use-live';
 import { ChatPanel } from './chat-panel';
 import { useChat } from './chat-provider';
-import styles from './chat-widget.module.css';
 import { useChatSession } from './use-chat-session';
 import { useKeyboardInset } from './use-keyboard-inset';
 
@@ -106,28 +105,25 @@ export function ChatWidget() {
         aria-expanded={isOpen}
         aria-label={isOpen ? copy.close : copy.open}
         onClick={isOpen ? close : openChat}
-        className={`${styles.fab} relative inline-flex size-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_10px_24px_rgba(179,48,31,.35)] transition-[transform,filter] outline-none hover:brightness-[.92] focus-visible:shadow-[0_0_0_3px_var(--foreground)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white active:scale-95`}
+        className={`bb-fab relative inline-flex size-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_10px_24px_rgba(179,48,31,.35)] transition-[transform,filter] outline-none hover:brightness-[.92] focus-visible:shadow-[0_0_0_3px_var(--foreground)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white active:scale-95`}
       >
         <span
           aria-hidden='true'
-          className={`${styles.ring} pointer-events-none absolute inset-0 rounded-full border-2 border-brand`}
+          className={`bb-ring pointer-events-none absolute inset-0 rounded-full border-2 border-brand`}
         />
-        {isOpen ? (
+        <span aria-hidden='true' className='relative size-6'>
+          <MessageCircle
+            className={`bb-glyph bb-chat`}
+            data-on={!isOpen}
+            size={24}
+          />
           <X
-            key='close'
-            className={styles.icon}
+            className={`bb-glyph bb-close`}
+            data-on={isOpen}
             size={24}
             strokeWidth={2.2}
-            aria-hidden='true'
           />
-        ) : (
-          <MessageCircle
-            key='open'
-            className={styles.icon}
-            size={24}
-            aria-hidden='true'
-          />
-        )}
+        </span>
       </button>
     </div>
   );

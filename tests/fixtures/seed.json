@@ -185,6 +185,17 @@
       "listed": true,
       "l10n": {}
     },
+    "codex": {
+      "visible": true,
+      "highlight": null,
+      "sort": 15,
+      "name": "Codex",
+      "category": "ai",
+      "icon": "codex",
+      "url": "https://openai.com/codex/",
+      "listed": true,
+      "l10n": {}
+    },
     "confluence": {
       "visible": true,
       "highlight": null,
@@ -274,7 +285,6 @@
       "l10n": {}
     },
     "gitlab": {
-      "visible": true,
       "highlight": null,
       "sort": 290,
       "name": "GitLab",
@@ -282,7 +292,8 @@
       "icon": "gitlab",
       "url": "",
       "listed": true,
-      "l10n": {}
+      "l10n": {},
+      "visible": false
     },
     "grafana": {
       "visible": true,
@@ -478,9 +489,9 @@
       "name": "NextJS",
       "category": "web",
       "icon": "nextdotjs",
-      "url": "",
       "listed": true,
-      "l10n": {}
+      "l10n": {},
+      "url": "https://nextjs.org/"
     },
     "nodejs": {
       "visible": true,
@@ -641,6 +652,17 @@
         }
       }
     },
+    "shadcn-ui": {
+      "visible": true,
+      "highlight": null,
+      "sort": 926,
+      "name": "shadcn/ui",
+      "category": "web",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
     "socketio": {
       "visible": true,
       "highlight": null,
@@ -683,6 +705,28 @@
       "icon": "swift",
       "url": "",
       "listed": true,
+      "l10n": {}
+    },
+    "tailwindcss": {
+      "visible": true,
+      "highlight": null,
+      "sort": 925,
+      "name": "Tailwind CSS",
+      "category": "web",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "tanstack-query": {
+      "visible": true,
+      "highlight": null,
+      "sort": 927,
+      "name": "TanStack Query",
+      "category": "web",
+      "icon": "",
+      "url": "",
+      "listed": false,
       "l10n": {}
     },
     "typescript": {
@@ -782,6 +826,17 @@
       "icon": "xcode",
       "url": "",
       "listed": true,
+      "l10n": {}
+    },
+    "zod": {
+      "visible": true,
+      "highlight": null,
+      "sort": 928,
+      "name": "Zod",
+      "category": "web",
+      "icon": "",
+      "url": "",
+      "listed": false,
       "l10n": {}
     }
   },
@@ -1273,13 +1328,6 @@
       "images": [],
       "startMonth": null,
       "endMonth": null,
-      "technologies": [
-        "reactjs",
-        "material-ui",
-        "redux-toolkit",
-        "firebase",
-        "webpack"
-      ],
       "links": [
         {
           "label": "Website",
@@ -1291,7 +1339,17 @@
         "vi": {
           "summary": "Trang web cá nhân."
         }
-      }
+      },
+      "technologies": [
+        "nextjs",
+        "reactjs",
+        "typescript",
+        "tailwindcss",
+        "shadcn-ui",
+        "tanstack-query",
+        "zod",
+        "firebase"
+      ]
     },
     "beli-coffee": {
       "visible": true,
@@ -1381,8 +1439,6 @@
       "name": "DevPad",
       "kind": "personal",
       "summary": "Native macOS menu bar utility for developers. Includes JSON/XML/SQL formatter, URL parser, QR generator and scanner, JWT decoder/signer/verifier, Regex tester, Hash generator (8 algorithms), Diff compare, Clipboard history with Pure Paste, and Drop Shelf for batching file drag-and-drop. Supports English and Vietnamese.",
-      "cover": "",
-      "images": [],
       "startMonth": "2026-05",
       "endMonth": null,
       "technologies": ["swift", "swiftui", "appkit", "macos"],
@@ -1402,7 +1458,22 @@
         "vi": {
           "summary": "Tiện ích thanh menu macOS native dành cho lập trình viên. Gồm trình định dạng JSON/XML/SQL, bộ phân tích URL, trình tạo và quét QR, giải mã/ký/xác minh JWT, trình thử Regex, trình tạo Hash (8 thuật toán), so sánh Diff, lịch sử Clipboard với Pure Paste và Drop Shelf để kéo thả hàng loạt tệp. Hỗ trợ tiếng Anh và tiếng Việt."
         }
-      }
+      },
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/devpad.png",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/01.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/02.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/03.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/04.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/05.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/06.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/07.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/08.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/09.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/10.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/11.png",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/devpad/12.png"
+      ]
     },
     "finhub": {
       "visible": true,
@@ -1430,7 +1501,6 @@
       }
     },
     "goodmorningcoffeetea": {
-      "visible": true,
       "highlight": null,
       "sort": 100,
       "name": "Good Morning Coffee & Tea",
@@ -1452,7 +1522,8 @@
         "vi": {
           "summary": "Web bán đồ uống và trang quản trị"
         }
-      }
+      },
+      "visible": false
     },
     "pc-dashboard": {
       "visible": true,
@@ -1723,8 +1794,8 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000005",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietcombank-v2.jpg",
-      "visible": true,
-      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-vietcombank.png"
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-vietcombank.png",
+      "visible": false
     },
     "vietinbank": {
       "visible": false,
