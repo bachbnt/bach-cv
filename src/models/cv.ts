@@ -23,6 +23,8 @@ const cvProjectSummarySchema = z.object({
   name: z.string().default(''),
   description: z.string().optional(),
   technologies: z.array(z.string()).optional(),
+  // marks the project shown as the key project of a role (at most one per role)
+  highlight: z.union([z.boolean(), z.number()]).optional(),
 });
 
 const cvExperiencePdfSchema = z

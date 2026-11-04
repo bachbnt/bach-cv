@@ -21,6 +21,18 @@ describe('cvSchema', () => {
     });
   });
 
+  it('keeps the highlight flag on a role project', () => {
+    const result = parseCv(cvBackup);
+    const fpt = result.sections.workExperience.find(
+      (job) => job.company === 'FPT Software',
+    );
+
+    expect(fpt?.projects[0]).toMatchObject({
+      name: '9PP - Yamato Transport',
+      highlight: true,
+    });
+  });
+
   it('fills defaults for an empty CV document', () => {
     const result = parseCv({});
 

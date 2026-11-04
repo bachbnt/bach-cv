@@ -57,7 +57,8 @@
         "projects": [
           {
             "name": "9PP - Yamato Transport",
-            "description": "Next-generation Android app for collection and delivery field operations, built as a multi-repo, multi-module system (domain / UI layers per business function) with Clean Architecture, MVVM and Jetpack Compose."
+            "description": "Next-generation Android app for collection and delivery field operations, built as a multi-repo, multi-module system (domain / UI layers per business function) with Clean Architecture, MVVM and Jetpack Compose.",
+            "highlight": true
           }
         ],
         "roleDetails": [

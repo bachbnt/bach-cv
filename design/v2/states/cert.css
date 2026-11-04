@@ -1,0 +1,24 @@
+.cert-feature,.cert-card{background:#fff;border:1px solid #DADDE4;border-radius:20px}
+.cert-feature{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center;padding:24px}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:24px;margin-top:24px}
+.cert-card{display:flex;flex-direction:column;gap:20px;padding:16px 16px 24px;border-radius:16px}
+.cert-media{display:flex;align-items:center;justify-content:center;width:100%;padding:20px;border:0;border-radius:12px;background:#E7E9EE;cursor:zoom-in;position:relative}
+.cert-media img{display:block;max-width:100%;height:auto;max-height:300px;object-fit:contain;box-shadow:0 8px 24px rgba(27,31,39,.14);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.cert-feature .cert-media{min-height:340px}
+.cert-card .cert-media img{max-height:200px}
+.cert-media:hover img{transform:scale(1.02)}
+.cert-media .zoom{position:absolute;right:12px;bottom:12px;width:36px;height:36px;border-radius:50%;background:#1B1F27;color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s ease}
+.cert-media:hover .zoom,.cert-media:focus-visible .zoom{opacity:1}
+.cert-body{display:flex;flex-direction:column;gap:14px;min-width:0;padding:0 8px}
+.cert-body h2{margin:0;line-height:1.2}
+.cert-meta{font-size:15px;color:#566070;margin:0}
+.cert-issuer{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:6px 12px;border-radius:999px;background:var(--green-t);color:#0F5C43;font:500 14px 'Public Sans',sans-serif}
+.cert-pill{align-self:flex-start;padding:4px 10px;border-radius:999px;background:#1B1F27;color:#fff;font:600 13px 'Public Sans',sans-serif}
+.cert-tags{display:flex;flex-wrap:wrap;gap:8px}
+.cert-tags .tag{font-size:14px;padding:5px 12px}
+.cert-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:auto;padding-top:6px}
+.cert-view{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:0;border-radius:10px;background:#1B1F27;color:#fff;font:600 15px 'Public Sans',sans-serif;cursor:pointer;transition:filter .2s ease}
+.cert-view:hover{filter:brightness(1.25)}
+.cert-pdf{display:inline-flex;align-items:center;gap:6px;min-height:40px;font:600 15px 'Public Sans',sans-serif;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:900px){.cert-feature{grid-template-columns:1fr;gap:24px}.cert-feature .cert-media{min-height:0}}
+@media(max-width:720px){.cert-grid{grid-template-columns:1fr}.cert-media .zoom{opacity:1}}
