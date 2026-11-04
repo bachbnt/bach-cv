@@ -91,8 +91,13 @@ export function ChatPanel({
   }, [entries, isSending]);
 
   const lastIndex = entries.length - 1;
+  // the design offers the questions not asked yet, after each answer (and not while one is being answered)
+  const asked = new Set(
+    entries.filter((e) => e.role === 'user').map((e) => e.content),
+  );
+  const remaining = suggestions.filter((s) => !asked.has(s.text));
   const showSuggestions =
-    available && !isLimitReached && suggestions.length > 0;
+    available && !isLimitReached && !isSending && remaining.length > 0;
 
   return (
     <section
@@ -152,24 +157,14 @@ export function ChatPanel({
           </ChatBubble>
         ))}
         {isSending && <ChatTyping botName={botName} />}
-        {showSuggestions && userCount === 0 && (
+        {showSuggestions && (
           <ChatSuggestions
-            suggestions={suggestions}
-            layout='wrap'
-            disabled={isSending}
+            suggestions={remaining}
+            disabled={false}
             onPick={onPick}
           />
         )}
       </div>
-
-      {showSuggestions && userCount > 0 && (
-        <ChatSuggestions
-          suggestions={suggestions}
-          layout='strip'
-          disabled={isSending}
-          onPick={onPick}
-        />
-      )}
 
       {isLimitReached ? (
         <p className='flex-none border-t bg-card px-4 py-3.5 text-center text-sm text-muted-foreground'>

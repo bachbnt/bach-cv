@@ -121,7 +121,7 @@ test('a question goes to the Worker with the site content and the answer is show
   ]);
 });
 
-test('suggestions stay after one is used and never cover the messages', async ({
+test('after an answer the questions not asked yet are offered again, in the message flow', async ({
   page,
 }) => {
   await mockWorker(page, () => ({
@@ -131,19 +131,27 @@ test('suggestions stay after one is used and never cover the messages', async ({
   await openChat(page);
   const panel = page.getByRole('dialog', { name: 'BB Bot, AI assistant' });
   const chips = panel.getByRole('group', { name: 'Suggested questions' });
+  await expect(chips.getByRole('button')).toHaveCount(4);
 
   await chips.getByRole('button', { name: 'Which stack do you use?' }).click();
   await expect(panel.getByText('Kotlin, KMM and React Native.')).toBeVisible();
 
-  // all four are still there, so another can be asked
-  await expect(chips.getByRole('button')).toHaveCount(4);
+  // the one asked is gone, the other three are offered again (as in the design)
+  await expect(chips.getByRole('button')).toHaveCount(3);
   await expect(
     chips.getByRole('button', { name: 'Which stack do you use?' }),
-  ).toBeVisible();
+  ).toHaveCount(0);
 
-  const log = await panel.getByRole('log').boundingBox();
+  // they sit inside the message log, after the answer, so they never cover a message
+  const log = panel.getByRole('log');
+  await expect(
+    log.getByRole('group', { name: 'Suggested questions' }),
+  ).toBeVisible();
+  const answer = await panel
+    .getByText('Kotlin, KMM and React Native.')
+    .boundingBox();
   const row = await chips.boundingBox();
-  expect(log && row && row.y >= log.y + log.height - 1).toBe(true);
+  expect(answer && row && row.y >= answer.y + answer.height - 1).toBe(true);
 });
 
 test('a failed answer can be tried again without counting twice', async ({

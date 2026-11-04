@@ -72,3 +72,20 @@ test.describe('in Vietnamese', () => {
     );
   });
 });
+
+test('the open phone menu marks the current page with the page tint, as in the design', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/about');
+  await page.getByRole('button', { name: 'Open menu' }).click();
+  const current = page
+    .getByRole('link', { name: 'About', exact: true })
+    .and(page.locator('[aria-current=page]'));
+  await expect(current).toBeVisible();
+  // About's tint is #FDE6D2; the menu is a portal, so it must still get the page colours
+  await expect(current).toHaveCSS('background-color', 'rgb(253, 230, 210)');
+  await expect(
+    page.getByRole('link', { name: 'Projects', exact: true }),
+  ).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+});
