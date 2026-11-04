@@ -73,7 +73,7 @@ export function HomeHero() {
           style={{ '--i': 5 } as CSSProperties}
           className='hi flex flex-wrap items-start gap-x-12 gap-y-6 rounded-[20px] border bg-white px-8 py-7 shadow-[0_18px_40px_rgba(27,31,39,.14)]'
         >
-          <div className='flex-[0_1_230px]'>
+          <div className='flex-[0_1_300px]'>
             <h2 className='text-xl leading-tight'>{pipeline.title}</h2>
             <p className='mt-1.5 text-sm text-muted-foreground'>
               {pipeline.subtitle}

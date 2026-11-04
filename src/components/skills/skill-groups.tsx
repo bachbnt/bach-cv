@@ -82,7 +82,7 @@ export function SkillGroups({ className }: { className?: string }) {
           <article
             key={category}
             className={cn(
-              'flex flex-col gap-4 rounded-2xl border bg-white p-[22px]',
+              'flex flex-col gap-5 rounded-2xl border bg-white px-6 pt-7 pb-6',
               category === 'ai' &&
                 'border-[#cdbfef] bg-[linear-gradient(180deg,#fbf9ff,#fff_70%)]',
             )}

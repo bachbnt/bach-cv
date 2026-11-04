@@ -14,21 +14,22 @@ export const homeCopy = defineCopy(
     downloadCv: 'Download CV',
     pipeline: {
       title: 'How a bug becomes a merge request',
-      subtitle: 'Built on Claude Code: 14 skills, 2 agents.',
+      subtitle:
+        'An AI workflow I built at FPT with Claude Code (14 skills, 2 agents). It reads a Jira bug and opens the fix for review, so my 5-person team does not start from a blank page.',
       steps: [
         {
-          title: 'Pick up a Jira bug',
-          body: 'Stale and non-actionable tickets are skipped.',
+          title: 'Reads the Jira bug',
+          body: 'It skips tickets that are stale or cannot be acted on.',
           tags: [] as string[],
         },
         {
-          title: 'Trace the root cause',
-          body: 'Source, design docs, the legacy app and device logs.',
+          title: 'Finds the root cause',
+          body: 'It searches the source code, design docs, the legacy app and device logs.',
           tags: [] as string[],
         },
         {
-          title: 'Route by the evidence',
-          body: 'The fix goes where it belongs:',
+          title: 'Opens the right fix for review',
+          body: 'Depending on what the evidence shows, it opens one of:',
           tags: ['Fix MR', 'Vendor Q&A', 'Design + code MRs'],
         },
       ],
@@ -51,21 +52,22 @@ export const homeCopy = defineCopy(
     downloadCv: 'Tải CV',
     pipeline: {
       title: 'Một lỗi trở thành merge request như thế nào',
-      subtitle: 'Xây trên Claude Code: 14 skill, 2 agent.',
+      subtitle:
+        'Quy trình AI mình xây ở FPT bằng Claude Code (14 skill, 2 agent). Nó đọc một bug trên Jira rồi mở sẵn bản sửa để review, nên nhóm 5 người không phải bắt đầu từ con số không.',
       steps: [
         {
-          title: 'Nhận một bug từ Jira',
-          body: 'Các ticket đã cũ hoặc không thể xử lý sẽ bị bỏ qua.',
+          title: 'Đọc bug trên Jira',
+          body: 'Bỏ qua các ticket đã cũ hoặc không thể xử lý.',
           tags: [],
         },
         {
-          title: 'Truy tìm nguyên nhân gốc',
-          body: 'Mã nguồn, tài liệu thiết kế, ứng dụng cũ và log thiết bị.',
+          title: 'Tìm nguyên nhân gốc',
+          body: 'Tra mã nguồn, tài liệu thiết kế, ứng dụng cũ và log thiết bị.',
           tags: [],
         },
         {
-          title: 'Chọn hướng xử lý theo bằng chứng',
-          body: 'Bản sửa đi đúng nơi nó thuộc về:',
+          title: 'Mở đúng bản sửa để review',
+          body: 'Tùy bằng chứng tìm được, nó mở một trong:',
           tags: ['Fix MR', 'Hỏi đáp với vendor', 'MR thiết kế + code'],
         },
       ],
