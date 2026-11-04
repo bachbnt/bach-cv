@@ -2,8 +2,7 @@
 
 ## TypeScript
 
-- New `.ts` and `.tsx` source/test/config files should start with the existing
-  copyright header:
+- New `.ts` and `.tsx` source/test files start with the copyright header:
 
   ```ts
   /**
@@ -13,60 +12,54 @@
 
 - Keep `strict` compatibility. Do not silence type errors with broad casts
   unless the boundary is genuinely dynamic.
-- Prefer explicit domain types from `src/models` over ad hoc object shapes.
-- Use Zod schemas for data parsed from Firestore, APIs, or unknown payloads.
+- Types come from the Zod schemas in `src/lib/content/schema.ts`
+  (`z.output<...>`), not from ad hoc object shapes.
+- Parse data from Firestore, APIs, and unknown payloads with the schemas.
+  Parsing is fail-open: a missing field gets its default.
 - Keep nullable/optional access deliberate; avoid chains that hide real missing
   data bugs.
 
 ## Imports
 
-- Use repo aliases from `tsconfig.json` for app code:
-  `@components`, `@core`, `@hooks`, `@locales`, `@models`, `@pages`,
-  `@queries`, `@routes`, `@services`, `@stores`, `@themes`.
-- Prefer barrel imports only where the repo already exposes them cleanly.
-- Keep Worker tests importing Worker files by relative path from `tests` unless
-  a Worker alias is added.
+- Use the `@/` alias for app code.
+- Do not import `firebase/firestore` in app code; use `lib/content`.
 
-## React
+## React and Next.js
 
-- Keep pages thin: read query data, derive view models with `useMemo` when
-  useful, and delegate repeated UI to components.
-- Do not call service functions directly from components when a query/mutation
-  hook already exists or should exist.
-- Keep event tracking names consistent with existing `pageX_*` and
-  `component_*` patterns.
+- Server Components by default. Use `'use client'` only for state, effects,
+  event handlers, or browser APIs.
+- Read server data in components through TanStack Query hooks built from
+  `lib/query/options.ts`; do not call the repository directly from a component.
 - Add accessible names to icon-only buttons (`aria-label`) so Playwright and
   assistive tech can target them.
+- The site is a static export: no Route Handlers, no middleware, no server
+  actions. Check `next.config.ts` before using a Next.js feature.
 
 ## Localization
 
-- Do not hardcode user-facing UI text in components, including dialog titles,
-  button labels, loading labels, placeholders, form errors, tooltips, and
-  `aria-label` values.
-- Use `Localization` keys with `t(...)` for reusable interface copy. When adding
-  keys, update `src/locales/i18n.ts`, `src/services/mock.ts`, and provide or
-  update a Firestore localization patch script/data file.
-- Use Firestore/domain documents for content owned by that document, such as CV
-  candidate data, PDF metadata, and CV preview titles. Keep UI action labels in
-  localization.
-- Tests should assert localized/mock data or explicit remote-domain data, not
-  newly hardcoded English strings.
+- English and Vietnamese. The visitor's language is `useLang()` (`src/lib/i18n/language.tsx`).
+- Interface copy lives in `src/content/copy/<page>.ts` as `defineCopy(en, vi)` (from `@/lib/i18n/define-copy`, which is safe to
+  import anywhere). TypeScript forces `vi` to have exactly the English keys. Components read it with `useCopy(copy)` and are Client
+  Components. Do not write user-facing literals in JSX, including `aria-label`s and validation messages. Strings with values use
+  `{name}` slots, not functions (functions are lost by `defineCopy`'s type for plain copy).
+- Content owned by a document (roles, project summaries) is translated in the document's `l10n.vi` overlay. Read collections with
+  `useContentQuery` and the profile with `useProfileQuery`, which lay the language over the data.
+- Format dates with `formatMonth` / `formatPeriod` from `@/lib/format`, passing the language.
+- Tests assert English by default; use `page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'))` for Vietnamese.
 
 ## Styling
 
-- Prefer the existing MUI theme overrides in `src/themes/themes.ts` for global
-  component behavior.
-- Prefer `sx` for small one-off local styles.
-- Use page/component `styles.ts` only for meaningful local layout, responsive
-  rules, animation styles, or shared class names inside that component/page.
-- Do not keep empty `styles.ts` files.
-- Keep button heights stable across variants and hover states; account for
-  border width with `boxSizing` or equivalent.
-- Avoid layout shifts from hover states, dynamic labels, loading states, and
-  icons.
+- Tailwind utilities with shadcn theme tokens (`bg-background`,
+  `text-muted-foreground`). Avoid raw color values in components.
+- Use `cn(...)` from `@/lib/utils` to combine class names.
+- Keep button heights stable across variants and hover states.
+- Hover styles belong inside `@media (hover: hover)` (Tailwind's `hover:` already
+  does this). Give touch a pressed state with `active:`.
+- Avoid layout shifts from hover states, dynamic labels, loading states, and icons.
 
 ## Env
 
-- Add new frontend variables to `.env.example` with `VITE_` prefix.
-- Add Worker-only secrets to `.env.example` under the Worker section, but do not
-  expose them to frontend code.
+- Browser variables use the `NEXT_PUBLIC_` prefix and are public. Add each one
+  to `.env.example`.
+- Worker-only secrets go in `.env.example` under the Worker section and are never
+  read by app code.

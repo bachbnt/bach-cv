@@ -1,6 +1,13 @@
 rules_version = '2';
+
+// bach-cv. Two generations live side by side until the v1 site is switched off:
+//   v1 (the old site):  config, user, message
+//   v2 (this app):      site, skills, experience, education, projects, certificates, services, payments, contacts, messages
+// When v1 is gone, delete the "v1" block. The v2 data model is documented in docs/data-design.html.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ================= v1 (old site) =================
 
     // Portfolio data: anyone can read, nobody can write from client
     match /config/{document} {
@@ -22,6 +29,47 @@ service cloud.firestore {
                     && request.resource.data.message is string
                     && request.resource.data.message.size() <= 1000;
       allow update, delete: if false;
+    }
+
+    // ================= v2 (this app) =================
+
+    // site/shell, live, profile, settings: public read, never written from the browser
+    match /site/{doc} {
+      allow read: if doc in ['shell', 'live', 'profile', 'settings'];
+      allow write: if false;
+    }
+
+    // Content collections. `visible` is enforced here, so a switched-off item is never sent to a visitor.
+    // The browser must ask with where('visible', '==', true); a query that could return a hidden document is
+    // rejected as a whole. The seed script and the build use the Admin SDK and see everything.
+    match /{collection}/{id} {
+      allow get, list: if collection in [
+          'skills', 'experience', 'education', 'projects',
+          'certificates', 'services', 'payments', 'contacts'
+        ]
+        && resource.data.visible == true;
+      allow write: if false;
+    }
+
+    // Contact form: create only, validated, server timestamp, no reading back
+    match /messages/{id} {
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.keys().hasOnly(
+            ['name', 'email', 'topic', 'message', 'locale', 'createdAt'])
+        && request.resource.data.keys().hasAll(['name', 'email', 'message', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && request.resource.data.message is string
+        && request.resource.data.message.size() >= 1
+        && request.resource.data.message.size() <= 1000
+        && (!('topic' in request.resource.data)
+            || (request.resource.data.topic is string && request.resource.data.topic.size() <= 40))
+        && (!('locale' in request.resource.data) || request.resource.data.locale in ['en', 'vi'])
+        && request.resource.data.createdAt == request.time;
     }
 
     // Deny everything else

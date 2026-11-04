@@ -1,0 +1,17 @@
+{
+  "name": "Bach Bui",
+  "headline": "Mobile Software Engineer",
+  "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
+  "defaultLanguage": "en",
+  "languages": ["en", "vi"],
+  "seoTitle": "Bach Bui - Mobile Software Engineer",
+  "seoDescription": "My background is the Master of Science. Because of my passion for programming, I chose Software Engineer as my profession. With knowledge and experience...",
+  "ogImage": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
+  "l10n": {
+    "vi": {
+      "headline": "Kỹ sư phần mềm Mobile",
+      "seoTitle": "Bach Bui - Kỹ sư phần mềm Mobile",
+      "seoDescription": "Kỹ sư phần mềm Mobile với nền tảng Thạc sĩ Khoa học, đam mê lập trình và mong muốn trở thành Project Manager trong tương lai."
+    }
+  }
+}

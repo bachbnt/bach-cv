@@ -1,32 +1,24 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # Dependencies
-node_modules
+node_modules/
 /.pnp
-.pnp.js
+.pnp.*
 
-# Build output
-/build
-/dist
+# Next.js build output (also the per-agent folders: NEXT_DIST_DIR=.next-name)
+/.next/
+/.next-*/
+/out/
+next-env.d.ts
 
-# Testing & coverage
+# Tests and reports
 /coverage
 /playwright-report
 /test-results
 /blob-report
-/tmp
-.playwright
 .vitest-cache
 *.lcov
 
-# Vite
-.vite
-vite.config.*.timestamp-*
-
-# TypeScript
+# TypeScript, lint and format caches
 *.tsbuildinfo
-
-# ESLint / Prettier caches
 .eslintcache
 .prettiercache
 
@@ -42,27 +34,35 @@ worker/.dev.vars.*
 .firebase
 firebase-debug.log*
 firestore-debug.log*
+ui-debug.log
+# service account keys (never commit these)
+*-firebase-adminsdk-*.json
+firebase-service-account*.json
+serviceAccount*.json
 
-# Environment variables
+# Environment variables (the template .env.example is committed)
 .env
-.env.local
-.env.*.local
-.env.staging
-.env.production
+.env.*
+!.env.example
+
+# Backups of the Firestore data: payment details and visitors' emails
+/backup/
+
+# AI tooling: local settings and downloaded copies of third-party skill repositories
+/.claude/settings.local.json
+/agent-skills-main/
+/skills/
 
 # Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
 pnpm-debug.log*
 
-# OS
+# OS and editors
 .DS_Store
 Thumbs.db
-
-# Editors
 .idea
 *.swp
 *.swo
-
 .npm-cache/
