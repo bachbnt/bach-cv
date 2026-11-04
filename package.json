@@ -49,6 +49,7 @@
     "test:automation:ui": "playwright test --ui",
     "test:automation:install": "playwright install",
     "test:all": "npm run test:unit:run && npm run test:automation",
+    "backup:user": "node scripts/download-user-data.mjs",
     "upload:cv": "node scripts/upload-cv.mjs",
     "update:localization": "node scripts/update-localization.mjs",
     "upload:project": "node scripts/upload-user-data.mjs --doc=project",

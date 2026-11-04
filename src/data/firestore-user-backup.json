@@ -1,7 +1,7 @@
 {
   "metadata": {
     "source": "Firestore user collection",
-    "syncedAt": "2026-10-26T13:59:43.155Z",
+    "syncedAt": "2026-11-04T01:50:45.266Z",
     "projectId": "bachbntdev"
   },
   "documents": {
@@ -33,17 +33,17 @@
         "timeVisible": true
       },
       "claude-architect": {
-        "name": "Claude Certified Architect - Professional",
-        "issuer": "Anthropic",
-        "time": "Oct 31, 2026",
-        "url": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.pdf",
         "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.png",
-        "imageVisible": true,
-        "nameVisible": true,
         "issuerVisible": true,
         "timeVisible": true,
         "visible": true,
-        "index": 3
+        "name": "Claude Certified Architect - Professional",
+        "index": 3,
+        "time": "Oct 31, 2026",
+        "imageVisible": true,
+        "issuer": "Anthropic",
+        "url": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.pdf",
+        "nameVisible": true
       }
     },
     "contact": {
@@ -129,33 +129,33 @@
       },
       "gitlab": {
         "urlEnable": true,
-        "url": "https://gitlab.com/bachbnt",
-        "index": 2,
-        "name": "bachbnt",
         "nameVisible": true,
-        "type": "social",
+        "visible": false,
+        "index": 2,
         "icon": "Gitlab",
-        "visible": true
+        "name": "bachbnt",
+        "type": "social",
+        "url": "https://gitlab.com/bachbnt"
       },
       "skype": {
-        "index": 4,
-        "urlEnable": true,
         "icon": "Skype",
-        "name": "bachbnt",
         "nameVisible": true,
-        "url": "https://join.skype.com/invite/d0JQcWVZyD8F",
+        "urlEnable": true,
         "type": "social",
-        "visible": true
+        "url": "https://join.skype.com/invite/d0JQcWVZyD8F",
+        "name": "bachbnt",
+        "index": 4,
+        "visible": false
       },
       "twitter": {
+        "visible": false,
         "url": "https://twitter.com/bachbnt",
         "type": "social",
-        "name": "@bachbnt",
         "index": 6,
-        "urlEnable": true,
-        "icon": "Twitter",
         "nameVisible": true,
-        "visible": true
+        "icon": "Twitter",
+        "urlEnable": true,
+        "name": "@bachbnt"
       }
     },
     "cv": {
@@ -167,7 +167,7 @@
         "file": "firestore:user/cv",
         "pageCount": 3,
         "createdAt": "2026-05-24",
-        "updatedAt": "2026-07-09",
+        "updatedAt": "2026-10-31",
         "purpose": "Structured CV backup used as the Firestore seed and local fallback for dynamic PDF preview/download."
       },
       "candidate": {
@@ -221,7 +221,7 @@
               }
             ],
             "roleDetails": [
-              "Position: Team Lead - own delivery of the FPT-scope functions, coordinate with QC, BA/design and the external platform vendor, and build the AI-driven engineering tooling the team uses daily."
+              "Position: Team Lead - lead a team of 5 developers, own delivery of the FPT-scope functions, coordinate with QC, BA/design and the external platform vendor, and build the AI-driven engineering tooling the team uses daily."
             ],
             "technologies": [
               "Android",
@@ -236,16 +236,13 @@
               "Jira"
             ],
             "responsibilities": [
-              "Lead the team delivering 13 business modules (47 functions) across 26+ repositories; split ownership per function, define branch/MR/commit conventions and review gates, and keep the team aligned with QC, BA and vendor-owned components.",
-              "Create and review Detail Design for FPT-scope functions, translating business and UI specifications into implementation-ready flows, interface contracts, edge cases and acceptance criteria with BA, QC and the external platform vendor.",
-              "Designed and built an AI bug-fixing pipeline on Claude Code (14 skills, 2 agents): scans Jira DC for open bugs, filters out non-actionable tickets, traces root cause across source, design docs and device logs, then routes automatically - in-scope defects get a fix branch + GitLab MR with a root-cause comment; vendor-side defects get a structured Q&A; suspected design errors get a design Q&A and paired design/code MRs.",
-              "Integrated the pipeline into Microsoft Teams (Power Automate -> Graph API -> Claude CLI bot) so members trigger tracing, Q&A, resolve, ship and performance-RCA workflows with simple chat commands, with per-command permissions and two-step confirmation for merge/resolve actions.",
-              "Built an AI code-review agent for GitLab MRs: reviews each MR against real source, design specs and project-specific rules, comments findings, marks problematic MRs as Draft and tags the responsible owner; auto-fixes small, well-defined issues in AI-authored MRs and re-reviews them.",
-              "Created a design-to-code sync agent that reads merged design-document diffs and applies the corresponding UseCase / ViewModel / Screen changes across affected repos, pushing per-repo branches and opening MRs with a self-test report.",
-              "Ran cross-function rollouts (TKN) of recurring fixes: inventory script, pilot on one function, then one MR per repo across all modules - covering back-navigation exit handling, navigation-enum unification and resource-clearing checks.",
-              "Automated static-analysis cleanup: a detekt-fix workflow that proves a change is behavior-neutral by token-level diff before committing; cleared lint across 35 repo MRs without suppressions or baselines, enforced by a pre-push gate.",
-              "Added guardrails to keep automation safe at team scale: stale-ticket read guard before commenting, skip rules for cancelled / non-actionable tickets, evidence thresholds before challenging QC expectations or design, and CI gates that block false-pass builds.",
-              "Produced self-test handover packages (business flow -> code mapping, step-by-step scenarios, test data) and performance RCA reports, so members who don't know the domain can verify fixes quickly before hand-off to QC."
+              "Lead a team of 5 developers delivering 13 business modules (47 functions) across 26+ Kotlin/Gradle repositories. Own function assignment, MR/review gates and coordination with QC, BA and the platform vendor, and write and review Detail Designs.",
+              "Built an AI bug-fixing pipeline on Claude Code (14 skills, 2 agents). It polls Jira via REST, traces root cause across source, design docs, the legacy app and device logs, then routes each bug automatically to a fix MR on GitLab, a vendor Q&A, or paired design/code MRs. Evidence thresholds and a stale-ticket guard make it safe to run unattended.",
+              "Built a Teams bot for the dev team (Power Automate -> Microsoft Graph -> Claude CLI). Members trigger trace, fix, Q&A, resolve, ship and performance-RCA with chat commands. Permissions are enforced per command in code, and merge/resolve need two-step confirmation.",
+              "Built AI agents that review GitLab MRs and sync design changes into code. The reviewer checks each MR against source, design specs and project rules, marks problem MRs as Draft, tags the owner, and auto-fixes small issues in AI-authored MRs. The design-sync agent reads merged design diffs and applies UseCase/ViewModel/Screen changes across repos, opening per-repo MRs.",
+              "Built a detekt-fix workflow that proves each change is behavior-neutral by token-level diff, clearing lint across 35 repo MRs with no suppressions, enforced by a pre-push gate.",
+              "Ran cross-module rollouts (Yokoten) of recurring fixes: an inventory script finds affected functions, a pilot on one function validates the change, then one MR per repo across all modules. Covered back-navigation exit handling, navigation-enum unification and resource-clearing checks.",
+              "Built a Build Portal (Python/Playwright) that replaced 30 batch scripts with one registry-driven script, giving developers and agents one-click multi-module Android builds."
             ]
           },
           {
@@ -465,6 +462,10 @@
           {
             "time": "May 2026",
             "name": "Google Project Management Professional Certificate"
+          },
+          {
+            "time": "Oct 2026",
+            "name": "Claude Certified Architect - Professional"
           }
         ],
         "skills": [
@@ -680,20 +681,6 @@
         "visible": false,
         "image": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/freelancer.jpg"
       },
-      "fpt_software_team_lead": {
-        "positionVisible": true,
-        "image": "",
-        "timeVisible": true,
-        "visible": true,
-        "responsibility": "Lead delivery for 9PP - Yamato Transport across 13 Android business modules and 26+ repositories; create and review Detail Design, and build AI workflows for bug fixing, code review and design-to-code sync.",
-        "name": "FPT Software",
-        "index": 4,
-        "nameVisible": true,
-        "position": "Team Lead",
-        "time": "Jan 2026 - Present",
-        "imageVisible": false,
-        "responsibilityVisible": true
-      },
       "example_experience_id": {
         "positionVisible": true,
         "timeVisible": true,
@@ -777,6 +764,20 @@
         "index": 3,
         "position": "Senior Mobile App Developer",
         "time": "May 2022 - Jan 2026"
+      },
+      "fpt_software_team_lead": {
+        "positionVisible": true,
+        "image": "",
+        "timeVisible": true,
+        "visible": true,
+        "name": "FPT Software",
+        "index": 4,
+        "nameVisible": true,
+        "position": "Team Lead",
+        "time": "Jan 2026 - Present",
+        "imageVisible": false,
+        "responsibilityVisible": true,
+        "responsibility": "Lead a team of 5 developers delivering 9PP - Yamato Transport across 13 Android business modules and 26+ repositories; write and review Detail Design, and build AI workflows for bug fixing, code review, design-to-code sync and builds."
       }
     },
     "payment": {
@@ -795,140 +796,140 @@
         "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-bidv-v2.jpg",
         "account": "6010822107"
       },
-      "momo": {
-        "qrCodeVisible": true,
-        "name": "MoMo",
-        "logo": "",
-        "accountVisible": true,
-        "nameVisible": true,
-        "account": "0384560623",
-        "type": "wallet",
-        "visible": true,
-        "logoVisible": false,
-        "user": "BÙI NGÔ TÔN BÁCH",
-        "userVisible": false,
-        "index": 4,
-        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-momo-v2.png"
-      },
-      "vnpay": {
-        "account": "0384560623",
-        "accountVisible": true,
-        "index": 7,
-        "logo": "",
-        "logoVisible": false,
-        "name": "VNPay",
-        "nameVisible": true,
-        "type": "wallet",
-        "user": "Bùi Ngô Tôn Bách",
-        "userVisible": false,
-        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vnpay.jpeg",
-        "qrCodeVisible": true,
-        "visible": true
-      },
-      "paypal": {
-        "account": "bntbach@gmail.com",
-        "index": 8,
-        "logo": "",
-        "logoVisible": false,
-        "name": "PayPal",
-        "nameVisible": true,
-        "type": "wallet",
-        "user": "BUI NGO TON BACH",
-        "userVisible": false,
-        "accountVisible": true,
-        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-paypal.png",
-        "qrCodeVisible": true,
-        "visible": true
-      },
-      "shopee-pay": {
-        "accountVisible": true,
-        "index": 10,
-        "logo": "",
-        "logoVisible": true,
-        "name": "ShopeePay",
-        "nameVisible": true,
-        "qrCodeVisible": true,
-        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-shopeepay.png",
-        "type": "wallet",
-        "user": "Bùi Ngô Tôn Bách",
-        "userVisible": true,
-        "account": "(+84)384560623",
-        "visible": true
-      },
-      "viettel-money": {
-        "qrCodeVisible": true,
-        "name": "Viettel Money",
-        "index": 5,
-        "accountVisible": true,
-        "logo": "",
-        "nameVisible": true,
-        "type": "wallet",
-        "account": "0384560623",
-        "logoVisible": false,
-        "user": "BUI NGO TON BACH",
-        "userVisible": false,
-        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-viettelmoney.jpg",
-        "visible": true
-      },
       "binance": {
-        "nameVisible": true,
-        "account": "366454438",
-        "accountVisible": true,
-        "logo": "",
-        "logoVisible": false,
-        "index": 5,
         "qrCodeVisible": true,
-        "type": "wallet",
-        "name": "Binance",
         "user": "bntbach",
+        "index": 5,
         "userVisible": false,
         "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-binance.jpg",
-        "visible": true
+        "logoVisible": false,
+        "accountVisible": true,
+        "account": "366454438",
+        "visible": false,
+        "logo": "",
+        "type": "wallet",
+        "nameVisible": true,
+        "name": "Binance"
+      },
+      "momo": {
+        "user": "BÙI NGÔ TÔN BÁCH",
+        "type": "wallet",
+        "visible": false,
+        "logo": "",
+        "index": 4,
+        "logoVisible": false,
+        "userVisible": false,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-momo-v2.png",
+        "accountVisible": true,
+        "account": "0384560623",
+        "qrCodeVisible": true,
+        "name": "MoMo",
+        "nameVisible": true
+      },
+      "paypal": {
+        "logoVisible": false,
+        "type": "wallet",
+        "qrCodeVisible": true,
+        "index": 8,
+        "user": "BUI NGO TON BACH",
+        "userVisible": false,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-paypal.png",
+        "name": "PayPal",
+        "accountVisible": true,
+        "account": "bntbach@gmail.com",
+        "logo": "",
+        "visible": false,
+        "nameVisible": true
+      },
+      "shopee-pay": {
+        "index": 10,
+        "name": "ShopeePay",
+        "nameVisible": true,
+        "account": "(+84)384560623",
+        "qrCodeVisible": true,
+        "userVisible": true,
+        "logoVisible": true,
+        "accountVisible": true,
+        "logo": "",
+        "visible": false,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-shopeepay.png",
+        "user": "Bùi Ngô Tôn Bách",
+        "type": "wallet"
       },
       "vietcombank": {
-        "accountVisible": true,
-        "account": "1028403549",
-        "name": "Vietcombank",
-        "nameVisible": true,
-        "qrCodeVisible": true,
-        "logo": "",
         "logoVisible": false,
-        "user": "BUI NGO TON BACH",
-        "userVisible": false,
+        "account": "1028403549",
+        "logo": "",
+        "qrCodeVisible": true,
         "index": 2,
+        "user": "BUI NGO TON BACH",
         "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietcombank-v2.jpg",
         "type": "bank",
-        "visible": true
+        "visible": false,
+        "accountVisible": true,
+        "name": "Vietcombank",
+        "nameVisible": true,
+        "userVisible": false
       },
       "vietinbank": {
+        "qrCodeVisible": true,
         "userVisible": false,
+        "accountVisible": true,
+        "type": "bank",
+        "logo": "",
         "name": "VietinBank",
+        "user": "BUI NGO TON BACH",
+        "nameVisible": true,
+        "index": 3,
+        "logoVisible": false,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietinbank-v2.jpg",
+        "account": "100877461144",
+        "visible": false
+      },
+      "viettel-money": {
+        "name": "Viettel Money",
+        "nameVisible": true,
+        "visible": false,
+        "qrCodeVisible": true,
+        "userVisible": false,
+        "logoVisible": false,
         "accountVisible": true,
         "logo": "",
-        "nameVisible": true,
-        "type": "bank",
+        "index": 5,
+        "account": "0384560623",
+        "type": "wallet",
         "user": "BUI NGO TON BACH",
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-viettelmoney.jpg"
+      },
+      "vnpay": {
+        "logo": "",
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vnpay.jpeg",
+        "visible": false,
         "logoVisible": false,
-        "index": 3,
+        "user": "Bùi Ngô Tôn Bách",
+        "accountVisible": true,
+        "index": 7,
+        "name": "VNPay",
+        "account": "0384560623",
         "qrCodeVisible": true,
-        "account": "100877461144",
-        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietinbank-v2.jpg",
-        "visible": true
+        "type": "wallet",
+        "userVisible": false,
+        "nameVisible": true
       },
       "zalopay": {
-        "qrCodeVisible": true,
-        "name": "ZaloPay",
-        "accountVisible": true,
+        "visible": false,
         "logo": "",
         "nameVisible": true,
-        "type": "wallet",
-        "account": "0384560623",
-        "logoVisible": false,
         "user": "Tôn Bách",
-        "userVisible": false,
+        "type": "wallet",
         "index": 5,
-        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-zalopay-v2.png",
-        "visible": true
+        "userVisible": false,
+        "qrCodeVisible": true,
+        "logoVisible": false,
+        "account": "0384560623",
+        "name": "ZaloPay",
+        "accountVisible": true,
+        "qrCode": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-zalopay-v2.png"
       }
     },
     "profile": {

@@ -61,7 +61,7 @@
           }
         ],
         "roleDetails": [
-          "Position: Team Lead - own delivery of the FPT-scope functions, coordinate with QC, BA/design and the external platform vendor, and build the AI-driven engineering tooling the team uses daily."
+          "Position: Team Lead - lead a team of 5 developers, own delivery of the FPT-scope functions, coordinate with QC, BA/design and the external platform vendor, and build the AI-driven engineering tooling the team uses daily."
         ],
         "technologies": [
           "Android",
@@ -76,16 +76,13 @@
           "Jira"
         ],
         "responsibilities": [
-          "Lead the team delivering 13 business modules (47 functions) across 26+ repositories; split ownership per function, define branch/MR/commit conventions and review gates, and keep the team aligned with QC, BA and vendor-owned components.",
-          "Create and review Detail Design for FPT-scope functions, translating business and UI specifications into implementation-ready flows, interface contracts, edge cases and acceptance criteria with BA, QC and the external platform vendor.",
-          "Designed and built an AI bug-fixing pipeline on Claude Code (14 skills, 2 agents): scans Jira DC for open bugs, filters out non-actionable tickets, traces root cause across source, design docs and device logs, then routes automatically - in-scope defects get a fix branch + GitLab MR with a root-cause comment; vendor-side defects get a structured Q&A; suspected design errors get a design Q&A and paired design/code MRs.",
-          "Integrated the pipeline into Microsoft Teams (Power Automate -> Graph API -> Claude CLI bot) so members trigger tracing, Q&A, resolve, ship and performance-RCA workflows with simple chat commands, with per-command permissions and two-step confirmation for merge/resolve actions.",
-          "Built an AI code-review agent for GitLab MRs: reviews each MR against real source, design specs and project-specific rules, comments findings, marks problematic MRs as Draft and tags the responsible owner; auto-fixes small, well-defined issues in AI-authored MRs and re-reviews them.",
-          "Created a design-to-code sync agent that reads merged design-document diffs and applies the corresponding UseCase / ViewModel / Screen changes across affected repos, pushing per-repo branches and opening MRs with a self-test report.",
-          "Ran cross-function rollouts (TKN) of recurring fixes: inventory script, pilot on one function, then one MR per repo across all modules - covering back-navigation exit handling, navigation-enum unification and resource-clearing checks.",
-          "Automated static-analysis cleanup: a detekt-fix workflow that proves a change is behavior-neutral by token-level diff before committing; cleared lint across 35 repo MRs without suppressions or baselines, enforced by a pre-push gate.",
-          "Added guardrails to keep automation safe at team scale: stale-ticket read guard before commenting, skip rules for cancelled / non-actionable tickets, evidence thresholds before challenging QC expectations or design, and CI gates that block false-pass builds.",
-          "Produced self-test handover packages (business flow -> code mapping, step-by-step scenarios, test data) and performance RCA reports, so members who don't know the domain can verify fixes quickly before hand-off to QC."
+          "Lead a team of 5 developers delivering 13 business modules (47 functions) across 26+ Kotlin/Gradle repositories. Own function assignment, MR/review gates and coordination with QC, BA and the platform vendor, and write and review Detail Designs.",
+          "Built an AI bug-fixing pipeline on Claude Code (14 skills, 2 agents). It polls Jira via REST, traces root cause across source, design docs, the legacy app and device logs, then routes each bug automatically to a fix MR on GitLab, a vendor Q&A, or paired design/code MRs. Evidence thresholds and a stale-ticket guard make it safe to run unattended.",
+          "Built a Teams bot for the dev team (Power Automate -> Microsoft Graph -> Claude CLI). Members trigger trace, fix, Q&A, resolve, ship and performance-RCA with chat commands. Permissions are enforced per command in code, and merge/resolve need two-step confirmation.",
+          "Built AI agents that review GitLab MRs and sync design changes into code. The reviewer checks each MR against source, design specs and project rules, marks problem MRs as Draft, tags the owner, and auto-fixes small issues in AI-authored MRs. The design-sync agent reads merged design diffs and applies UseCase/ViewModel/Screen changes across repos, opening per-repo MRs.",
+          "Built a detekt-fix workflow that proves each change is behavior-neutral by token-level diff, clearing lint across 35 repo MRs with no suppressions, enforced by a pre-push gate.",
+          "Ran cross-module rollouts (Yokoten) of recurring fixes: an inventory script finds affected functions, a pilot on one function validates the change, then one MR per repo across all modules. Covered back-navigation exit handling, navigation-enum unification and resource-clearing checks.",
+          "Built a Build Portal (Python/Playwright) that replaced 30 batch scripts with one registry-driven script, giving developers and agents one-click multi-module Android builds."
         ]
       },
       {
