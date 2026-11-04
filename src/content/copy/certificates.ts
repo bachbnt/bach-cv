@@ -16,7 +16,7 @@ type Shape<T> = T extends string
 // Interface copy for the Certificates page, in both languages.
 const en = {
   title: 'Certificates',
-  intro: 'Credentials in AI and project management.',
+  intro: 'Professional certifications behind the skills on my resume.',
   latest: 'Latest',
   issued: (date: string) => `Issued ${date}`,
   /** the line under the image in the preview: issuer, then the date */
@@ -36,7 +36,7 @@ const en = {
 
 const vi: Shape<typeof en> = {
   title: 'Chứng chỉ',
-  intro: 'Các chứng chỉ về AI và quản lý dự án.',
+  intro: 'Các chứng chỉ chuyên môn đứng sau những kỹ năng trong hồ sơ của tôi.',
   latest: 'Mới nhất',
   issued: (date: string) => `Cấp ngày ${date}`,
   meta: (issuer: string, date: string) =>
