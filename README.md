@@ -78,7 +78,7 @@ src/lib/i18n            language state and the copy helpers
 tests/unit              Vitest        tests/automation   Playwright        tests/fixtures   Firestore snapshot for tests
 scripts/                Firestore backup and restore
 worker/                 Cloudflare Worker for the chat (see worker/README.md)
-docs/                   reference material (SQL schema)
+docs/                   data-design.html, detail-design.html (npm run docs) and schema.sql
 .ai/, .claude/skills    working rules and installed skills for AI assistants
 ```
 

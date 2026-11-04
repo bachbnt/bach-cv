@@ -35,7 +35,7 @@ export function PaymentRow({
             width={44}
             height={44}
             unoptimized
-            className='size-11 flex-none rounded-xl bg-page-tint object-contain'
+            className='size-11 flex-none rounded-xl bg-white object-cover ring-1 ring-border'
           />
         ) : (
           <span

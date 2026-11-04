@@ -1,28 +1,6 @@
 {
   "site": {
-    "shell": {
-      "name": "Bach Bui",
-      "headline": "Mobile Software Engineer",
-      "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
-      "defaultLanguage": "en",
-      "languages": ["en", "vi"],
-      "seoTitle": "Bach Bui - Mobile Software Engineer",
-      "seoDescription": "My background is the Master of Science. Because of my passion for programming, I chose Software Engineer as my profession. With knowledge and experience...",
-      "ogImage": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
-      "l10n": {
-        "vi": {
-          "headline": "Kỹ sư phần mềm Mobile",
-          "seoTitle": "Bach Bui - Kỹ sư phần mềm Mobile",
-          "seoDescription": "Kỹ sư phần mềm Mobile với nền tảng Thạc sĩ Khoa học, đam mê lập trình và mong muốn trở thành Project Manager trong tương lai."
-        }
-      }
-    },
     "live": {
-      "maintenance": {
-        "enabled": false,
-        "message": "",
-        "l10n": {}
-      },
       "pages": {
         "home": "on",
         "about": "on",
@@ -37,6 +15,11 @@
         "cvDownload": true,
         "contactForm": true,
         "connectMenu": true
+      },
+      "maintenance": {
+        "message": "",
+        "l10n": {},
+        "enabled": false
       }
     },
     "profile": {
@@ -83,29 +66,35 @@
         "nameMax": 100,
         "messageMax": 1000
       }
+    },
+    "shell": {
+      "name": "Bach Bui",
+      "headline": "Mobile Software Engineer",
+      "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
+      "defaultLanguage": "en",
+      "languages": ["en", "vi"],
+      "seoTitle": "Bach Bui - Mobile Software Engineer",
+      "seoDescription": "My background is the Master of Science. Because of my passion for programming, I chose Software Engineer as my profession. With knowledge and experience...",
+      "ogImage": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
+      "l10n": {
+        "vi": {
+          "headline": "Kỹ sư phần mềm Mobile",
+          "seoTitle": "Bach Bui - Kỹ sư phần mềm Mobile",
+          "seoDescription": "Kỹ sư phần mềm Mobile với nền tảng Thạc sĩ Khoa học, đam mê lập trình và mong muốn trở thành Project Manager trong tương lai."
+        }
+      }
     }
   },
   "skills": {
-    "claude-code": {
-      "visible": true,
-      "highlight": 5,
-      "sort": 10,
-      "name": "Claude Code",
-      "category": "ai",
-      "icon": "claude",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "mcp": {
+    "agile": {
       "visible": true,
       "highlight": null,
-      "sort": 20,
-      "name": "MCP",
-      "category": "ai",
-      "icon": "modelcontextprotocol",
+      "sort": 923,
+      "name": "Agile",
+      "category": "tools",
+      "icon": "",
       "url": "",
-      "listed": true,
+      "listed": false,
       "l10n": {}
     },
     "ai-agents": {
@@ -115,72 +104,6 @@
       "name": "AI agents",
       "category": "ai",
       "icon": "sparkle",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "python": {
-      "visible": true,
-      "highlight": 4,
-      "sort": 40,
-      "name": "Python",
-      "category": "ai",
-      "icon": "python",
-      "url": "https://www.python.org/",
-      "listed": true,
-      "l10n": {}
-    },
-    "keras": {
-      "visible": true,
-      "highlight": null,
-      "sort": 50,
-      "name": "Keras",
-      "category": "ai",
-      "icon": "keras",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "lstm": {
-      "visible": true,
-      "highlight": null,
-      "sort": 60,
-      "name": "LSTM",
-      "category": "ai",
-      "icon": "sparkle",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "kotlin": {
-      "visible": true,
-      "highlight": 1,
-      "sort": 70,
-      "name": "Kotlin",
-      "category": "mobile",
-      "icon": "kotlin",
-      "url": "https://kotlinlang.org/",
-      "listed": true,
-      "l10n": {}
-    },
-    "kmm": {
-      "visible": true,
-      "highlight": 2,
-      "sort": 80,
-      "name": "KMM",
-      "category": "mobile",
-      "icon": "kotlin",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "jetpack-compose": {
-      "visible": true,
-      "highlight": 3,
-      "sort": 90,
-      "name": "Jetpack Compose",
-      "category": "mobile",
-      "icon": "jetpackcompose",
       "url": "",
       "listed": true,
       "l10n": {}
@@ -196,101 +119,57 @@
       "listed": true,
       "l10n": {}
     },
-    "swift": {
+    "android-studio": {
       "visible": true,
       "highlight": null,
-      "sort": 110,
-      "name": "Swift",
-      "category": "mobile",
-      "icon": "swift",
-      "url": "https://www.swift.org/",
-      "listed": true,
-      "l10n": {}
-    },
-    "swiftui": {
-      "visible": true,
-      "highlight": null,
-      "sort": 120,
-      "name": "SwiftUI",
-      "category": "mobile",
-      "icon": "swift",
+      "sort": 360,
+      "name": "Android Studio",
+      "category": "tools",
+      "icon": "androidstudio",
       "url": "",
       "listed": true,
       "l10n": {}
     },
-    "ios": {
+    "appkit": {
       "visible": true,
       "highlight": null,
-      "sort": 130,
-      "name": "iOS",
-      "category": "mobile",
-      "icon": "apple",
-      "url": "https://developer.apple.com/",
-      "listed": true,
-      "l10n": {}
-    },
-    "flutter": {
-      "visible": true,
-      "highlight": null,
-      "sort": 140,
-      "name": "Flutter",
-      "category": "mobile",
-      "icon": "flutter",
-      "url": "https://flutter.dev/",
-      "listed": true,
-      "l10n": {}
-    },
-    "dart": {
-      "visible": true,
-      "highlight": null,
-      "sort": 150,
-      "name": "Dart",
-      "category": "mobile",
-      "icon": "dart",
-      "url": "https://dart.dev/",
-      "listed": true,
-      "l10n": {}
-    },
-    "react-native": {
-      "visible": true,
-      "highlight": null,
-      "sort": 160,
-      "name": "React Native",
-      "category": "mobile",
-      "icon": "react",
-      "url": "https://reactnative.dev/",
-      "listed": true,
-      "l10n": {}
-    },
-    "wearos": {
-      "visible": true,
-      "highlight": null,
-      "sort": 170,
-      "name": "WearOS",
-      "category": "mobile",
-      "icon": "watch",
+      "sort": 910,
+      "name": "AppKit",
+      "category": "tools",
+      "icon": "",
       "url": "",
-      "listed": true,
+      "listed": false,
       "l10n": {}
     },
-    "watchos": {
+    "bloc": {
       "visible": true,
       "highlight": null,
-      "sort": 180,
-      "name": "watchOS",
-      "category": "mobile",
-      "icon": "watch",
+      "sort": 912,
+      "name": "Bloc",
+      "category": "tools",
+      "icon": "",
       "url": "",
-      "listed": true,
+      "listed": false,
       "l10n": {}
     },
-    "mvvm": {
+    "ccxt": {
       "visible": true,
       "highlight": null,
-      "sort": 190,
-      "name": "MVVM",
-      "category": "mobile",
-      "icon": "blocks",
+      "sort": 915,
+      "name": "ccxt",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "claude-code": {
+      "visible": true,
+      "highlight": 5,
+      "sort": 10,
+      "name": "Claude Code",
+      "category": "ai",
+      "icon": "claude",
       "url": "",
       "listed": true,
       "l10n": {}
@@ -306,58 +185,36 @@
       "listed": true,
       "l10n": {}
     },
-    "reactjs": {
+    "confluence": {
       "visible": true,
       "highlight": null,
-      "sort": 210,
-      "name": "ReactJS",
-      "category": "web",
-      "icon": "react",
-      "url": "https://reactjs.org/",
-      "listed": true,
-      "l10n": {}
-    },
-    "nextjs": {
-      "visible": true,
-      "highlight": null,
-      "sort": 220,
-      "name": "NextJS",
-      "category": "web",
-      "icon": "nextdotjs",
+      "sort": 310,
+      "name": "Confluence",
+      "category": "tools",
+      "icon": "confluence",
       "url": "",
       "listed": true,
       "l10n": {}
     },
-    "vuejs": {
+    "dart": {
       "visible": true,
       "highlight": null,
-      "sort": 230,
-      "name": "VueJS",
-      "category": "web",
-      "icon": "vuedotjs",
-      "url": "https://vuejs.org/",
+      "sort": 150,
+      "name": "Dart",
+      "category": "mobile",
+      "icon": "dart",
+      "url": "https://dart.dev/",
       "listed": true,
       "l10n": {}
     },
-    "typescript": {
+    "detail-design": {
       "visible": true,
       "highlight": null,
-      "sort": 240,
-      "name": "TypeScript",
-      "category": "web",
-      "icon": "typescript",
-      "url": "https://www.typescriptlang.org/",
-      "listed": true,
-      "l10n": {}
-    },
-    "nodejs": {
-      "visible": true,
-      "highlight": null,
-      "sort": 250,
-      "name": "NodeJS",
-      "category": "web",
-      "icon": "nodedotjs",
-      "url": "https://nodejs.org/",
+      "sort": 340,
+      "name": "Detail Design",
+      "category": "tools",
+      "icon": "doc",
+      "url": "",
       "listed": true,
       "l10n": {}
     },
@@ -372,15 +229,37 @@
       "listed": true,
       "l10n": {}
     },
-    "nestjs": {
+    "firebase": {
       "visible": true,
       "highlight": null,
-      "sort": 270,
-      "name": "NestJS",
-      "category": "web",
-      "icon": "nestjs",
+      "sort": 330,
+      "name": "Firebase",
+      "category": "tools",
+      "icon": "firebase",
       "url": "",
       "listed": true,
+      "l10n": {}
+    },
+    "flutter": {
+      "visible": true,
+      "highlight": null,
+      "sort": 140,
+      "name": "Flutter",
+      "category": "mobile",
+      "icon": "flutter",
+      "url": "https://flutter.dev/",
+      "listed": true,
+      "l10n": {}
+    },
+    "generative-ai": {
+      "visible": true,
+      "highlight": null,
+      "sort": 919,
+      "name": "Generative AI",
+      "category": "ai",
+      "icon": "",
+      "url": "",
+      "listed": false,
       "l10n": {}
     },
     "git": {
@@ -405,28 +284,6 @@
       "listed": true,
       "l10n": {}
     },
-    "jira": {
-      "visible": true,
-      "highlight": null,
-      "sort": 300,
-      "name": "Jira",
-      "category": "tools",
-      "icon": "jira",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "confluence": {
-      "visible": true,
-      "highlight": null,
-      "sort": 310,
-      "name": "Confluence",
-      "category": "tools",
-      "icon": "confluence",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
     "grafana": {
       "visible": true,
       "highlight": null,
@@ -436,94 +293,6 @@
       "icon": "grafana",
       "url": "",
       "listed": true,
-      "l10n": {}
-    },
-    "firebase": {
-      "visible": true,
-      "highlight": null,
-      "sort": 330,
-      "name": "Firebase",
-      "category": "tools",
-      "icon": "firebase",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "detail-design": {
-      "visible": true,
-      "highlight": null,
-      "sort": 340,
-      "name": "Detail Design",
-      "category": "tools",
-      "icon": "doc",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "vscode": {
-      "visible": true,
-      "highlight": null,
-      "sort": 350,
-      "name": "VS Code",
-      "category": "tools",
-      "icon": "code",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "android-studio": {
-      "visible": true,
-      "highlight": null,
-      "sort": 360,
-      "name": "Android Studio",
-      "category": "tools",
-      "icon": "androidstudio",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "xcode": {
-      "visible": true,
-      "highlight": null,
-      "sort": 370,
-      "name": "Xcode",
-      "category": "tools",
-      "icon": "xcode",
-      "url": "",
-      "listed": true,
-      "l10n": {}
-    },
-    "provider": {
-      "visible": true,
-      "highlight": null,
-      "sort": 900,
-      "name": "Provider",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
-      "l10n": {}
-    },
-    "sqlite": {
-      "visible": true,
-      "highlight": null,
-      "sort": 901,
-      "name": "SQLite",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
-      "l10n": {}
-    },
-    "rest-api": {
-      "visible": true,
-      "highlight": null,
-      "sort": 902,
-      "name": "REST API",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
       "l10n": {}
     },
     "in-app-purchase": {
@@ -537,81 +306,81 @@
       "listed": false,
       "l10n": {}
     },
-    "push-notifications": {
+    "ios": {
       "visible": true,
       "highlight": null,
-      "sort": 904,
-      "name": "Push Notifications",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
+      "sort": 130,
+      "name": "iOS",
+      "category": "mobile",
+      "icon": "apple",
+      "url": "https://developer.apple.com/",
+      "listed": true,
       "l10n": {}
     },
-    "mqtt": {
+    "jetpack-compose": {
       "visible": true,
-      "highlight": null,
-      "sort": 905,
-      "name": "MQTT",
-      "category": "tools",
-      "icon": "",
+      "highlight": 3,
+      "sort": 90,
+      "name": "Jetpack Compose",
+      "category": "mobile",
+      "icon": "jetpackcompose",
       "url": "",
-      "listed": false,
+      "listed": true,
       "l10n": {}
     },
-    "matplotlib": {
+    "jira": {
       "visible": true,
       "highlight": null,
-      "sort": 906,
-      "name": "Matplotlib",
+      "sort": 300,
+      "name": "Jira",
+      "category": "tools",
+      "icon": "jira",
+      "url": "",
+      "listed": true,
+      "l10n": {}
+    },
+    "keras": {
+      "visible": true,
+      "highlight": null,
+      "sort": 50,
+      "name": "Keras",
       "category": "ai",
-      "icon": "",
+      "icon": "keras",
       "url": "",
-      "listed": false,
+      "listed": true,
       "l10n": {}
     },
-    "mongodb": {
+    "kmm": {
       "visible": true,
-      "highlight": null,
-      "sort": 907,
-      "name": "MongoDB",
-      "category": "tools",
-      "icon": "",
+      "highlight": 2,
+      "sort": 80,
+      "name": "KMM",
+      "category": "mobile",
+      "icon": "kotlin",
       "url": "",
-      "listed": false,
+      "listed": true,
       "l10n": {}
     },
-    "webrtc": {
+    "kotlin": {
       "visible": true,
-      "highlight": null,
-      "sort": 908,
-      "name": "WebRTC",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
+      "highlight": 1,
+      "sort": 70,
+      "name": "Kotlin",
+      "category": "mobile",
+      "icon": "kotlin",
+      "url": "https://kotlinlang.org/",
+      "listed": true,
       "l10n": {}
     },
-    "socketio": {
+    "lstm": {
       "visible": true,
       "highlight": null,
-      "sort": 909,
-      "name": "SocketIO",
-      "category": "tools",
-      "icon": "",
+      "sort": 60,
+      "name": "LSTM",
+      "category": "ai",
+      "icon": "sparkle",
       "url": "",
-      "listed": false,
-      "l10n": {}
-    },
-    "appkit": {
-      "visible": true,
-      "highlight": null,
-      "sort": 910,
-      "name": "AppKit",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
+      "listed": true,
       "l10n": {}
     },
     "macos": {
@@ -619,50 +388,6 @@
       "highlight": null,
       "sort": 911,
       "name": "macOS",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
-      "l10n": {}
-    },
-    "bloc": {
-      "visible": true,
-      "highlight": null,
-      "sort": 912,
-      "name": "Bloc",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
-      "l10n": {}
-    },
-    "redux": {
-      "visible": true,
-      "highlight": null,
-      "sort": 913,
-      "name": "Redux",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
-      "l10n": {}
-    },
-    "vnstock": {
-      "visible": true,
-      "highlight": null,
-      "sort": 914,
-      "name": "vnstock",
-      "category": "tools",
-      "icon": "",
-      "url": "",
-      "listed": false,
-      "l10n": {}
-    },
-    "ccxt": {
-      "visible": true,
-      "highlight": null,
-      "sort": 915,
-      "name": "ccxt",
       "category": "tools",
       "icon": "",
       "url": "",
@@ -680,68 +405,93 @@
       "listed": false,
       "l10n": {}
     },
-    "redux-toolkit": {
+    "matplotlib": {
       "visible": true,
       "highlight": null,
-      "sort": 917,
-      "name": "Redux Toolkit",
+      "sort": 906,
+      "name": "Matplotlib",
+      "category": "ai",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "mcp": {
+      "visible": true,
+      "highlight": null,
+      "sort": 20,
+      "name": "MCP",
+      "category": "ai",
+      "icon": "modelcontextprotocol",
+      "url": "",
+      "listed": true,
+      "l10n": {}
+    },
+    "mongodb": {
+      "visible": true,
+      "highlight": null,
+      "sort": 907,
+      "name": "MongoDB",
       "category": "tools",
       "icon": "",
       "url": "",
       "listed": false,
       "l10n": {}
     },
-    "webpack": {
+    "mqtt": {
       "visible": true,
       "highlight": null,
-      "sort": 918,
-      "name": "Webpack",
+      "sort": 905,
+      "name": "MQTT",
       "category": "tools",
       "icon": "",
       "url": "",
       "listed": false,
       "l10n": {}
     },
-    "generative-ai": {
+    "mvvm": {
       "visible": true,
       "highlight": null,
-      "sort": 919,
-      "name": "Generative AI",
-      "category": "ai",
-      "icon": "",
+      "sort": 190,
+      "name": "MVVM",
+      "category": "mobile",
+      "icon": "blocks",
       "url": "",
-      "listed": false,
+      "listed": true,
       "l10n": {}
     },
-    "prompt-design": {
+    "nestjs": {
       "visible": true,
       "highlight": null,
-      "sort": 920,
-      "name": "Prompt design",
-      "category": "ai",
-      "icon": "",
+      "sort": 270,
+      "name": "NestJS",
+      "category": "web",
+      "icon": "nestjs",
       "url": "",
-      "listed": false,
-      "l10n": {
-        "vi": {
-          "name": "Thiết kế prompt"
-        }
-      }
+      "listed": true,
+      "l10n": {}
     },
-    "responsible-ai": {
+    "nextjs": {
       "visible": true,
       "highlight": null,
-      "sort": 921,
-      "name": "Responsible AI",
-      "category": "ai",
-      "icon": "",
+      "sort": 220,
+      "name": "NextJS",
+      "category": "web",
+      "icon": "nextdotjs",
       "url": "",
-      "listed": false,
-      "l10n": {
-        "vi": {
-          "name": "AI có trách nhiệm"
-        }
-      }
+      "listed": true,
+      "l10n": {}
+    },
+    "nodejs": {
+      "visible": true,
+      "highlight": null,
+      "sort": 250,
+      "name": "NodeJS",
+      "category": "web",
+      "icon": "nodedotjs",
+      "url": "https://nodejs.org/",
+      "listed": true,
+      "l10n": {}
     },
     "project-planning": {
       "visible": true,
@@ -758,11 +508,118 @@
         }
       }
     },
-    "agile": {
+    "prompt-design": {
       "visible": true,
       "highlight": null,
-      "sort": 923,
-      "name": "Agile",
+      "sort": 920,
+      "name": "Prompt design",
+      "category": "ai",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {
+        "vi": {
+          "name": "Thiết kế prompt"
+        }
+      }
+    },
+    "provider": {
+      "visible": true,
+      "highlight": null,
+      "sort": 900,
+      "name": "Provider",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "push-notifications": {
+      "visible": true,
+      "highlight": null,
+      "sort": 904,
+      "name": "Push Notifications",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "python": {
+      "visible": true,
+      "highlight": 4,
+      "sort": 40,
+      "name": "Python",
+      "category": "ai",
+      "icon": "python",
+      "url": "https://www.python.org/",
+      "listed": true,
+      "l10n": {}
+    },
+    "react-native": {
+      "visible": true,
+      "highlight": null,
+      "sort": 160,
+      "name": "React Native",
+      "category": "mobile",
+      "icon": "react",
+      "url": "https://reactnative.dev/",
+      "listed": true,
+      "l10n": {}
+    },
+    "reactjs": {
+      "visible": true,
+      "highlight": null,
+      "sort": 210,
+      "name": "ReactJS",
+      "category": "web",
+      "icon": "react",
+      "url": "https://reactjs.org/",
+      "listed": true,
+      "l10n": {}
+    },
+    "redux": {
+      "visible": true,
+      "highlight": null,
+      "sort": 913,
+      "name": "Redux",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "redux-toolkit": {
+      "visible": true,
+      "highlight": null,
+      "sort": 917,
+      "name": "Redux Toolkit",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "responsible-ai": {
+      "visible": true,
+      "highlight": null,
+      "sort": 921,
+      "name": "Responsible AI",
+      "category": "ai",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {
+        "vi": {
+          "name": "AI có trách nhiệm"
+        }
+      }
+    },
+    "rest-api": {
+      "visible": true,
+      "highlight": null,
+      "sort": 902,
+      "name": "REST API",
       "category": "tools",
       "icon": "",
       "url": "",
@@ -783,9 +640,308 @@
           "name": "Quản lý rủi ro"
         }
       }
+    },
+    "socketio": {
+      "visible": true,
+      "highlight": null,
+      "sort": 909,
+      "name": "SocketIO",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "sqlite": {
+      "visible": true,
+      "highlight": null,
+      "sort": 901,
+      "name": "SQLite",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "swift": {
+      "visible": true,
+      "highlight": null,
+      "sort": 110,
+      "name": "Swift",
+      "category": "mobile",
+      "icon": "swift",
+      "url": "https://www.swift.org/",
+      "listed": true,
+      "l10n": {}
+    },
+    "swiftui": {
+      "visible": true,
+      "highlight": null,
+      "sort": 120,
+      "name": "SwiftUI",
+      "category": "mobile",
+      "icon": "swift",
+      "url": "",
+      "listed": true,
+      "l10n": {}
+    },
+    "typescript": {
+      "visible": true,
+      "highlight": null,
+      "sort": 240,
+      "name": "TypeScript",
+      "category": "web",
+      "icon": "typescript",
+      "url": "https://www.typescriptlang.org/",
+      "listed": true,
+      "l10n": {}
+    },
+    "vnstock": {
+      "visible": true,
+      "highlight": null,
+      "sort": 914,
+      "name": "vnstock",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "vscode": {
+      "visible": true,
+      "highlight": null,
+      "sort": 350,
+      "name": "VS Code",
+      "category": "tools",
+      "icon": "code",
+      "url": "",
+      "listed": true,
+      "l10n": {}
+    },
+    "vuejs": {
+      "visible": true,
+      "highlight": null,
+      "sort": 230,
+      "name": "VueJS",
+      "category": "web",
+      "icon": "vuedotjs",
+      "url": "https://vuejs.org/",
+      "listed": true,
+      "l10n": {}
+    },
+    "watchos": {
+      "visible": true,
+      "highlight": null,
+      "sort": 180,
+      "name": "watchOS",
+      "category": "mobile",
+      "icon": "watch",
+      "url": "",
+      "listed": true,
+      "l10n": {}
+    },
+    "wearos": {
+      "visible": true,
+      "highlight": null,
+      "sort": 170,
+      "name": "WearOS",
+      "category": "mobile",
+      "icon": "watch",
+      "url": "",
+      "listed": true,
+      "l10n": {}
+    },
+    "webpack": {
+      "visible": true,
+      "highlight": null,
+      "sort": 918,
+      "name": "Webpack",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "webrtc": {
+      "visible": true,
+      "highlight": null,
+      "sort": 908,
+      "name": "WebRTC",
+      "category": "tools",
+      "icon": "",
+      "url": "",
+      "listed": false,
+      "l10n": {}
+    },
+    "xcode": {
+      "visible": true,
+      "highlight": null,
+      "sort": 370,
+      "name": "Xcode",
+      "category": "tools",
+      "icon": "xcode",
+      "url": "",
+      "listed": true,
+      "l10n": {}
     }
   },
   "experience": {
+    "american-code-lab": {
+      "visible": true,
+      "highlight": null,
+      "company": "American Code Lab",
+      "shortName": "ACL",
+      "role": "Part-Time Technical Instructor",
+      "kind": "part-time",
+      "startMonth": "2023-05",
+      "endMonth": "2023-12",
+      "summary": "Designed and taught a Flutter mobile app development course.",
+      "tagline": "Designed and taught a Flutter course from Dart basics to a hands-on capstone.",
+      "team": "",
+      "logo": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/american-code-lab.png",
+      "bullets": [
+        "Designed the course curriculum and syllabus from scratch, structuring the program from Dart fundamentals and Flutter widgets through state management, navigation, and API integration.",
+        "Taught weekly sessions on Flutter/Dart fundamentals, layout and UI building, state management (setState, Provider), REST API integration, and local data persistence.",
+        "Prepared hands-on exercises and sample projects for each lesson, and guided students through building and debugging their own Flutter apps.",
+        "Reviewed student projects, gave code-quality feedback, and mentored students through building a capstone app to reinforce the full course curriculum."
+      ],
+      "technologies": [],
+      "projects": [],
+      "cv": "off",
+      "l10n": {
+        "vi": {
+          "role": "Giảng viên kỹ thuật bán thời gian",
+          "summary": "Thiết kế và giảng dạy khóa học phát triển ứng dụng di động Flutter.",
+          "tagline": "Thiết kế và giảng dạy khóa học Flutter từ nền tảng Dart đến dự án cuối khóa thực hành.",
+          "bullets": [
+            "Thiết kế chương trình học và giáo trình của khóa học từ đầu, xây dựng lộ trình từ kiến thức nền tảng Dart và các widget Flutter đến quản lý trạng thái, điều hướng và tích hợp API.",
+            "Giảng dạy hằng tuần về nền tảng Flutter/Dart, bố cục và xây dựng giao diện, quản lý trạng thái (setState, Provider), tích hợp REST API và lưu trữ dữ liệu cục bộ.",
+            "Chuẩn bị bài tập thực hành và dự án mẫu cho từng bài học, đồng thời hướng dẫn học viên xây dựng và gỡ lỗi ứng dụng Flutter của riêng mình.",
+            "Review dự án của học viên, góp ý về chất lượng mã nguồn và hướng dẫn học viên xây dựng ứng dụng cuối khóa nhằm củng cố toàn bộ nội dung khóa học."
+          ]
+        }
+      }
+    },
+    "devblock-vietnam": {
+      "visible": true,
+      "highlight": null,
+      "company": "Devblock Vietnam",
+      "shortName": "Devblock",
+      "role": "Junior Mobile Developer",
+      "kind": "full-time",
+      "startMonth": "2020-03",
+      "endMonth": "2022-04",
+      "summary": "",
+      "tagline": "Android, iOS and React Native apps with REST APIs, notifications, real-time chat and NFC.",
+      "team": "",
+      "logo": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/devblock.jpg",
+      "bullets": [
+        "Implemented UI components, integrated REST APIs, and delivered features end-to-end.",
+        "Followed Agile practices using Git, Jira, and Trello."
+      ],
+      "technologies": [
+        "android",
+        "jetpack-compose",
+        "ios",
+        "swiftui",
+        "react-native"
+      ],
+      "projects": [
+        {
+          "name": "AppZocial",
+          "description": "Social networking app with separate native clients per platform - built the Android client with Jetpack Compose and the iOS client with SwiftUI, implementing news feed, profile, media upload with image compression, and real-time chat, keeping feature parity across both native codebases.",
+          "technologies": ["android", "jetpack-compose", "ios", "swiftui"],
+          "highlight": null,
+          "projectId": ""
+        },
+        {
+          "name": "Evolve1",
+          "description": "Fitness and communication app connecting coaches and athletes, built with native Android - implemented workout plan tracking and exercise logging, in-app messaging between coach and athlete, and progress data syncing with the backend.",
+          "technologies": ["android"],
+          "highlight": null,
+          "projectId": ""
+        },
+        {
+          "name": "HydroAssist",
+          "description": "Hydrocephalus patient tracking app built with React Native - implemented medication and appointment reminders via push notifications, and background synchronization of patient vitals and notes between patients and caregivers through a REST API.",
+          "technologies": ["react-native"],
+          "highlight": null,
+          "projectId": ""
+        },
+        {
+          "name": "Zera",
+          "description": "IoT companion app for body-temperature tracking via NFC-enabled thermometer stickers, built with React Native - implemented NFC tag scanning and device pairing, a real-time temperature readings display with historical charts, and alerts for abnormal readings.",
+          "technologies": ["react-native"],
+          "highlight": null,
+          "projectId": ""
+        }
+      ],
+      "cv": "full",
+      "l10n": {
+        "vi": {
+          "role": "Lập trình viên Mobile (Junior)",
+          "tagline": "Ứng dụng Android, iOS và React Native với REST API, thông báo, chat thời gian thực và NFC.",
+          "bullets": [
+            "Triển khai các thành phần UI, tích hợp REST API và hoàn thiện tính năng từ đầu đến cuối.",
+            "Làm việc theo phương pháp Agile với Git, Jira và Trello."
+          ],
+          "projects": [
+            {
+              "name": "AppZocial",
+              "description": "Ứng dụng mạng xã hội với các client native riêng cho từng nền tảng - xây dựng client Android bằng Jetpack Compose và client iOS bằng SwiftUI, triển khai bảng tin, hồ sơ cá nhân, tải media lên kèm nén ảnh và chat thời gian thực, đảm bảo đồng nhất tính năng giữa hai mã nguồn native.",
+              "technologies": ["android", "jetpack-compose", "ios", "swiftui"],
+              "highlight": null,
+              "projectId": ""
+            },
+            {
+              "name": "Evolve1",
+              "description": "Ứng dụng thể hình và liên lạc kết nối huấn luyện viên với vận động viên, xây dựng bằng Android native - triển khai theo dõi kế hoạch tập luyện và ghi nhận bài tập, nhắn tin trong ứng dụng giữa huấn luyện viên và vận động viên, và đồng bộ dữ liệu tiến độ với backend.",
+              "technologies": ["android"],
+              "highlight": null,
+              "projectId": ""
+            },
+            {
+              "name": "HydroAssist",
+              "description": "Ứng dụng theo dõi bệnh nhân não úng thủy xây dựng bằng React Native - triển khai nhắc nhở uống thuốc và lịch hẹn qua thông báo đẩy, và đồng bộ nền các chỉ số sinh tồn và ghi chú của bệnh nhân giữa bệnh nhân và người chăm sóc thông qua REST API.",
+              "technologies": ["react-native"],
+              "highlight": null,
+              "projectId": ""
+            },
+            {
+              "name": "Zera",
+              "description": "Ứng dụng IoT đi kèm để theo dõi thân nhiệt qua miếng dán nhiệt kế hỗ trợ NFC, xây dựng bằng React Native - triển khai quét thẻ NFC và ghép đôi thiết bị, hiển thị chỉ số nhiệt độ thời gian thực kèm biểu đồ lịch sử, và cảnh báo khi chỉ số bất thường.",
+              "technologies": ["react-native"],
+              "highlight": null,
+              "projectId": ""
+            }
+          ]
+        }
+      }
+    },
+    "easygds": {
+      "visible": false,
+      "highlight": null,
+      "company": "EasyGDS Limited",
+      "shortName": "EasyGDS",
+      "role": "Frontend Developer",
+      "kind": "full-time",
+      "startMonth": "2024-03",
+      "endMonth": null,
+      "summary": "Developing websites",
+      "tagline": "",
+      "team": "",
+      "logo": "",
+      "bullets": [],
+      "technologies": [],
+      "projects": [],
+      "cv": "off",
+      "l10n": {
+        "vi": {
+          "role": "Lập trình viên Frontend",
+          "summary": "Phát triển website"
+        }
+      }
+    },
     "fpt-software": {
       "visible": true,
       "highlight": null,
@@ -1029,138 +1185,6 @@
         }
       }
     },
-    "american-code-lab": {
-      "visible": true,
-      "highlight": null,
-      "company": "American Code Lab",
-      "shortName": "ACL",
-      "role": "Part-Time Technical Instructor",
-      "kind": "part-time",
-      "startMonth": "2023-05",
-      "endMonth": "2023-12",
-      "summary": "Designed and taught a Flutter mobile app development course.",
-      "tagline": "Designed and taught a Flutter course from Dart basics to a hands-on capstone.",
-      "team": "",
-      "logo": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/american-code-lab.png",
-      "bullets": [
-        "Designed the course curriculum and syllabus from scratch, structuring the program from Dart fundamentals and Flutter widgets through state management, navigation, and API integration.",
-        "Taught weekly sessions on Flutter/Dart fundamentals, layout and UI building, state management (setState, Provider), REST API integration, and local data persistence.",
-        "Prepared hands-on exercises and sample projects for each lesson, and guided students through building and debugging their own Flutter apps.",
-        "Reviewed student projects, gave code-quality feedback, and mentored students through building a capstone app to reinforce the full course curriculum."
-      ],
-      "technologies": [],
-      "projects": [],
-      "cv": "off",
-      "l10n": {
-        "vi": {
-          "role": "Giảng viên kỹ thuật bán thời gian",
-          "summary": "Thiết kế và giảng dạy khóa học phát triển ứng dụng di động Flutter.",
-          "tagline": "Thiết kế và giảng dạy khóa học Flutter từ nền tảng Dart đến dự án cuối khóa thực hành.",
-          "bullets": [
-            "Thiết kế chương trình học và giáo trình của khóa học từ đầu, xây dựng lộ trình từ kiến thức nền tảng Dart và các widget Flutter đến quản lý trạng thái, điều hướng và tích hợp API.",
-            "Giảng dạy hằng tuần về nền tảng Flutter/Dart, bố cục và xây dựng giao diện, quản lý trạng thái (setState, Provider), tích hợp REST API và lưu trữ dữ liệu cục bộ.",
-            "Chuẩn bị bài tập thực hành và dự án mẫu cho từng bài học, đồng thời hướng dẫn học viên xây dựng và gỡ lỗi ứng dụng Flutter của riêng mình.",
-            "Review dự án của học viên, góp ý về chất lượng mã nguồn và hướng dẫn học viên xây dựng ứng dụng cuối khóa nhằm củng cố toàn bộ nội dung khóa học."
-          ]
-        }
-      }
-    },
-    "devblock-vietnam": {
-      "visible": true,
-      "highlight": null,
-      "company": "Devblock Vietnam",
-      "shortName": "Devblock",
-      "role": "Junior Mobile Developer",
-      "kind": "full-time",
-      "startMonth": "2020-03",
-      "endMonth": "2022-04",
-      "summary": "",
-      "tagline": "Android, iOS and React Native apps with REST APIs, notifications, real-time chat and NFC.",
-      "team": "",
-      "logo": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/devblock.jpg",
-      "bullets": [
-        "Implemented UI components, integrated REST APIs, and delivered features end-to-end.",
-        "Followed Agile practices using Git, Jira, and Trello."
-      ],
-      "technologies": [
-        "android",
-        "jetpack-compose",
-        "ios",
-        "swiftui",
-        "react-native"
-      ],
-      "projects": [
-        {
-          "name": "AppZocial",
-          "description": "Social networking app with separate native clients per platform - built the Android client with Jetpack Compose and the iOS client with SwiftUI, implementing news feed, profile, media upload with image compression, and real-time chat, keeping feature parity across both native codebases.",
-          "technologies": ["android", "jetpack-compose", "ios", "swiftui"],
-          "highlight": null,
-          "projectId": ""
-        },
-        {
-          "name": "Evolve1",
-          "description": "Fitness and communication app connecting coaches and athletes, built with native Android - implemented workout plan tracking and exercise logging, in-app messaging between coach and athlete, and progress data syncing with the backend.",
-          "technologies": ["android"],
-          "highlight": null,
-          "projectId": ""
-        },
-        {
-          "name": "HydroAssist",
-          "description": "Hydrocephalus patient tracking app built with React Native - implemented medication and appointment reminders via push notifications, and background synchronization of patient vitals and notes between patients and caregivers through a REST API.",
-          "technologies": ["react-native"],
-          "highlight": null,
-          "projectId": ""
-        },
-        {
-          "name": "Zera",
-          "description": "IoT companion app for body-temperature tracking via NFC-enabled thermometer stickers, built with React Native - implemented NFC tag scanning and device pairing, a real-time temperature readings display with historical charts, and alerts for abnormal readings.",
-          "technologies": ["react-native"],
-          "highlight": null,
-          "projectId": ""
-        }
-      ],
-      "cv": "full",
-      "l10n": {
-        "vi": {
-          "role": "Lập trình viên Mobile (Junior)",
-          "tagline": "Ứng dụng Android, iOS và React Native với REST API, thông báo, chat thời gian thực và NFC.",
-          "bullets": [
-            "Triển khai các thành phần UI, tích hợp REST API và hoàn thiện tính năng từ đầu đến cuối.",
-            "Làm việc theo phương pháp Agile với Git, Jira và Trello."
-          ],
-          "projects": [
-            {
-              "name": "AppZocial",
-              "description": "Ứng dụng mạng xã hội với các client native riêng cho từng nền tảng - xây dựng client Android bằng Jetpack Compose và client iOS bằng SwiftUI, triển khai bảng tin, hồ sơ cá nhân, tải media lên kèm nén ảnh và chat thời gian thực, đảm bảo đồng nhất tính năng giữa hai mã nguồn native.",
-              "technologies": ["android", "jetpack-compose", "ios", "swiftui"],
-              "highlight": null,
-              "projectId": ""
-            },
-            {
-              "name": "Evolve1",
-              "description": "Ứng dụng thể hình và liên lạc kết nối huấn luyện viên với vận động viên, xây dựng bằng Android native - triển khai theo dõi kế hoạch tập luyện và ghi nhận bài tập, nhắn tin trong ứng dụng giữa huấn luyện viên và vận động viên, và đồng bộ dữ liệu tiến độ với backend.",
-              "technologies": ["android"],
-              "highlight": null,
-              "projectId": ""
-            },
-            {
-              "name": "HydroAssist",
-              "description": "Ứng dụng theo dõi bệnh nhân não úng thủy xây dựng bằng React Native - triển khai nhắc nhở uống thuốc và lịch hẹn qua thông báo đẩy, và đồng bộ nền các chỉ số sinh tồn và ghi chú của bệnh nhân giữa bệnh nhân và người chăm sóc thông qua REST API.",
-              "technologies": ["react-native"],
-              "highlight": null,
-              "projectId": ""
-            },
-            {
-              "name": "Zera",
-              "description": "Ứng dụng IoT đi kèm để theo dõi thân nhiệt qua miếng dán nhiệt kế hỗ trợ NFC, xây dựng bằng React Native - triển khai quét thẻ NFC và ghép đôi thiết bị, hiển thị chỉ số nhiệt độ thời gian thực kèm biểu đồ lịch sử, và cảnh báo khi chỉ số bất thường.",
-              "technologies": ["react-native"],
-              "highlight": null,
-              "projectId": ""
-            }
-          ]
-        }
-      }
-    },
     "tma-solutions": {
       "visible": false,
       "highlight": null,
@@ -1189,55 +1213,9 @@
           ]
         }
       }
-    },
-    "easygds": {
-      "visible": false,
-      "highlight": null,
-      "company": "EasyGDS Limited",
-      "shortName": "EasyGDS",
-      "role": "Frontend Developer",
-      "kind": "full-time",
-      "startMonth": "2024-03",
-      "endMonth": null,
-      "summary": "Developing websites",
-      "tagline": "",
-      "team": "",
-      "logo": "",
-      "bullets": [],
-      "technologies": [],
-      "projects": [],
-      "cv": "off",
-      "l10n": {
-        "vi": {
-          "role": "Lập trình viên Frontend",
-          "summary": "Phát triển website"
-        }
-      }
     }
   },
   "education": {
-    "master": {
-      "visible": true,
-      "highlight": null,
-      "degree": "Master of Science",
-      "school": "University of Science - Vietnam National University Ho Chi Minh City",
-      "major": "Physics and Informatics",
-      "startMonth": "2020-12",
-      "endMonth": "2023-06",
-      "logo": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/master.jpeg",
-      "thesisTitle": "Stock Price Trend Prediction using Machine Learning",
-      "thesisUrl": "http://ir.vnulib.edu.vn/handle/VNUHCM/31347",
-      "thesisSourceUrl": "https://github.com/bachbnt/stock-prediction-msc",
-      "technologies": ["python", "keras", "lstm", "matplotlib"],
-      "cv": "full",
-      "l10n": {
-        "vi": {
-          "degree": "Thạc sĩ Khoa học",
-          "major": "Vật lý và Tin học",
-          "thesisTitle": "Dự đoán xu hướng giá cổ phiếu bằng Machine Learning"
-        }
-      }
-    },
     "bachelor": {
       "visible": true,
       "highlight": null,
@@ -1259,9 +1237,62 @@
           "thesisTitle": "Ứng dụng mạng xã hội nội bộ"
         }
       }
+    },
+    "master": {
+      "visible": true,
+      "highlight": null,
+      "degree": "Master of Science",
+      "school": "University of Science - Vietnam National University Ho Chi Minh City",
+      "major": "Physics and Informatics",
+      "startMonth": "2020-12",
+      "endMonth": "2023-06",
+      "logo": "https://raw.githubusercontent.com/bachbnt/assets/main/resume/master.jpeg",
+      "thesisTitle": "Stock Price Trend Prediction using Machine Learning",
+      "thesisUrl": "http://ir.vnulib.edu.vn/handle/VNUHCM/31347",
+      "thesisSourceUrl": "https://github.com/bachbnt/stock-prediction-msc",
+      "technologies": ["python", "keras", "lstm", "matplotlib"],
+      "cv": "full",
+      "l10n": {
+        "vi": {
+          "degree": "Thạc sĩ Khoa học",
+          "major": "Vật lý và Tin học",
+          "thesisTitle": "Dự đoán xu hướng giá cổ phiếu bằng Machine Learning"
+        }
+      }
     }
   },
   "projects": {
+    "bachbntdev": {
+      "visible": true,
+      "highlight": null,
+      "sort": 70,
+      "name": "bachbntdev",
+      "kind": "personal",
+      "summary": "Personal web.",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.png",
+      "images": [],
+      "startMonth": null,
+      "endMonth": null,
+      "technologies": [
+        "reactjs",
+        "material-ui",
+        "redux-toolkit",
+        "firebase",
+        "webpack"
+      ],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://bachbntdev.web.app/",
+          "kind": "site"
+        }
+      ],
+      "l10n": {
+        "vi": {
+          "summary": "Trang web cá nhân."
+        }
+      }
+    },
     "beli-coffee": {
       "visible": true,
       "highlight": null,
@@ -1285,6 +1316,31 @@
       "l10n": {
         "vi": {
           "summary": "Ứng dụng đặt cà phê."
+        }
+      }
+    },
+    "comchay-rop": {
+      "visible": true,
+      "highlight": null,
+      "sort": 90,
+      "name": "Com Chay Rop",
+      "kind": "freelance",
+      "summary": "Snacks selling and admin web",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/comchayrop.png",
+      "images": [],
+      "startMonth": null,
+      "endMonth": null,
+      "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://comchayrop.com/",
+          "kind": "site"
+        }
+      ],
+      "l10n": {
+        "vi": {
+          "summary": "Web bán đồ ăn vặt và trang quản trị"
         }
       }
     },
@@ -1348,25 +1404,6 @@
         }
       }
     },
-    "pc-dashboard": {
-      "visible": true,
-      "highlight": null,
-      "sort": 40,
-      "name": "P&C Dashboard",
-      "kind": "personal",
-      "summary": "Internal social network app.",
-      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/pcdashboard.png",
-      "images": [],
-      "startMonth": null,
-      "endMonth": null,
-      "technologies": ["flutter", "bloc", "react-native", "redux"],
-      "links": [],
-      "l10n": {
-        "vi": {
-          "summary": "Ứng dụng mạng xã hội nội bộ."
-        }
-      }
-    },
     "finhub": {
       "visible": true,
       "highlight": null,
@@ -1392,66 +1429,47 @@
         }
       }
     },
-    "yoga-lasyn": {
-      "visible": true,
-      "highlight": 2,
-      "sort": 60,
-      "name": "Yoga Lasyn",
-      "kind": "freelance",
-      "summary": "Yoga teaching app",
-      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/yogalasyn.jpeg",
-      "images": [
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/01.jpg",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/02.jpeg",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/03.jpg",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/04.jpg",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/05.jpg",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/06.jpg"
-      ],
-      "startMonth": null,
-      "endMonth": null,
-      "technologies": ["flutter", "provider", "bloc", "firebase"],
-      "links": [
-        {
-          "label": "Website",
-          "url": "https://apps.apple.com/vn/app/yoga-lasyn-make-life-better/id1534680016",
-          "kind": "site"
-        }
-      ],
-      "l10n": {
-        "vi": {
-          "summary": "Ứng dụng dạy yoga"
-        }
-      }
-    },
-    "bachbntdev": {
+    "goodmorningcoffeetea": {
       "visible": true,
       "highlight": null,
-      "sort": 70,
-      "name": "bachbntdev",
-      "kind": "personal",
-      "summary": "Personal web.",
-      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.png",
+      "sort": 100,
+      "name": "Good Morning Coffee & Tea",
+      "kind": "freelance",
+      "summary": "Drinks selling and admin web",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/goodmorningcoffeetea.png",
       "images": [],
       "startMonth": null,
       "endMonth": null,
-      "technologies": [
-        "reactjs",
-        "material-ui",
-        "redux-toolkit",
-        "firebase",
-        "webpack"
-      ],
+      "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
       "links": [
         {
           "label": "Website",
-          "url": "https://bachbntdev.web.app/",
+          "url": "https://goodmorningcoffeetea.com/",
           "kind": "site"
         }
       ],
       "l10n": {
         "vi": {
-          "summary": "Trang web cá nhân."
+          "summary": "Web bán đồ uống và trang quản trị"
+        }
+      }
+    },
+    "pc-dashboard": {
+      "visible": true,
+      "highlight": null,
+      "sort": 40,
+      "name": "P&C Dashboard",
+      "kind": "personal",
+      "summary": "Internal social network app.",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/pcdashboard.png",
+      "images": [],
+      "startMonth": null,
+      "endMonth": null,
+      "technologies": ["flutter", "bloc", "react-native", "redux"],
+      "links": [],
+      "l10n": {
+        "vi": {
+          "summary": "Ứng dụng mạng xã hội nội bộ."
         }
       }
     },
@@ -1488,58 +1506,52 @@
         }
       }
     },
-    "comchay-rop": {
+    "yoga-lasyn": {
       "visible": true,
-      "highlight": null,
-      "sort": 90,
-      "name": "Com Chay Rop",
+      "highlight": 2,
+      "sort": 60,
+      "name": "Yoga Lasyn",
       "kind": "freelance",
-      "summary": "Snacks selling and admin web",
-      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/comchayrop.png",
-      "images": [],
+      "summary": "Yoga teaching app",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/yogalasyn.jpeg",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/01.jpg",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/02.jpeg",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/03.jpg",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/04.jpg",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/05.jpg",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/06.jpg"
+      ],
       "startMonth": null,
       "endMonth": null,
-      "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
+      "technologies": ["flutter", "provider", "bloc", "firebase"],
       "links": [
         {
           "label": "Website",
-          "url": "https://comchayrop.com/",
+          "url": "https://apps.apple.com/vn/app/yoga-lasyn-make-life-better/id1534680016",
           "kind": "site"
         }
       ],
       "l10n": {
         "vi": {
-          "summary": "Web bán đồ ăn vặt và trang quản trị"
-        }
-      }
-    },
-    "goodmorningcoffeetea": {
-      "visible": true,
-      "highlight": null,
-      "sort": 100,
-      "name": "Good Morning Coffee & Tea",
-      "kind": "freelance",
-      "summary": "Drinks selling and admin web",
-      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/goodmorningcoffeetea.png",
-      "images": [],
-      "startMonth": null,
-      "endMonth": null,
-      "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
-      "links": [
-        {
-          "label": "Website",
-          "url": "https://goodmorningcoffeetea.com/",
-          "kind": "site"
-        }
-      ],
-      "l10n": {
-        "vi": {
-          "summary": "Web bán đồ uống và trang quản trị"
+          "summary": "Ứng dụng dạy yoga"
         }
       }
     }
   },
   "certificates": {
+    "claude-architect": {
+      "visible": true,
+      "highlight": null,
+      "name": "Claude Certified Architect - Professional",
+      "issuer": "Anthropic",
+      "issuedAt": "2026-10-31",
+      "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.png",
+      "pdfUrl": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/certificate/claude-architect.pdf",
+      "credentialUrl": "",
+      "skills": ["claude-code", "mcp", "ai-agents"],
+      "l10n": {}
+    },
     "google-ai": {
       "visible": true,
       "highlight": null,
@@ -1563,21 +1575,25 @@
       "credentialUrl": "",
       "skills": ["project-planning", "agile", "risk-management"],
       "l10n": {}
-    },
-    "claude-architect": {
-      "visible": true,
-      "highlight": null,
-      "name": "Claude Certified Architect - Professional",
-      "issuer": "Anthropic",
-      "issuedAt": "2026-10-31",
-      "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-architect.png",
-      "pdfUrl": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/certificate/claude-architect.pdf",
-      "credentialUrl": "",
-      "skills": ["claude-code", "mcp", "ai-agents"],
-      "l10n": {}
     }
   },
   "services": {
+    "app-development": {
+      "visible": true,
+      "highlight": null,
+      "sort": 10,
+      "name": "App Development",
+      "description": "Developing Android & iOS applications using Flutter & React Native. Be able to work with native applications using Kotlin & Swift.",
+      "art": "app",
+      "starter": "Hi Bach, I'm looking for help with a mobile app. What I have in mind: ",
+      "l10n": {
+        "vi": {
+          "name": "Phát triển ứng dụng",
+          "description": "Phát triển ứng dụng Android & iOS bằng Flutter & React Native. Có thể làm việc với ứng dụng native bằng Kotlin & Swift.",
+          "starter": "Chào Bách, mình đang cần hỗ trợ làm một ứng dụng di động. Ý tưởng của mình: "
+        }
+      }
+    },
     "blog-writing": {
       "visible": true,
       "highlight": null,
@@ -1626,22 +1642,6 @@
         }
       }
     },
-    "app-development": {
-      "visible": true,
-      "highlight": null,
-      "sort": 10,
-      "name": "App Development",
-      "description": "Developing Android & iOS applications using Flutter & React Native. Be able to work with native applications using Kotlin & Swift.",
-      "art": "app",
-      "starter": "Hi Bach, I'm looking for help with a mobile app. What I have in mind: ",
-      "l10n": {
-        "vi": {
-          "name": "Phát triển ứng dụng",
-          "description": "Phát triển ứng dụng Android & iOS bằng Flutter & React Native. Có thể làm việc với ứng dụng native bằng Kotlin & Swift.",
-          "starter": "Chào Bách, mình đang cần hỗ trợ làm một ứng dụng di động. Ý tưởng của mình: "
-        }
-      }
-    },
     "web-development": {
       "visible": true,
       "highlight": null,
@@ -1662,14 +1662,14 @@
   "payments": {
     "bidv": {
       "visible": true,
-      "highlight": null,
       "sort": 10,
       "name": "BIDV",
       "kind": "bank",
       "holder": "NGUYEN VAN A",
       "account": "1234567890",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-bidv-v2.jpg",
-      "logo": ""
+      "highlight": 1,
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-bidv.png"
     },
     "binance": {
       "visible": false,
@@ -1680,10 +1680,9 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000001",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-binance.jpg",
-      "logo": ""
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-binance.png"
     },
     "momo": {
-      "visible": false,
       "highlight": null,
       "sort": 40,
       "name": "MoMo",
@@ -1691,7 +1690,8 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000002",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-momo-v2.png",
-      "logo": ""
+      "visible": true,
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-momo.png"
     },
     "paypal": {
       "visible": false,
@@ -1702,7 +1702,7 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000003",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-paypal.png",
-      "logo": ""
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-paypal.png"
     },
     "shopee-pay": {
       "visible": false,
@@ -1716,7 +1716,6 @@
       "logo": ""
     },
     "vietcombank": {
-      "visible": false,
       "highlight": null,
       "sort": 20,
       "name": "Vietcombank",
@@ -1724,7 +1723,8 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000005",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietcombank-v2.jpg",
-      "logo": ""
+      "visible": true,
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-vietcombank.png"
     },
     "vietinbank": {
       "visible": false,
@@ -1735,7 +1735,7 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000006",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-vietinbank-v2.jpg",
-      "logo": ""
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-vietinbank.png"
     },
     "viettel-money": {
       "visible": false,
@@ -1746,7 +1746,7 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000007",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-viettelmoney.jpg",
-      "logo": ""
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-viettel-money.png"
     },
     "vnpay": {
       "visible": false,
@@ -1768,54 +1768,10 @@
       "holder": "NGUYEN VAN A",
       "account": "0000000009",
       "qr": "https://raw.githubusercontent.com/bachbnt/assets/main/payment/qr-zalopay-v2.png",
-      "logo": ""
+      "logo": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/payment/icon-zalopay.png"
     }
   },
   "contacts": {
-    "facebook": {
-      "visible": true,
-      "highlight": null,
-      "sort": 40,
-      "kind": "social",
-      "platform": "facebook",
-      "label": "bachbnt",
-      "url": "https://www.facebook.com/bachbnt/",
-      "menuGroup": "social",
-      "l10n": {}
-    },
-    "linkedin": {
-      "visible": true,
-      "highlight": null,
-      "sort": 20,
-      "kind": "social",
-      "platform": "linkedin",
-      "label": "bachbnt",
-      "url": "https://www.linkedin.com/in/bachbnt/",
-      "menuGroup": "professional",
-      "l10n": {}
-    },
-    "telegram": {
-      "visible": true,
-      "highlight": null,
-      "sort": 50,
-      "kind": "social",
-      "platform": "telegram",
-      "label": "@bachbnt",
-      "url": "https://t.me/bachbnt",
-      "menuGroup": "messaging",
-      "l10n": {}
-    },
-    "phone": {
-      "visible": true,
-      "highlight": null,
-      "sort": 70,
-      "kind": "phone",
-      "platform": "phone",
-      "label": "(+84) 384560623",
-      "url": "tel:(+84) 384560623",
-      "menuGroup": "",
-      "l10n": {}
-    },
     "address": {
       "visible": true,
       "highlight": null,
@@ -1842,6 +1798,17 @@
       "menuGroup": "",
       "l10n": {}
     },
+    "facebook": {
+      "visible": true,
+      "highlight": null,
+      "sort": 40,
+      "kind": "social",
+      "platform": "facebook",
+      "label": "bachbnt",
+      "url": "https://www.facebook.com/bachbnt/",
+      "menuGroup": "social",
+      "l10n": {}
+    },
     "github": {
       "visible": true,
       "highlight": null,
@@ -1851,17 +1818,6 @@
       "label": "bachbnt",
       "url": "https://github.com/bachbnt/",
       "menuGroup": "professional",
-      "l10n": {}
-    },
-    "zalo": {
-      "visible": true,
-      "highlight": null,
-      "sort": 60,
-      "kind": "social",
-      "platform": "zalo",
-      "label": "Tôn Bách",
-      "url": "https://zalo.me/0384560623",
-      "menuGroup": "messaging",
       "l10n": {}
     },
     "gitlab": {
@@ -1875,6 +1831,28 @@
       "menuGroup": "professional",
       "l10n": {}
     },
+    "linkedin": {
+      "visible": true,
+      "highlight": null,
+      "sort": 20,
+      "kind": "social",
+      "platform": "linkedin",
+      "label": "bachbnt",
+      "url": "https://www.linkedin.com/in/bachbnt/",
+      "menuGroup": "professional",
+      "l10n": {}
+    },
+    "phone": {
+      "visible": true,
+      "highlight": null,
+      "sort": 70,
+      "kind": "phone",
+      "platform": "phone",
+      "label": "(+84) 384560623",
+      "url": "tel:(+84) 384560623",
+      "menuGroup": "",
+      "l10n": {}
+    },
     "skype": {
       "visible": false,
       "highlight": null,
@@ -1883,6 +1861,17 @@
       "platform": "skype",
       "label": "bachbnt",
       "url": "https://join.skype.com/invite/d0JQcWVZyD8F",
+      "menuGroup": "messaging",
+      "l10n": {}
+    },
+    "telegram": {
+      "visible": true,
+      "highlight": null,
+      "sort": 50,
+      "kind": "social",
+      "platform": "telegram",
+      "label": "@bachbnt",
+      "url": "https://t.me/bachbnt",
       "menuGroup": "messaging",
       "l10n": {}
     },
@@ -1895,6 +1884,17 @@
       "label": "@bachbnt",
       "url": "https://twitter.com/bachbnt",
       "menuGroup": "social",
+      "l10n": {}
+    },
+    "zalo": {
+      "visible": true,
+      "highlight": null,
+      "sort": 60,
+      "kind": "social",
+      "platform": "zalo",
+      "label": "Tôn Bách",
+      "url": "https://zalo.me/0384560623",
+      "menuGroup": "messaging",
       "l10n": {}
     }
   }

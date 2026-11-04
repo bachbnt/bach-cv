@@ -18,7 +18,9 @@
     "test:automation:ui": "playwright test --ui",
     "test:automation:install": "playwright install chromium",
     "backup:firestore": "node scripts/firestore-backup.mjs",
-    "restore:firestore": "node scripts/firestore-restore.mjs"
+    "restore:firestore": "node scripts/firestore-restore.mjs",
+    "docs": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --disable-warning=ExperimentalWarning scripts/build-docs.mjs",
+    "sync:fixture": "node scripts/firestore-fixture.mjs"
   },
   "lint-staged": {
     "{src,tests}/**/*.{ts,tsx}": [

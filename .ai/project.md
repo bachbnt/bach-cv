@@ -28,7 +28,8 @@ This Next.js version differs from older releases. Read the relevant guide in
 - `src/content/shell.json`: the only content embedded at build time.
 - `worker/src`: Cloudflare Worker chat proxy.
 - `tests/unit`: Vitest. `tests/automation`: Playwright.
-- `docs/data-design.html` and `docs/detail-design.html`: the data design and the detail design.
+- `docs/data-design.html` and `docs/detail-design.html`: the data design and the detail design (rebuild with `npm run docs`;
+  the entity diagram is drawn from `src/lib/content/schema.ts`). `docs/schema.sql` is the SQL form of the model.
 - `scripts/`: Firestore backup and restore.
 - `tests/fixtures/seed.json`: a snapshot of the Firestore data for tests (payment accounts are fake).
 

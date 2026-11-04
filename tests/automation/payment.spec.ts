@@ -82,20 +82,43 @@ test.beforeEach(async ({ page, context }) => {
   await mockFirestore(page);
 });
 
-test('with one visible method (the seed) it shows that method, never the hidden ones', async ({
+test('a highlighted method comes first and the others follow; hidden ones never show', async ({
   page,
 }) => {
+  // BIDV highlighted, MoMo on; Vietcombank is not served at all (the rules would not return a hidden one)
+  const on = allOn();
+  await servePayments(page, {
+    bidv: { ...on.bidv, highlight: 1 },
+    momo: { ...on.momo, highlight: null },
+  });
+  await page.goto('/payment');
+  await expect(
+    page.getByRole('heading', { level: 2, name: 'Preferred methods' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 2, name: 'More ways to pay' }),
+  ).toBeVisible();
+  const methods = page.getByTestId('payment-method');
+  await expect(methods).toHaveCount(2);
+  await expect(methods.first()).toContainText('BIDV');
+  await expect(methods.first()).toContainText('1234567890');
+  await expect(methods.nth(1)).toContainText('MoMo');
+  await expect(page.getByText('Vietcombank')).toHaveCount(0);
+  await expect(
+    page.getByText(/Check the account name shown in your banking app/),
+  ).toBeVisible();
+});
+
+test('with exactly one visible method it is shown as Payment details', async ({
+  page,
+}) => {
+  await servePayments(page, { bidv: allOn().bidv });
   await page.goto('/payment');
   await expect(
     page.getByRole('heading', { level: 2, name: 'Payment details' }),
   ).toBeVisible();
   await expect(page.getByTestId('payment-method')).toHaveCount(1);
   await expect(page.getByTestId('payment-method')).toContainText('BIDV');
-  await expect(page.getByTestId('payment-method')).toContainText('1234567890');
-  await expect(page.getByText('Vietcombank')).toHaveCount(0);
-  await expect(
-    page.getByText(/Check the account name shown in your banking app/),
-  ).toBeVisible();
 });
 
 test('highlighted methods come first, then More ways to pay with a filter', async ({
@@ -225,6 +248,7 @@ test('in Vietnamese the labels and the toast are translated', async ({
   page,
 }) => {
   await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
+  await servePayments(page, { bidv: allOn().bidv });
   await page.goto('/payment');
   await expect(
     page.getByRole('heading', { level: 1, name: 'Thanh toán' }),
