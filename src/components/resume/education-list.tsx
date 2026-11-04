@@ -6,31 +6,52 @@
 
 import { BookOpen, CalendarDays } from 'lucide-react';
 import Image from 'next/image';
+import { DataState } from '@/components/data-state';
 import { SkillTags } from '@/components/resume/skill-tags';
+import { CardsSkeleton } from '@/components/skeletons';
 import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
+import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { formatPeriod } from '@/lib/format';
 import { useContentQuery } from '@/lib/query/use-content';
 
-/** Degrees as cards: photo, school, period, major, and the thesis with its technologies and link. */
+/** Degrees, with the loading, empty and error states of every data block. */
 export function EducationList() {
-  const { data, isPending, isError } = useContentQuery('education');
-  const { byId } = useSkills();
-  const all = useCopy(resumeCopy);
-  const copy = all.education;
-  const { lang } = useLang();
+  const query = useContentQuery('education');
+  const degrees = query.data ?? [];
+  return (
+    <DataState
+      query={query}
+      count={degrees.length}
+      empty='education'
+      subject='education'
+      level={3}
+      skeleton={
+        <CardsSkeleton
+          count={2}
+          min={380}
+          height={420}
+          itemClassName='bg-white'
+        />
+      }
+      className='mt-8'
+    >
+      <EducationCards degrees={degrees} />
+    </DataState>
+  );
+}
 
-  if (isPending)
-    return <p className='mt-8 text-muted-foreground'>{all.loading}</p>;
-  if (isError) return <p className='mt-8 text-muted-foreground'>{all.error}</p>;
-  if (!data.length)
-    return <p className='mt-8 text-muted-foreground'>{copy.empty}</p>;
+/** Degrees as cards: photo, school, period, major, and the thesis with its technologies and link. */
+function EducationCards({ degrees }: { degrees: Doc<'education'>[] }) {
+  const { byId } = useSkills();
+  const copy = useCopy(resumeCopy).education;
+  const { lang } = useLang();
 
   return (
     <div className='mt-8 grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] gap-6'>
-      {data.map((degree) => (
+      {degrees.map((degree) => (
         <article
           key={degree.id}
           className='flex flex-col overflow-hidden rounded-2xl border bg-white'

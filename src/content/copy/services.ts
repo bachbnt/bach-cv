@@ -14,7 +14,6 @@ export const servicesCopy = defineCopy(
     intro: 'What I can do for your team or project.',
     list: {
       label: 'Services',
-      empty: 'My services will be listed here soon.',
     },
     cta: {
       title: 'What do you want to build?',
@@ -69,7 +68,6 @@ export const servicesCopy = defineCopy(
     intro: 'Những việc mình có thể làm cho đội nhóm hoặc dự án của bạn.',
     list: {
       label: 'Dịch vụ',
-      empty: 'Các dịch vụ của mình sẽ sớm được cập nhật tại đây.',
     },
     cta: {
       title: 'Bạn muốn xây dựng điều gì?',

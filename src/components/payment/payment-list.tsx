@@ -8,11 +8,13 @@ import { Info } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
 import { summaryOf, splitMethods } from '@/components/payment/payment-details';
+import { DataState } from '@/components/data-state';
 import { PaymentEmpty } from '@/components/payment/payment-empty';
 import { PaymentFeature } from '@/components/payment/payment-feature';
 import { PaymentQrDialog } from '@/components/payment/payment-qr-dialog';
 import { PaymentRow } from '@/components/payment/payment-row';
 import { PaymentToast } from '@/components/payment/payment-toast';
+import { Skeleton } from '@/components/ui/skeleton';
 import { paymentCopy } from '@/content/copy/payment';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
@@ -25,12 +27,30 @@ type Filter = 'all' | Kind;
 const TOAST_MS = 2000;
 
 /**
- * Highlighted methods first, then "More ways to pay" with a bank/wallet filter. Payments are read at run time only
- * (the Firestore rules return the visible ones), so nothing here is in the built files.
+ * The payment methods. They are read at run time only (the Firestore rules return the visible ones),
+ * so nothing here is in the built files. With none switched on it says payments are paused.
  */
 export function PaymentList() {
-  const copy = useCopy(paymentCopy);
   const payments = useContentQuery('payments', { featuredFirst: true });
+  const methods = payments.data ?? [];
+  return (
+    <DataState
+      query={payments}
+      count={methods.length}
+      empty='services'
+      emptyContent={<PaymentEmpty />}
+      subject='payments'
+      skeleton={<Skeleton className='h-[260px] max-w-[720px] rounded-3xl' />}
+      className='mt-12'
+    >
+      <PaymentMethods methods={methods} />
+    </DataState>
+  );
+}
+
+/** Highlighted methods first, then "More ways to pay" with a bank/wallet filter. */
+function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
+  const copy = useCopy(paymentCopy);
   const [filter, setFilter] = useState<Filter>('all');
   const [qrId, setQrId] = useState<string | null>(null);
   const [toast, setToast] = useState({ message: '', visible: false });
@@ -71,22 +91,6 @@ export function PaymentList() {
         ? copy.toast.allCopied(m.name)
         : copy.toast.copyFailed,
     );
-
-  if (payments.isPending) {
-    return (
-      <div
-        role='status'
-        aria-label={copy.loading}
-        className='h-[260px] max-w-[720px] animate-pulse rounded-3xl bg-muted'
-      />
-    );
-  }
-  if (payments.isError) {
-    return <p className='text-muted-foreground'>{copy.error}</p>;
-  }
-
-  const methods = payments.data ?? [];
-  if (!methods.length) return <PaymentEmpty />;
 
   const { featured, rest } = splitMethods(methods);
   const withQr = [...featured, ...rest].filter((m) => m.qr);

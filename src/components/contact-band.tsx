@@ -5,6 +5,8 @@
 'use client';
 
 import { AskBotButton } from '@/components/chat/ask-bot-button';
+import { DataState } from '@/components/data-state';
+import { Skeleton } from '@/components/ui/skeleton';
 import { chatCopy } from '@/content/copy/chat';
 import { useLive } from '@/hooks/use-live';
 import { homeCopy } from '@/content/copy/home';
@@ -13,7 +15,8 @@ import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 
 /** The dark closing band: the address to write to and where I am. */
 export function ContactBand() {
-  const { data: contacts = [] } = useContentQuery('contacts');
+  const contactsQuery = useContentQuery('contacts');
+  const contacts = contactsQuery.data ?? [];
   const { data: profile } = useProfileQuery();
   const live = useLive();
   const copy = useCopy(homeCopy);
@@ -35,23 +38,39 @@ export function ContactBand() {
           >
             {copy.contact.title}
           </h2>
-          {email && (
-            <a
-              href={email.url}
-              className='mt-6 inline-block font-heading text-2xl font-bold tracking-[-0.02em] break-all text-white underline decoration-[#f28b7a] decoration-[3px] underline-offset-8 hover:text-[#f5a99b] min-[401px]:text-[32px]'
-            >
-              {email.label}
-            </a>
-          )}
-          <p className='mt-6 leading-[1.7] text-[#b4bac6]'>
-            {profile?.location}
-            {phone && (
+          <DataState
+            query={contactsQuery}
+            count={contacts.length}
+            empty='contact'
+            subject='contact'
+            level={3}
+            className='mt-6'
+            skeleton={
               <>
-                <br />
-                {phone.label}
+                <Skeleton className='h-9 w-[320px] max-w-full bg-white/10' />
+                <Skeleton className='mt-6 h-5 w-48 bg-white/10' />
+                <Skeleton className='mt-2 h-5 w-36 bg-white/10' />
               </>
+            }
+          >
+            {email && (
+              <a
+                href={email.url}
+                className='mt-6 inline-block font-heading text-2xl font-bold tracking-[-0.02em] break-all text-white underline decoration-[#f28b7a] decoration-[3px] underline-offset-8 hover:text-[#f5a99b] min-[401px]:text-[32px]'
+              >
+                {email.label}
+              </a>
             )}
-          </p>
+            <p className='mt-6 leading-[1.7] text-[#b4bac6]'>
+              {profile?.location}
+              {phone && (
+                <>
+                  <br />
+                  {phone.label}
+                </>
+              )}
+            </p>
+          </DataState>
         </div>
         {live.features.chat && (
           <div className='flex flex-[0_1_340px] flex-col gap-4 rounded-2xl bg-white p-7 text-foreground'>

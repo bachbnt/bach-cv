@@ -4,6 +4,7 @@
 
 'use client';
 
+import { ChipsSkeleton, LoadingBlock } from '@/components/skeletons';
 import { Tag, type TagTone } from '@/components/tag';
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
@@ -24,10 +25,21 @@ const LIMIT = 20;
 /** A slow marquee of skills. It stops on hover and becomes a wrapped list for reduced motion. */
 export function TechStrip({ className }: { className?: string }) {
   const copy = useCopy(homeCopy);
-  const { data: skills = [] } = useContentQuery('skills');
+  const { data: skills = [], isPending } = useContentQuery('skills');
   const shown = CATEGORY_ORDER.flatMap((category) =>
     skills.filter((s) => s.listed && s.category === category),
   ).slice(0, LIMIT);
+  if (isPending)
+    return (
+      <LoadingBlock
+        className={cn(
+          'mx-auto w-full max-w-[1200px] px-5 min-[721px]:px-12',
+          className,
+        )}
+      >
+        <ChipsSkeleton count={8} className='justify-center' />
+      </LoadingBlock>
+    );
   if (!shown.length) return null;
 
   const chips = (hidden: boolean) =>

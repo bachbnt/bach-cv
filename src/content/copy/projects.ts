@@ -15,7 +15,6 @@ export const projectsCopy = defineCopy(
     all: 'All projects',
     filterLabel: 'Filter projects',
     filterAll: 'All',
-    loading: 'Loading...',
     technologies: 'Technologies',
     kinds: {
       company: 'Company',
@@ -44,15 +43,6 @@ export const projectsCopy = defineCopy(
       counter: 'Screenshot {current} of {total}',
       alt: '{name} screenshot {current}',
     },
-    empty: {
-      title: 'No projects to show yet',
-      body: "I'm preparing the case studies. In the meantime, you can read where I have worked, or write to me about a project.",
-      resume: 'See my resume',
-    },
-    error: {
-      title: "Projects couldn't be loaded",
-      body: 'Check your connection and reload the page.',
-    },
   },
   {
     title: 'Dự án',
@@ -63,7 +53,6 @@ export const projectsCopy = defineCopy(
     all: 'Tất cả dự án',
     filterLabel: 'Lọc dự án',
     filterAll: 'Tất cả',
-    loading: 'Đang tải...',
     technologies: 'Công nghệ',
     kinds: {
       company: 'Công ty',
@@ -91,15 +80,6 @@ export const projectsCopy = defineCopy(
       next: 'Ảnh tiếp theo',
       counter: 'Ảnh {current} / {total}',
       alt: '{name}, ảnh chụp màn hình {current}',
-    },
-    empty: {
-      title: 'Chưa có dự án nào để hiển thị',
-      body: 'Tôi đang chuẩn bị các dự án. Trong lúc đó, bạn có thể xem quá trình làm việc của tôi hoặc nhắn cho tôi về dự án của bạn.',
-      resume: 'Xem hồ sơ',
-    },
-    error: {
-      title: 'Không thể tải danh sách dự án',
-      body: 'Hãy kiểm tra kết nối mạng và tải lại trang.',
     },
   },
 );

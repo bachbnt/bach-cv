@@ -17,9 +17,6 @@ export const cvCopy = defineCopy(
     previewLabel: 'CV preview',
     /** `{page}` and `{total}` are replaced */
     pageLabel: 'Page {page} of {total}',
-    loading: 'Loading the CV',
-    loadFailed:
-      'The CV could not be loaded. Check your connection and try again.',
     fallbackFileName: 'cv.pdf',
     sections: {
       summary: 'Summary',
@@ -53,8 +50,6 @@ export const cvCopy = defineCopy(
     description: 'Xem trước CV dưới dạng các trang in.',
     previewLabel: 'Xem trước CV',
     pageLabel: 'Trang {page} / {total}',
-    loading: 'Đang tải CV',
-    loadFailed: 'Không thể tải CV. Kiểm tra kết nối và thử lại.',
     fallbackFileName: 'cv.pdf',
     sections: {
       summary: 'Tóm tắt',

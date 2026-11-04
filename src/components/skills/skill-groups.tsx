@@ -5,6 +5,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { DataState } from '@/components/data-state';
+import { CardsSkeleton } from '@/components/skeletons';
 import { SkillChip } from '@/components/skills/skill-chip';
 import { SkillTip, type ActiveTip } from '@/components/skills/skill-tip';
 import { tipText } from '@/components/skills/skill-text';
@@ -35,7 +37,7 @@ const DOT: Record<(typeof ORDER)[number], string> = {
  */
 export function SkillGroups({ className }: { className?: string }) {
   const copy = useCopy(resumeCopy);
-  const { skills, evidence, isPending, isError } = useSkills();
+  const { skills, evidence, isPending, isError, refetch } = useSkills();
   const [tip, setTip] = useState<ActiveTip | null>(null);
 
   const hide = useCallback(() => setTip(null), []);
@@ -60,18 +62,20 @@ export function SkillGroups({ className }: { className?: string }) {
     };
   }, [tip, hide]);
 
-  if (isPending) return <p className='text-muted-foreground'>{copy.loading}</p>;
-  if (isError) return <p className='text-muted-foreground'>{copy.error}</p>;
-
   const groups = ORDER.map((category) => ({
     category,
     items: skills.filter((s) => s.listed && s.category === category),
   })).filter((group) => group.items.length);
-  if (!groups.length)
-    return <p className='text-muted-foreground'>{copy.skills.empty}</p>;
 
   return (
-    <>
+    <DataState
+      query={{ isPending, isError, refetch }}
+      count={groups.length}
+      empty='skills'
+      subject='skills'
+      level={3}
+      skeleton={<CardsSkeleton count={4} min={250} height={300} gap={20} />}
+    >
       <div
         className={cn(
           'grid grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-5',
@@ -127,6 +131,6 @@ export function SkillGroups({ className }: { className?: string }) {
         ))}
       </div>
       {tip && <SkillTip tip={tip} />}
-    </>
+    </DataState>
   );
 }

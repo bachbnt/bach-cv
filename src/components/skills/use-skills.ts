@@ -32,5 +32,6 @@ export function useSkills() {
     evidence,
     isPending: skills.isPending,
     isError: skills.isError,
+    refetch: skills.refetch,
   };
 }

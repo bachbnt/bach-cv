@@ -12,15 +12,12 @@ export const resumeCopy = defineCopy(
     intro:
       'Five years across payments, Super Apps and field-operations software, now leading a team of 5.',
     downloadCv: 'Download CV',
-    loading: 'Loading...',
-    error: 'This could not be loaded. Please try again later.',
     experience: {
       title: 'Experience',
       current: 'Current',
       keyProject: 'Key project',
       show: 'Show responsibilities',
       hide: 'Hide responsibilities',
-      empty: 'No experience to show yet.',
     },
     skills: {
       title: 'Skills',
@@ -39,7 +36,6 @@ export const resumeCopy = defineCopy(
         web: 'Frontend and backend',
         tools: 'Tools and process',
       },
-      empty: 'No skills to show yet.',
       evidence: {
         usedAt: 'Used at',
         separator: ' · ',
@@ -58,7 +54,6 @@ export const resumeCopy = defineCopy(
       thesis: 'Thesis',
       readThesis: 'Read the thesis',
       sourceCode: 'Source code',
-      empty: 'No education to show yet.',
     },
   },
   {
@@ -66,15 +61,12 @@ export const resumeCopy = defineCopy(
     intro:
       'Năm năm làm việc trong lĩnh vực thanh toán, Super App và phần mềm vận hành hiện trường, hiện đang dẫn dắt một nhóm 5 người.',
     downloadCv: 'Tải CV',
-    loading: 'Đang tải...',
-    error: 'Không thể tải nội dung này. Vui lòng thử lại sau.',
     experience: {
       title: 'Kinh nghiệm',
       current: 'Hiện tại',
       keyProject: 'Dự án chính',
       show: 'Xem trách nhiệm công việc',
       hide: 'Ẩn trách nhiệm công việc',
-      empty: 'Chưa có kinh nghiệm nào để hiển thị.',
     },
     skills: {
       title: 'Kỹ năng',
@@ -93,7 +85,6 @@ export const resumeCopy = defineCopy(
         web: 'Frontend và backend',
         tools: 'Công cụ và quy trình',
       },
-      empty: 'Chưa có kỹ năng nào để hiển thị.',
       evidence: {
         usedAt: 'Đã dùng tại',
         separator: ' · ',
@@ -112,7 +103,6 @@ export const resumeCopy = defineCopy(
       thesis: 'Luận văn',
       readThesis: 'Đọc luận văn',
       sourceCode: 'Mã nguồn',
-      empty: 'Chưa có học vấn nào để hiển thị.',
     },
   },
 );

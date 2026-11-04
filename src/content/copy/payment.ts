@@ -35,8 +35,6 @@ const en = {
   closeQr: 'Close QR code',
   previousMethod: 'Previous method',
   nextMethod: 'Next method',
-  loading: 'Loading payment methods',
-  error: "The payment details couldn't be loaded. Please try again later.",
   empty: {
     title: 'Payments are paused for now',
     body: "There's nothing to pay at the moment, and nothing you need to do. If you'd like to work together, tell me about your project and I'll reply.",
@@ -78,8 +76,6 @@ const vi: Shape<typeof en> = {
   closeQr: 'Đóng mã QR',
   previousMethod: 'Phương thức trước',
   nextMethod: 'Phương thức tiếp theo',
-  loading: 'Đang tải các phương thức thanh toán',
-  error: 'Không tải được thông tin thanh toán. Vui lòng thử lại sau.',
   empty: {
     title: 'Hiện tạm dừng nhận thanh toán',
     body: 'Hiện không có khoản nào cần thanh toán và bạn không cần làm gì cả. Nếu muốn hợp tác, hãy cho tôi biết về dự án của bạn, tôi sẽ phản hồi.',

@@ -6,6 +6,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { buildBlocks, type CvBlock } from '@/components/cv/build-blocks';
+import { CvSkeleton } from '@/components/cv/cv-skeleton';
 import { cvCopy, pageLabel } from '@/content/copy/cv';
 import type { CvModel } from '@/lib/cv/build-cv';
 import { useCopy } from '@/lib/i18n/copy';
@@ -93,9 +94,7 @@ export function CvSheets({ cv }: { cv: CvModel }) {
         ))
       ) : (
         <>
-          <p role='status' className='m-auto text-sm text-muted-foreground'>
-            {copy.loading}
-          </p>
+          <CvSkeleton />
           <div
             ref={measureRef}
             inert

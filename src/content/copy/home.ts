@@ -35,7 +35,6 @@ export const homeCopy = defineCopy(
       ],
     },
     technologies: 'Technologies',
-    loading: 'Loading...',
     work: {
       title: "Where I've worked",
       all: 'Full resume',
@@ -73,7 +72,6 @@ export const homeCopy = defineCopy(
       ],
     },
     technologies: 'Công nghệ',
-    loading: 'Đang tải...',
     work: {
       title: 'Nơi mình đã làm việc',
       all: 'Xem hồ sơ đầy đủ',

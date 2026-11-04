@@ -21,6 +21,8 @@ export function useCv(): {
   cv: CvModel | null;
   fileName: string;
   isError: boolean;
+  /** reads again whatever failed */
+  retry: () => void;
 } {
   const { lang } = useLang();
   const copy = useCopy(cvCopy);
@@ -69,17 +71,21 @@ export function useCv(): {
     ],
   );
 
+  const queries = [
+    profile,
+    contacts,
+    experience,
+    education,
+    skills,
+    projects,
+    certificates,
+  ];
+
   return {
     cv,
     fileName: profile.data?.cvFileName ?? '',
-    isError: [
-      profile,
-      contacts,
-      experience,
-      education,
-      skills,
-      projects,
-      certificates,
-    ].some((q) => q.isError),
+    isError: queries.some((q) => q.isError),
+    retry: () =>
+      queries.filter((q) => q.isError).forEach((q) => void q.refetch()),
   };
 }

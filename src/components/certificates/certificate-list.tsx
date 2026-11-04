@@ -11,19 +11,44 @@ import {
   type CertificateSkill,
 } from '@/components/certificates/certificate-card';
 import { formatIssued } from '@/components/certificates/format-issued';
+import { DataState } from '@/components/data-state';
 import { Lightbox } from '@/components/lightbox/lightbox';
+import { CardsSkeleton } from '@/components/skeletons';
 import { buttonVariants } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { certificatesCopy } from '@/content/copy/certificates';
+import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
 
-/** The latest certificate large, the rest in a grid, and the preview dialog that steps through all of them. */
+/** The certificates, with the loading, empty and error states of every data block. */
 export function CertificateList() {
+  const certificates = useContentQuery('certificates');
+  const items = certificates.data ?? [];
+  return (
+    <DataState
+      query={certificates}
+      count={items.length}
+      empty='certificates'
+      subject='certificates'
+      skeleton={
+        <>
+          <Skeleton className='h-[420px] rounded-3xl' />
+          <CardsSkeleton count={2} min={360} height={320} className='mt-6' />
+        </>
+      }
+    >
+      <CertificateGallery items={items} />
+    </DataState>
+  );
+}
+
+/** The latest certificate large, the rest in a grid, and the preview dialog that steps through all of them. */
+function CertificateGallery({ items }: { items: Doc<'certificates'>[] }) {
   const copy = useCopy(certificatesCopy);
   const { lang } = useLang();
-  const certificates = useContentQuery('certificates');
   const { data: skills = [] } = useContentQuery('skills');
   const [index, setIndex] = useState<number | null>(null);
 
@@ -31,28 +56,11 @@ export function CertificateList() {
     () => new Map(skills.map((s) => [s.id, s])),
     [skills],
   );
-  const items = certificates.data ?? [];
   const skillsOf = (ids: string[]): CertificateSkill[] =>
     ids.flatMap((id) => {
       const s = skillById.get(id);
       return s ? [{ id, name: s.name, tone: s.category }] : [];
     });
-
-  if (certificates.isPending) {
-    return (
-      <div
-        aria-busy='true'
-        aria-label={copy.loading}
-        className='h-[420px] animate-pulse rounded-3xl bg-muted'
-      />
-    );
-  }
-  if (certificates.isError) {
-    return <p className='text-muted-foreground'>{copy.error}</p>;
-  }
-  if (!items.length) {
-    return <p className='text-muted-foreground'>{copy.empty}</p>;
-  }
 
   const [latest, ...rest] = items;
   const current = index === null ? null : items[index];
