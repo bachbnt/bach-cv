@@ -15,7 +15,6 @@ import { ChatBubble } from './chat-bubble';
 import { ChatComposer } from './chat-composer';
 import { ChatSuggestions } from './chat-suggestions';
 import { ChatTyping } from './chat-typing';
-import styles from './chat-widget.module.css';
 
 type ChatCopy = typeof chatCopy.en;
 
@@ -105,7 +104,7 @@ export function ChatPanel({
       role='dialog'
       aria-label={fill(copy.panelLabel, { name: botName })}
       tabIndex={-1}
-      className={`${styles.panel} flex h-[520px] max-h-[calc(100dvh-120px-var(--chat-inset,0px))] w-[360px] origin-bottom-right flex-col overflow-hidden rounded-3xl border bg-card shadow-[0_24px_56px_rgba(27,31,39,.25)] outline-none max-[720px]:h-[min(72dvh,560px)] max-[720px]:w-[calc(100vw-32px)]`}
+      className={`bb-panel flex h-[520px] max-h-[calc(100dvh-120px-var(--chat-inset,0px))] w-[360px] origin-bottom-right flex-col overflow-hidden rounded-3xl border bg-card shadow-[0_24px_56px_rgba(27,31,39,.25)] outline-none max-[720px]:h-[min(72dvh,560px)] max-[720px]:w-[calc(100vw-32px)]`}
     >
       <header className='flex flex-none items-center gap-3 bg-night py-3.5 pr-3 pl-4 text-white'>
         <Image

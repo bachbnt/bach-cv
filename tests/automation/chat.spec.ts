@@ -263,6 +263,62 @@ test('motion is off for visitors who prefer reduced motion', async ({
   );
 });
 
+test('the button icon turns into a cross and back with a spin, and does not spin for reduced motion', async ({
+  page,
+}) => {
+  await mockWorker(page, () => ({ body: { text: 'ok' } }));
+  await page.goto('/');
+  const fab = page.getByRole('button', { name: 'Open chat' });
+  // the button's name changes when it opens, so find its icons by the button's class
+  const glyphs = page.locator('button.bb-fab svg');
+  const [chat, close] = [glyphs.nth(0), glyphs.nth(1)];
+  const state = (el: typeof chat) =>
+    el.evaluate((node) => {
+      const s = getComputedStyle(node);
+      return {
+        opacity: s.opacity,
+        transform: s.transform,
+        time: s.transitionDuration,
+      };
+    });
+
+  // the widget's own motion is on (the button grows in when the page opens)
+  expect(await fab.evaluate((el) => getComputedStyle(el).animationName)).toBe(
+    'bb-fab-in',
+  );
+
+  // closed: the chat bubble shows, the cross waits turned away
+  expect((await state(chat)).opacity).toBe('1');
+  expect((await state(close)).opacity).toBe('0');
+  expect((await state(close)).transform).not.toBe('none');
+  expect((await state(chat)).time).not.toBe('0s');
+
+  await fab.click();
+  const closeFab = page.locator('button[aria-expanded="true"]');
+  await expect(closeFab).toBeVisible();
+  await expect.poll(async () => (await state(close)).transform).toBe('none');
+  expect((await state(close)).opacity).toBe('1');
+  // the bubble has spun away
+  expect((await state(chat)).opacity).toBe('0');
+  expect((await state(chat)).transform).not.toBe('none');
+
+  await closeFab.click();
+  await expect.poll(async () => (await state(chat)).transform).toBe('none');
+  expect((await state(chat)).opacity).toBe('1');
+});
+
+test('the icon swap has no motion for reduced motion', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const icon = page
+    .getByRole('button', { name: 'Open chat' })
+    .locator('svg')
+    .first();
+  expect(
+    await icon.evaluate((node) => getComputedStyle(node).transitionDuration),
+  ).toBe('0s');
+});
+
 test('on a phone the panel fits and the page does not scroll sideways', async ({
   page,
 }) => {
