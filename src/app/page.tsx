@@ -17,7 +17,7 @@ export default function Home() {
       <main className='flex flex-col'>
         <PageGate page='home'>
           <HomeHero />
-          <TechStrip className='mt-24' />
+          <TechStrip className='mt-24 min-[901px]:mt-[136px]' />
           <HomeWork />
           <HomeBuild />
           <HomeProjects />
