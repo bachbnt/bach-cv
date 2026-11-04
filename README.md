@@ -1,335 +1,97 @@
 # BachCV
 
-A configurable portfolio and CV web app built with React 18, Vite, TypeScript,
-MUI, Firebase, TanStack Query, Zustand, i18next, Vitest, Playwright, and a
-Cloudflare Worker chat proxy.
+Personal portfolio and CV of Bach Bui, live at **https://bachbntdev.web.app**.
 
-Development URL: [http://localhost:3000](http://localhost:3000)  
-Production URL: [https://bachbntdev.web.app/](https://bachbntdev.web.app/)
+A static Next.js site whose content lives in Firestore. Editing a document in the Firebase console changes the site within
+minutes: no build, no deploy. It speaks English and Vietnamese, has an AI assistant (BB Bot), and builds the CV as a PDF from the
+same data.
 
-## Features
+## Highlights
 
-- Config-driven navigation with independent `Visible` and `Enable` flags for
-  each route.
-- Responsive header and drawer navigation with active page state and dynamic CV
-  preview/download.
-- Wheel and touch navigation between visible pages, including page enter/exit
-  animations.
-- Dynamic profile content loaded from Firebase Firestore, with deterministic
-  mock data support for local and test runs.
-- Home page with avatar, primary specialty, social contact links, and quick
-  actions.
-- About page with profile summary, grouped skills, outbound skill links, and a
-  cover image carousel.
-- Resume page with education and experience timelines.
-- Project page grouped by company, freelance, and personal work, with image
-  carousel dialogs, technology details, descriptions, and reference links.
-- Certificate page with certificate cards, preview dialog, and download action.
-- Service page for visible service offerings.
-- Contact page with contact links and a validated message form that writes to
-  Firestore.
-- Payment page with payment cards, QR preview dialogs, and copy-to-clipboard
-  actions for account details.
-- Blog route placeholder controlled by config visibility.
-- Floating portfolio chatbot that answers from the loaded profile, resume,
-  project, certificate, and contact data.
-- Firestore-backed CV document rendered to PDF in the browser, with a local JSON
-  backup for mock mode and recovery.
-- Chat provider selection through config for Gemini, OpenAI, or Claude via the
-  Cloudflare Worker proxy.
-- Firestore-backed localization through i18next with English and Vietnamese
-  mock translations.
-- Firebase Analytics tracking for page views, component clicks, and Web Vitals.
-- Persisted TanStack Query cache in local storage and Firestore local cache for
-  multi-tab usage.
-- Zod parsing for config and profile data defaults.
+- **Remote config.** `site/live` switches pages (`on` / `soon` / `hidden`), features (chat, CV download, contact form, Connect
+  menu) and a site-wide maintenance screen. Every content document has a `visible` flag that the Firestore rules enforce, so a
+  hidden item is never sent to a visitor.
+- **Bilingual.** English and Vietnamese. Interface copy is typed (`defineCopy(en, vi)`); content is translated through an `l10n.vi`
+  overlay on each document.
+- **Static and cheap.** `output: 'export'` served by Firebase Hosting; the browser reads Firestore with the lite SDK and
+  TanStack Query caches it (also in `localStorage`). Only `src/content/shell.json` (name, headline, avatar, SEO) is embedded at
+  build time.
+- **BB Bot.** A chat widget backed by a Cloudflare Worker that proxies Gemini, OpenAI or Anthropic (keys stay in the Worker).
+- **CV dialog and PDF.** A preview of the CV as A4 sheets and a PDF download, both built from the visitor's language.
 
-## Routes
+## Stack
 
-| Route          | Page        | Current behavior                                                  |
-| -------------- | ----------- | ----------------------------------------------------------------- |
-| `/`            | Home        | Landing profile, avatar, social links, About and Contact actions. |
-| `/about`       | About       | Profile summary, skills by type, and cover carousel.              |
-| `/resume`      | Resume      | Education and experience timelines.                               |
-| `/project`     | Project     | Project groups and detail dialogs.                                |
-| `/blog`        | Blog        | Placeholder route, hidden by default mock config.                 |
-| `/certificate` | Certificate | Certificate grid and preview/download dialog.                     |
-| `/service`     | Service     | Service offering cards.                                           |
-| `/contact`     | Contact     | Contact links and message form.                                   |
-| `/payment`     | Payment     | Payment details, QR dialogs, and copy actions.                    |
-| `/*`           | Not Found   | 404 fallback route.                                               |
+Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS 4 · shadcn/ui (Base UI) · TanStack Query ·
+Firebase (Firestore lite, Hosting) · Zod · `@react-pdf/renderer` · Vitest · Playwright · Cloudflare Worker.
 
-## Data Flow
-
-The app preloads config and user data in `src/App.tsx`.
-
-- `src/queries/useConfigQuery.ts` loads app config, applies the favicon/title,
-  and preloads the background image.
-- `src/queries/useUserQuery.ts` loads profile, education, experience, skills,
-  projects, services, contacts, payments, and certificates in parallel.
-- `src/queries/useCvQuery.ts` loads the CV document used by the header preview
-  dialog and PDF download action.
-- `src/services/service.ts` reads from Firestore unless
-  `VITE_USE_MOCK_DATA=true`, in which case it uses `src/services/mock.ts`.
-- CV mock/fallback data is stored in `src/data/my-cv.json` and can be uploaded
-  to Firestore with `npm run upload:cv`.
-- CV preview/download naming is configured in `user/cv.metadata` with
-  `previewTitle` and `downloadFileName`.
-- List documents are filtered by `visible: true` and sorted by `index`.
-- Contact form submissions write to the `message` collection when mock mode is
-  disabled.
-
-Firestore data is organized around these collections and documents:
-
-| Collection | Document              | Purpose                                                            |
-| ---------- | --------------------- | ------------------------------------------------------------------ |
-| `config`   | `config`              | App title, icon, language, image defaults, page flags, chat flags. |
-| `config`   | `localization`        | Translation dictionaries by language key.                          |
-| `user`     | `profile`             | Name, avatar, summary, covers, specialties.                        |
-| `user`     | `cv`                  | Structured CV data for dynamic PDF preview and download.           |
-| `user`     | `education`           | Education timeline entries keyed by id.                            |
-| `user`     | `experience`          | Experience timeline entries keyed by id.                           |
-| `user`     | `skill`               | Skills grouped as framework, language, or tool.                    |
-| `user`     | `project`             | Projects grouped as company, freelance, or personal.               |
-| `user`     | `service`             | Service offering cards.                                            |
-| `user`     | `contact`             | Social and non-social contact links.                               |
-| `user`     | `payment`             | Bank or wallet payment information.                                |
-| `user`     | `certificate`         | Certificate metadata and image/download URLs.                      |
-| `message`  | generated date string | Contact form messages.                                             |
-
-## Environment
-
-Create a local environment file from the example:
+## Getting started
 
 ```bash
-cp .env.example .env
-```
-
-Important frontend variables:
-
-```bash
-VITE_TITLE="Bach Bui"
-VITE_DOMAIN="http://localhost:3000"
-VITE_ASSETS_URL="https://raw.githubusercontent.com/bachbnt/assets/main/config"
-VITE_EDIT_MODE="false"
-VITE_USE_MOCK_DATA="false"
-VITE_CHAT_PROXY_URL=""
-```
-
-Firebase web app config is also read from `VITE_FIREBASE_*` variables in
-`.env.example`.
-
-Use `VITE_USE_MOCK_DATA=true` for deterministic local development and tests
-without Firestore reads or writes.
-
-Backend scripts that write to Firestore use a Firebase service account. Set one
-of these in `.env` before running upload scripts:
-
-```bash
-GOOGLE_APPLICATION_CREDENTIALS="/absolute/path/to/firebase-service-account.json"
-FIREBASE_SERVICE_ACCOUNT_BASE64=""
-FIREBASE_SERVICE_ACCOUNT=""
-```
-
-## Development
-
-### `npm run dev`
-
-Runs the app in development mode.
-
-### `npm run build`
-
-Builds the app for production to the build folder.
-
-### `npm run typecheck`
-
-Runs TypeScript checking for app, unit tests, automation tests, and worker
-source included by `tsconfig.json`.
-
-### `npm run lint`
-
-Runs ESLint for app and test source.
-
-### `npm run preview`
-
-Serves the production build locally after running `npm run build`.
-
-### `npm run upload:cv`
-
-Uploads `src/data/my-cv.json` to Firestore at `user/cv` using the configured
-Firebase service account. Use this after editing the JSON backup so the live app
-can render the updated CV remotely.
-
-Dry-run the script without writing to Firestore:
-
-```bash
-npm run upload:cv -- --dry-run
-```
-
-### `npm run update:localization`
-
-Merges `src/data/localization-patch.json` into Firestore at
-`config/localization`. Use this after adding new UI translation keys.
-
-```bash
-npm run update:localization -- --dry-run
-```
-
-## Testing
-
-Unit tests are separated under `tests/unit` and run with Vitest using
-`vitest.unit.config.ts`.
-
-### `npm test`
-
-Runs unit tests in watch mode.
-
-### `npm run test:unit:run`
-
-Runs unit tests once.
-
-### `npm run test:coverage`
-
-Runs unit tests once and generates coverage output.
-
-Automation tests are separated under `tests/automation` and run with Playwright
-using `playwright.config.ts`. The Playwright server starts Vite with
-`VITE_USE_MOCK_DATA=true`, so these tests use deterministic local mock data
-instead of Firestore.
-
-### `npm run test:automation:install`
-
-Installs Playwright browsers when needed. For Chromium only, run:
-
-```bash
-npm run test:automation:install -- --with-deps chromium
-```
-
-### `npm run test:automation`
-
-Runs Playwright automation tests in headless mode.
-
-### `npm run test:automation:headed`
-
-Runs Playwright automation tests with a visible browser window.
-
-### `npm run test:automation:debug`
-
-Runs Playwright automation tests in debug mode.
-
-### `npm run test:automation:ui`
-
-Opens the Playwright test runner UI.
-
-### `npm run test:all`
-
-Runs unit tests once, then runs Playwright automation tests.
-
-### Full local check
-
-```bash
-npm run typecheck
-npm run lint
-npm run test:all
-```
-
-## Chat Proxy Worker
-
-The chatbot uses a Cloudflare Worker in `worker/` as a proxy for Gemini,
-OpenAI, and Anthropic. API keys must live in the Worker, not in the frontend.
-
-### Worker local setup
-
-```bash
-cd worker
 npm install
-cp ../.env.example .dev.vars
+cp .env.example .env.local   # fill in the NEXT_PUBLIC_FIREBASE_* values (and NEXT_PUBLIC_CHAT_PROXY_URL for the chat)
+npm run dev                  # http://localhost:3000
 ```
 
-Fill `.dev.vars` with the Worker secrets you need:
+| Script                                | What it does                                                                              |
+| ------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `npm run dev`                         | Next.js dev server                                                                        |
+| `npm run build`                       | static export into `out/`                                                                 |
+| `npm run typecheck`                   | `next typegen` then `tsc --noEmit`                                                        |
+| `npm run lint` / `lint:fix`           | ESLint (Next.js config + Prettier)                                                        |
+| `npm run test:unit:run`               | Vitest                                                                                    |
+| `npm run test:automation`             | Playwright against `next dev` on port 3100 (`PW_CHANNEL=chrome` uses an installed Chrome) |
+| `npm run backup:firestore`            | download every v2 collection into `backup/`                                               |
+| `npm run restore:firestore -- <file>` | plan (add `--apply` to write) a restore from a backup                                     |
+
+Before finishing a change: `npm run typecheck && npm run lint && npm run test:unit:run`, and `npm run test:automation` for UI changes.
+
+## Content and remote config
+
+The data is in Firestore, one document per item:
+
+| Collection                                                                              | Holds                                                                 |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `site`                                                                                  | `shell` (embedded at build), `live` (switches), `profile`, `settings` |
+| `skills`, `experience`, `education`, `projects`, `certificates`, `services`, `contacts` | the content                                                           |
+| `payments`                                                                              | payment methods, read only while the Payment page is on               |
+| `messages`                                                                              | contact-form messages (create only from the browser)                  |
+
+Common edits in the Firebase console:
+
+- Hide or show an item: set `visible` on the document. Feature it with `highlight` (1 is first); order it with `sort`.
+- Switch a page: `site/live` → `pages.<page>` = `on`, `soon` or `hidden`. Switch a feature: `features.<name>` = `true` / `false`.
+- Maintenance: `site/live` → `maintenance.enabled = true` (message in `maintenance.message`, Vietnamese in `maintenance.l10n.vi.message`).
+- Translate: add `l10n.vi.<field>` on the document.
+
+Changes show after the browser cache expires (`site/live` about a minute, content about five minutes).
+The model is in `src/lib/content/schema.ts`; the rules are in `firestore.rules` (v1 and v2 side by side until the old site is retired).
+
+## Repository layout
+
+```text
+src/app                 routes, layout, global CSS
+src/components          UI (ui/ is shadcn), one folder per page or feature
+src/content             shell.json (embedded) and the interface copy in src/content/copy/*.ts
+src/lib/content         the data contract (schema.ts), repository interface, Firestore lite adapter
+src/lib/query           TanStack Query keys, options and hooks
+src/lib/i18n            language state and the copy helpers
+tests/unit              Vitest        tests/automation   Playwright        tests/fixtures   Firestore snapshot for tests
+scripts/                Firestore backup and restore
+worker/                 Cloudflare Worker for the chat (see worker/README.md)
+docs/                   reference material (SQL schema)
+.ai/, .claude/skills    working rules and installed skills for AI assistants
+```
+
+## Deploy
 
 ```bash
-GEMINI_API_KEY=""
-OPENAI_API_KEY=""
-ANTHROPIC_API_KEY=""
-ALLOWED_ORIGINS="http://localhost:3000"
-RATE_LIMIT_PER_MINUTE="10"
-RATE_LIMIT_PER_DAY="200"
+npm run build
+npx firebase-tools deploy --only hosting      # the site
+npx firebase-tools deploy --only firestore:rules   # the rules (changes production)
 ```
 
-### Worker local dev
+CI (`.github/workflows/main.yml`) builds and deploys hosting when a commit on `master` contains `[build]`.
+Back up the data before changing the model: `npm run backup:firestore`. The `backup/` folder is git-ignored because it holds
+payment details and visitors' emails.
 
-```bash
-cd worker
-npm run dev
-```
-
-The Worker runs at [http://localhost:8787](http://localhost:8787). To connect
-the frontend to it, set this in the app `.env`:
-
-```bash
-VITE_CHAT_PROXY_URL="http://localhost:8787"
-```
-
-### Worker checks
-
-```bash
-cd worker
-npm run typecheck
-```
-
-The main app test suite also includes unit tests for Worker schema, provider,
-and rate-limit logic under `tests/unit/worker`.
-
-### Worker deploy
-
-```bash
-cd worker
-npx wrangler login
-npx wrangler secret put GEMINI_API_KEY
-npx wrangler secret put OPENAI_API_KEY
-npx wrangler secret put ANTHROPIC_API_KEY
-npm run deploy
-```
-
-After deploy, copy the Worker URL into the frontend environment:
-
-```bash
-VITE_CHAT_PROXY_URL="https://<worker-url>"
-```
-
-Optional per-IP rate limiting uses the `CHAT_RATE_LIMIT` KV binding. Create it
-with:
-
-```bash
-cd worker
-npx wrangler kv:namespace create CHAT_RATE_LIMIT
-```
-
-Then paste the returned namespace id into `worker/wrangler.toml`.
-
-## Deployment
-
-### `npm run all`
-
-Builds the app and deploys it to Firebase.
-
-### `npm install -g firebase-tools`
-
-Installs Firebase CLI globally.
-
-### `firebase login`
-
-Logs in to Firebase using Firebase CLI.
-
-### `firebase login:ci`
-
-Generates a Firebase token to use for authentication in the CI/CD pipeline.
-
-### `firebase init`
-
-Initializes Firebase for the project.
-
-### `firebase deploy`
-
-Deploys the project to Firebase.
+The previous Vite/React/MUI version lives on the `master` and `dev` branches.

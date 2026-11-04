@@ -2,16 +2,18 @@
 
 ## Secrets
 
-- Never put Gemini, OpenAI, or Anthropic API keys in frontend code or `VITE_*`
-  env variables.
+- Never put Gemini, OpenAI, or Anthropic API keys in frontend code or
+  `NEXT_PUBLIC_*` env variables. Everything `NEXT_PUBLIC_` is in the browser.
 - Use Cloudflare Worker secrets:
   `GEMINI_API_KEY`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`.
-- Keep `.env`, `.env.local`, and `worker/.dev.vars` ignored.
-- Keep `.env.example` placeholder-only.
+- Keep `.env`, `.env.local`, service account files, and `worker/.dev.vars`
+  ignored. Keep `.env.example` placeholder-only.
+- The site is a static export, so there is no server-side secret store. Anything
+  that needs a secret goes through the Worker.
 
 ## Chat Proxy
 
-- Frontend must call only `VITE_CHAT_PROXY_URL`.
+- Frontend must call only `NEXT_PUBLIC_CHAT_PROXY_URL`.
 - Worker must validate `/chat` requests with Zod before provider calls.
 - Worker should rate-limit before provider calls when KV is configured.
 - CORS `ALLOWED_ORIGINS` should be explicit for production.
@@ -19,9 +21,11 @@
 ## Firebase
 
 - Treat Firebase web config as public identifiers, not private secrets.
-- Keep write operations limited and intentional.
-- For tests and automation, use `VITE_USE_MOCK_DATA=true` instead of writing to
-  Firestore.
+- Security comes from `firestore.rules`: content collections are readable only
+  when `visible == true`, and the only browser write is a validated `messages`
+  create. The rules are in `firestore.rules` and are deployed.
+- Sensitive data (payments) is never embedded in the build.
+- Do not deploy rules and data changes without a backup of the Firestore data.
 
 ## Logging
 
@@ -32,3 +36,9 @@
 
 - Avoid adding dependencies for small helpers.
 - Check package purpose and browser impact before adding frontend dependencies.
+- Read third-party agent skills before installing them.
+
+## Backups and the public repo
+
+- This repository is public. Never commit `backup/` (payment details, visitors' emails), service account files, or real
+  account numbers in fixtures.

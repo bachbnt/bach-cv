@@ -2,26 +2,30 @@
 
 ## Frontend
 
-- Keep route pages lazy-loaded through the existing wrapper pattern.
-- Avoid adding large dependencies for small UI behavior.
-- Keep Firebase imports as modular imports.
-- Preserve Vite chunking for Firebase where possible.
-- Derive expensive grouped lists with `useMemo` when source arrays are stable.
-- Avoid unnecessary global state; prefer query cache for server data.
+- Keep client components small and at the leaves; prefer Server Components.
+- Avoid large dependencies for small UI behavior.
+- Import Firebase only through `lib/content`, using `firebase/firestore/lite`.
+- Load code that only appears on interaction (dialogs, the chat) with
+  `next/dynamic`.
+- Use `next-bundle-optimizer` (project skill) when a route's initial load grows.
+- Images are not optimized by Next.js (static export). Give every image explicit
+  dimensions and size sources sensibly.
 
 ## Rendering
 
 - Avoid hover/focus styles that trigger layout shifts.
 - Prefer CSS transforms/opacity for animation over layout-affecting properties.
-- Keep images lazy-loaded where the current pattern uses `loading="lazy"`.
 - Make fixed-format UI stable with explicit dimensions, aspect ratios, or
   consistent borders/padding.
 
 ## Data
 
-- Fetch user data concurrently as existing `useUserQuery` does.
-- Keep query keys stable.
-- Avoid refetch-on-focus unless there is a strong product reason.
+- Every Firestore document returned is a billed read. Read only the collections
+  a page uses, in parallel, and let the persisted TanStack Query cache absorb
+  repeat visits.
+- Keep query keys in `lib/query/keys.ts` stable.
+- Refetch on window focus only for `site/live`.
+- No `orderBy` in browser queries (it can require a composite index).
 
 ## Worker
 
@@ -33,5 +37,5 @@
 ## Measurement
 
 - Use Playwright to protect critical layout invariants.
-- Use browser devtools or Lighthouse only when optimizing a real performance
-  issue, not as a default refactor trigger.
+- Use `next build` output, the bundle analyzer, or Lighthouse only when
+  optimizing a real performance issue.

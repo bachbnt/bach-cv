@@ -30,7 +30,7 @@ npx wrangler kv:namespace create CHAT_RATE_LIMIT
 
 ```bash
 npm run deploy
-# → copy the deployed URL into the app's .env as VITE_CHAT_PROXY_URL
+# → copy the deployed URL into the app's .env.local as NEXT_PUBLIC_CHAT_PROXY_URL
 ```
 
 ## Local dev
@@ -51,5 +51,5 @@ npm run dev
 ## Security checklist after deploy
 
 1. Rotate the old `GEMINI_API_KEY`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY` — the previous values were bundled into the public client and must be considered compromised.
-2. Remove the `VITE_GEMINI_API_KEY`, `VITE_OPENAI_API_KEY`, `VITE_ANTHROPIC_API_KEY` entries from any deployed environment (Firebase Hosting env, CI secrets, etc.).
+2. Remove any `*_GEMINI_API_KEY`, `*_OPENAI_API_KEY`, `*_ANTHROPIC_API_KEY` entries (including old `VITE_*` ones) from any deployed environment (Firebase Hosting env, CI secrets, etc.).
 3. Confirm `ALLOWED_ORIGINS` matches the production domain only — `*` is acceptable for development but never for production.

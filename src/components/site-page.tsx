@@ -1,0 +1,37 @@
+/**
+ * Copyright (c) 2026 bachbnt. All rights reserved.
+ */
+
+import type { CSSProperties, ReactNode } from 'react';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
+import type { PageKey } from '@/lib/content/schema';
+import { NEUTRAL_THEME, PAGE_META } from '@/lib/pages';
+
+/**
+ * Frame shared by every page: sets the page's colour pair, then header, content, footer.
+ * The tinted band behind the header continues into the page head, so the page passes it in `children`.
+ */
+export function SitePage({
+  page,
+  children,
+}: {
+  page: PageKey | 'neutral';
+  children: ReactNode;
+}) {
+  const theme = page === 'neutral' ? NEUTRAL_THEME : PAGE_META[page];
+  return (
+    <div
+      style={
+        { '--page': theme.accent, '--page-tint': theme.tint } as CSSProperties
+      }
+      className='flex flex-1 flex-col'
+    >
+      <div className='bg-page-tint'>
+        <SiteHeader current={page} />
+      </div>
+      {children}
+      <SiteFooter />
+    </div>
+  );
+}

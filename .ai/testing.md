@@ -8,16 +8,26 @@ Unit tests live in `tests/unit` and run with:
 npm run test:unit:run
 ```
 
-Use Vitest and Testing Library. Add unit tests for:
+Use Vitest. The environment is `node`; add `jsdom` and Testing Library when the
+first component test needs them. Add unit tests for:
 
-- Zod schemas and model parsers.
-- Query and mutation hooks.
-- Store state transitions.
-- Service transformations and mock mode.
+- Zod schemas and the helpers in `src/lib/content/schema.ts`.
+- The seed: `tests/unit/content/seed.test.ts` parses
+  `tests/fixtures/seed.json` against the schemas.
+- Query options and mutation hooks.
 - Worker schema, rate limiting, provider mapping, and error handling.
 
-Keep tests deterministic. Mock Firebase/service/provider boundaries rather than
+Keep tests deterministic. Mock Firebase and provider boundaries rather than
 calling network services.
+
+## Firestore data
+
+`tests/fixtures/seed.json` is a snapshot of the Firestore data with fake payment accounts. Unit tests parse it against the
+schemas and the Playwright mock (`tests/automation/support/firestore-mock.ts`) serves it. Refresh it from a backup
+(`npm run backup:firestore`) when the model changes, and replace the real payment accounts with fake ones.
+
+Firestore rules are checked against the real project (see `docs/data-design.html`, section Rules); the emulator needs a
+download that some networks block.
 
 ## Automation Tests
 
@@ -27,38 +37,23 @@ Automation tests live in `tests/automation` and run with:
 npm run test:automation
 ```
 
-Playwright starts Vite with `VITE_USE_MOCK_DATA=true` and a mocked chat proxy
-URL. Tests should target user-visible behavior:
-
-- navigation and routing
-- forms and validation
-- responsive drawer behavior
-- chatbot open/send flow
-- critical layout regressions
-- 404 and route fallback behavior
-
-Prefer roles, labels, placeholders, and text selectors. Add `aria-label` to
-icon-only controls instead of using class selectors.
+Playwright starts `next dev` on port 3100. Tests target user-visible behavior:
+navigation, forms and validation, responsive layout, the chatbot flow, critical
+layout regressions, and the 404 page. Prefer roles, labels, and text selectors.
+Add `aria-label` to icon-only controls instead of using class selectors.
 
 ## When To Add Tests
 
 - Bug fix: add a regression test that fails before the fix.
-- New model/schema behavior: add unit tests.
-- New route/page/user flow: add Playwright coverage.
-- Theme/layout interaction changes: add Playwright assertions for visual
-  invariants when practical.
+- New schema behavior: add unit tests.
+- New route or user flow: add Playwright coverage.
 
 ## Required Checks
 
-Before finishing test or source changes:
-
 ```bash
 npm run typecheck
+npm run lint
 npm run test:unit:run
 ```
 
-Also run automation when UI behavior changes:
-
-```bash
-npm run test:automation
-```
+Also run automation when UI behavior changes.

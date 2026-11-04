@@ -1,37 +1,35 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = Number(process.env.PLAYWRIGHT_PORT ?? 3100);
-const baseURL = `http://127.0.0.1:${port}`;
+const port = 3100;
+
+// the chat tests talk to a stubbed proxy on this address
+process.env.NEXT_PUBLIC_CHAT_PROXY_URL = 'http://localhost:9999/chat';
 
 export default defineConfig({
-  testDir: './tests/automation',
-  testMatch: '**/*.spec.ts',
-  timeout: 30_000,
-  expect: {
-    timeout: 5_000,
-  },
-  fullyParallel: false,
-  workers: 1,
-  reporter: [
-    ['list'],
-    ['html', { outputFolder: 'playwright-report', open: 'never' }],
-  ],
+  testDir: 'tests/automation',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 1 : 0,
+  reporter: [['list']],
   use: {
-    baseURL,
+    baseURL: `http://localhost:${port}`,
     trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-  },
-  webServer: {
-    command: `VITE_USE_MOCK_DATA=true VITE_CHAT_PROXY_URL=${baseURL}/__chat-proxy npm run build && npm run preview -- --host 127.0.0.1 --port ${port} --strictPort`,
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    // set PW_CHANNEL=chrome to use an installed Chrome instead of the downloaded Chromium
+    channel: process.env.PW_CHANNEL || undefined,
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'desktop',
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: process.env.PW_CHANNEL || undefined,
+      },
     },
   ],
+  webServer: {
+    command: `npx next dev -p ${port}`,
+    url: `http://localhost:${port}`,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
 });
