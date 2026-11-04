@@ -208,7 +208,7 @@ const MOCK = {
         timeVisible: true,
         position: 'Team Lead',
         responsibility:
-          'Lead delivery for 9PP - Yamato Transport across 13 Android business modules and 26+ repositories; create and review Detail Design, and build AI workflows for bug fixing, code review and design-to-code sync.',
+          'Lead a team of 5 developers delivering 9PP - Yamato Transport across 13 Android business modules and 26+ repositories; write and review Detail Design, and build AI workflows for bug fixing, code review, design-to-code sync and builds.',
         index: 4,
         image: '',
         imageVisible: false,
