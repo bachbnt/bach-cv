@@ -7,7 +7,6 @@ import { defineCopy } from '@/lib/i18n/define-copy';
 // Interface copy for the Home page.
 export const homeCopy = defineCopy(
   {
-    greeting: 'Bùi Ngô Tôn Bách. Team Lead at FPT Software, Ho Chi Minh City.',
     title: 'I lead mobile teams and build the AI tooling they ship with.',
     intro:
       'Mobile engineer with 5+ years in payments and large Super Apps (Kotlin, KMM, React Native). Today I lead 5 developers on a 13-module Android app and run the Claude Code workflows that fix, review and sync its code.',
@@ -43,7 +42,6 @@ export const homeCopy = defineCopy(
     contact: { title: 'Have a role or a project in mind?' },
   },
   {
-    greeting: 'Bùi Ngô Tôn Bách. Team Lead tại FPT Software, TP. Hồ Chí Minh.',
     title:
       'Mình dẫn dắt các nhóm mobile và xây dựng công cụ AI để họ giao sản phẩm.',
     intro:
