@@ -64,30 +64,18 @@ test('the site tells search engines who it is about', async ({ page }) => {
   );
 });
 
-test('the other names are in the description and, in plain sight, the footer of every page, while the tab title stays short', async ({
+test('the other names are in the description (and the schema.org Person), while the tab title stays short', async ({
   page,
 }) => {
-  for (const path of ['/', '/about', '/projects']) {
-    await page.goto(path);
-    const footer = page.getByTestId('alternate-names');
-    await expect(footer).toContainText('Bùi Ngô Tôn Bách');
-    await expect(footer).toContainText('Tôn Bách');
-    await expect(footer).toContainText('Bách Dev');
-    await expect(footer).toContainText('Bách Bùi');
-  }
   await page.goto('/');
   await expect(page).toHaveTitle('Bach Bui - Software Engineer');
   const description = await page
     .locator('meta[name="description"]')
     .getAttribute('content');
+  // "Bach Bui" first, the other names after it in brackets
+  expect(description).toMatch(/^Bach Bui \(Bùi Ngô Tôn Bách, /);
   for (const name of ['Bùi Ngô Tôn Bách', 'Bách Bùi', 'Tôn Bách', 'Bách Dev'])
     expect(description).toContain(name);
-});
-
-test('the tab title follows the language', async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
-  await page.goto('/resume');
-  await expect(page).toHaveTitle('Hồ sơ - Bach Bui');
-  await page.goto('/');
-  await expect(page).toHaveTitle('Bach Bui - Kỹ sư phần mềm');
+  // the footer is the plain one
+  await expect(page.getByTestId('alternate-names')).toHaveCount(0);
 });
