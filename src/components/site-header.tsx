@@ -81,8 +81,10 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
             );
           })}
         </nav>
-        <LanguageSwitch />
-        <ThemeSwitch />
+        <div className='flex items-center gap-2'>
+          <LanguageSwitch />
+          <ThemeSwitch />
+        </div>
         {live.features.connectMenu && <ConnectMenu />}
       </div>
 

@@ -4,7 +4,7 @@
 
 'use client';
 
-import { ChevronDown, Monitor, Moon, Sun } from 'lucide-react';
+import { Monitor, Moon, Sun } from 'lucide-react';
 import type { ComponentType } from 'react';
 import {
   DropdownMenu,
@@ -16,7 +16,6 @@ import {
 import { commonCopy } from '@/content/copy/common';
 import { useCopy } from '@/lib/i18n/copy';
 import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
-import { cn } from 'cn';
 
 const ICONS: Record<Theme, ComponentType<{ className?: string }>> = {
   system: Monitor,
@@ -24,25 +23,23 @@ const ICONS: Record<Theme, ComponentType<{ className?: string }>> = {
   dark: Moon,
 };
 
-/** Header dropdown: the icon of the current choice and a chevron, then Light, Dark and System. */
+/**
+ * Header control: one square icon button that shows what is on screen (a sun by day, a moon in the dark), and a menu with
+ * Light, Dark and System. The icon is picked by CSS from the `dark` class, which the script in <head> sets before the first
+ * paint, so a dark visitor never sees the sun flash up.
+ */
 export function ThemeSwitch() {
   const copy = useCopy(commonCopy);
   const { theme, setTheme } = useTheme();
-  const Icon = ICONS[theme];
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={copy.theme.label}
-        className='group inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-[10px] border border-border bg-card px-3 text-sm font-semibold transition-colors hover:border-foreground'
+        className='inline-flex size-10 cursor-pointer items-center justify-center rounded-[10px] border border-border bg-card transition-colors hover:border-foreground data-popup-open:border-foreground'
       >
-        <Icon aria-hidden='true' className='size-[18px]' />
-        <ChevronDown
-          aria-hidden='true'
-          className={cn(
-            'size-3.5 transition-transform duration-200 group-data-popup-open:rotate-180',
-          )}
-        />
+        <Sun aria-hidden='true' className='size-[18px] dark:hidden' />
+        <Moon aria-hidden='true' className='hidden size-[18px] dark:block' />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align='end'
