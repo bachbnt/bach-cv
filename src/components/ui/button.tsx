@@ -7,7 +7,7 @@ import { cn } from 'cn';
  * `brand` is the accent red (Download CV); `default` is ink (Connect); `outline` has the 1.5px ink border.
  */
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-[10px] border border-transparent text-[15px] font-semibold whitespace-nowrap transition-[filter,background-color,color] outline-none select-none active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[18px]",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-[10px] border-[1.5px] border-transparent text-[15px] font-semibold whitespace-nowrap transition-[filter,background-color,color] select-none active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[18px]",
   {
     variants: {
       variant: {
@@ -19,9 +19,10 @@ const buttonVariants = cva(
         link: 'text-foreground underline underline-offset-4 hover:text-brand',
       },
       size: {
-        default: 'h-10 gap-2.5 px-4',
+        default: 'h-10 gap-2.5 px-4 max-[720px]:h-11 pointer-coarse:h-11',
         lg: 'h-12 gap-2.5 px-6 text-base',
-        icon: 'size-10',
+        icon: 'size-10 max-[720px]:size-11 pointer-coarse:size-11',
+        link: 'h-10 gap-1.5 px-0 max-[720px]:h-11 pointer-coarse:h-11',
       },
     },
     defaultVariants: {

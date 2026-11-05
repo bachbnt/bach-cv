@@ -20,7 +20,6 @@ import { certificatesCopy } from '@/content/copy/certificates';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
-import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
 
 /** The certificates, with the loading, empty and error states of every data block. */
@@ -106,7 +105,7 @@ function CertificateGallery({ items }: { items: Doc<'certificates'>[] }) {
                 href={current.pdfUrl}
                 target='_blank'
                 rel='noopener noreferrer'
-                className={cn(buttonVariants(), 'pointer-coarse:h-11')}
+                className={buttonVariants()}
               >
                 <ExternalLink aria-hidden='true' />
                 {copy.openPdfDialog}

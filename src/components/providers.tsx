@@ -4,7 +4,10 @@
 
 'use client';
 
-import { QueryClient } from '@tanstack/react-query';
+import {
+  defaultShouldDehydrateQuery,
+  QueryClient,
+} from '@tanstack/react-query';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import {
   PersistQueryClientProvider,
@@ -20,7 +23,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 /** Bump when a schema change makes cached data unreadable. */
-const CACHE_VERSION = 'v2-1';
+const CACHE_VERSION = 'v2-2';
 
 /** While prerendering there is no `window`, so nothing is persisted or restored. */
 const noopPersister: Persister = {
@@ -49,7 +52,20 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <PersistQueryClientProvider
       client={client}
-      persistOptions={{ persister, maxAge: ONE_DAY, buster: CACHE_VERSION }}
+      persistOptions={{
+        persister,
+        maxAge: ONE_DAY,
+        buster: CACHE_VERSION,
+        dehydrateOptions: {
+          // payment details are read when the Payment page opens and are not kept in the browser's storage
+          shouldDehydrateQuery: (query) =>
+            defaultShouldDehydrateQuery(query) &&
+            !(
+              query.queryKey[0] === 'content' &&
+              query.queryKey[1] === 'payments'
+            ),
+        },
+      }}
     >
       <LanguageProvider>
         <TooltipProvider>

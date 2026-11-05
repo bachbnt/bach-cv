@@ -24,6 +24,10 @@
 
 import { z } from 'zod';
 
+// Zod would try `new Function()` to compile faster parsers; the data here is small, and a page with a Content-Security-Policy
+// that forbids eval would log a violation for it on every load.
+z.config({ jitless: true });
+
 // ---------------------------------------------------------------- primitives
 
 export const LANGS = ['en', 'vi'] as const;

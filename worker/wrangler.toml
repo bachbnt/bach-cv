@@ -9,18 +9,36 @@ workers_dev = true
 ALLOWED_ORIGINS = "https://bachbntdev.web.app,https://bachbntdev.firebaseapp.com,http://localhost:3000"
 RATE_LIMIT_PER_DAY = "200"
 RATE_LIMIT_PER_MINUTE = "10"
+# The providers that may answer, in the order they are tried: Workers AI first (free, no key), Gemini as the fallback.
+# Add claude / openai only if you want to pay for them.
+ALLOWED_PROVIDERS = "cloudflare,gemini"
+# Optional: another model from the Workers AI catalog.
+# CLOUDFLARE_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8"
+
+# Email notification for contact-form messages (see README): at most NOTIFY_PER_HOUR per visitor and NOTIFY_PER_DAY in total.
+# NOTIFY_TO is set as a secret or here; RESEND_API_KEY is a secret.
+NOTIFY_PER_HOUR = "5"
+NOTIFY_PER_DAY = "40"
+# NOTIFY_FROM = "BB Bot <onboarding@resend.dev>"
+# "true" refuses chat requests while the KV namespace below is not bound, instead of letting them all through.
+REQUIRE_RATE_LIMIT = "true"
 
 # Secrets (set via `wrangler secret put <NAME>`):
 #   GEMINI_API_KEY
 #   OPENAI_API_KEY
 #   ANTHROPIC_API_KEY
+#   RESEND_API_KEY   (only for the email notification)
+#   NOTIFY_TO        (the address to tell, only for the email notification)
 
-# Per-IP rate limiting. KV is sufficient for free-tier traffic (~100K req/day).
-# Create with: wrangler kv:namespace create CHAT_RATE_LIMIT
-# Then paste the returned id below.
-# [[kv_namespaces]]
-# binding = "CHAT_RATE_LIMIT"
-# id = "PASTE_KV_NAMESPACE_ID_HERE"
+# Per-IP rate limiting (and the limit of the email notification). KV is sufficient for free-tier traffic (~100K req/day).
+# Created with: wrangler kv namespace create CHAT_RATE_LIMIT
+[[kv_namespaces]]
+binding = "CHAT_RATE_LIMIT"
+id = "fa93d7976e9b4deb9ebe8ea721fa6c56"
+
+# Workers AI: answers without an API key, on the free daily allowance of the account.
+[ai]
+binding = "AI"
 
 [observability]
 enabled = true

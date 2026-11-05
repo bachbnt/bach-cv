@@ -19,9 +19,11 @@ const chip =
 export function ProjectGrid({
   projects,
   skills,
+  onOpenScreenshots,
 }: {
   projects: Doc<'projects'>[];
   skills: Map<string, Doc<'skills'>>;
+  onOpenScreenshots: (project: Doc<'projects'>) => void;
 }) {
   const copy = useCopy(projectsCopy);
   const [filter, setFilter] = useState<'all' | Doc<'projects'>['kind']>('all');
@@ -60,7 +62,12 @@ export function ProjectGrid({
       )}
       <div className='mt-8 grid grid-cols-[repeat(auto-fill,minmax(min(100%,320px),1fr))] gap-6'>
         {shown.map((project) => (
-          <ProjectCard key={project.id} project={project} skills={skills} />
+          <ProjectCard
+            key={project.id}
+            project={project}
+            skills={skills}
+            onOpenScreenshots={onOpenScreenshots}
+          />
         ))}
       </div>
     </>

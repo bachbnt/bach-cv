@@ -7,6 +7,7 @@
 import { ProjectCover } from '@/components/projects/project-cover';
 import { ProjectLinkItem } from '@/components/projects/project-link-item';
 import { ProjectTags } from '@/components/projects/project-tags';
+import { ScreenshotsOverlay } from '@/components/projects/screenshots-overlay';
 import { skillsOf } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
@@ -16,19 +17,24 @@ import type { Doc } from '@/lib/content/schema';
 export function ProjectCard({
   project,
   skills,
+  onOpenScreenshots,
 }: {
   project: Doc<'projects'>;
   skills: Map<string, Doc<'skills'>>;
+  onOpenScreenshots: (project: Doc<'projects'>) => void;
 }) {
   const copy = useCopy(projectsCopy);
   const tags = skillsOf(project.technologies, skills);
   return (
     <article className='flex flex-col gap-2.5 rounded-2xl border bg-white px-4 pt-4 pb-7 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(27,31,39,.1)]'>
-      <ProjectCover
-        project={project}
-        firstSkill={tags[0]}
-        className='h-[220px] rounded-xl'
-      />
+      <div className='relative'>
+        <ProjectCover
+          project={project}
+          firstSkill={tags[0]}
+          className='h-[220px] rounded-xl'
+        />
+        <ScreenshotsOverlay project={project} onOpen={onOpenScreenshots} />
+      </div>
       <div className='mt-2 flex items-center gap-2'>
         <span className='inline-flex rounded-full bg-page-tint px-2.5 py-[3px] text-[13px] font-semibold whitespace-nowrap text-page'>
           {copy.kinds[project.kind]}

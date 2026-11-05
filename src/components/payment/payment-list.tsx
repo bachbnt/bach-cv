@@ -161,7 +161,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
                   type='button'
                   aria-pressed={filter === k}
                   onClick={() => setFilter(k)}
-                  className='rounded-full border-[1.5px] bg-white px-[18px] py-[9px] text-[15px] font-medium transition-colors outline-none hover:border-night active:border-night aria-pressed:border-page aria-pressed:bg-page aria-pressed:text-white pointer-coarse:min-h-11'
+                  className='rounded-full border-[1.5px] bg-white px-[18px] py-[9px] text-[15px] font-medium transition-colors hover:border-night active:border-night aria-pressed:border-page aria-pressed:bg-page aria-pressed:text-white pointer-coarse:min-h-11'
                 >
                   {k === 'all' ? copy.filterAll : copy.kinds[k]}
                   <span className='ml-1.5 tabular-nums opacity-70'>

@@ -49,7 +49,6 @@ export function CvDownloadButton({
         disabled={!cv}
         aria-busy={busy}
         onClick={download}
-        className='h-11 px-[18px] max-[720px]:px-3.5'
       >
         {busy ? (
           <Loader2 aria-hidden='true' className='animate-spin' />

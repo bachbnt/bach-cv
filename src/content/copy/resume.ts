@@ -9,8 +9,7 @@ import { defineCopy } from '@/lib/i18n/define-copy';
 export const resumeCopy = defineCopy(
   {
     title: 'Resume',
-    intro:
-      'Five years across payments, Super Apps and field-operations software, now leading a team of 5.',
+    intro: 'Seven years in software, now leading a team of 10.',
     downloadCv: 'Download CV',
     experience: {
       title: 'Experience',
@@ -59,7 +58,7 @@ export const resumeCopy = defineCopy(
   {
     title: 'Hồ sơ',
     intro:
-      'Năm năm làm việc trong lĩnh vực thanh toán, Super App và phần mềm vận hành hiện trường, hiện đang dẫn dắt một nhóm 5 người.',
+      'Bảy năm làm việc trong ngành phần mềm, hiện đang dẫn dắt một nhóm 10 người.',
     downloadCv: 'Tải CV',
     experience: {
       title: 'Kinh nghiệm',

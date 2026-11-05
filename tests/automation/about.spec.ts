@@ -15,10 +15,8 @@ test('About shows the profile, the specialties and the photos', async ({
   await page.goto('/about');
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('About');
-  await expect(
-    page.getByText('My background is the Master of Science'),
-  ).toBeVisible();
-  for (const name of ['Software Engineer', 'Mobile Developer', 'Web Developer'])
+  await expect(page.getByText('I hold a Master of Science')).toBeVisible();
+  for (const name of ['Software Engineer', 'Mobile', 'Web', 'AI'])
     await expect(page.getByText(name, { exact: true })).toBeVisible();
   await expect(page.getByRole('img', { name: /Portrait of/ })).toBeVisible();
   await expect(page.getByRole('img', { name: /Photo of/ })).toHaveCount(2);
@@ -88,4 +86,19 @@ test('the open phone menu marks the current page with the page tint, as in the d
   await expect(
     page.getByRole('link', { name: 'Projects', exact: true }),
   ).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+});
+
+test('tapping the name in the phone menu goes to Home and closes the menu', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/about');
+  await page.getByRole('button', { name: 'Open menu' }).click();
+  const menu = page.getByRole('dialog');
+  await menu.getByRole('link', { name: 'Bach Bui' }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(menu).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { level: 1, name: /I lead mobile teams/ }),
+  ).toBeVisible();
 });

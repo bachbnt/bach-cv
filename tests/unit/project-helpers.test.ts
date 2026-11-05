@@ -94,10 +94,10 @@ describe('fillCopy', () => {
   it('fills the slots and leaves unknown ones', () => {
     expect(
       fillCopy(projectsCopy.en.dialog.counter, { current: 2, total: 6 }),
-    ).toBe('Screenshot 2 of 6');
+    ).toBe('2 of 6');
     expect(
       fillCopy(projectsCopy.vi.dialog.counter, { current: 2, total: 6 }),
-    ).toBe('Ảnh 2 / 6');
+    ).toBe('2 / 6');
     expect(fillCopy('{name} {x}', { name: 'A' })).toBe('A {x}');
   });
 });

@@ -23,7 +23,7 @@ const en = {
   meta: (issuer: string, date: string) =>
     [issuer, `issued ${date}`].filter(Boolean).join(', '),
   skillsLabel: 'Skills covered',
-  viewCertificate: 'View certificate',
+  enlarge: 'Enlarge',
   openPdf: 'Open PDF',
   openPdfDialog: 'Open PDF',
   closePreview: 'Close preview',
@@ -42,7 +42,7 @@ const vi: Shape<typeof en> = {
   meta: (issuer: string, date: string) =>
     [issuer, `cấp ngày ${date}`].filter(Boolean).join(', '),
   skillsLabel: 'Kỹ năng đạt được',
-  viewCertificate: 'Xem chứng chỉ',
+  enlarge: 'Phóng to',
   openPdf: 'Mở PDF',
   openPdfDialog: 'Mở PDF',
   closePreview: 'Đóng xem trước',

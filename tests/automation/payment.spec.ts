@@ -157,7 +157,7 @@ test('copy buttons write to the clipboard and show a toast', async ({
   await page.goto('/payment');
 
   const bidv = page.locator('article[data-testid="payment-method"]').first();
-  await bidv.getByRole('button', { name: 'Copy account number' }).click();
+  await bidv.getByRole('button', { name: 'Copy number' }).click();
   await expect(
     page.getByRole('status').filter({ hasText: /copied/ }),
   ).toHaveText('BIDV account number copied');
@@ -257,7 +257,7 @@ test('in Vietnamese the labels and the toast are translated', async ({
     page.getByRole('heading', { level: 2, name: 'Thông tin thanh toán' }),
   ).toBeVisible();
   await expect(page.getByText('Tên tài khoản', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Sao chép số tài khoản' }).click();
+  await page.getByRole('button', { name: 'Sao chép số' }).click();
   await expect(page.getByTestId('payment-toast')).toHaveText(
     'Đã sao chép số tài khoản BIDV',
   );

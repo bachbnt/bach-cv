@@ -16,7 +16,14 @@ same data.
 - **Static and cheap.** `output: 'export'` served by Firebase Hosting; the browser reads Firestore with the lite SDK and
   TanStack Query caches it (also in `localStorage`). Only `src/content/shell.json` (name, headline, avatar, SEO) is embedded at
   build time.
-- **BB Bot.** A chat widget backed by a Cloudflare Worker that proxies Gemini, OpenAI or Anthropic (keys stay in the Worker).
+- **One look for every state.** While data loads a block shows a skeleton of its own shape, with nothing to show it shows an
+  explanatory card, and when a read fails it shows the same card with a Try again button. All of it goes through one component
+  (`DataState`) and one copy file (`src/content/copy/states.ts`), so every page behaves the same way.
+- **Security headers.** `firebase.json` sends HSTS, `X-Frame-Options`, a Content-Security-Policy and more. The policy allows only this
+  site, Firestore, the chat Worker and https images; it was tested against the real pages, the CV dialog and the PDF download.
+  Adding another origin (for example a new API) means adding it to the policy.
+- **BB Bot.** A chat widget backed by a Cloudflare Worker. Workers AI answers first (free, no API key); Gemini is the fallback when the
+  free daily allowance is spent. Keys stay in the Worker. The same Worker emails the owner when a contact-form message is saved (Resend).
 - **CV dialog and PDF.** A preview of the CV as A4 sheets and a PDF download, both built from the visitor's language.
 
 ## Stack
@@ -42,8 +49,24 @@ npm run dev                  # http://localhost:3000
 | `npm run test:automation`             | Playwright against `next dev` on port 3100 (`PW_CHANNEL=chrome` uses an installed Chrome) |
 | `npm run backup:firestore`            | download every v2 collection into `backup/`                                               |
 | `npm run restore:firestore -- <file>` | plan (add `--apply` to write) a restore from a backup                                     |
+| `npm run sync:fixture`                | refresh `tests/fixtures/seed.json` from the latest backup (payment numbers are replaced)  |
+| `npm run docs`                        | rebuild `docs/data-design.html` and `docs/detail-design.html`                             |
 
 Before finishing a change: `npm run typecheck && npm run lint && npm run test:unit:run`, and `npm run test:automation` for UI changes.
+
+## Optional services (all free, no card)
+
+**Firebase App Check** (`NEXT_PUBLIC_RECAPTCHA_SITE_KEY`) tells Firestore which requests come from this site. It is off until you do this:
+
+1. Create a reCAPTCHA **v3** key at https://www.google.com/recaptcha/admin (domains: `bachbntdev.web.app`, `bachbntdev.firebaseapp.com`, `localhost`).
+2. Firebase console → App Check → register the web app with the reCAPTCHA v3 provider and the key's _secret_.
+3. Put the _site key_ in `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` (`.env.local`, and the GitHub secret of the same name), rebuild and deploy.
+4. Watch App Check → Firestore → Metrics for a day. **Do not turn on "Enforce" until nearly all requests are verified.** Once enforced,
+   Firestore rejects every request without a token, reads included, so a visitor whose browser blocks reCAPTCHA (an ad blocker, for
+   example) would see no content at all. The site stays usable while it is only monitored.
+5. Local development: the console prints an App Check debug token; register it in the Firebase console (App Check → Apps → Manage debug tokens).
+
+**Email when someone writes** and **Workers AI** are set up in the Worker; see `worker/README.md`.
 
 ## Content and remote config
 
@@ -62,21 +85,23 @@ Common edits in the Firebase console:
 - Switch a page: `site/live` → `pages.<page>` = `on`, `soon` or `hidden`. Switch a feature: `features.<name>` = `true` / `false`.
 - Maintenance: `site/live` → `maintenance.enabled = true` (message in `maintenance.message`, Vietnamese in `maintenance.l10n.vi.message`).
 - Translate: add `l10n.vi.<field>` on the document.
+- Skills: a skill with `listed: false` is not shown as a chip but can still be a technology tag on a project or a role.
 
 Changes show after the browser cache expires (`site/live` about a minute, content about five minutes).
-The model is in `src/lib/content/schema.ts`; the rules are in `firestore.rules` (v1 and v2 side by side until the old site is retired).
+The model is in `src/lib/content/schema.ts`; the rules are in `firestore.rules`. The old site's collections (`config`, `user`, `message`) are closed to browsers; their data is
+kept, and `backup/firestore-v1.json` (git-ignored) holds a copy.
 
 ## Repository layout
 
 ```text
 src/app                 routes, layout, global CSS
-src/components          UI (ui/ is shadcn), one folder per page or feature
+src/components          UI (ui/ is shadcn), one folder per page or feature; data-state, state-notice and skeletons are shared by all pages
 src/content             shell.json (embedded) and the interface copy in src/content/copy/*.ts
 src/lib/content         the data contract (schema.ts), repository interface, Firestore lite adapter
 src/lib/query           TanStack Query keys, options and hooks
 src/lib/i18n            language state and the copy helpers
 tests/unit              Vitest        tests/automation   Playwright        tests/fixtures   Firestore snapshot for tests
-scripts/                Firestore backup and restore
+scripts/                Firestore backup, restore and test-fixture sync; scripts/docs builds the design documents
 worker/                 Cloudflare Worker for the chat (see worker/README.md)
 docs/                   data-design.html, detail-design.html (npm run docs) and schema.sql
 .ai/, .claude/skills    working rules and installed skills for AI assistants
@@ -90,8 +115,9 @@ npx firebase-tools deploy --only hosting      # the site
 npx firebase-tools deploy --only firestore:rules   # the rules (changes production)
 ```
 
-CI (`.github/workflows/main.yml`) builds and deploys hosting when a commit on `master` contains `[build]`.
+Work happens on `dev` and is merged into `master`. CI (`.github/workflows/main.yml`) builds and deploys hosting when a commit on
+`master` contains `[build]`; otherwise deploy by hand with the command above.
 Back up the data before changing the model: `npm run backup:firestore`. The `backup/` folder is git-ignored because it holds
 payment details and visitors' emails.
 
-The previous Vite/React/MUI version lives on the `master` and `dev` branches.
+`master` and `dev` hold this version. The previous Vite/React/MUI site is kept on the `backup-v1` branch.

@@ -69,7 +69,11 @@ export function MobileMenu({
           side='right'
           className='w-[min(360px,88vw)] gap-0 overflow-y-auto bg-white p-4 data-[side=right]:sm:max-w-[360px]'
         >
-          <div className='flex items-center gap-3 pr-12'>
+          <Link
+            href='/'
+            onClick={() => setMenuOpen(false)}
+            className='mr-12 flex min-h-11 items-center gap-3 self-start rounded-xl pr-2 active:bg-background'
+          >
             <Image
               src='/logo.png'
               alt=''
@@ -80,7 +84,7 @@ export function MobileMenu({
             <SheetTitle className='font-heading text-xl font-bold'>
               {shell.name}
             </SheetTitle>
-          </div>
+          </Link>
 
           <nav aria-label='Main' className='mt-4 flex flex-col'>
             {NAV_PAGES.map((page) => {

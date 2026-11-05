@@ -181,19 +181,18 @@ it lives in ${c('src/content/copy/*.ts')} as <code>defineCopy(en, vi)</code>.</p
     {
       id: 'rules',
       title: '7. Access rules',
-      html: `<p>${c('firestore.rules')}, deployed to the project. v1 and v2 live side by side until the old site is retired.</p>
+      html: `<p>${c('firestore.rules')}, deployed to the project. The old site's collections (config, user, message) are closed to browsers; their data is kept.</p>
 ${table(
   ['Path', 'Browser can', 'Condition'],
   [
     [c('site/shell|live|profile|settings'), 'read', 'always; never write'],
     [c('skills experience education projects certificates services payments contacts'), 'get, list', c('resource.data.visible == true') + ': the query must include <code>where(\'visible\', \'==\', true)</code> or the whole query is rejected'],
     [c('messages'), 'create only', 'only name, email, topic, message, locale, createdAt; name 1-100, email format and ≤ 254, message 1-1000, topic ≤ 40, locale en|vi, <code>createdAt == request.time</code>'],
-    [c('user config message'), 'as before', 'v1, unchanged'],
     ['everything else', 'nothing', 'denied'],
   ],
 )}
 <p>Verified against the real project as an anonymous visitor: visible queries succeed; a query that could return hidden payments is rejected;
-a hidden payment cannot be read by id; writes to content and reads of messages are denied; invalid messages are rejected; v1 stayed readable.
+a hidden payment cannot be read by id; writes to content and reads of messages are denied; invalid messages are rejected; the old v1 collections are denied.
 The browser queries have no <code>orderBy</code> (it would need a composite index); lists are sorted in memory.</p>`,
     },
     {

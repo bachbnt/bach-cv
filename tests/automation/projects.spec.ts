@@ -32,7 +32,9 @@ test('the Projects page lists the featured projects by rank, then all projects',
   });
   await expect(featured.first().getByText('Freelance')).toBeVisible();
   // technologies carry the skill names
-  await expect(featured.first().getByText('Flutter')).toBeVisible();
+  await expect(
+    featured.first().getByText('Flutter', { exact: true }),
+  ).toBeVisible();
   await expect(
     featured.first().getByRole('link', { name: 'App Store' }),
   ).toHaveAttribute('href', /apps\.apple\.com/);
@@ -44,6 +46,10 @@ test('the Projects page lists the featured projects by rank, then all projects',
 });
 
 test('a project without a cover gets an initials tile', async ({ page }) => {
+  // every project has a cover now, so take FinHub MCP's away
+  await mockFirestore(page, {}, (collection, id, doc) =>
+    collection === 'projects' && id === 'finhub' ? { ...doc, cover: '' } : doc,
+  );
   await page.goto('/projects');
   await expect(page.getByText('FM', { exact: true })).toBeVisible();
   // DevPad has a cover, so no tile stands in for it
@@ -58,16 +64,21 @@ test('the kind chips filter the grid', async ({ page }) => {
     'true',
   );
   await group.getByRole('button', { name: 'Freelance' }).click();
-  await expect(page.getByRole('heading', { name: 'Beli Coffee' })).toHaveCount(
+  // FinHub MCP is personal and not featured, so only the grid can show it
+  await expect(page.getByRole('heading', { name: 'FinHub MCP' })).toHaveCount(
     0,
   );
+  await expect(
+    page.getByRole('heading', { name: 'Beli Coffee' }),
+  ).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Com Chay Rop' }),
   ).toBeVisible();
   await group.getByRole('button', { name: 'Personal' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Beli Coffee' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'FinHub MCP' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Beli Coffee' })).toHaveCount(
+    0,
+  );
   await expect(page.getByRole('heading', { name: 'Com Chay Rop' })).toHaveCount(
     0,
   );
@@ -77,33 +88,64 @@ test('the screenshots dialog steps with buttons and arrow keys, and closes with 
   page,
 }) => {
   await page.goto('/projects');
-  await page.getByRole('button', { name: '6 screenshots' }).click();
+  await page.getByRole('button', { name: '6 screenshots' }).first().click();
 
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByText('Screenshot 1 of 6')).toBeVisible();
+  await expect(dialog.getByText('1 of 6')).toBeVisible();
 
   await dialog.getByRole('button', { name: 'Next screenshot' }).click();
-  await expect(dialog.getByText('Screenshot 2 of 6')).toBeVisible();
+  await expect(dialog.getByText('2 of 6')).toBeVisible();
   await page.keyboard.press('ArrowRight');
-  await expect(dialog.getByText('Screenshot 3 of 6')).toBeVisible();
+  await expect(dialog.getByText('3 of 6')).toBeVisible();
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.press('ArrowLeft');
   // wraps around to the last one
-  await expect(dialog.getByText('Screenshot 6 of 6')).toBeVisible();
+  await expect(dialog.getByText('6 of 6')).toBeVisible();
 
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
   await expect(
-    page.getByRole('button', { name: '6 screenshots' }),
+    page.getByRole('button', { name: '6 screenshots' }).first(),
   ).toBeFocused();
 
   // reopening starts at the first screenshot
-  await page.getByRole('button', { name: '6 screenshots' }).click();
-  await expect(page.getByText('Screenshot 1 of 6')).toBeVisible();
+  await page.getByRole('button', { name: '6 screenshots' }).first().click();
+  await expect(page.getByText('1 of 6')).toBeVisible();
   await page.getByRole('button', { name: 'Close screenshots' }).click();
   await expect(page.getByRole('dialog')).toBeHidden();
+});
+
+test('a project that is not featured can still open its screenshots from its card', async ({
+  page,
+}) => {
+  // take every project off the featured list: only the grid is left
+  await mockFirestore(page, {}, (collection, _id, doc) =>
+    collection === 'projects' ? { ...doc, highlight: null } : doc,
+  );
+  await page.goto('/projects');
+  await expect(
+    page.getByRole('heading', { name: 'Featured projects' }),
+  ).toHaveCount(0);
+
+  const card = page.locator('article').filter({
+    has: page.getByRole('heading', { name: 'DevCmd' }),
+  });
+  await expect(card.getByText('Featured', { exact: true })).toHaveCount(0);
+  const opener = card.getByRole('button', { name: '7 screenshots' });
+  await opener.click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog.getByText('1 of 7')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+
+  // a project without screenshots has no button
+  const beli = page.locator('article').filter({
+    has: page.getByRole('heading', { name: 'Beli Coffee' }),
+  });
+  await expect(beli.getByRole('button', { name: /screenshot/ })).toHaveCount(0);
 });
 
 test('a page with no visible project shows the empty state', async ({
@@ -147,7 +189,7 @@ test.describe('on a phone', () => {
       ),
     ).toBe(true);
 
-    await page.getByRole('button', { name: '7 screenshots' }).click();
+    await page.getByRole('button', { name: '7 screenshots' }).first().click();
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
     // wait for the slide-in to settle: the sheet sits on the bottom edge
@@ -194,9 +236,9 @@ test.describe('in Vietnamese', () => {
       .first()
       .click();
     const dialog = page.getByRole('dialog');
-    await expect(dialog.getByText(/^Ảnh 1 \/ \d+$/)).toBeVisible();
+    await expect(dialog.getByText(/^1 \/ \d+$/)).toBeVisible();
     await dialog.getByRole('button', { name: 'Ảnh tiếp theo' }).click();
-    await expect(dialog.getByText(/^Ảnh 2 \/ \d+$/)).toBeVisible();
+    await expect(dialog.getByText(/^2 \/ \d+$/)).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
   });

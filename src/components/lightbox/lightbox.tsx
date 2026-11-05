@@ -44,7 +44,7 @@ export interface LightboxProps {
 }
 
 const iconButton =
-  'inline-flex size-10 items-center justify-center rounded-[10px] border bg-white text-foreground transition-colors outline-none hover:bg-muted active:bg-muted pointer-coarse:size-11';
+  'inline-flex size-10 items-center justify-center rounded-[10px] border bg-white text-foreground transition-colors hover:bg-muted active:bg-muted pointer-coarse:size-11';
 
 /**
  * An image preview in a dialog: title bar, the image on a grey stage, then meta, actions and optional prev/next.

@@ -1,26 +1,23 @@
 {
   "short_name": "Bach",
   "name": "Bach Bui Portfolio",
-  "description": "Software Engineer Portfolio",
+  "description": "Bach Bui's portfolio and CV",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "categories": ["portfolio", "productivity"],
+  "theme_color": "#1b1f27",
+  "background_color": "#f5f6f8",
+  "categories": [
+    "portfolio",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "/logo.png",
-      "sizes": "192x192",
+      "sizes": "514x486",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "/logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -32,12 +29,12 @@
     {
       "name": "Projects",
       "short_name": "Projects",
-      "url": "/project"
+      "url": "/projects"
     },
     {
-      "name": "Contact",
-      "short_name": "Contact",
-      "url": "/contact"
+      "name": "Services",
+      "short_name": "Services",
+      "url": "/services"
     }
   ]
 }

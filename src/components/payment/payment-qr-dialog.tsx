@@ -86,14 +86,13 @@ export function PaymentQrDialog({
       }
       actions={
         <>
-          <Button onClick={onCopy} className='pointer-coarse:h-11'>
+          <Button onClick={onCopy}>
             <Copy aria-hidden='true' />
             {copy.copyNumber}
           </Button>
           <Button
             variant='outline'
             onClick={() => void saveQr(method, say, copy.toast)}
-            className='pointer-coarse:h-11'
           >
             <Download aria-hidden='true' />
             {copy.saveQr}

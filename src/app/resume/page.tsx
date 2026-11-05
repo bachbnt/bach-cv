@@ -8,12 +8,14 @@ import { EducationSection } from '@/components/resume/education-section';
 import { ExperienceSection } from '@/components/resume/experience-section';
 import { ResumeHead } from '@/components/resume/resume-head';
 import { ResumeSkills } from '@/components/resume/resume-skills';
-import { shell } from '@/lib/content/shell';
+import { pageMetadata } from '@/lib/seo';
 
 // A Server Component cannot read the client-side copy, so the tab title is English for now.
-export const metadata: Metadata = {
-  title: `Resume - ${shell.name}`,
-};
+export const metadata: Metadata = pageMetadata(
+  '/resume',
+  'Resume',
+  'Work experience, education and skills, with where each skill was used.',
+);
 
 export default function ResumePage() {
   return (

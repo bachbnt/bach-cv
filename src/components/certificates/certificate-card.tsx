@@ -5,7 +5,9 @@
 import { Award, ExternalLink, ZoomIn } from 'lucide-react';
 import Image from 'next/image';
 import { formatIssued } from '@/components/certificates/format-issued';
+import { MediaBadge } from '@/components/media-badge';
 import { Tag, type TagTone } from '@/components/tag';
+import { buttonVariants } from '@/components/ui/button';
 import { certificatesCopy } from '@/content/copy/certificates';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -53,7 +55,7 @@ export function CertificateCard({
           onClick={onOpen}
           aria-label={copy.viewLabel(name)}
           className={cn(
-            'group/media relative flex w-full cursor-zoom-in items-center justify-center rounded-xl bg-muted p-5 outline-none',
+            'group/media relative flex w-full cursor-zoom-in items-center justify-center rounded-xl bg-muted p-5',
             featured && 'min-[901px]:min-h-[340px]',
           )}
         >
@@ -68,12 +70,7 @@ export function CertificateCard({
               featured ? 'max-h-[300px]' : 'max-h-[200px]',
             )}
           />
-          <span
-            aria-hidden='true'
-            className='absolute right-3 bottom-3 flex size-9 items-center justify-center rounded-full bg-night text-white transition-opacity min-[721px]:opacity-0 group-hover/media:opacity-100 group-focus-visible/media:opacity-100 pointer-coarse:opacity-100'
-          >
-            <ZoomIn className='size-[18px]' />
-          </span>
+          <MediaBadge icon={ZoomIn}>{copy.enlarge}</MediaBadge>
         </button>
       )}
 
@@ -114,29 +111,19 @@ export function CertificateCard({
             ))}
           </ul>
         )}
-        <div className='mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-1.5'>
-          {image && (
-            <button
-              type='button'
-              onClick={onOpen}
-              className='inline-flex h-10 items-center gap-2 rounded-[10px] bg-night px-4 text-[15px] font-semibold text-white transition-[filter] outline-none hover:brightness-125 active:translate-y-px pointer-coarse:h-11'
-            >
-              <ZoomIn className='size-[18px]' aria-hidden='true' />
-              {copy.viewCertificate}
-            </button>
-          )}
-          {pdfUrl && (
+        {pdfUrl && (
+          <div className='mt-auto pt-1.5'>
             <a
               href={pdfUrl}
               target='_blank'
               rel='noopener noreferrer'
-              className='inline-flex h-10 items-center gap-1.5 text-[15px] font-semibold underline underline-offset-4 hover:text-brand active:text-brand pointer-coarse:h-11'
+              className={buttonVariants()}
             >
               {copy.openPdf}
-              <ExternalLink className='size-3.5' aria-hidden='true' />
+              <ExternalLink aria-hidden='true' />
             </a>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </article>
   );

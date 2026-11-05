@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 const fill = async (page: Page) => {
   await page.getByLabel('Name').fill('Ada Lovelace');
   await page.getByLabel('Email').fill('ada@example.com');
-  await page.getByLabel('Message').fill('I need an app.');
+  await page.getByLabel('Message', { exact: true }).fill('I need an app.');
 };
 
 test('the page lists the services and topic chips from Firestore', async ({
@@ -35,7 +35,7 @@ test('a topic chip writes the starting text and keeps what was typed', async ({
   page,
 }) => {
   await page.goto('/services');
-  const message = page.getByLabel('Message');
+  const message = page.getByLabel('Message', { exact: true });
   const app = page.getByRole('button', { name: 'App Development' });
   const web = page.getByRole('button', { name: 'Web Development' });
 
@@ -81,7 +81,7 @@ test('validation sets aria-invalid, announces and focuses the first problem', as
 
 test('the counter warns near the limit and stops at it', async ({ page }) => {
   await page.goto('/services');
-  const message = page.getByLabel('Message');
+  const message = page.getByLabel('Message', { exact: true });
   await message.fill('x'.repeat(899));
   await expect(page.getByText('899/1000')).not.toHaveClass(/font-semibold/);
   await message.fill('x'.repeat(900));
@@ -117,6 +117,78 @@ test('a message is written to Firestore and the success state shows', async ({
   await expect(page.getByLabel('Name')).toHaveValue('');
 });
 
+const NOTIFY = 'http://localhost:9999/notify';
+const CORS = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-headers': 'content-type',
+  'access-control-allow-methods': 'POST, OPTIONS',
+};
+
+/** The Worker's /notify, answering with `status` and recording what it was sent. */
+async function mockNotify(page: Page, status = 200) {
+  const received: Record<string, unknown>[] = [];
+  await page.route(NOTIFY, async (route) => {
+    const request = route.request();
+    if (request.method() === 'OPTIONS')
+      return route.fulfill({ status: 204, headers: CORS });
+    received.push(request.postDataJSON() as Record<string, unknown>);
+    return route.fulfill({
+      status,
+      headers: { ...CORS, 'content-type': 'application/json' },
+      body: JSON.stringify({ ok: status === 200, sent: status === 200 }),
+    });
+  });
+  return received;
+}
+
+test('after the message is saved the Worker is asked to email it to the owner', async ({
+  page,
+}) => {
+  const received = await mockNotify(page);
+  await page.goto('/services');
+  await page.getByRole('button', { name: 'Web Development' }).click();
+  await fill(page);
+  await page.getByRole('button', { name: 'Send' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Message sent' }),
+  ).toBeVisible();
+  await expect.poll(() => received.length).toBe(1);
+  expect(received[0]).toMatchObject({
+    name: 'Ada Lovelace',
+    email: 'ada@example.com',
+    topic: 'Web Development',
+    locale: 'en',
+  });
+  expect(String(received[0].message)).toContain('I need an app.');
+});
+
+test('the visitor still sees Message sent when the email notification fails', async ({
+  page,
+}) => {
+  await mockNotify(page, 502);
+  await page.goto('/services');
+  await fill(page);
+  await page.getByRole('button', { name: 'Send' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Message sent' }),
+  ).toBeVisible();
+});
+
+test('no email is requested when the message could not be saved', async ({
+  page,
+}) => {
+  const received = await mockNotify(page);
+  await page.route('**/firestore.googleapis.com/**:commit*', (route) =>
+    route.abort('failed'),
+  );
+  await page.goto('/services');
+  await fill(page);
+  await page.getByRole('button', { name: 'Send' }).click();
+  await expect(page.getByText(/Couldn't send your message/)).toBeVisible();
+  await page.waitForTimeout(500);
+  expect(received).toHaveLength(0);
+});
+
 test('a failed send keeps the text and offers another try', async ({
   page,
 }) => {
@@ -129,7 +201,9 @@ test('a failed send keeps the text and offers another try', async ({
   await expect(
     page.getByRole('alert').filter({ hasText: "Couldn't send" }),
   ).toContainText("Couldn't send your message");
-  await expect(page.getByLabel('Message')).toHaveValue('I need an app.');
+  await expect(page.getByLabel('Message', { exact: true })).toHaveValue(
+    'I need an app.',
+  );
   await expect(page.getByRole('button', { name: 'Try again' })).toBeFocused();
 });
 
@@ -173,7 +247,7 @@ test('the form is replaced by a note when site/live turns it off', async ({
   await expect(
     page.getByText('The contact form is taking a break.'),
   ).toBeVisible();
-  await expect(page.getByLabel('Message')).toHaveCount(0);
+  await expect(page.getByLabel('Message', { exact: true })).toHaveCount(0);
 });
 
 test('there is no horizontal scroll on a phone', async ({ page }) => {

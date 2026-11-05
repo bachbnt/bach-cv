@@ -52,7 +52,7 @@ export function CvDialogContent() {
               <Button
                 variant='outline'
                 size='icon'
-                className='border border-border active:bg-secondary max-[720px]:size-11'
+                className='border-border active:bg-secondary'
               />
             }
           >

@@ -4,6 +4,7 @@
 
 import { Copy, ZoomIn } from 'lucide-react';
 import Image from 'next/image';
+import { MediaBadge } from '@/components/media-badge';
 import { PaymentFields } from '@/components/payment/payment-fields';
 import { Button } from '@/components/ui/button';
 import { paymentCopy } from '@/content/copy/payment';
@@ -31,7 +32,7 @@ export function PaymentFeature({
           type='button'
           onClick={onOpenQr}
           aria-label={copy.enlargeQr(method.name)}
-          className='group/qr relative flex w-[190px] flex-none cursor-zoom-in items-center justify-center rounded-xl bg-muted p-3 outline-none max-[720px]:w-full max-[720px]:max-w-[260px] max-[720px]:self-center'
+          className='group/media relative flex w-[190px] flex-none cursor-zoom-in items-center justify-center rounded-xl bg-muted p-3 max-[720px]:w-full max-[720px]:max-w-[260px] max-[720px]:self-center'
         >
           <Image
             src={method.qr}
@@ -39,14 +40,14 @@ export function PaymentFeature({
             width={240}
             height={240}
             unoptimized
-            className='block h-auto max-h-60 w-full rounded-md bg-white object-contain transition-transform duration-300 group-hover/qr:scale-[1.03] motion-reduce:transition-none'
+            className='block h-auto max-h-60 w-full rounded-md bg-white object-contain transition-transform duration-300 group-hover/media:scale-[1.03] motion-reduce:transition-none'
           />
-          <span
-            aria-hidden='true'
-            className='absolute right-2 bottom-2 flex size-8 items-center justify-center rounded-full bg-night text-white transition-opacity max-[720px]:opacity-100 min-[721px]:opacity-0 group-hover/qr:opacity-100 group-focus-visible/qr:opacity-100 pointer-coarse:opacity-100'
+          <MediaBadge
+            icon={ZoomIn}
+            className='right-2 bottom-2 px-2.5 py-1 text-xs'
           >
-            <ZoomIn className='size-4' />
-          </span>
+            {copy.enlarge}
+          </MediaBadge>
         </button>
       )}
       <div className='flex min-w-0 flex-col gap-3'>
@@ -58,16 +59,12 @@ export function PaymentFeature({
         <div className='mt-0.5 flex flex-wrap items-center gap-x-4 gap-y-2 max-[720px]:w-full'>
           <Button
             onClick={() => onCopy('account')}
-            className='border-[1.5px] border-night max-[720px]:flex-1 pointer-coarse:h-11'
+            className='max-[720px]:flex-1'
           >
             <Copy aria-hidden='true' />
-            {copy.copyAccount}
+            {copy.copyNumber}
           </Button>
-          <Button
-            variant='link'
-            onClick={() => onCopy('all')}
-            className='px-0 pointer-coarse:h-11'
-          >
+          <Button variant='link' size='link' onClick={() => onCopy('all')}>
             {copy.copyAll}
           </Button>
         </div>
