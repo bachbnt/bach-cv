@@ -12,6 +12,20 @@ const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 const ANTHROPIC_MODEL = 'claude-haiku-4-5-20251001';
 const ANTHROPIC_VERSION = '2023-06-01';
 
+/** The longest answer any provider may write, so one request cannot run up a large bill. */
+export const MAX_OUTPUT_TOKENS = 1024;
+
+const geminiUrl = (model: string): string =>
+  `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+
+/** The `AI` binding of a Worker (see wrangler.toml). Only `run` is used. */
+export interface AiBinding {
+  run(model: string, input: unknown): Promise<unknown>;
+}
+
+/** Any model of the Workers AI catalog can be set with CLOUDFLARE_AI_MODEL; check the catalog for current names. */
+export const DEFAULT_CLOUDFLARE_MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8';
+
 const ensureKey = (key: string | undefined, providerName: string): string => {
   if (!key) throw new HttpError(500, `Missing ${providerName} API key`);
   return key;
@@ -41,12 +55,15 @@ export const callGemini = async (
   apiKey: string | undefined,
   messages: ChatMessage[],
   systemPrompt: string,
+  model?: string,
 ): Promise<string> => {
   const key = ensureKey(apiKey, 'Gemini');
-  const response = await fetch(`${GEMINI_URL}?key=${key}`, {
+  // the key goes in a header, not in the URL, so it does not end up in logs
+  const response = await fetch(model ? geminiUrl(model) : GEMINI_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({
+      generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
       system_instruction: { parts: [{ text: systemPrompt }] },
       contents: messages.map((m) => ({
         role: m.role,
@@ -62,6 +79,7 @@ export const callOpenAI = async (
   apiKey: string | undefined,
   messages: ChatMessage[],
   systemPrompt: string,
+  model: string = OPENAI_MODEL,
 ): Promise<string> => {
   const key = ensureKey(apiKey, 'OpenAI');
   const response = await fetch(OPENAI_URL, {
@@ -71,7 +89,8 @@ export const callOpenAI = async (
       Authorization: `Bearer ${key}`,
     },
     body: JSON.stringify({
-      model: OPENAI_MODEL,
+      model,
+      max_tokens: MAX_OUTPUT_TOKENS,
       messages: [
         { role: 'system', content: systemPrompt },
         ...messages.map((m) => ({
@@ -89,6 +108,7 @@ export const callClaude = async (
   apiKey: string | undefined,
   messages: ChatMessage[],
   systemPrompt: string,
+  model: string = ANTHROPIC_MODEL,
 ): Promise<string> => {
   const key = ensureKey(apiKey, 'Anthropic');
   const response = await fetch(ANTHROPIC_URL, {
@@ -99,8 +119,8 @@ export const callClaude = async (
       'anthropic-version': ANTHROPIC_VERSION,
     },
     body: JSON.stringify({
-      model: ANTHROPIC_MODEL,
-      max_tokens: 1024,
+      model,
+      max_tokens: MAX_OUTPUT_TOKENS,
       system: systemPrompt,
       messages: messages.map((m) => ({
         role: m.role === 'model' ? 'assistant' : 'user',
@@ -110,4 +130,35 @@ export const callClaude = async (
   });
   const data = (await handleProviderResponse(response, 'Anthropic')) as any;
   return data?.content?.[0]?.text ?? '...';
+};
+
+/** Workers AI: no API key, it runs on the account's free daily allowance. A spent allowance answers 429. */
+export const callCloudflareAI = async (
+  ai: AiBinding | undefined,
+  messages: ChatMessage[],
+  systemPrompt: string,
+  model: string = DEFAULT_CLOUDFLARE_MODEL,
+): Promise<string> => {
+  if (!ai) throw new HttpError(500, 'Missing Workers AI binding');
+  let output: unknown;
+  try {
+    output = await ai.run(model, {
+      max_tokens: MAX_OUTPUT_TOKENS,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...messages.map((m) => ({
+          role: m.role === 'model' ? 'assistant' : 'user',
+          content: m.content,
+        })),
+      ],
+    });
+  } catch (error) {
+    const reason = String((error as Error)?.message ?? error);
+    throw new HttpError(
+      /limit|quota|capacity|neuron|429/i.test(reason) ? 429 : 502,
+      'Workers AI error',
+    );
+  }
+  const text = (output as { response?: unknown } | null)?.response;
+  return typeof text === 'string' && text.trim() ? text : '...';
 };

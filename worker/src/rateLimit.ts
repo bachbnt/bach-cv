@@ -2,10 +2,22 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+/** The part of a Workers KV namespace that is used here (so tests can pass a plain object). */
+export interface KvLike {
+  get(key: string): Promise<string | null>;
+  put(
+    key: string,
+    value: string,
+    options?: { expirationTtl?: number },
+  ): Promise<void>;
+}
+
 export interface RateLimitEnv {
-  CHAT_RATE_LIMIT?: KVNamespace;
+  CHAT_RATE_LIMIT?: KvLike;
   RATE_LIMIT_PER_DAY?: string;
   RATE_LIMIT_PER_MINUTE?: string;
+  /** "true" refuses chat requests while no KV namespace is bound, instead of letting everything through */
+  REQUIRE_RATE_LIMIT?: string;
 }
 
 const parseLimit = (raw: string | undefined, fallback: number): number => {
@@ -17,7 +29,11 @@ export const enforceRateLimit = async (
   env: RateLimitEnv,
   ip: string,
 ): Promise<void> => {
-  if (!env.CHAT_RATE_LIMIT) return;
+  if (!env.CHAT_RATE_LIMIT) {
+    if (env.REQUIRE_RATE_LIMIT === 'true')
+      throw new Error('rate_limit_unavailable');
+    return;
+  }
 
   const perMinute = parseLimit(env.RATE_LIMIT_PER_MINUTE, 10);
   const perDay = parseLimit(env.RATE_LIMIT_PER_DAY, 200);
@@ -50,5 +66,34 @@ export const enforceRateLimit = async (
     env.CHAT_RATE_LIMIT.put(dayKey, String(dayCount + 1), {
       expirationTtl: 90_000,
     }),
+  ]);
+};
+
+/**
+ * Limits for the email notification: a few per visitor per hour, and a cap for the whole site per day
+ * (the free email plan has a daily quota that one visitor must not be able to use up).
+ */
+export const enforceNotifyLimit = async (
+  env: RateLimitEnv & { NOTIFY_PER_HOUR?: string; NOTIFY_PER_DAY?: string },
+  ip: string,
+): Promise<void> => {
+  const kv = env.CHAT_RATE_LIMIT;
+  if (!kv) throw new Error('rate_limit_unavailable');
+  const perHour = parseLimit(env.NOTIFY_PER_HOUR, 5);
+  const perDay = parseLimit(env.NOTIFY_PER_DAY, 40);
+  const now = Date.now();
+  const hourKey = `n:h:${ip}:${Math.floor(now / 3_600_000)}`;
+  const dayKey = `n:d:${Math.floor(now / 86_400_000)}`;
+  const [hourRaw, dayRaw] = await Promise.all([
+    kv.get(hourKey),
+    kv.get(dayKey),
+  ]);
+  const hour = Number.parseInt(hourRaw ?? '0', 10);
+  const day = Number.parseInt(dayRaw ?? '0', 10);
+  if (hour >= perHour) throw new Error('rate_limit_hour');
+  if (day >= perDay) throw new Error('rate_limit_day');
+  await Promise.all([
+    kv.put(hourKey, String(hour + 1), { expirationTtl: 7_200 }),
+    kv.put(dayKey, String(day + 1), { expirationTtl: 90_000 }),
   ]);
 };

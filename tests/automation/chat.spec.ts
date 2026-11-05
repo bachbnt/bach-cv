@@ -14,7 +14,7 @@ const CORS = {
 };
 
 type Body = {
-  provider: string;
+  provider?: string;
   systemPrompt: string;
   messages: { role: string; content: string }[];
 };
@@ -102,7 +102,8 @@ test('a question goes to the Worker with the site content and the answer is show
   await expect(box).toHaveValue('');
 
   expect(received).toHaveLength(1);
-  expect(received[0].provider).toBe('gemini');
+  // the Worker chooses who answers
+  expect(received[0].provider).toBeUndefined();
   expect(received[0].messages).toEqual([
     { role: 'user', content: 'Who are you?' },
   ]);

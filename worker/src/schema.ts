@@ -4,7 +4,12 @@
 
 import { z } from 'zod';
 
-export const chatProviderSchema = z.enum(['gemini', 'openai', 'claude']);
+export const chatProviderSchema = z.enum([
+  'cloudflare',
+  'gemini',
+  'openai',
+  'claude',
+]);
 export type ChatProvider = z.infer<typeof chatProviderSchema>;
 
 export const chatMessageSchema = z.object({
@@ -15,11 +20,26 @@ export const chatMessageSchema = z.object({
 export type ChatMessage = z.infer<typeof chatMessageSchema>;
 
 export const chatRequestSchema = z.object({
-  provider: chatProviderSchema,
+  /** leave out to let the Worker try its enabled providers in order */
+  provider: chatProviderSchema.optional(),
   messages: z.array(chatMessageSchema).min(1).max(40),
   systemPrompt: z.string().min(1).max(8000),
 });
 export type ChatRequest = z.infer<typeof chatRequestSchema>;
+
+/** A contact-form message to be told about by email. The same limits as the Firestore rules for `messages`. */
+export const notifyRequestSchema = z.object({
+  name: z.string().trim().min(1).max(100),
+  email: z
+    .string()
+    .trim()
+    .max(254)
+    .regex(/^[^@\s]+@[^@\s]+\.[^@\s]+$/),
+  topic: z.string().max(40).optional(),
+  message: z.string().trim().min(1).max(1000),
+  locale: z.enum(['en', 'vi']).optional(),
+});
+export type NotifyRequest = z.infer<typeof notifyRequestSchema>;
 
 export const chatResponseSchema = z.object({
   text: z.string(),
