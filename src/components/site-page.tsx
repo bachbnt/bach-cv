@@ -4,6 +4,7 @@
 
 import type { CSSProperties, ReactNode } from 'react';
 import { SiteFooter } from '@/components/site-footer';
+import { DocumentTitle } from '@/components/document-title';
 import { PageThemeVars } from '@/components/page-theme-vars';
 import { SiteHeader } from '@/components/site-header';
 import type { PageKey } from '@/lib/content/schema';
@@ -28,6 +29,7 @@ export function SitePage({
       }
       className='flex flex-1 flex-col'
     >
+      <DocumentTitle page={page} />
       <PageThemeVars accent={theme.accent} tint={theme.tint} />
       <div className='bg-page-tint'>
         <SiteHeader current={page} />

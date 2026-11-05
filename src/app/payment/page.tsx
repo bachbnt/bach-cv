@@ -6,12 +6,14 @@ import type { Metadata } from 'next';
 import { PaymentHead } from '@/components/payment/payment-head';
 import { PageShell } from '@/components/page-shell';
 import { PaymentList } from '@/components/payment/payment-list';
-import { shell } from '@/lib/content/shell';
+import { pageMetadata } from '@/lib/seo';
 
 /** The tab title is English: the page is statically exported, and the language is chosen in the browser. */
-export const metadata: Metadata = {
-  title: `Payment - ${shell.name}`,
-};
+export const metadata: Metadata = pageMetadata(
+  '/payment',
+  'Payment',
+  'Scan a QR code or copy an account number to pay for a project or say thanks.',
+);
 
 export default function PaymentPage() {
   return (
