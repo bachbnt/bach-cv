@@ -58,6 +58,9 @@
 - Paper that must stay white in dark mode (the CV sheets) carries `theme-light`, which restores the light tokens inside it. Images
   with a white background (QR codes, screenshots) keep `bg-white`.
 - `tests/unit/theme/contrast.test.ts` checks the token pairs for contrast; run it after changing a color.
+- A photo whose size CSS decides (a fixed height with `w-full`, a grid cell) is a `fill` image inside a `relative overflow-hidden`
+  frame that has the size, with `object-cover` on the image. Do not set a CSS width or height on an `<Image>` that has `width` and
+  `height`: Next.js warns when only one of them differs from the attributes. Use `priority` for the image at the top of a page.
 - Use `cn(...)` from `@/lib/utils` to combine class names.
 - Keep button heights stable across variants and hover states.
 - Hover styles belong inside `@media (hover: hover)` (Tailwind's `hover:` already
