@@ -71,3 +71,19 @@ test('the navigation follows site/live: a page that is soon is not a link, a hid
   await expect(nav.getByRole('link', { name: 'Services' })).toHaveCount(0);
   await expect(nav.getByText('Payment')).toHaveCount(0);
 });
+
+test('the footer has the full copyright line, in the visitor language', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const year = new Date().getFullYear();
+  await expect(page.getByRole('contentinfo')).toHaveText(
+    `© ${year} Bach Bui. All rights reserved.`,
+  );
+
+  await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
+  await page.reload();
+  await expect(page.getByRole('contentinfo')).toHaveText(
+    `© ${year} Bach Bui. Bảo lưu mọi quyền.`,
+  );
+});

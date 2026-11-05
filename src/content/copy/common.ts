@@ -15,6 +15,7 @@ export const commonCopy = defineCopy(
       services: 'Services',
       payment: 'Payment',
     },
+    footer: { rights: 'All rights reserved.' },
     soon: 'Soon',
     menu: { open: 'Open menu', label: 'Menu' },
     language: {
@@ -69,6 +70,7 @@ export const commonCopy = defineCopy(
       services: 'Dịch vụ',
       payment: 'Thanh toán',
     },
+    footer: { rights: 'Bảo lưu mọi quyền.' },
     soon: 'Sắp có',
     menu: { open: 'Mở menu', label: 'Menu' },
     language: {
