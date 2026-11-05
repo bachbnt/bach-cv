@@ -22,6 +22,12 @@ export const commonCopy = defineCopy(
       english: 'English',
       vietnamese: 'Tiếng Việt',
     },
+    theme: {
+      label: 'Theme',
+      system: 'System',
+      light: 'Light',
+      dark: 'Dark',
+    },
     connect: {
       button: 'Connect',
       title: "Let's connect",
@@ -69,6 +75,12 @@ export const commonCopy = defineCopy(
       label: 'Ngôn ngữ',
       english: 'English',
       vietnamese: 'Tiếng Việt',
+    },
+    theme: {
+      label: 'Giao diện',
+      system: 'Theo hệ thống',
+      light: 'Sáng',
+      dark: 'Tối',
     },
     connect: {
       button: 'Liên hệ',

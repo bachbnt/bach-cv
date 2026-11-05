@@ -12,6 +12,7 @@ import { LanguageSwitch } from '@/components/language-switch';
 import { commonCopy } from '@/content/copy/common';
 import { useCopy } from '@/lib/i18n/copy';
 import { MobileMenu } from '@/components/mobile-menu';
+import { ThemeSwitch } from '@/components/theme-switch';
 import { liveSchema, type PageKey } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { NAV_PAGES, PAGE_META } from '@/lib/pages';
@@ -22,7 +23,7 @@ import { cn } from 'cn';
 const DEFAULT_LIVE = liveSchema.parse({});
 
 const navLink =
-  'border-b-2 border-transparent py-2 text-[15px] font-medium hover:border-brand aria-[current=page]:border-page';
+  'border-b-2 border-transparent py-2 text-[15px] font-medium hover:border-brand-ink aria-[current=page]:border-page';
 
 export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
   const { data: live = DEFAULT_LIVE } = useQuery(liveQueryOptions());
@@ -81,6 +82,7 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
           })}
         </nav>
         <LanguageSwitch />
+        <ThemeSwitch />
         {live.features.connectMenu && <ConnectMenu />}
       </div>
 

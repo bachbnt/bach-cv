@@ -12,7 +12,7 @@ const tagVariants = cva(
   {
     variants: {
       tone: {
-        neutral: 'bg-secondary text-[#3a404c]',
+        neutral: 'bg-secondary text-body',
         mobile: 'bg-mobile text-mobile-foreground',
         web: 'bg-web text-web-foreground',
         ai: 'bg-ai text-ai-foreground',

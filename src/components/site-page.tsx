@@ -25,9 +25,12 @@ export function SitePage({
   return (
     <div
       style={
-        { '--page': theme.accent, '--page-tint': theme.tint } as CSSProperties
+        {
+          '--page-accent': theme.accent,
+          '--page-tint-base': theme.tint,
+        } as CSSProperties
       }
-      className='flex flex-1 flex-col'
+      className='page-theme flex flex-1 flex-col'
     >
       <DocumentTitle page={page} />
       <PageThemeVars accent={theme.accent} tint={theme.tint} />

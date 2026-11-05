@@ -26,7 +26,7 @@ export function FeaturedProject({
   const copy = useCopy(projectsCopy);
   const tags = skillsOf(project.technologies, skills);
   return (
-    <article className='grid items-center gap-5 rounded-3xl border bg-white p-5 transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(27,31,39,.1)] min-[721px]:grid-cols-[minmax(0,320px)_minmax(0,1fr)] min-[721px]:gap-8'>
+    <article className='grid items-center gap-5 rounded-3xl border bg-card p-5 transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(27,31,39,.1)] min-[721px]:grid-cols-[minmax(0,320px)_minmax(0,1fr)] min-[721px]:gap-8'>
       <div className='relative'>
         <ProjectCover
           project={project}
@@ -41,9 +41,7 @@ export function FeaturedProject({
         </span>
         <h3 className='text-[28px] leading-[1.1]'>{project.name}</h3>
         {project.summary && (
-          <p className='text-base leading-[1.6] text-[#3a404c]'>
-            {project.summary}
-          </p>
+          <p className='text-base leading-[1.6] text-body'>{project.summary}</p>
         )}
         <ProjectTags skills={tags} className='mt-4' />
         {project.links.length > 0 && (

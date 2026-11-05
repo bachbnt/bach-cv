@@ -26,6 +26,9 @@ same data.
   free daily allowance is spent. Keys stay in the Worker. The same Worker emails the owner when a contact-form message is saved (Resend).
 - **Search and sharing.** Every page has its own title, description, canonical link and social preview in its static HTML, plus a
   schema.org `Person`, a sitemap and `robots.txt` (`src/lib/seo.ts`). The browser tab title follows the visitor's language.
+- **Light and dark.** A Theme menu in the header (System, Light, Dark; also in the phone menu) remembers the choice and follows the
+  operating system until one is chosen. A small script in `<head>` sets the theme before the first paint, so there is no flash. Colours are
+  tokens in `src/app/globals.css` (`:root` and `.dark`); the CV sheets stay white paper in both.
 - **Accessible.** A visible focus ring on every control (a browser test tabs through the pages and dialogs), 44 px touch targets on
   phones, one set of buttons (filled, outline, link) and one image dialog for screenshots, certificates and QR codes.
 - **CV dialog and PDF.** A preview of the CV as A4 sheets and a PDF download, both built from the visitor's language.
@@ -128,6 +131,7 @@ src/content             shell.json (embedded) and the interface copy in src/cont
 src/lib/content         the data contract (schema.ts), repository interface, Firestore lite adapter
 src/lib/query           TanStack Query keys, options and hooks
 src/lib/i18n            language state and the copy helpers
+src/lib/theme           theme provider and the no-flash script
 src/lib/seo.ts          page metadata        src/lib/notify.ts   email request after a message        src/lib/content/app-check.ts   App Check
 tests/unit              Vitest        tests/automation   Playwright        tests/fixtures   Firestore snapshot for tests
 scripts/                Firestore backup, restore and test-fixture sync; scripts/docs builds the design documents

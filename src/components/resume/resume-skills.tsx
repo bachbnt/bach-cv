@@ -23,7 +23,7 @@ export function ResumeSkills() {
       <h2 id='skills-h' className='text-[30px] min-[721px]:text-[40px]'>
         {skills.title}
       </h2>
-      <p className='mt-3 max-w-[620px] text-[17px] leading-[1.55] text-[#3a404c]'>
+      <p className='mt-3 max-w-[620px] text-[17px] leading-[1.55] text-body'>
         {skills.lead}
       </p>
       <div className={sub}>

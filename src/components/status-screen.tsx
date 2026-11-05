@@ -18,13 +18,13 @@ export function StatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
   return (
     <div className='rounded-b-[40px] bg-page-tint'>
       <section className='mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6 px-5 pt-24 pb-[120px] min-[721px]:px-12'>
-        <p className='font-heading text-[80px] leading-none font-bold tracking-[-0.04em] text-brand min-[721px]:text-[120px]'>
+        <p className='font-heading text-[80px] leading-none font-bold tracking-[-0.04em] text-brand-ink min-[721px]:text-[120px]'>
           {variant === 'soon' ? copy.soon : '404'}
         </p>
         <h1 className='text-[36px] leading-[1.05] min-[721px]:text-5xl'>
           {text.title}
         </h1>
-        <p className='max-w-[520px] text-xl leading-[1.55] text-[#3a404c]'>
+        <p className='max-w-[520px] text-xl leading-[1.55] text-body'>
           {text.body}
         </p>
         <div className='mt-2 flex flex-col gap-3 max-[480px]:self-stretch min-[481px]:flex-row'>

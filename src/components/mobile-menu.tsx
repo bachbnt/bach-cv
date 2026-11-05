@@ -4,7 +4,7 @@
 
 'use client';
 
-import { Download, Menu } from 'lucide-react';
+import { Download, Menu, Monitor, Moon, Sun } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -23,10 +23,13 @@ import { NAV_PAGES, PAGE_META } from '@/lib/pages';
 import { commonCopy } from '@/content/copy/common';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
+import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
 import { LANGS, type Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
+
+const THEME_ICONS = { system: Monitor, light: Sun, dark: Moon } as const;
 
 /** The drawer used below 1200px: navigation, a grid of contact links and the CV button. */
 export function MobileMenu({
@@ -40,6 +43,7 @@ export function MobileMenu({
   const [menuOpen, setMenuOpen] = useState(false);
   const copy = useCopy(commonCopy);
   const { lang, setLang } = useLang();
+  const { theme, setTheme } = useTheme();
   const [cvOpen, setCvOpen] = useState(false);
   // the CV opens once the drawer has finished closing, so two modals never overlap
   const openCvAfterClose = useRef(false);
@@ -60,14 +64,14 @@ export function MobileMenu({
       >
         <SheetTrigger
           aria-label={copy.menu.open}
-          className='inline-flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[10px] border border-border bg-white px-4 text-[15px] font-semibold min-[1200px]:hidden'
+          className='inline-flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[10px] border border-border bg-card px-4 text-[15px] font-semibold min-[1200px]:hidden'
         >
           <Menu aria-hidden='true' className='size-[18px]' />
           {copy.menu.label}
         </SheetTrigger>
         <SheetContent
           side='right'
-          className='w-[min(360px,88vw)] gap-0 overflow-y-auto bg-white p-4 data-[side=right]:sm:max-w-[360px]'
+          className='w-[min(360px,88vw)] gap-0 overflow-y-auto bg-card p-4 data-[side=right]:sm:max-w-[360px]'
         >
           <Link
             href='/'
@@ -160,7 +164,7 @@ export function MobileMenu({
                       type='button'
                       aria-pressed={lang === code}
                       onClick={() => setLang(code)}
-                      className='min-h-10 min-w-14 cursor-pointer rounded-[10px] px-3.5 text-[15px] font-semibold text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-white'
+                      className='min-h-10 min-w-14 cursor-pointer rounded-[10px] px-3.5 text-[15px] font-semibold text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
                     >
                       {code.toUpperCase()}
                     </button>
@@ -169,6 +173,34 @@ export function MobileMenu({
               </div>
             </div>
           )}
+
+          <div className='mt-3.5 flex items-center justify-between gap-3 border-t pt-3.5'>
+            <p className='text-[13px] font-semibold text-muted-foreground'>
+              {copy.theme.label}
+            </p>
+            <div
+              role='group'
+              aria-label={copy.theme.label}
+              className='inline-flex rounded-xl bg-background p-[3px]'
+            >
+              {THEMES.map((code: Theme) => {
+                const Icon = THEME_ICONS[code];
+                return (
+                  <button
+                    key={code}
+                    type='button'
+                    aria-pressed={theme === code}
+                    aria-label={copy.theme[code]}
+                    title={copy.theme[code]}
+                    onClick={() => setTheme(code)}
+                    className='inline-flex min-h-10 min-w-12 cursor-pointer items-center justify-center rounded-[10px] px-3 text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
+                  >
+                    <Icon aria-hidden='true' className='size-[18px]' />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           {live.features.cvDownload && (
             <button

@@ -44,7 +44,7 @@ export interface LightboxProps {
 }
 
 const iconButton =
-  'inline-flex size-10 items-center justify-center rounded-[10px] border bg-white text-foreground transition-colors hover:bg-muted active:bg-muted pointer-coarse:size-11';
+  'inline-flex size-10 items-center justify-center rounded-[10px] border bg-card text-foreground transition-colors hover:bg-muted active:bg-muted pointer-coarse:size-11';
 
 /**
  * An image preview in a dialog: title bar, the image on a grey stage, then meta, actions and optional prev/next.
@@ -75,7 +75,7 @@ export function Lightbox({
           data-slot='lightbox'
           onKeyDown={onKeyDown}
           className={cn(
-            'fixed z-50 flex flex-col overflow-hidden bg-white text-foreground shadow-[0_24px_64px_rgba(27,31,39,.35)] outline-none',
+            'fixed z-50 flex flex-col overflow-hidden bg-card text-foreground shadow-[0_24px_64px_rgba(27,31,39,.35)] outline-none',
             'top-1/2 left-1/2 max-h-[92vh] w-[min(980px,94vw)] -translate-x-1/2 -translate-y-1/2 rounded-3xl',
             'max-[720px]:top-auto max-[720px]:bottom-0 max-[720px]:left-0 max-[720px]:max-h-[calc(100dvh-12px)] max-[720px]:w-full max-[720px]:translate-x-0 max-[720px]:translate-y-0 max-[720px]:rounded-b-none',
             'duration-200 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-97 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-97',

@@ -45,7 +45,7 @@ export function HomeProjects() {
         </h2>
         <Link
           href='/projects'
-          className='text-base font-semibold underline underline-offset-4 hover:text-brand'
+          className='text-base font-semibold underline underline-offset-4 hover:text-brand-ink'
         >
           {copy.all}
         </Link>
@@ -69,7 +69,7 @@ export function HomeProjects() {
                 <div className='flex flex-col gap-2 px-7 pt-6 pb-7'>
                   <h3 className='text-[22px]'>{project.name}</h3>
                   {project.summary && (
-                    <p className='line-clamp-3 text-base leading-[1.55] text-[#3a404c]'>
+                    <p className='line-clamp-3 text-base leading-[1.55] text-body'>
                       {project.summary}
                     </p>
                   )}
@@ -82,7 +82,7 @@ export function HomeProjects() {
               </>
             );
             const className =
-              'group flex flex-col overflow-hidden rounded-2xl border bg-white transition-[transform,box-shadow] duration-300 hover:-translate-y-[3px] hover:shadow-[0_14px_32px_rgba(27,31,39,.14)] active:bg-white';
+              'group flex flex-col overflow-hidden rounded-2xl border bg-card transition-[transform,box-shadow] duration-300 hover:-translate-y-[3px] hover:shadow-[0_14px_32px_rgba(27,31,39,.14)] active:bg-card';
             return href.startsWith('/') ? (
               <Link key={project.id} href={href} className={className}>
                 {card}

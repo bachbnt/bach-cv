@@ -283,6 +283,20 @@ ${table(
     ['Failed', 'the same card with Try again', '<code>kind="error"</code>, <code>role="alert"</code>; the button reads the query again, which shows the skeleton while it runs'],
     ['Ready', 'the content', 'rendered only when there is at least one item'],
   ],
+)}
+<h3>5.4 Colour theme</h3>
+<p>The visitor chooses <b>System</b>, <b>Light</b> or <b>Dark</b> in the header (or the phone menu). System follows the operating system and changes with it.
+A choice is kept in <code>localStorage</code> (<code>bach-cv-theme</code>; System removes the key).</p>
+${table(
+  ['Part', 'How it works'],
+  [
+    ['Before the first paint', 'a small inline script in <code>&lt;head&gt;</code> reads the choice and the system setting and puts the <code>dark</code> class on <code>&lt;html&gt;</code>, so a dark visitor never sees a white flash. The CSP already allows inline scripts.'],
+    ['After hydration', '<code>ThemeProvider</code> reads the saved choice (the first render says System, so the static HTML and the client agree), keeps the class in step and listens for the system setting changing.'],
+    ['Colours', 'tokens in <code>globals.css</code>: <code>:root</code> for light and <code>.dark</code> for dark (background, text, card, border, the category tag pairs, the error colours, the dark panels). Components use tokens, not hex values.'],
+    ['Page colours', 'each page has one accent and one tint (light values, set per page). In dark the accent is lightened and the tint is a wash of the accent over the page background, derived in CSS, so no page needs a second pair of colours.'],
+    ['Stays light', 'the CV sheets (preview and skeleton) carry <code>theme-light</code>, which restores the light tokens inside them. The PDF is not themed. QR codes and screenshots keep their white background.'],
+    ['Checks', 'a unit test measures the contrast of every token pair and every page colour in both themes; a browser test fails on text that is hard to read on its background in dark mode, and checks the menu, the saved choice, the system setting and the CV sheet.'],
+  ],
 )}`,
   },
   {
@@ -301,6 +315,7 @@ ${table(
     [c('Lightbox'), 'the one image dialog: screenshots, certificates and QR codes; previous/next with the counter between them, keyboard, bottom sheet on phones'],
     [c('MediaBadge'), 'the always-visible corner badge ("7 screenshots", "Enlarge") on a picture that opens the dialog'],
     [c('DocumentTitle'), 'the tab title in the visitor\'s language'],
+    [c('ThemeProvider, ThemeSwitch'), 'light, dark or follow the system (see 5.4); the header dropdown and a group of three buttons in the phone menu'],
     [c('RevealOnScroll'), 'fades sections in; off for reduced motion; also picks up content that arrives after mount'],
     [c('useContentQuery'), 'one collection, sorted (dates newest first, otherwise <code>sort</code>, featured first when asked), translated'],
   ],
@@ -393,9 +408,11 @@ npm run test:automation          # PW_CHANNEL=chrome uses an installed Chrome`)}
 <li>The chat does not name a provider: the Worker owns the order and the fallback, so a model can change without a site release.</li>
 <li>The email is a nudge after the save, never part of it.</li>
 <li>One data-state component and one action vocabulary, so pages cannot drift apart.</li>
+<li>The theme is a class on the root and tokens, not a second stylesheet: a new colour has two values in one place.</li>
 </ul></div>
 <div class="card"><h3>Known limits</h3><ul>
 <li>The static HTML (search results, link previews) carries English titles and descriptions; only the tab title follows the language.</li>
+<li>The illustrations on the Services page keep their own colours in dark mode (they are drawings of an app window); they sit on a tinted tile.</li>
 <li>The CV and PDF omit hidden roles (TMA, EasyGDS, Freelancer).</li>
 <li>Switches fall back to "on" while loading, so a maintenance screen can appear a moment after the content.</li>
 <li>No Firestore emulator run for the rules; they are checked against the real project.</li>

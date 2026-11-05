@@ -28,7 +28,7 @@ export function PageHead({
           className='bar-in mt-[18px] block h-1.5 w-16 rounded-[3px] bg-page'
         />
         {intro && (
-          <p className='mt-5 max-w-[620px] text-xl leading-[1.55] text-[#3a404c]'>
+          <p className='mt-5 max-w-[620px] text-xl leading-[1.55] text-body'>
             {intro}
           </p>
         )}

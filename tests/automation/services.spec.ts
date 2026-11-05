@@ -69,7 +69,8 @@ test('validation sets aria-invalid, announces and focuses the first problem', as
     page.getByText('Enter a valid email so I can reply'),
   ).toBeVisible();
   await expect(page.getByText('Message is required')).toBeVisible();
-  await expect(page.getByRole('status')).toHaveText(
+  // the form's live region (another block on the page can still be showing its own loading status)
+  await expect(page.locator('[role="status"][aria-live="polite"]')).toHaveText(
     '3 fields need attention: Name, Email, Message',
   );
   await page.getByLabel('Name').fill('Ada');

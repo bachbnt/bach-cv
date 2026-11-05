@@ -32,7 +32,7 @@ export function CvDialogContent() {
 
   return (
     <>
-      <div className='flex items-center justify-between gap-3 border-b bg-white px-5 py-3.5 max-[720px]:px-3.5 max-[720px]:py-3'>
+      <div className='flex items-center justify-between gap-3 border-b bg-card px-5 py-3.5 max-[720px]:px-3.5 max-[720px]:py-3'>
         <DialogTitle className='min-w-0 truncate text-lg leading-tight font-bold tracking-[-0.02em] max-[720px]:text-base'>
           {title}
         </DialogTitle>
@@ -74,7 +74,7 @@ export function CvDialogContent() {
       {cv ? (
         <CvSheets cv={cv} />
       ) : (
-        <div className='flex min-h-0 flex-1 overflow-y-auto bg-[#d5d8df] px-3 py-8 max-[820px]:py-3'>
+        <div className='flex min-h-0 flex-1 overflow-y-auto bg-paper px-3 py-8 max-[820px]:py-3'>
           {isError ? (
             <StateNotice
               kind='error'

@@ -34,11 +34,11 @@ export function MaintenanceGate({ children }: { children: ReactNode }) {
       role='status'
       style={
         {
-          '--page': NEUTRAL_THEME.accent,
-          '--page-tint': NEUTRAL_THEME.tint,
+          '--page-accent': NEUTRAL_THEME.accent,
+          '--page-tint-base': NEUTRAL_THEME.tint,
         } as CSSProperties
       }
-      className='flex min-h-screen flex-1 flex-col bg-page-tint'
+      className='page-theme flex min-h-screen flex-1 flex-col bg-page-tint'
     >
       <div className='mx-auto flex w-full max-w-[1200px] items-center gap-3 px-5 py-6 font-heading text-xl font-bold tracking-[-0.02em] min-[721px]:px-12'>
         <Image
@@ -52,21 +52,21 @@ export function MaintenanceGate({ children }: { children: ReactNode }) {
         {shell.name}
       </div>
       <main className='mx-auto flex w-full max-w-[1200px] flex-1 flex-col items-start justify-center gap-6 px-5 pb-24 min-[721px]:px-12'>
-        <p className='font-heading text-[56px] leading-none font-bold tracking-[-0.04em] text-brand min-[721px]:text-[96px]'>
+        <p className='font-heading text-[56px] leading-none font-bold tracking-[-0.04em] text-brand-ink min-[721px]:text-[96px]'>
           {copy.maintenance.code}
         </p>
         <h1 className='text-[36px] leading-[1.05] min-[721px]:text-5xl'>
           {copy.maintenance.title}
         </h1>
-        <p className='max-w-[560px] text-xl leading-[1.55] text-[#3a404c]'>
+        <p className='max-w-[560px] text-xl leading-[1.55] text-body'>
           {message}
         </p>
         {email && (
-          <p className='text-base text-[#3a404c]'>
+          <p className='text-base text-body'>
             {copy.maintenance.contact}{' '}
             <a
               href={email.url}
-              className='font-semibold underline underline-offset-4 hover:text-brand'
+              className='font-semibold underline underline-offset-4 hover:text-brand-ink'
             >
               {email.label}
             </a>

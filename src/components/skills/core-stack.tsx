@@ -47,9 +47,9 @@ export function CoreStack({ className }: { className?: string }) {
             <article
               key={skill.id}
               style={color ? ({ '--c': color } as CSSProperties) : undefined}
-              className='relative flex flex-col gap-3.5 overflow-hidden rounded-2xl border bg-white px-[18px] pt-5 pb-[18px] before:absolute before:inset-x-0 before:top-0 before:h-[3px] before:bg-[var(--c,var(--page))] before:content-[""] motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:hover:-translate-y-[3px] hover:shadow-[0_14px_30px_rgba(27,31,39,.1)] active:shadow-[0_14px_30px_rgba(27,31,39,.1)]'
+              className='relative flex flex-col gap-3.5 overflow-hidden rounded-2xl border bg-card px-[18px] pt-5 pb-[18px] before:absolute before:inset-x-0 before:top-0 before:h-[3px] before:bg-[var(--c,var(--page))] before:content-[""] motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:hover:-translate-y-[3px] hover:shadow-[0_14px_30px_rgba(27,31,39,.1)] active:shadow-[0_14px_30px_rgba(27,31,39,.1)]'
             >
-              <span className='flex size-11 flex-none items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--c,#1b1f27)_12%,#fff)] text-[color-mix(in_srgb,var(--c,#1b1f27)_82%,#000)]'>
+              <span className='flex size-11 flex-none items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--c,var(--foreground))_12%,var(--card))] text-[color-mix(in_srgb,var(--c,var(--foreground))_70%,var(--foreground))]'>
                 <SkillIcon
                   icon={skill.icon}
                   name={skill.name}

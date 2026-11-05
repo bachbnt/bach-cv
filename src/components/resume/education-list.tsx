@@ -33,7 +33,7 @@ export function EducationList() {
           count={2}
           min={380}
           height={420}
-          itemClassName='bg-white'
+          itemClassName='bg-card'
         />
       }
       className='mt-8'
@@ -54,7 +54,7 @@ function EducationCards({ degrees }: { degrees: Doc<'education'>[] }) {
       {degrees.map((degree) => (
         <article
           key={degree.id}
-          className='flex flex-col overflow-hidden rounded-2xl border bg-white'
+          className='flex flex-col overflow-hidden rounded-2xl border bg-card'
         >
           {degree.logo && (
             <Image
@@ -69,7 +69,7 @@ function EducationCards({ degrees }: { degrees: Doc<'education'>[] }) {
             <h3 className='text-2xl leading-[1.15]'>{degree.degree}</h3>
             <p className='text-base text-muted-foreground'>{degree.school}</p>
             <ul className='mt-1 flex list-none flex-wrap gap-x-6 gap-y-2 p-0'>
-              <li className='flex items-center gap-2 text-[15px] text-[#3a404c]'>
+              <li className='flex items-center gap-2 text-[15px] text-body'>
                 <CalendarDays
                   aria-hidden='true'
                   className='size-4 flex-none text-page'
@@ -79,7 +79,7 @@ function EducationCards({ degrees }: { degrees: Doc<'education'>[] }) {
                 </span>
               </li>
               {degree.major && (
-                <li className='flex items-center gap-2 text-[15px] text-[#3a404c]'>
+                <li className='flex items-center gap-2 text-[15px] text-body'>
                   <BookOpen
                     aria-hidden='true'
                     className='size-4 flex-none text-page'
@@ -114,7 +114,7 @@ function EducationCards({ degrees }: { degrees: Doc<'education'>[] }) {
                             href={href}
                             target='_blank'
                             rel='noopener'
-                            className='inline-flex text-[15px] font-semibold underline underline-offset-4 hover:text-brand pointer-coarse:min-h-11 pointer-coarse:items-center'
+                            className='inline-flex text-[15px] font-semibold underline underline-offset-4 hover:text-brand-ink pointer-coarse:min-h-11 pointer-coarse:items-center'
                           >
                             {label}
                           </a>

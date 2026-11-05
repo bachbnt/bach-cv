@@ -32,14 +32,14 @@ export function StateNotice({
       role={kind === 'error' ? 'alert' : 'status'}
       data-state={kind}
       className={cn(
-        'flex max-w-[640px] flex-col items-start gap-5 rounded-3xl border bg-white p-8 text-foreground',
+        'flex max-w-[640px] flex-col items-start gap-5 rounded-3xl border bg-card p-8 text-foreground',
         className,
       )}
     >
       {icon}
       <div>
         <Heading className='mb-2 text-[28px]'>{title}</Heading>
-        <p className='text-base leading-[1.6] text-[#3a404c]'>{body}</p>
+        <p className='text-base leading-[1.6] text-body'>{body}</p>
       </div>
       {children}
     </div>

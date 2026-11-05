@@ -12,14 +12,11 @@ import { useCopy } from '@/lib/i18n/copy';
 export function HomeBuild() {
   const copy = useCopy(homeBuildCopy);
   return (
-    <section
-      aria-labelledby='build-h'
-      className='bg-night py-24 text-background'
-    >
+    <section aria-labelledby='build-h' className='bg-night py-24 text-white'>
       <div className='mx-auto w-full max-w-[1200px] px-5 min-[721px]:px-12'>
         <h2
           id='build-h'
-          className='max-w-[640px] text-[30px] leading-[1.08] text-background min-[721px]:text-[40px]'
+          className='max-w-[640px] text-[30px] leading-[1.08] text-white min-[721px]:text-[40px]'
         >
           {copy.title}
         </h2>

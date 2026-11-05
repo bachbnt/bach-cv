@@ -18,6 +18,7 @@ import { ChatProvider } from '@/components/chat/chat-provider';
 import { MaintenanceGate } from '@/components/maintenance-gate';
 import { RevealOnScroll } from '@/components/reveal-on-scroll';
 import { LanguageProvider } from '@/lib/i18n/language';
+import { ThemeProvider } from '@/lib/theme/theme';
 import { ChatWidget } from '@/components/chat/chat-widget';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
@@ -68,15 +69,17 @@ export function Providers({ children }: { children: ReactNode }) {
       }}
     >
       <LanguageProvider>
-        <TooltipProvider>
-          <ChatProvider>
-            <MaintenanceGate>
-              <RevealOnScroll />
-              {children}
-              <ChatWidget />
-            </MaintenanceGate>
-          </ChatProvider>
-        </TooltipProvider>
+        <ThemeProvider>
+          <TooltipProvider>
+            <ChatProvider>
+              <MaintenanceGate>
+                <RevealOnScroll />
+                {children}
+                <ChatWidget />
+              </MaintenanceGate>
+            </ChatProvider>
+          </TooltipProvider>
+        </ThemeProvider>
       </LanguageProvider>
     </PersistQueryClientProvider>
   );

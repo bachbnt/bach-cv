@@ -12,7 +12,7 @@ export function CvHead({ cv }: { cv: CvModel }) {
       <div>
         <h1 className='text-[30px] leading-[1.1]'>{cv.name}</h1>
         {cv.headline && (
-          <p className='mt-2 mb-0 text-[15px] text-[#3a404c]'>{cv.headline}</p>
+          <p className='mt-2 mb-0 text-[15px] text-body'>{cv.headline}</p>
         )}
       </div>
       {cv.contacts.length > 0 && (
@@ -23,7 +23,7 @@ export function CvHead({ cv }: { cv: CvModel }) {
                 <svg
                   viewBox='0 0 24 24'
                   aria-hidden='true'
-                  className='size-[13px] flex-none text-brand'
+                  className='size-[13px] flex-none text-brand-ink'
                 >
                   <path
                     d={CONTACT_ICON_PATHS[contact.kind]}

@@ -23,7 +23,7 @@ export function HomeWork() {
         </h2>
         <Link
           href='/resume'
-          className='text-base font-semibold underline underline-offset-4 hover:text-brand'
+          className='text-base font-semibold underline underline-offset-4 hover:text-brand-ink'
         >
           {copy.work.all}
         </Link>

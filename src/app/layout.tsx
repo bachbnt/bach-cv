@@ -7,6 +7,7 @@ import { Bricolage_Grotesque, Public_Sans } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import { shell } from '@/lib/content/shell';
 import { SITE_URL } from '@/lib/seo';
+import { THEME_SCRIPT } from '@/lib/theme/theme-script';
 import './globals.css';
 
 const publicSans = Public_Sans({
@@ -54,7 +55,11 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang={shell.defaultLanguage}
       className={`${publicSans.variable} ${bricolage.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className='flex min-h-full flex-col'>
         <script
           type='application/ld+json'

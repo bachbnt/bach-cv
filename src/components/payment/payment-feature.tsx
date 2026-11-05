@@ -25,7 +25,7 @@ export function PaymentFeature({
   return (
     <article
       data-testid='payment-method'
-      className='flex items-center gap-6 rounded-3xl border bg-white p-5 max-[720px]:flex-col max-[720px]:items-stretch'
+      className='flex items-center gap-6 rounded-3xl border bg-card p-5 max-[720px]:flex-col max-[720px]:items-stretch'
     >
       {method.qr && (
         <button

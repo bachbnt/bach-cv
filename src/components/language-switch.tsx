@@ -34,7 +34,7 @@ export function LanguageSwitch() {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={copy.language.label}
-        className='group inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-[10px] border border-border bg-white px-3 text-sm font-semibold transition-colors hover:border-foreground'
+        className='group inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-[10px] border border-border bg-card px-3 text-sm font-semibold transition-colors hover:border-foreground'
       >
         <Globe aria-hidden='true' className='size-[18px]' />
         {lang.toUpperCase()}
@@ -48,7 +48,7 @@ export function LanguageSwitch() {
       <DropdownMenuContent
         align='end'
         sideOffset={8}
-        className='min-w-[168px] rounded-xl bg-white p-1.5 shadow-[0_16px_36px_rgba(27,31,39,.16)]'
+        className='min-w-[168px] rounded-xl bg-card p-1.5 shadow-[0_16px_36px_rgba(27,31,39,.16)]'
       >
         <DropdownMenuRadioGroup
           value={lang}

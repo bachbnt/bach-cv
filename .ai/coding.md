@@ -51,6 +51,13 @@
 
 - Tailwind utilities with shadcn theme tokens (`bg-background`,
   `text-muted-foreground`). Avoid raw color values in components.
+- The site has a light and a dark theme (`.dark` on `<html>`, tokens in `src/app/globals.css`). A new color is a token with a value
+  in both `:root` and `.dark`, not a hex in a component. Use `bg-card` (not `bg-white`), `text-body` for paragraphs, `text-brand-ink`
+  for red text or links (`bg-brand` only fills a button), `bg-page` / `text-page` for the page accent, and `text-danger` with
+  `bg-danger-bg` for errors. On the dark panels (`bg-night`) the light text is `text-white`, not `text-background`.
+- Paper that must stay white in dark mode (the CV sheets) carries `theme-light`, which restores the light tokens inside it. Images
+  with a white background (QR codes, screenshots) keep `bg-white`.
+- `tests/unit/theme/contrast.test.ts` checks the token pairs for contrast; run it after changing a color.
 - Use `cn(...)` from `@/lib/utils` to combine class names.
 - Keep button heights stable across variants and hover states.
 - Hover styles belong inside `@media (hover: hover)` (Tailwind's `hover:` already

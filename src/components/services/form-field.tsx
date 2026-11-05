@@ -21,10 +21,7 @@ export function FormField({
   children: ReactNode;
 }) {
   const errorLine = (
-    <span
-      id={`${id}-error`}
-      className='min-h-[18px] text-[13.5px] text-[#a5271b]'
-    >
+    <span id={`${id}-error`} className='min-h-[18px] text-[13.5px] text-danger'>
       {error}
     </span>
   );

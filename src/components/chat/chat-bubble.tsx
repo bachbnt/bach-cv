@@ -25,7 +25,7 @@ export function ChatBubble({
         role === 'bot' && 'self-start rounded-bl-[6px] border bg-card',
         role === 'user' && 'self-end rounded-br-[6px] bg-night text-white',
         role === 'error' &&
-          'self-start rounded-bl-[6px] border border-[#e9b8ae] bg-[#f8e4df] text-[#7a1f13]',
+          'self-start rounded-bl-[6px] border border-danger-border bg-danger-bg text-danger',
       )}
     >
       {children}

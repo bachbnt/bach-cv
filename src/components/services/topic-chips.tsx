@@ -31,7 +31,7 @@ export function TopicChips({
           type='button'
           aria-pressed={service.id === topicId}
           onClick={() => onSelect(service)}
-          className='rounded-full border-[1.5px] border-border bg-white px-[18px] py-[9px] text-[15px] font-medium text-foreground transition-[transform,background-color,border-color,color] duration-200 hover:border-foreground active:scale-[.97] active:border-foreground aria-pressed:border-page aria-pressed:bg-page aria-pressed:text-white max-[720px]:min-h-11 pointer-coarse:min-h-11'
+          className='rounded-full border-[1.5px] border-border bg-card px-[18px] py-[9px] text-[15px] font-medium text-foreground transition-[transform,background-color,border-color,color] duration-200 hover:border-foreground active:scale-[.97] active:border-foreground aria-pressed:border-page aria-pressed:bg-page aria-pressed:text-background max-[720px]:min-h-11 pointer-coarse:min-h-11'
         >
           {service.name}
         </button>

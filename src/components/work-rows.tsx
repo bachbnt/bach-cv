@@ -43,7 +43,7 @@ export function WorkRows() {
             key={job.id}
             href='/resume'
             data-row
-            className='flex flex-wrap items-center gap-x-8 gap-y-3 border-b px-3 py-5 transition-colors hover:bg-white min-[721px]:px-6 min-[721px]:py-6'
+            className='flex flex-wrap items-center gap-x-8 gap-y-3 border-b px-3 py-5 transition-colors hover:bg-card min-[721px]:px-6 min-[721px]:py-6'
           >
             {job.logo ? (
               <Image

@@ -29,7 +29,7 @@ export function BrandIcon({
 }
 
 export const brandColor = (platform: string) =>
-  BRAND_ICONS[platform]?.color ?? '#1b1f27';
+  BRAND_ICONS[platform]?.color ?? 'var(--night)';
 
 export const brandName = (platform: string) =>
   BRAND_ICONS[platform]?.name ?? platform;

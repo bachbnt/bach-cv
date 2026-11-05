@@ -19,7 +19,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 
 const control =
-  'h-auto rounded-xl border-[1.5px] border-border bg-white px-3.5 py-3 text-base leading-[1.4] text-foreground focus-visible:border-foreground focus-visible:ring-foreground/10 aria-invalid:border-[#b3301f] aria-invalid:ring-0 md:text-base';
+  'h-auto rounded-xl border-[1.5px] border-border bg-card px-3.5 py-3 text-base leading-[1.4] text-foreground focus-visible:border-foreground focus-visible:ring-foreground/10 aria-invalid:border-danger aria-invalid:ring-0 md:text-base';
 
 /** The message form: name, email, message, the failure notice and the Send button. */
 export function ContactForm({
@@ -91,8 +91,7 @@ export function ContactForm({
         aside={
           <span
             className={cn(
-              used >= warnAt(limits.messageMax) &&
-                'font-semibold text-[#a5271b]',
+              used >= warnAt(limits.messageMax) && 'font-semibold text-danger',
             )}
           >
             {counterText(used, limits.messageMax, copy.count)}
@@ -131,7 +130,7 @@ export function ContactForm({
       {status === 'failed' && (
         <div
           role='alert'
-          className='rounded-xl border border-[#e9b8ae] bg-[#f8e4df] px-3.5 py-3 text-[15px] leading-[1.45] text-[#7a1f13]'
+          className='rounded-xl border border-danger-border bg-danger-bg px-3.5 py-3 text-[15px] leading-[1.45] text-danger'
         >
           {copy.failed}
         </div>

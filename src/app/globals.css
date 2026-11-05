@@ -2,6 +2,9 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+/* dark mode: the `dark` class on <html> (set by the theme script in the layout and by <ThemeProvider>) */
+@custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -51,21 +54,33 @@
 
   /* design tokens from the design mockup */
   --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
   --color-page: var(--page);
   --color-page-tint: var(--page-tint);
-  --color-night: #1b1f27;
-  --color-mobile: #e2f3ec;
-  --color-mobile-foreground: #0f5c43;
-  --color-web: #e3ecfb;
-  --color-web-foreground: #1747b0;
-  --color-ai: #efe9fb;
-  --color-ai-foreground: #5b3aa8;
-  --color-tools: #fcefd9;
-  --color-tools-foreground: #8f4a00;
+  --color-night: var(--night);
+  --color-night-foreground: var(--night-foreground);
+  --color-body: var(--body);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-border: var(--danger-border);
+  --color-paper: var(--paper);
+  --color-mobile: var(--mobile);
+  --color-mobile-foreground: var(--mobile-foreground);
+  --color-web: var(--web);
+  --color-web-foreground: var(--web-foreground);
+  --color-ai: var(--ai);
+  --color-ai-foreground: var(--ai-foreground);
+  --color-tools: var(--tools);
+  --color-tools-foreground: var(--tools-foreground);
 }
 
-/* Palette from the design mockup: ink on a cool grey, one accent red, and a colour pair per page. */
-:root {
+/*
+ * Palette from the design mockup: ink on a cool grey, one accent red, and a colour pair per page.
+ * `.theme-light` puts the light values back inside a dark page: the CV sheets and the other "paper" that must stay white.
+ */
+:root,
+.theme-light {
+  color-scheme: light;
   --background: #f5f6f8;
   --foreground: #1b1f27;
   --card: #ffffff;
@@ -86,10 +101,89 @@
   --ring: #1b1f27;
   --radius: 0.625rem;
 
+  /* body copy one step softer than the headings */
+  --body: #3a404c;
+  --paper: #d5d8df;
+  /* the dark panels (contact band, tooltips, badges): dark in both themes */
+  --night: #1b1f27;
+  --night-foreground: #b4bac6;
+
+  /* errors */
+  --danger: #a5271b;
+  --danger-bg: #f8e4df;
+  --danger-border: #e9b8ae;
+
+  /* a colour pair per skill category */
+  --mobile: #e2f3ec;
+  --mobile-foreground: #0f5c43;
+  --web: #e3ecfb;
+  --web-foreground: #1747b0;
+  --ai: #efe9fb;
+  --ai-foreground: #5b3aa8;
+  --tools: #fcefd9;
+  --tools-foreground: #8f4a00;
+
+  /* --brand fills buttons (white text on it); --brand-ink is the same red used as text or a line */
   --brand: #b3301f;
-  /* set per page by <PageTheme>: --page is the accent, --page-tint the soft background */
-  --page: var(--brand);
-  --page-tint: #e7e9ee;
+  --brand-ink: #b3301f;
+  /* set per page by <SitePage> and <PageThemeVars> (the light colours); --page and --page-tint are derived below */
+  --page-accent: #b3301f;
+  --page-tint-base: #e7e9ee;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #0f1217;
+  --foreground: #eceef2;
+  --card: #171b22;
+  --card-foreground: #eceef2;
+  --popover: #1b2029;
+  --popover-foreground: #eceef2;
+  --primary: #eceef2;
+  --primary-foreground: #0f1217;
+  --secondary: #242a35;
+  --secondary-foreground: #eceef2;
+  --muted: #242a35;
+  --muted-foreground: #a0a9b8;
+  --accent: #1d222b;
+  --accent-foreground: #eceef2;
+  --destructive: #f28b7a;
+  --border: #2f3744;
+  --input: #3a4352;
+  --ring: #eceef2;
+
+  --body: #c4c9d4;
+  --paper: #232832;
+  --night: #262d3a;
+  --night-foreground: #b4bac6;
+
+  --danger: #f6a99c;
+  --danger-bg: #3a1c19;
+  --danger-border: #6b2f27;
+
+  --mobile: #153a2d;
+  --mobile-foreground: #7fd5b4;
+  --web: #17284a;
+  --web-foreground: #9cbcf5;
+  --ai: #2a2145;
+  --ai-foreground: #c3adf2;
+  --tools: #43290a;
+  --tools-foreground: #f0b56b;
+
+  --brand-ink: #f28b7a;
+}
+
+/* the page colour pair: the light colours as they are, and in dark mode the accent lightened and the tint a wash of it */
+:root,
+.page-theme,
+.theme-light {
+  --page: var(--page-accent);
+  --page-tint: var(--page-tint-base);
+}
+.dark,
+.dark .page-theme {
+  --page: color-mix(in srgb, var(--page-accent) 52%, white);
+  --page-tint: color-mix(in srgb, var(--page-accent) 22%, var(--background));
 }
 
 @layer base {

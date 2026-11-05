@@ -33,7 +33,7 @@ export function AboutHead() {
             />
           </h1>
           {profile?.summary && (
-            <p className='max-w-[560px] text-xl leading-[1.6] text-[#3a404c]'>
+            <p className='max-w-[560px] text-xl leading-[1.6] text-body'>
               {profile.summary}
             </p>
           )}

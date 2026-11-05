@@ -34,7 +34,7 @@ export function CvDialog({
         <DialogPrimitive.Popup
           data-slot='cv-dialog'
           className={cn(
-            'fixed top-1/2 left-1/2 z-50 flex h-[min(92vh,900px)] w-[min(1000px,calc(100vw-48px))] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-3xl bg-white text-foreground shadow-[0_24px_64px_rgba(27,31,39,0.35)] outline-none',
+            'fixed top-1/2 left-1/2 z-50 flex h-[min(92vh,900px)] w-[min(1000px,calc(100vw-48px))] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-3xl bg-card text-foreground shadow-[0_24px_64px_rgba(27,31,39,0.35)] outline-none',
             'transition duration-300 ease-out data-ending-style:translate-y-[calc(-50%+18px)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:translate-y-[calc(-50%+18px)] data-starting-style:scale-[0.97] data-starting-style:opacity-0',
             'max-[720px]:inset-x-0 max-[720px]:top-auto max-[720px]:bottom-0 max-[720px]:left-0 max-[720px]:h-[calc(100dvh-12px)] max-[720px]:w-full max-[720px]:translate-x-0 max-[720px]:translate-y-0 max-[720px]:rounded-b-none max-[720px]:data-ending-style:translate-y-8 max-[720px]:data-starting-style:translate-y-8',
           )}

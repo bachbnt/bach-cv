@@ -33,7 +33,7 @@ export function HomeHero() {
           </h1>
           <p
             style={{ '--i': 1 } as CSSProperties}
-            className='hi max-w-[560px] text-xl leading-[1.55] text-[#2b303a]'
+            className='hi max-w-[560px] text-xl leading-[1.55] text-body'
           >
             {copy.intro}
           </p>
@@ -65,7 +65,7 @@ export function HomeHero() {
       <div className={`${wrap} relative z-10 -mb-[88px] max-[900px]:-mb-0`}>
         <div
           style={{ '--i': 4 } as CSSProperties}
-          className='hi flex flex-wrap items-start gap-x-12 gap-y-6 rounded-[20px] border bg-white px-8 py-7 shadow-[0_18px_40px_rgba(27,31,39,.14)]'
+          className='hi flex flex-wrap items-start gap-x-12 gap-y-6 rounded-[20px] border bg-card px-8 py-7 shadow-[0_18px_40px_rgba(27,31,39,.14)]'
         >
           <div className='flex-[0_1_300px]'>
             <h2 className='text-xl leading-tight'>{pipeline.title}</h2>

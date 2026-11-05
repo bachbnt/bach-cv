@@ -57,7 +57,7 @@ export function ConnectMenu() {
 
         {email && (
           <div className='mb-1.5 flex items-center gap-3 rounded-[14px] bg-page-tint p-3'>
-            <span className='flex size-9 flex-none items-center justify-center rounded-[10px] bg-white text-brand'>
+            <span className='flex size-9 flex-none items-center justify-center rounded-[10px] bg-card text-brand-ink'>
               <BrandIcon platform='email' className='size-[18px]' />
             </span>
             <div className='flex min-w-0 flex-1 flex-col'>
@@ -74,7 +74,7 @@ export function ConnectMenu() {
             <button
               type='button'
               onClick={() => copy(email.label)}
-              className='min-h-9 flex-none cursor-pointer rounded-[10px] border-[1.5px] border-foreground bg-white px-3.5 text-sm font-semibold transition-colors hover:bg-secondary'
+              className='min-h-9 flex-none cursor-pointer rounded-[10px] border-[1.5px] border-foreground bg-card px-3.5 text-sm font-semibold transition-colors hover:bg-secondary'
             >
               {copied ? text.connect.copied : text.connect.copy}
             </button>
@@ -101,7 +101,7 @@ export function ConnectMenu() {
                       }
                       className='group/item flex min-h-[52px] items-center gap-3 rounded-xl p-2 transition-colors hover:bg-background focus-visible:bg-background'
                     >
-                      <span className='flex size-9 flex-none items-center justify-center rounded-[10px] bg-[color-mix(in_srgb,var(--c)_12%,#fff)] text-[color-mix(in_srgb,var(--c)_82%,#000)] transition-colors group-hover/item:bg-(--c) group-hover/item:text-white group-focus-visible/item:bg-(--c) group-focus-visible/item:text-white'>
+                      <span className='flex size-9 flex-none items-center justify-center rounded-[10px] bg-[color-mix(in_srgb,var(--c)_12%,var(--card))] text-[color-mix(in_srgb,var(--c)_70%,var(--foreground))] transition-colors group-hover/item:bg-(--c) group-hover/item:text-white group-focus-visible/item:bg-(--c) group-focus-visible/item:text-white'>
                         <BrandIcon
                           platform={c.platform}
                           className='size-[18px]'

@@ -77,7 +77,7 @@ export function CvSheets({ cv }: { cv: CvModel }) {
       role='region'
       aria-label={copy.previewLabel}
       tabIndex={0}
-      className='relative flex min-h-0 flex-1 flex-col items-center gap-6 overflow-y-auto bg-[#d5d8df] py-8 max-[820px]:gap-3 max-[820px]:py-3'
+      className='relative flex min-h-0 flex-1 flex-col items-center gap-6 overflow-y-auto bg-paper py-8 max-[820px]:gap-3 max-[820px]:py-3'
     >
       {pages ? (
         pages.map((page, n) => (
@@ -85,7 +85,7 @@ export function CvSheets({ cv }: { cv: CvModel }) {
             key={n}
             aria-label={pageLabel(copy, n + 1, pages.length)}
             style={{ zoom }}
-            className='box-border h-[1123px] w-[794px] flex-none overflow-hidden bg-white px-[46px] py-10 text-[11px] leading-[1.4] text-[#1b1f27] shadow-[0_2px_12px_rgba(27,31,39,0.18)]'
+            className='theme-light box-border h-[1123px] w-[794px] flex-none overflow-hidden bg-white px-[46px] py-10 text-[11px] leading-[1.4] text-[#1b1f27] shadow-[0_2px_12px_rgba(27,31,39,0.18)]'
           >
             {page.map((index) => (
               <div key={blocks[index].key}>{blocks[index].node}</div>

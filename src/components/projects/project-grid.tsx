@@ -50,8 +50,8 @@ export function ProjectGrid({
                 className={cn(
                   chip,
                   pressed
-                    ? 'border-page bg-page text-white'
-                    : 'border-border bg-white hover:border-foreground active:border-foreground',
+                    ? 'border-page bg-page text-background'
+                    : 'border-border bg-card hover:border-foreground active:border-foreground',
                 )}
               >
                 {value === 'all' ? copy.filterAll : copy.kinds[value]}

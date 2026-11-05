@@ -33,7 +33,7 @@ export function ExperienceRow({
     .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0));
 
   return (
-    <article className='flex flex-wrap gap-x-12 gap-y-3 border-t px-3 py-7 transition-colors hover:bg-white active:bg-white min-[721px]:px-6 min-[721px]:py-10'>
+    <article className='flex flex-wrap gap-x-12 gap-y-3 border-t px-3 py-7 transition-colors hover:bg-card active:bg-card min-[721px]:px-6 min-[721px]:py-10'>
       <p className='flex-[0_0_150px] pt-2 text-[15px] leading-normal text-muted-foreground'>
         {formatPeriod(job.startMonth, job.endMonth, lang)}
       </p>
@@ -56,14 +56,14 @@ export function ExperienceRow({
           )}
         </p>
         {intro && (
-          <p className='mt-3 max-w-[640px] text-[17px] leading-[1.55] text-[#3a404c]'>
+          <p className='mt-3 max-w-[640px] text-[17px] leading-[1.55] text-body'>
             {intro}
           </p>
         )}
         {keyProjects.map((project) => (
           <div
             key={project.name}
-            className='mt-5 rounded-xl border bg-white px-[18px] py-4'
+            className='mt-5 rounded-xl border bg-card px-[18px] py-4'
           >
             <span className='mb-2 inline-flex items-center rounded-full bg-page-tint px-2.5 py-[3px] text-[13px] font-semibold whitespace-nowrap text-page'>
               {copy.keyProject}
@@ -85,7 +85,7 @@ export function ExperienceRow({
               <span className='group-open:hidden'>{copy.show}</span>
               <span className='hidden group-open:inline'>{copy.hide}</span>
             </summary>
-            <ul className='mt-4 flex list-disc flex-col gap-3 pl-5 text-base leading-[1.6] text-[#3a404c]'>
+            <ul className='mt-4 flex list-disc flex-col gap-3 pl-5 text-base leading-[1.6] text-body'>
               {job.bullets.map((bullet) => (
                 <li key={bullet}>{bullet}</li>
               ))}

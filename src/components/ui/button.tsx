@@ -16,7 +16,7 @@ const buttonVariants = cva(
         outline:
           'border-[1.5px] border-foreground bg-transparent text-foreground hover:bg-secondary',
         ghost: 'text-foreground hover:bg-secondary',
-        link: 'text-foreground underline underline-offset-4 hover:text-brand',
+        link: 'text-foreground underline underline-offset-4 hover:text-brand-ink',
       },
       size: {
         default: 'h-10 gap-2.5 px-4 max-[720px]:h-11 pointer-coarse:h-11',

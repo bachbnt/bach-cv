@@ -106,7 +106,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
 
   return (
     <>
-      <p className='mt-7 flex max-w-[720px] items-start gap-3 rounded-xl border bg-white px-4 py-3.5 text-[15px] leading-normal text-[#3a404c]'>
+      <p className='mt-7 flex max-w-[720px] items-start gap-3 rounded-xl border bg-card px-4 py-3.5 text-[15px] leading-normal text-body'>
         <Info
           className='mt-0.5 size-5 flex-none text-page'
           aria-hidden='true'
@@ -161,7 +161,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
                   type='button'
                   aria-pressed={filter === k}
                   onClick={() => setFilter(k)}
-                  className='rounded-full border-[1.5px] bg-white px-[18px] py-[9px] text-[15px] font-medium transition-colors hover:border-night active:border-night aria-pressed:border-page aria-pressed:bg-page aria-pressed:text-white pointer-coarse:min-h-11'
+                  className='rounded-full border-[1.5px] bg-card px-[18px] py-[9px] text-[15px] font-medium transition-colors hover:border-foreground active:border-foreground aria-pressed:border-page aria-pressed:bg-page aria-pressed:text-background pointer-coarse:min-h-11'
                 >
                   {k === 'all' ? copy.filterAll : copy.kinds[k]}
                   <span className='ml-1.5 tabular-nums opacity-70'>

@@ -58,10 +58,10 @@ export function ContactSection() {
           ) : (
             <div
               role='note'
-              className='flex flex-col gap-1.5 rounded-2xl border border-border bg-white p-6'
+              className='flex flex-col gap-1.5 rounded-2xl border border-border bg-card p-6'
             >
               <p className='font-heading text-xl font-bold'>{copy.off.title}</p>
-              <p className='leading-[1.55] text-[#3a404c]'>{copy.off.body}</p>
+              <p className='leading-[1.55] text-body'>{copy.off.body}</p>
             </div>
           )}
           {features.chat && (
@@ -70,7 +70,7 @@ export function ContactSection() {
               <button
                 type='button'
                 onClick={openChat}
-                className='text-[15px] font-medium text-foreground underline underline-offset-4 hover:text-brand active:text-brand max-[720px]:inline-flex max-[720px]:min-h-11 max-[720px]:items-center pointer-coarse:min-h-11'
+                className='text-[15px] font-medium text-foreground underline underline-offset-4 hover:text-brand-ink active:text-brand-ink max-[720px]:inline-flex max-[720px]:min-h-11 max-[720px]:items-center pointer-coarse:min-h-11'
               >
                 {copy.askButton}
               </button>
@@ -82,7 +82,7 @@ export function ContactSection() {
             <div role='status' aria-live='polite' className='sr-only'>
               {form.announcement}
             </div>
-            <div className='rounded-2xl border border-border bg-white p-8 max-[720px]:px-5 max-[720px]:py-6'>
+            <div className='rounded-2xl border border-border bg-card p-8 max-[720px]:px-5 max-[720px]:py-6'>
               {form.status === 'sent' ? (
                 <ContactSent
                   name={form.sentTo.name}
