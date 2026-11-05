@@ -24,12 +24,17 @@ same data.
   Adding another origin (for example a new API) means adding it to the policy.
 - **BB Bot.** A chat widget backed by a Cloudflare Worker. Workers AI answers first (free, no API key); Gemini is the fallback when the
   free daily allowance is spent. Keys stay in the Worker. The same Worker emails the owner when a contact-form message is saved (Resend).
+- **Search and sharing.** Every page has its own title, description, canonical link and social preview in its static HTML, plus a
+  schema.org `Person`, a sitemap and `robots.txt` (`src/lib/seo.ts`). The browser tab title follows the visitor's language.
+- **Accessible.** A visible focus ring on every control (a browser test tabs through the pages and dialogs), 44 px touch targets on
+  phones, one set of buttons (filled, outline, link) and one image dialog for screenshots, certificates and QR codes.
 - **CV dialog and PDF.** A preview of the CV as A4 sheets and a PDF download, both built from the visitor's language.
 
 ## Stack
 
 Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind CSS 4 · shadcn/ui (Base UI) · TanStack Query ·
-Firebase (Firestore lite, Hosting) · Zod · `@react-pdf/renderer` · Vitest · Playwright · Cloudflare Worker.
+Firebase (Firestore lite, Hosting, App Check with reCAPTCHA Enterprise) · Zod · `@react-pdf/renderer` · Vitest · Playwright ·
+Cloudflare Worker (Workers AI, KV) · Resend.
 
 ## Getting started
 
@@ -69,9 +74,29 @@ Firebase no longer accepts new reCAPTCHA v3 keys for App Check; the provider is 
    example) would see no content at all. The site stays usable while it is only monitored.
 5. Local development: the console prints an App Check debug token; register it in the Firebase console (App Check → Apps → Manage debug tokens).
 
-**Email when someone writes** and **Workers AI** are set up in the Worker; see `worker/README.md`.
+**Workers AI and email when someone writes** run in the Worker (`worker/`, see `worker/README.md`):
+
+```bash
+cd worker
+npx wrangler login
+npx wrangler secret put RESEND_API_KEY     # also NOTIFY_TO (one or more addresses) and GEMINI_API_KEY if you have one
+npm run deploy
+curl https://chat-proxy.<account>.workers.dev/health   # {"ok":true,"rateLimit":true,"providers":[...],"notify":true}
+```
+
+The KV namespace `CHAT_RATE_LIMIT` and the `AI` binding are in `wrangler.toml`. Without a verified domain Resend delivers only to the
+address of the Resend account; to reach another address, forward it in that mailbox or verify a domain and set `NOTIFY_FROM`.
+
+### Known limits
+
+- The Gemini key in the Worker is invalid, so the chat relies on the Workers AI free daily allowance.
+- App Check is monitoring only (see the warning above). Nothing stops a script from writing to `messages` within the rules.
+- Free tiers change; check Workers AI, Resend and reCAPTCHA pricing before relying on a limit.
 
 ## Content and remote config
+
+Images live in the [assets repository](https://github.com/bachbnt/assets) and are served from GitHub raw. Use WebP resized to what it
+shows (about 1600 px at most, covers and the avatar 1280); payment QR codes stay PNG so they stay sharp and scannable.
 
 The data is in Firestore, one document per item:
 
@@ -103,11 +128,12 @@ src/content             shell.json (embedded) and the interface copy in src/cont
 src/lib/content         the data contract (schema.ts), repository interface, Firestore lite adapter
 src/lib/query           TanStack Query keys, options and hooks
 src/lib/i18n            language state and the copy helpers
+src/lib/seo.ts          page metadata        src/lib/notify.ts   email request after a message        src/lib/content/app-check.ts   App Check
 tests/unit              Vitest        tests/automation   Playwright        tests/fixtures   Firestore snapshot for tests
 scripts/                Firestore backup, restore and test-fixture sync; scripts/docs builds the design documents
-worker/                 Cloudflare Worker for the chat (see worker/README.md)
+worker/                 Cloudflare Worker: chat with provider fallback, email notification, KV limits (see worker/README.md)
 docs/                   data-design.html, detail-design.html (npm run docs) and schema.sql
-.ai/, .claude/skills    working rules and installed skills for AI assistants
+.ai/, .claude/skills    working rules and installed skills (Next.js, frontend design, shadcn, Firebase, Vercel, Cloudflare; see SOURCES.md)
 ```
 
 ## Deploy

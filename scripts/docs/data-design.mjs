@@ -233,7 +233,7 @@ ${table(
   ['Query', 'staleTime', 'Other'],
   [
     [c('site/live'), '60 s', 'refetch when the tab regains focus'],
-    ['profile, settings, collections', '5 minutes', 'persisted to localStorage for 24 h; bump the cache version when the schema changes'],
+    ['profile, settings, collections', '5 minutes', 'persisted to localStorage for 24 h (payments are never persisted); bump the cache version when the schema changes'],
   ],
 )}
 <p>Returning visitors read from the persisted cache and only refetch what is stale. Idea for later: load blocks below the fold when they near the
@@ -248,7 +248,8 @@ viewport, load the Connect menu on open, and read only <code>listed</code> skill
     ['Back up the data', c('npm run backup:firestore') + ' writes <code>backup/firestore-v2.json</code> (every v2 collection, hidden items included) and <code>backup/messages.json</code>. The folder is git-ignored: it holds payment details and visitors\' emails.'],
     ['Restore', c('npm run restore:firestore -- backup/firestore-v2.json') + ' prints a plan; add <code>--apply</code> to write. It overwrites the backed-up documents and deletes extra ones in v2 collections; v1 and messages are never touched.'],
     ['Deploy rules', c('npx firebase-tools deploy --only firestore:rules') + ' (changes production; back up first).'],
-    ['Refresh the test snapshot', 'copy a backup to <code>tests/fixtures/seed.json</code> and replace real payment accounts with fake ones (the repository is public).'],
+    ['Refresh the test snapshot', c('npm run sync:fixture') + ' copies the latest backup to <code>tests/fixtures/seed.json</code> and replaces real payment accounts with fake ones (the repository is public).'],
+    ['Add images', 'put them in the assets repository as WebP, resized to what they show (about 1600 px at most; covers and the avatar 1280), and paste the raw URL into the document. Payment QR codes stay PNG so they stay scannable.'],
   ],
 )}
 <h3>Example: a document and the switches</h3>

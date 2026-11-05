@@ -11,18 +11,18 @@ import { arrow, box, c, canvas, code, fig, sequence, table } from './kit.mjs';
 const context = () => {
   const cv = canvas(1180, 440);
   const items = [
-    box(430, 150, 320, 'Browser: the static app', ['Next.js 16 pages, React 19', 'TanStack Query + localStorage cache', 'Firestore lite (one-shot reads)', '@react-pdf/renderer (on demand)'], 'ink'),
-    box(30, 30, 280, 'Firebase Hosting', ['serves out/ (static files)', 'cleanUrls, security headers'], 'blue'),
-    box(430, 330, 320, 'Firestore (bachbntdev)', ['v2 collections + site documents', 'rules: visible == true, create-only messages'], 'amber'),
-    box(870, 30, 280, 'Cloudflare Worker', ['chat proxy: validates, rate-limits', 'keeps the model API keys'], 'violet'),
-    box(870, 190, 280, 'Model providers', ['Gemini, OpenAI, Anthropic'], 'grey'),
+    box(430, 150, 320, 'Browser: the static app', ['Next.js 16 pages, React 19', 'TanStack Query + localStorage cache', 'Firestore lite (one-shot reads)', 'App Check token (reCAPTCHA Enterprise)', '@react-pdf/renderer (on demand)'], 'ink'),
+    box(30, 30, 280, 'Firebase Hosting', ['serves out/ (static files)', 'cleanUrls, CSP and security headers'], 'blue'),
+    box(430, 330, 320, 'Firestore (bachbntdev)', ['v2 collections + site documents', 'rules: visible == true, create-only messages', 'v1 collections closed to browsers'], 'amber'),
+    box(870, 30, 280, 'Cloudflare Worker', ['POST /chat and POST /notify', 'rate limit in KV, provider allow-list', 'keeps the keys; emails via Resend'], 'violet'),
+    box(870, 190, 280, 'Model providers', ['Workers AI first (free, no key)', 'Gemini as the fallback'], 'grey'),
     box(30, 230, 280, 'GitHub raw + jsDelivr', ['project and certificate images', 'certificate PDFs (jsDelivr)'], 'grey'),
     box(870, 330, 280, 'Owner: Firebase console', ['edits documents and switches', 'scripts: backup and restore'], 'green'),
   ];
   items.forEach((b) => cv.add(b.svg));
   cv.add(arrow('M310 85 C360 85 380 150 430 175', 'HTML, JS, CSS', 360, 118));
   cv.add(arrow('M590 242 V330', 'read visible, create message', 700, 296));
-  cv.add(arrow('M750 190 C800 150 830 100 870 90', 'POST /chat', 818, 128));
+  cv.add(arrow('M750 190 C800 150 830 100 870 90', 'POST /chat, /notify', 805, 128));
   cv.add(arrow('M1010 120 V190', '', 0, 0));
   cv.add(arrow('M430 245 C380 250 340 255 310 262', 'images, PDFs', 372, 246));
   cv.add(arrow('M870 365 H750', 'edit data', 810, 357, 'red'));
@@ -31,12 +31,12 @@ const context = () => {
 
 const layers = () => {
   const cv = canvas(1180, 420);
-  const top = box(40, 20, 540, 'src/app', ['routes, layout, metadata, global CSS', 'each page: <PageShell> + page components'], 'ink');
-  const comp = box(40, 118, 540, 'src/components', ['pages and features (about, resume, projects, ...)', 'ui/ = shadcn, chat/, cv/, lightbox/', "'use client' only on leaves"], 'ink');
+  const top = box(40, 20, 540, 'src/app', ['routes, layout, per-page metadata, global CSS', 'each page: <PageShell> + page components'], 'ink');
+  const comp = box(40, 118, 540, 'src/components', ['pages and features (about, resume, projects, ...)', 'ui/ = shadcn, chat/, cv/, lightbox/', 'data-state, state-notice, skeletons: shared by every block', "'use client' only on leaves"], 'ink');
   const q = box(40, 238, 540, 'src/lib/query', ['query keys, options, useContentQuery/useProfileQuery', 'staleTime, select (sort + localize)'], 'blue');
-  const content = box(40, 328, 540, 'src/lib/content', ['schema.ts (contract), repository.ts (interface)', 'firestore-lite.ts (adapter), shell.ts'], 'amber');
+  const content = box(40, 328, 540, 'src/lib/content', ['schema.ts (contract), repository.ts (interface)', 'firestore-lite.ts (adapter), app-check.ts, shell.ts'], 'amber');
   const i18n = box(680, 20, 460, 'src/lib/i18n + src/content/copy', ['language.tsx (state), define-copy.ts, copy.ts', 'copy/*.ts: defineCopy(en, vi) per page'], 'green');
-  const hooks = box(680, 118, 460, 'src/hooks and src/lib', ['use-live, use-clipboard', 'format.ts, pages.ts, chat/, cv/'], 'grey');
+  const hooks = box(680, 118, 460, 'src/hooks and src/lib', ['use-live, use-clipboard', 'format.ts, pages.ts, seo.ts, notify.ts, chat/, cv/'], 'grey');
   const fb = box(680, 328, 460, 'Firestore', ['via firebase/firestore/lite only', 'Admin SDK only in scripts/'], 'red');
   [top, comp, q, content, i18n, hooks, fb].forEach((b) => cv.add(b.svg));
   cv.add(arrow('M310 98 V118', '', 0, 0));
@@ -107,10 +107,13 @@ ${fig(context(), 'Arrows show who talks to whom and what travels.', 1180)}
 ${table(
   ['Part', 'Role', 'Notes'],
   [
-    ['Firebase Hosting', 'serves <code>out/</code>', 'HTML revalidates every load; <code>/_next/static</code> is cached for a year; security headers (HSTS, X-Frame-Options DENY, nosniff).'],
-    ['Firestore', 'content, switches, contact messages', 'free tier; protected by rules, not by hiding the URL'],
-    ['Cloudflare Worker', 'chat proxy', 'validates the request, rate-limits, keeps provider keys. Provider is hard-coded to <code>gemini</code> in the app.'],
-    ['GitHub raw / jsDelivr', 'images and PDFs', 'PDFs go through jsDelivr so they open in the browser'],
+    ['Firebase Hosting', 'serves <code>out/</code>', 'HTML revalidates every load; <code>/_next/static</code> is cached for a year, <code>/fonts</code> for 30 days; HSTS, Content-Security-Policy, X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy.'],
+    ['Firestore', 'content, switches, contact messages', 'free tier; protected by rules, not by hiding the URL; App Check tokens are sent but not yet enforced'],
+    ['Cloudflare Worker', 'chat proxy and email notification', '<code>/chat</code>: validates, rate-limits per visitor (KV), tries Workers AI then Gemini, caps the answer at 1024 tokens. <code>/notify</code>: emails the owner about a saved message. Keys live in the Worker.'],
+    ['Workers AI', 'answers the chat', 'free daily allowance of the Cloudflare account, no API key; a spent allowance falls back to Gemini'],
+    ['Resend', 'email to the owner', 'free plan; without a verified domain it delivers only to the account\'s own address'],
+    ['reCAPTCHA Enterprise', 'App Check provider', 'a score-based key; Firebase no longer accepts new reCAPTCHA v3 keys for App Check'],
+    ['GitHub raw / jsDelivr', 'images and PDFs', 'images are WebP, resized to the size they show (payment QR codes stay PNG); PDFs go through jsDelivr so they open in the browser'],
   ],
 )}`,
   },
@@ -128,10 +131,11 @@ ${table(
     [c('src/lib/query'), 'TanStack Query keys, options (<code>staleTime</code>, <code>select</code>), and <code>useContentQuery</code> / <code>useProfileQuery</code> / <code>useSendMessage</code>'],
     [c('src/lib/i18n'), 'language state (<code>useLang</code>) and the bilingual copy helpers'],
     [c('src/content'), '<code>shell.json</code> (embedded) and <code>copy/*.ts</code> (interface text in English and Vietnamese)'],
-    [c('src/lib/chat'), 'Worker client, system prompt builder, message shaping, suggestions'],
+    [c('src/lib/chat'), 'Worker client (asks without naming a provider), system prompt builder, message shaping, suggestions'],
+    [c('src/lib/notify.ts, src/lib/seo.ts'), 'the fire-and-forget email request after a message is saved; metadata of each page (description, canonical link, social preview)'],
     [c('src/lib/cv'), 'builds the CV model from the data, paginates it for A4'],
-    [c('scripts'), 'Firestore backup and restore (Admin SDK, run by hand)'],
-    [c('worker'), 'the chat proxy (Wrangler project)'],
+    [c('scripts'), 'Firestore backup, restore and test-fixture sync (Admin SDK, run by hand); <code>scripts/docs</code> builds these documents'],
+    [c('worker'), 'the Worker (Wrangler project): chat with provider fallback, email notification, KV rate limits'],
   ],
 )}`,
   },
@@ -153,7 +157,10 @@ ${table(
     ['other', '-', '404 screen', '-'],
   ],
 )}
-<p>Header and menus read ${c('site/live')} and ${c('contacts')} on every page. The chat widget and the language switch are mounted for the whole site.</p>`,
+<p>Header and menus read ${c('site/live')} and ${c('contacts')} on every page. The chat widget and the language switch are mounted for the whole site.</p>
+<p>Each page has its own title, description, canonical link and social preview in its static HTML (English, for search engines and link previews).
+<code>DocumentTitle</code> then sets the tab title in the visitor's language and keeps it when the framework resets it. The root layout also carries a schema.org
+<code>Person</code>. <code>public/sitemap.xml</code> lists the six public pages; <code>/payment</code> is left out and disallowed in <code>robots.txt</code>.</p>`,
   },
   {
     id: 'flows',
@@ -167,7 +174,7 @@ ${fig(
       { from: 1, to: 0, text: 'static HTML + JS (shell, copy, frame)', back: true },
       { note: 'first paint: title, hero, header', at: 0 },
       { from: 0, to: 2, text: 'restore persisted queries (≤ 24 h)' },
-      { from: 0, to: 3, text: 'read site/live' },
+      { from: 0, to: 3, text: 'read site/live (with an App Check token when enabled)' },
       { from: 3, to: 0, text: 'switches', back: true },
       { note: 'PageGate: on, soon or hidden; maintenance?', at: 0 },
       { from: 0, to: 3, text: 'query experience, skills, projects, education (visible == true, parallel)' },
@@ -199,7 +206,7 @@ ${fig(
 <h3>4.3 Sending a message</h3>
 ${fig(
   sequence(
-    ['Visitor', 'Form', 'Firestore'],
+    ['Visitor', 'Form', 'Firestore', 'Worker'],
     [
       { from: 0, to: 1, text: 'type, choose a topic chip' },
       { note: 'validate with messageSchema; honeypot', at: 1 },
@@ -207,29 +214,32 @@ ${fig(
       { note: 'rules check fields, sizes, email, locale', at: 2 },
       { from: 2, to: 1, text: 'ok or permission-denied', back: true },
       { from: 1, to: 0, text: 'Message sent, or failed with text kept', back: true },
+      { from: 1, to: 3, text: 'POST /notify (only after it was saved; not waited for)' },
+      { note: 'same checks, limits per visitor and per day, one email per address (Resend)', at: 3 },
     ],
-    { col: 280 },
+    { col: 260 },
   ),
-  'A filled honeypot pretends success and sends nothing. The message locale is the visitor language.',
-  700,
+  'A filled honeypot pretends success and sends nothing. The message is always in Firestore first: if the email fails, nothing is lost and the visitor sees nothing.',
+  900,
 )}
 <h3>4.4 Asking BB Bot</h3>
 ${fig(
   sequence(
-    ['Visitor', 'Widget', 'Worker', 'Model'],
+    ['Visitor', 'Widget', 'Worker', 'Workers AI / Gemini'],
     [
       { from: 0, to: 1, text: 'question' },
       { note: 'system prompt from visible data (no payments), language', at: 1 },
-      { from: 1, to: 2, text: 'POST /chat {provider, system, messages}' },
-      { note: 'zod check, rate limit', at: 2 },
-      { from: 2, to: 3, text: 'generate' },
+      { from: 1, to: 2, text: 'POST /chat {system, messages} (no provider named)' },
+      { note: 'zod check, rate limit in KV', at: 2 },
+      { from: 2, to: 3, text: 'generate: Workers AI first' },
+      { note: 'allowance spent or an error: the next provider (Gemini)', at: 2 },
       { from: 3, to: 2, text: 'text', back: true },
-      { from: 2, to: 1, text: '{ text } or { error }', back: true },
+      { from: 2, to: 1, text: '{ text, provider } or { error }', back: true },
       { from: 1, to: 0, text: 'answer, or error note with Try again', back: true },
     ],
     { col: 250 },
   ),
-  'Limits: 40 turns, 2000 characters per turn, 8000 for the system prompt; the widget shapes the conversation to fit.',
+  'Limits: 40 turns, 2000 characters per turn, 8000 for the system prompt, 1024 tokens for the answer; the widget shapes the conversation to fit. Only providers listed in ALLOWED_PROVIDERS are served.',
   900,
 )}
 <h3>4.5 Downloading the CV</h3>
@@ -261,7 +271,19 @@ always the default language, so the static HTML and the first client render agre
     html: `<h3>5.1 Page and maintenance gates</h3>
 ${fig(statesPage(), 'Everything fails open: if the switches cannot be read, the site shows.', 1180)}
 <h3>5.2 Contact form and chat</h3>
-${fig(statesForm(), 'Top: the contact form. Bottom: the chat session. Both keep what the visitor typed on failure.', 1180)}`,
+${fig(statesForm(), 'Top: the contact form. Bottom: the chat session. Both keep what the visitor typed on failure.', 1180)}
+<h3>5.3 Blocks that read data</h3>
+<p>Every block that reads a collection goes through one component, <code>DataState</code>, so loading, empty and failed look the same on every page. The words are in
+<code>src/content/copy/states.ts</code> (English and Vietnamese).</p>
+${table(
+  ['State', 'What shows', 'Detail'],
+  [
+    ['Loading', 'a skeleton the shape of the real block', '<code>LoadingBlock</code> is one <code>role="status"</code> region; the grey blocks pulse unless the visitor prefers reduced motion'],
+    ['Empty', 'a card: title, a sentence, a way forward', '<code>StateNotice kind="empty"</code>; the button goes to a page that has something to see'],
+    ['Failed', 'the same card with Try again', '<code>kind="error"</code>, <code>role="alert"</code>; the button reads the query again, which shows the skeleton while it runs'],
+    ['Ready', 'the content', 'rendered only when there is at least one item'],
+  ],
+)}`,
   },
   {
     id: 'components',
@@ -273,8 +295,12 @@ ${fig(statesForm(), 'Top: the contact form. Bottom: the chat session. Both keep 
     [c('SitePage / PageShell / PageGate'), 'colours per page, header and footer, the on / soon / hidden switch'],
     [c('MaintenanceGate'), 'replaces the whole site when maintenance is on'],
     [c('SiteHeader, ConnectMenu, MobileMenu, LanguageSwitch'), 'navigation driven by site/live; contacts grouped by <code>menuGroup</code>; drawer below 1200 px'],
-    [c('Tag, BrandIcon, Button'), 'design tokens: category colours, brand marks, 40/48 px buttons'],
-    [c('Lightbox'), 'image dialog with previous/next, counter, keyboard, bottom sheet on phones'],
+    [c('Tag, BrandIcon, Button'), 'design tokens: category colours, brand marks. One <code>Button</code> for every action: filled ink is the main action (one per card or dialog), outline is the second, an underlined link is the quiet one (with an arrow when it leaves the site). 40 px high, 44 px on touch and phones.'],
+    ['Focus rings', 'the global <code>:focus-visible</code> outline is kept: no control sets <code>outline-none</code> without its own ring. A browser test tabs through the pages and the dialogs and fails on any control without one.'],
+    [c('DataState, StateNotice, skeletons'), 'loading, empty and failed states of every data block (see 5.3)'],
+    [c('Lightbox'), 'the one image dialog: screenshots, certificates and QR codes; previous/next with the counter between them, keyboard, bottom sheet on phones'],
+    [c('MediaBadge'), 'the always-visible corner badge ("7 screenshots", "Enlarge") on a picture that opens the dialog'],
+    [c('DocumentTitle'), 'the tab title in the visitor\'s language'],
     [c('RevealOnScroll'), 'fades sections in; off for reduced motion; also picks up content that arrives after mount'],
     [c('useContentQuery'), 'one collection, sorted (dates newest first, otherwise <code>sort</code>, featured first when asked), translated'],
   ],
@@ -292,6 +318,11 @@ ${fig(statesForm(), 'Top: the contact form. Bottom: the chat session. Both keep 
     ['no translation for a field', 'the English text'],
     ['Firestore quota exhausted', 'blocks stay empty; the static shell, name and photo remain'],
     ['chat proxy empty or down', 'the panel says the assistant is not available; the input is disabled'],
+    ['Workers AI allowance spent or an error', 'the Worker tries the next provider (Gemini); the visitor sees the answer'],
+    ['every provider fails', 'the chat error note (rate limit, or a general error) with Try again'],
+    ['an old Worker that still requires a provider', 'the app asks once more with <code>provider: "gemini"</code>, so the site and the Worker can be deployed in any order'],
+    ['the email notification fails or is not configured', 'nothing: the message is already saved, and the visitor sees Message sent'],
+    ['App Check token cannot be obtained', 'the request goes without a token; it only matters once enforcement is on'],
     ['chat rate limit / daily limit / network', 'a specific note and Try again; the conversation is kept'],
     ['message send fails', 'the text is kept and Try again is offered'],
     ['PDF fails to build', 'the dialog stays open; the preview still works'],
@@ -305,11 +336,14 @@ ${fig(statesForm(), 'Top: the contact form. Bottom: the chat session. Both keep 
   ['Topic', 'Decision'],
   [
     ['Data exposure', 'the rules return only <code>visible == true</code> documents; payments are read only on the Payment page and are never embedded or sent to the chat model'],
-    ['Writes', 'the browser can only create a validated <code>messages</code> document'],
+    ['Writes', 'the browser can only create a validated <code>messages</code> document; the old v1 collections (<code>config</code>, <code>user</code>, <code>message</code>) are closed (their data is kept in a backup)'],
     ['Secrets', 'no secret in <code>NEXT_PUBLIC_*</code>; model keys live in the Worker; service account files are git-ignored'],
     ['Public repository', 'no real account numbers in fixtures; <code>backup/</code> is ignored'],
-    ['Headers', 'HSTS, X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy'],
-    ['Abuse', 'honeypot on the form; Worker rate limits; Firestore rules cap sizes'],
+    ['Headers', 'HSTS, X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy and a Content-Security-Policy: scripts from the site and reCAPTCHA (plus WebAssembly for the PDF), connections to the site, Firestore, the Worker and App Check, https images, no frames except reCAPTCHA, no <code>eval</code>. It was checked against every page, the dialogs, the CV preview, the PDF download and the chat.'],
+    ['App Check', 'tokens are sent with Firestore requests (reCAPTCHA Enterprise). Enforcement is <b>off</b>: when on, Firestore refuses every request without a token, reads included, so a visitor whose browser blocks reCAPTCHA would see no content. Watch the metrics first.'],
+    ['Worker', 'only the providers in <code>ALLOWED_PROVIDERS</code> are served (a caller cannot spend OpenAI or Anthropic credit); answers capped at 1024 tokens; a visitor limit per minute and per day in KV, required (<code>REQUIRE_RATE_LIMIT</code>); the model key goes in a header, not in the URL; CORS names only this site; secrets are Wrangler secrets'],
+    ['Email notification', 'the Worker sends nothing without the KV limit; at most 5 per visitor per hour and 40 per day for the whole site (the free email plan allows 100 a day); one email per address; a line break in the name cannot add a header'],
+    ['Abuse', 'honeypot on the form; Worker limits; Firestore rules cap sizes. Nothing stops a script from writing straight to <code>messages</code> within those rules; App Check enforcement would.'],
   ],
 )}
 <div class="note">Maintenance and page switches are UI only. Do not use them to protect data; use <code>visible</code>.</div>`,
@@ -321,8 +355,10 @@ ${fig(statesForm(), 'Top: the contact form. Bottom: the chat session. Both keep 
   ['Item', 'Detail'],
   [
     ['Build', c('npm run build') + ': Next.js static export into <code>out/</code> (<code>output: "export"</code>, unoptimized images)'],
-    ['Environment', '<code>NEXT_PUBLIC_FIREBASE_*</code> (public project identifiers) and <code>NEXT_PUBLIC_CHAT_PROXY_URL</code>, in <code>.env.local</code>; template in <code>.env.example</code>'],
-    ['Deploy', c('npx firebase-tools deploy --only hosting') + '; rules separately with <code>--only firestore:rules</code>'],
+    ['Environment', '<code>NEXT_PUBLIC_FIREBASE_*</code> (public project identifiers), <code>NEXT_PUBLIC_CHAT_PROXY_URL</code> and, for App Check, <code>NEXT_PUBLIC_RECAPTCHA_SITE_KEY</code> (the key ID), in <code>.env.local</code>; template in <code>.env.example</code>'],
+    ['Deploy', c('npx firebase-tools deploy --only hosting') + '; rules separately with <code>--only firestore:rules</code>; the Worker with <code>npm run deploy</code> in <code>worker/</code> (needs <code>wrangler login</code>)'],
+    ['Worker setup', 'a KV namespace <code>CHAT_RATE_LIMIT</code>, the <code>AI</code> binding, secrets <code>GEMINI_API_KEY</code>, <code>RESEND_API_KEY</code>, <code>NOTIFY_TO</code>; <code>GET /health</code> reports the rate limit, the providers and whether email is ready. See <code>worker/README.md</code>.'],
+    ['Images', 'in the assets repository (GitHub raw): WebP resized to what they show (covers 1280 px, the avatar and profile photos 1280, screenshots and photos 1600). Payment QR codes stay PNG. The originals stay in the repository.'],
     ['CI', '<code>.github/workflows/main.yml</code>: on a push to <code>master</code> whose message contains <code>[build]</code>: typecheck, lint, unit tests, build, deploy hosting'],
     ['Rollback', 'Firebase Hosting keeps releases: roll back from the console'],
     ['Parallel builds', c('NEXT_DIST_DIR=.next-name') + ' gives a dev server its own build folder'],
@@ -335,10 +371,10 @@ ${fig(statesForm(), 'Top: the contact form. Bottom: the chat session. Both keep 
     html: `${table(
   ['Layer', 'Tool', 'What it covers'],
   [
-    ['Unit', 'Vitest', 'schemas and helpers (fail-open defaults, <code>l10n</code>, sorting, references), formatting, chat prompt and shaping, CV model and pagination, form validation, page helpers'],
-    ['Browser', 'Playwright', 'each page and flow in English and Vietnamese, phone layout (no sideways scroll), switches (soon, hidden, maintenance), chat with a stubbed Worker, contact form, CV dialog, payments'],
+    ['Unit', 'Vitest', 'schemas and helpers (fail-open defaults, <code>l10n</code>, sorting, references), formatting, chat prompt, shaping and the Worker client, CV model and pagination, form validation, page helpers, the notify and App Check helpers, and the Worker itself (provider order and fallback, caps, email, limits, CORS)'],
+    ['Browser', 'Playwright', 'each page and flow in English and Vietnamese, phone layout (no sideways scroll), switches (soon, hidden, maintenance), loading, empty and failed states of every block, chat with a stubbed Worker, contact form and the email request, CV dialog, payments, a visible focus ring on every control, page metadata and translated tab titles'],
     ['Data in tests', 'a Firestore mock', '<code>mockFirestore</code> serves <code>tests/fixtures/seed.json</code> filtered by <code>visible</code>, so tests need no network; overrides change a document'],
-    ['Production check', 'a script run by hand', 'an anonymous visitor reads visible data, is refused hidden data and writes, and v1 stays readable'],
+    ['Production check', 'requests run by hand', 'after deploying rules: an anonymous visitor reads visible data and the site documents, is refused unfiltered queries, hidden documents, writes and reads of <code>messages</code>, and the v1 collections. After deploying the site: every page, dialog, the PDF and the chat run against the real policy with no violation.'],
   ],
 )}
 ${code(`npm run typecheck && npm run lint && npm run test:unit:run
@@ -354,13 +390,19 @@ npm run test:automation          # PW_CHANNEL=chrome uses an installed Chrome`)}
 <li>Interface copy in code, content in Firestore, translations as an overlay.</li>
 <li>Per-document <code>visible</code> enforced by rules instead of filtering in the client.</li>
 <li>A repository interface so the database can change.</li>
+<li>The chat does not name a provider: the Worker owns the order and the fallback, so a model can change without a site release.</li>
+<li>The email is a nudge after the save, never part of it.</li>
+<li>One data-state component and one action vocabulary, so pages cannot drift apart.</li>
 </ul></div>
 <div class="card"><h3>Known limits</h3><ul>
-<li>The browser tab title is always English (static pages).</li>
+<li>The static HTML (search results, link previews) carries English titles and descriptions; only the tab title follows the language.</li>
 <li>The CV and PDF omit hidden roles (TMA, EasyGDS, Freelancer).</li>
 <li>Switches fall back to "on" while loading, so a maintenance screen can appear a moment after the content.</li>
 <li>No Firestore emulator run for the rules; they are checked against the real project.</li>
-<li>The chat provider is hard-coded to <code>gemini</code>.</li>
+<li>The Gemini key in the Worker is currently invalid, so the chat depends on the Workers AI daily allowance; its small free models answer Vietnamese less well than Gemini.</li>
+<li>Email reaches only the Resend account's own address until a domain is verified.</li>
+<li>App Check is not enforced (see Security). Messages can still be written by a script within the rules.</li>
+<li>Free tiers change often (Workers AI, Resend, reCAPTCHA): check their pages before relying on a limit.</li>
 <li>Skills are read in full (62 documents) even where only the listed ones are shown.</li>
 </ul></div>
 </div>`,
