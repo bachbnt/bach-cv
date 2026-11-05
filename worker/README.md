@@ -73,7 +73,7 @@ npm run dev
 - `ALLOWED_ORIGINS` — comma-separated list, used for CORS. CORS only stops other websites in a browser; it does not stop a script from calling the worker.
 - `ALLOWED_PROVIDERS` — comma-separated, default `gemini`. A request for any other provider gets 403, so nobody else can spend your OpenAI or Anthropic credit. Answers are capped at 1024 tokens.
 - `GEMINI_MODEL` / `OPENAI_MODEL` / `ANTHROPIC_MODEL` — optional, to change a model without a code change.
-- `REQUIRE_RATE_LIMIT` — `"true"` makes `/chat` answer 503 until the KV namespace is bound.
+- `REQUIRE_RATE_LIMIT` — `"true"` (set) makes `/chat` answer 503 until the KV namespace is bound.
 - `RATE_LIMIT_PER_DAY` / `RATE_LIMIT_PER_MINUTE` — only enforced when the `CHAT_RATE_LIMIT` KV binding is present.
 
 ## Security checklist after deploy
