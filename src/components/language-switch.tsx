@@ -4,7 +4,7 @@
 
 'use client';
 
-import { ChevronDown, Globe } from 'lucide-react';
+import { Languages } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,9 +17,11 @@ import { LANGS, type Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
-import { cn } from 'cn';
 
-/** Header dropdown: a globe, the language code and a chevron, then the languages the site has. */
+/**
+ * Header dropdown: the "language" mark and the current language code (so the choice is always visible), then the languages
+ * the site has. Same height and look as the theme button; the full name of the current language is in the accessible name.
+ */
 export function LanguageSwitch() {
   const copy = useCopy(commonCopy);
   const { lang, setLang } = useLang();
@@ -33,22 +35,16 @@ export function LanguageSwitch() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label={copy.language.label}
-        className='group inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-[10px] border border-border bg-card px-3 text-sm font-semibold transition-colors hover:border-foreground'
+        aria-label={`${copy.language.label}: ${names[lang]}`}
+        className='inline-flex h-10 cursor-pointer items-center gap-2 rounded-[10px] border border-border bg-card px-3 text-sm font-semibold transition-colors hover:border-foreground data-popup-open:border-foreground'
       >
-        <Globe aria-hidden='true' className='size-[18px]' />
+        <Languages aria-hidden='true' className='size-[18px]' />
         {lang.toUpperCase()}
-        <ChevronDown
-          aria-hidden='true'
-          className={cn(
-            'size-3.5 transition-transform duration-200 group-data-popup-open:rotate-180',
-          )}
-        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align='end'
         sideOffset={8}
-        className='min-w-[168px] rounded-xl bg-card p-1.5 shadow-[0_16px_36px_rgba(27,31,39,.16)]'
+        className='min-w-[168px] rounded-xl bg-popover p-1.5 shadow-[0_16px_36px_rgba(0,0,0,.18)]'
       >
         <DropdownMenuRadioGroup
           value={lang}
@@ -58,6 +54,7 @@ export function LanguageSwitch() {
             <DropdownMenuRadioItem
               key={code}
               value={code}
+              closeOnClick
               className='min-h-10 rounded-lg px-3 text-[15px] font-medium data-checked:font-semibold'
             >
               {names[code]}

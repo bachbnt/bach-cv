@@ -24,9 +24,9 @@ const ICONS: Record<Theme, ComponentType<{ className?: string }>> = {
 };
 
 /**
- * Header control: one square icon button that shows what is on screen (a sun by day, a moon in the dark), and a menu with
- * Light, Dark and System. The icon is picked by CSS from the `dark` class, which the script in <head> sets before the first
- * paint, so a dark visitor never sees the sun flash up.
+ * Header control: one square icon button that shows the visitor's choice (a sun, a moon, or a screen for System), and a menu
+ * with System, Light and Dark. The icon is picked by CSS from `data-theme` on <html>, which the script in <head> sets before
+ * the first paint, so the icon is right from the start and never flashes.
  */
 export function ThemeSwitch() {
   const copy = useCopy(commonCopy);
@@ -38,8 +38,18 @@ export function ThemeSwitch() {
         aria-label={copy.theme.label}
         className='inline-flex size-10 cursor-pointer items-center justify-center rounded-[10px] border border-border bg-card transition-colors hover:border-foreground data-popup-open:border-foreground'
       >
-        <Sun aria-hidden='true' className='size-[18px] dark:hidden' />
-        <Moon aria-hidden='true' className='hidden size-[18px] dark:block' />
+        <Monitor
+          aria-hidden='true'
+          className='size-[18px] [html[data-theme=dark]_&]:hidden [html[data-theme=light]_&]:hidden'
+        />
+        <Sun
+          aria-hidden='true'
+          className='hidden size-[18px] [html[data-theme=light]_&]:block'
+        />
+        <Moon
+          aria-hidden='true'
+          className='hidden size-[18px] [html[data-theme=dark]_&]:block'
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align='end'
@@ -56,6 +66,7 @@ export function ThemeSwitch() {
               <DropdownMenuRadioItem
                 key={code}
                 value={code}
+                closeOnClick
                 className='min-h-10 gap-2.5 rounded-lg px-3 text-[15px] font-medium data-checked:font-semibold'
               >
                 <ItemIcon aria-hidden='true' className='size-4' />

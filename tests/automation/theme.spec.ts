@@ -134,3 +134,62 @@ test('the dark theme does not leave dark text on a dark surface (cards, tags, di
     expect(bad, `low-contrast text on ${path}`).toEqual([]);
   }
 });
+
+test('the button shows the choice: a screen for System, a sun for Light, a moon for Dark, from the first paint', async ({
+  page,
+}) => {
+  const icon = async () =>
+    page.evaluate(() => {
+      const trigger = [...document.querySelectorAll('button')].find(
+        (b) => b.getAttribute('aria-label') === 'Theme',
+      );
+      const shown = [...(trigger?.querySelectorAll('svg') ?? [])].filter(
+        (svg) => getComputedStyle(svg).display !== 'none',
+      );
+      return shown.map((svg) => svg.getAttribute('class') ?? '');
+    });
+  // open the menu, pick an item, and wait for the menu to close before the next step
+  const choose = async (name: string) => {
+    await page.getByRole('button', { name: 'Theme' }).click();
+    await page.getByRole('menuitemradio', { name }).click();
+    await expect(page.getByRole('menu')).toBeHidden();
+  };
+  const only = (names: string[], kind: string) =>
+    names.length === 1 && names[0].includes(`lucide-${kind}`);
+
+  // no saved choice: System, even while the OS is dark
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/');
+  expect(only(await icon(), 'monitor')).toBe(true);
+
+  await choose('Light');
+  expect(only(await icon(), 'sun')).toBe(true);
+  await page.reload();
+  expect(only(await icon(), 'sun')).toBe(true);
+
+  await choose('Dark');
+  expect(only(await icon(), 'moon')).toBe(true);
+
+  await choose('System');
+  expect(only(await icon(), 'monitor')).toBe(true);
+  expect(await isDark(page)).toBe(true);
+});
+
+test('the language button shows the current language code, and its menu closes after a choice', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const button = page.getByRole('button', { name: 'Language: English' });
+  await expect(button).toBeVisible();
+  // the code of the current language is always visible, next to the icon
+  await expect(button).toContainText('EN');
+  await expect(button.locator('svg')).toHaveCount(1);
+
+  await button.click();
+  await page.getByRole('menuitemradio', { name: 'Tiếng Việt' }).click();
+  await expect(page.getByRole('menu')).toBeHidden();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'vi');
+  const vi = page.getByRole('button', { name: 'Ngôn ngữ: Tiếng Việt' });
+  await expect(vi).toBeVisible();
+  await expect(vi).toContainText('VI');
+});

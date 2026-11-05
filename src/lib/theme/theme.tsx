@@ -50,8 +50,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } catch {
       // storage blocked: follow the system
     }
+    const choice = isTheme(saved) ? saved : 'system';
+    document.documentElement.setAttribute('data-theme', choice);
     /* eslint-disable react-hooks/set-state-in-effect -- reading the saved choice must wait for the browser */
-    if (isTheme(saved)) setThemeState(saved);
+    setThemeState(choice);
     setSystemDark(systemPrefersDark());
     /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -69,6 +71,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
+    document.documentElement.setAttribute('data-theme', next);
     try {
       if (next === 'system') window.localStorage.removeItem(THEME_STORAGE_KEY);
       else window.localStorage.setItem(THEME_STORAGE_KEY, next);
