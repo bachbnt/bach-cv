@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const initializeAppCheck = vi.fn();
 vi.mock('firebase/app-check', () => ({
   initializeAppCheck: (...args: unknown[]) => initializeAppCheck(...args),
-  ReCaptchaV3Provider: class {
+  ReCaptchaEnterpriseProvider: class {
     constructor(public siteKey: string) {}
   },
 }));
@@ -35,7 +35,7 @@ describe('enableAppCheck', () => {
     expect(initializeAppCheck).not.toHaveBeenCalled();
   });
 
-  it('starts once with reCAPTCHA v3 and refreshes the token by itself', async () => {
+  it('starts once with reCAPTCHA Enterprise and refreshes the token by itself', async () => {
     const enable = await load();
     enable(app, 'site-key');
     enable(app, 'site-key');

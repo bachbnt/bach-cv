@@ -3,13 +3,17 @@
  */
 
 import type { FirebaseApp } from 'firebase/app';
-import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
+import {
+  initializeAppCheck,
+  ReCaptchaEnterpriseProvider,
+} from 'firebase/app-check';
 
 let started = false;
 
 /**
- * Turns on Firebase App Check with reCAPTCHA v3, so Firestore can tell requests from this site from scripts.
- * Off (and free of cost) until `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` is set. It never throws: if reCAPTCHA cannot load
+ * Turns on Firebase App Check with reCAPTCHA Enterprise (Google Cloud Fraud Defense), so Firestore can tell requests from
+ * this site from scripts. Firebase no longer accepts new reCAPTCHA v3 keys for App Check.
+ * Off until `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` (the key ID of a score-based Enterprise key) is set. It never throws: if reCAPTCHA cannot load
  * (an ad blocker, for example) the requests simply go without a token. What happens then depends on whether App
  * Check is *enforced* for Firestore in the Firebase console; see the README before turning enforcement on.
  */
@@ -27,7 +31,7 @@ export function enableAppCheck(
       ).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
     }
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider(siteKey),
+      provider: new ReCaptchaEnterpriseProvider(siteKey),
       isTokenAutoRefreshEnabled: true,
     });
   } catch {

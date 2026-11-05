@@ -56,11 +56,14 @@ Before finishing a change: `npm run typecheck && npm run lint && npm run test:un
 
 ## Optional services (all free, no card)
 
-**Firebase App Check** (`NEXT_PUBLIC_RECAPTCHA_SITE_KEY`) tells Firestore which requests come from this site. It is off until you do this:
+**Firebase App Check** (`NEXT_PUBLIC_RECAPTCHA_SITE_KEY`) tells Firestore which requests come from this site. It is off until you do this.
+Firebase no longer accepts new reCAPTCHA v3 keys for App Check; the provider is reCAPTCHA Enterprise (Google Cloud Fraud Defense):
 
-1. Create a reCAPTCHA **v3** key at https://www.google.com/recaptcha/admin (domains: `bachbntdev.web.app`, `bachbntdev.firebaseapp.com`, `localhost`).
-2. Firebase console → App Check → register the web app with the reCAPTCHA v3 provider and the key's _secret_.
-3. Put the _site key_ in `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` (`.env.local`, and the GitHub secret of the same name), rebuild and deploy.
+1. Google Cloud console → Security → reCAPTCHA / Fraud Defense, project `bachbntdev`: enable the API if asked, then create a key for the
+   **website** platform, **score-based** (no checkbox), with the domains `bachbntdev.web.app`, `bachbntdev.firebaseapp.com` and `localhost`.
+   Copy the _key ID_. Check on the pricing page that the free quota applies to your project and whether a billing account is asked for.
+2. Firebase console → App Check → Apps → the web app → register it with the reCAPTCHA Enterprise provider and the key ID.
+3. Put the key ID in `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` (`.env.local`, and the GitHub secret of the same name), rebuild and deploy.
 4. Watch App Check → Firestore → Metrics for a day. **Do not turn on "Enforce" until nearly all requests are verified.** Once enforced,
    Firestore rejects every request without a token, reads included, so a visitor whose browser blocks reCAPTCHA (an ad blocker, for
    example) would see no content at all. The site stays usable while it is only monitored.

@@ -3,7 +3,11 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import worker, { enabledProviders, type Env } from '../../../worker/src/index';
+import worker, {
+  enabledProviders,
+  recipientsOf,
+  type Env,
+} from '../../../worker/src/index';
 import type { KvLike } from '../../../worker/src/rateLimit';
 
 const ORIGIN = 'https://bachbntdev.web.app';
@@ -323,7 +327,12 @@ describe('email notification', () => {
   it('emails the message to the owner, with the visitor as the reply address', async () => {
     const upstream = stubUpstream({ id: 'mail_1' });
     const res = await worker.fetch(notify(message), configured());
-    expect(await res.json()).toEqual({ ok: true, sent: true });
+    expect(await res.json()).toEqual({
+      ok: true,
+      sent: true,
+      delivered: 1,
+      of: 1,
+    });
     const [url, init] = upstream.mock.calls[0] as unknown as [
       string,
       RequestInit,
@@ -386,6 +395,55 @@ describe('email notification', () => {
     const over = await worker.fetch(notify(message, '7.7.7.7'), env);
     expect(over.status).toBe(429);
     expect(await over.json()).toEqual({ error: 'rate_limit_day' });
+  });
+
+  it('reads the addresses of NOTIFY_TO', () => {
+    expect(recipientsOf('a@x.com, b@y.org;c@z.net')).toEqual([
+      'a@x.com',
+      'b@y.org',
+      'c@z.net',
+    ]);
+    expect(recipientsOf('a@x.com,a@x.com, nonsense, ')).toEqual(['a@x.com']);
+    expect(recipientsOf(undefined)).toEqual([]);
+    expect(
+      recipientsOf('1@a.com,2@a.com,3@a.com,4@a.com,5@a.com,6@a.com'),
+    ).toHaveLength(5);
+  });
+
+  it('sends one email to each address, so one refused address does not stop the other', async () => {
+    const fetchMock = vi.fn(async (_url: string, init: RequestInit) => {
+      const to = JSON.parse(init.body as string).to[0] as string;
+      return to === 'refused@example.com'
+        ? new Response('{}', { status: 403 })
+        : Response.json({ id: 'ok' });
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const res = await worker.fetch(
+      notify(message),
+      configured({ NOTIFY_TO: 'refused@example.com, me@example.com' }),
+    );
+    expect(await res.json()).toEqual({
+      ok: true,
+      sent: true,
+      delivered: 1,
+      of: 2,
+    });
+    const sentTo = fetchMock.mock.calls.map(
+      (c) => JSON.parse((c[1] as RequestInit).body as string).to,
+    );
+    expect(sentTo).toEqual([['refused@example.com'], ['me@example.com']]);
+  });
+
+  it('says so when no address could be reached', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response('no', { status: 403 })),
+    );
+    const res = await worker.fetch(
+      notify(message),
+      configured({ NOTIFY_TO: 'a@example.com, b@example.com' }),
+    );
+    expect(res.status).toBe(502);
   });
 
   it('says so when the email service fails, without throwing', async () => {

@@ -42,6 +42,7 @@ export interface Env extends RateLimitEnv {
   ANTHROPIC_MODEL?: string;
   /** email notification for contact-form messages (Resend). Without both of these nothing is sent. */
   RESEND_API_KEY?: string;
+  /** who to tell: one address or several separated by commas. Each gets its own email. */
   NOTIFY_TO?: string;
   /** default `BB Bot <onboarding@resend.dev>`, which Resend lets send to the account's own address */
   NOTIFY_FROM?: string;
@@ -194,6 +195,17 @@ const handleChat = async (
   );
 };
 
+/** The addresses in `NOTIFY_TO`: comma or semicolon separated, at most five, each looking like an email address. */
+export const recipientsOf = (list: string | undefined): string[] =>
+  [
+    ...new Set(
+      (list ?? '')
+        .split(/[,;]/)
+        .map((s) => s.trim())
+        .filter((s) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s)),
+    ),
+  ].slice(0, 5);
+
 /** A line of a header must not carry a line break (it would let a visitor add headers). */
 const oneLine = (text: string): string => text.replace(/[\r\n]+/g, ' ').trim();
 
@@ -216,7 +228,7 @@ const handleNotify = async (
   env: Env,
   cors: Record<string, string>,
 ): Promise<Response> => {
-  if (!env.RESEND_API_KEY || !env.NOTIFY_TO) {
+  if (!env.RESEND_API_KEY || recipientsOf(env.NOTIFY_TO).length === 0) {
     return json(
       { ok: true, sent: false, reason: 'not_configured' },
       { headers: cors },
@@ -254,25 +266,37 @@ const handleNotify = async (
   }
 
   const input = parsed.data;
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: env.NOTIFY_FROM ?? 'BB Bot <onboarding@resend.dev>',
-      to: [env.NOTIFY_TO],
-      reply_to: input.email,
-      subject: `New message from ${oneLine(input.name).slice(0, 80)}`,
-      text: emailText(input),
-    }),
-  }).catch(() => null);
+  // One email per address: while the sender has no verified domain Resend only delivers to the account's own
+  // address, and a request that names another one is refused as a whole.
+  const results = await Promise.all(
+    recipientsOf(env.NOTIFY_TO).map((to) =>
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: env.NOTIFY_FROM ?? 'BB Bot <onboarding@resend.dev>',
+          to: [to],
+          reply_to: input.email,
+          subject: `New message from ${oneLine(input.name).slice(0, 80)}`,
+          text: emailText(input),
+        }),
+      })
+        .then((response) => response.ok)
+        .catch(() => false),
+    ),
+  );
 
-  if (!response?.ok) {
+  const delivered = results.filter(Boolean).length;
+  if (delivered === 0) {
     return json({ error: 'email_failed' }, { status: 502, headers: cors });
   }
-  return json({ ok: true, sent: true }, { headers: cors });
+  return json(
+    { ok: true, sent: true, delivered, of: results.length },
+    { headers: cors },
+  );
 };
 
 export default {
@@ -291,7 +315,9 @@ export default {
           rateLimit: Boolean(env.CHAT_RATE_LIMIT),
           providers: enabledProviders(env),
           notify: Boolean(
-            env.RESEND_API_KEY && env.NOTIFY_TO && env.CHAT_RATE_LIMIT,
+            env.RESEND_API_KEY &&
+            recipientsOf(env.NOTIFY_TO).length > 0 &&
+            env.CHAT_RATE_LIMIT,
           ),
         },
         { headers: cors },

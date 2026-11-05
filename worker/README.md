@@ -42,7 +42,7 @@ current names). Small free models answer Vietnamese less well than Gemini; put `
 ```bash
 # 1. create an account at https://resend.com and an API key
 npx wrangler secret put RESEND_API_KEY
-npx wrangler secret put NOTIFY_TO        # the address to tell, for example your own email
+npx wrangler secret put NOTIFY_TO        # who to tell: one address, or several separated by commas (each gets its own email)
 # 2. the KV rate limit above must be bound: without it nothing is sent, so nobody can flood the inbox
 ```
 
