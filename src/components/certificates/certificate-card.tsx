@@ -74,7 +74,7 @@ export function CertificateCard({
         </button>
       )}
 
-      <div className='flex min-w-0 flex-col gap-3.5 px-2'>
+      <div className='flex min-w-0 flex-1 flex-col gap-3.5 px-2'>
         {featured && (
           <span className='self-start rounded-full bg-night px-2.5 py-1 text-[13px] leading-none font-semibold text-white'>
             {copy.latest}
