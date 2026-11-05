@@ -1,17 +1,18 @@
 {
   "name": "Bach Bui",
-  "headline": "Mobile Software Engineer",
+  "alternateNames": ["Bùi Ngô Tôn Bách", "Bách Bùi", "Tôn Bách", "Bách Dev"],
+  "headline": "Software Engineer",
   "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.webp",
   "defaultLanguage": "en",
   "languages": ["en", "vi"],
-  "seoTitle": "Bach Bui - Mobile Software Engineer",
-  "seoDescription": "Team Lead at FPT Software with 7 years in software. I lead 10 developers, build AI tooling for mobile engineering, and aim to become an Engineering Manager.",
+  "seoTitle": "Bach Bui (Bùi Ngô Tôn Bách) - Software Engineer",
+  "seoDescription": "Bùi Ngô Tôn Bách (Bach Bui, Bách Bùi, Tôn Bách, Bách Dev): Team Lead at FPT Software with 7 years in software, leading 10 developers and building AI tooling.",
   "ogImage": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
   "l10n": {
     "vi": {
-      "headline": "Kỹ sư phần mềm Mobile",
-      "seoTitle": "Bach Bui - Kỹ sư phần mềm Mobile",
-      "seoDescription": "Team Lead tại FPT Software với 7 năm làm việc trong ngành phần mềm. Mình dẫn dắt 10 lập trình viên, xây dựng công cụ AI cho kỹ thuật mobile và mong muốn trở thành Engineering Manager."
+      "headline": "Kỹ sư phần mềm",
+      "seoTitle": "Bùi Ngô Tôn Bách (Bach Bui) - Kỹ sư phần mềm",
+      "seoDescription": "Bùi Ngô Tôn Bách (Bach Bui, Bách Bùi, Tôn Bách, Bách Dev): Team Lead tại FPT Software với 7 năm làm việc trong ngành phần mềm, dẫn dắt 10 lập trình viên và xây dựng công cụ AI."
     }
   }
 }

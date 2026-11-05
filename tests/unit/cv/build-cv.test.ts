@@ -2,18 +2,18 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { readFileSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
+import { cvCopy } from '@/content/copy/cv';
 import {
   COLLECTIONS,
-  profileSchema,
   localize,
+  profileSchema,
   type CollectionName,
-  type Lang,
   type Doc,
+  type Lang,
 } from '@/lib/content/schema';
-import { cvCopy } from '@/content/copy/cv';
 import { buildCv, cvFileName, type CvInput } from '@/lib/cv/build-cv';
+import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
 
 const seed = JSON.parse(readFileSync('tests/fixtures/seed.json', 'utf8'));
 
@@ -27,7 +27,7 @@ const visible = <N extends CollectionName>(name: N): Doc<N>[] =>
     .filter((d) => d.visible);
 
 const input = (): CvInput => ({
-  shell: { name: 'Bach Bui', headline: 'Mobile Software Engineer' },
+  shell: { name: 'Bach Bui', headline: 'Software Engineer' },
   profile: profileSchema.parse(seed.site.profile),
   contacts: visible('contacts'),
   experience: visible('experience'),
@@ -44,7 +44,7 @@ describe('buildCv', () => {
   it('takes the name from the profile and the headline from the shell', () => {
     const cv = build(input());
     expect(cv.name).toBe('Bùi Ngô Tôn Bách');
-    expect(cv.headline).toBe('Mobile Software Engineer');
+    expect(cv.headline).toBe('Software Engineer');
     expect(cv.summary).toContain('Master of Science');
   });
 

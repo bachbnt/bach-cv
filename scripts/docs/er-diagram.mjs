@@ -58,7 +58,7 @@ const CARDS = {
 };
 const SITE = {
   shell: { x: 1290, y: 70, w: 290, layer: 'embedded', sql: 'site_doc (JSON)', title: 'site/shell', fields: [
-    f('name'), f('headline'), f('avatar'), f('defaultLanguage', 'en|vi'), f('languages', 'en|vi[]'),
+    f('name'), f('alternateNames', 'string[]'), f('headline'), f('avatar'), f('defaultLanguage', 'en|vi'), f('languages', 'en|vi[]'),
     f('seoTitle'), f('seoDescription'), f('ogImage'), f('l10n', '{ headline, seo... }'),
   ] },
   live: { x: 1290, y: 350, w: 290, layer: 'live', sql: 'site_doc (JSON)', title: 'site/live', fields: [

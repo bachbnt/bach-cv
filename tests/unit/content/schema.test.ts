@@ -28,6 +28,7 @@ describe('fail-open defaults', () => {
 
   it('shell and settings parse from {}', () => {
     expect(shellSchema.parse({}).defaultLanguage).toBe('en');
+    expect(shellSchema.parse({}).alternateNames).toEqual([]);
     expect(settingsSchema.parse({}).chat.botName).toBe('BB Bot');
   });
 

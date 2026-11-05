@@ -287,6 +287,8 @@ export type Contact = z.output<typeof contactSchema>;
  */
 export const shellSchema = z.object({
   name: text,
+  /** other names people search for (full name, nickname): in the page's schema.org Person and in the footer */
+  alternateNames: z.array(z.string()).default([]),
   headline: text,
   avatar: text,
   defaultLanguage: langSchema.default('en'),

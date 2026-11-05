@@ -10,6 +10,10 @@ export function SiteFooter() {
       <p>
         &copy; {new Date().getFullYear()} {shell.name}
       </p>
+      {shell.alternateNames.length > 0 && (
+        // the other names this site is known by, in plain sight: people search for them
+        <p data-testid='alternate-names'>{shell.alternateNames.join(' · ')}</p>
+      )}
     </footer>
   );
 }

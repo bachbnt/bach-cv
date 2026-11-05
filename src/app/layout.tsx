@@ -44,6 +44,7 @@ const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: shell.name,
+  alternateName: shell.alternateNames,
   url: SITE_URL,
   image: shell.avatar,
   jobTitle: shell.headline,

@@ -42,6 +42,7 @@ const FIELD_NOTES = {
   maintenance: '<code>enabled</code> covers the whole site; <code>message</code> and <code>l10n.vi.message</code> are shown.',
   defaultLanguage: 'The language used on the first paint.',
   languages: 'The languages the site offers.',
+  alternateNames: 'Other names people search for (full name, nickname). Shown in the footer and in the page\'s schema.org Person, so search engines connect them to the site.',
   seoTitle: 'Page title and Open Graph title.',
   seoDescription: 'Meta description.',
   createdAt: 'Server time, set by the rules check <code>createdAt == request.time</code>.',
