@@ -30,6 +30,11 @@ export function ProjectsContent() {
   const [active, setActive] = useState<Doc<'projects'> | null>(null);
   const [open, setOpen] = useState(false);
 
+  const openScreenshots = (project: Doc<'projects'>) => {
+    setActive(project);
+    setOpen(true);
+  };
+
   const projects = projectsQuery.data ?? [];
   const featured = projects
     .filter((p) => p.highlight !== null)
@@ -54,10 +59,7 @@ export function ProjectsContent() {
                   key={project.id}
                   project={project}
                   skills={skills}
-                  onOpenScreenshots={(p) => {
-                    setActive(p);
-                    setOpen(true);
-                  }}
+                  onOpenScreenshots={openScreenshots}
                 />
               ))}
             </div>
@@ -66,7 +68,11 @@ export function ProjectsContent() {
         <h2 className={cn(heading, featured.length > 0 && 'mt-20')}>
           {copy.all}
         </h2>
-        <ProjectGrid projects={projects} skills={skills} />
+        <ProjectGrid
+          projects={projects}
+          skills={skills}
+          onOpenScreenshots={openScreenshots}
+        />
       </DataState>
       {active && (
         <ScreenshotsDialog

@@ -37,11 +37,11 @@ export function ConnectMenu() {
         <span className='relative size-[18px]'>
           <Share2
             aria-hidden='true'
-            className='absolute inset-0 transition-all duration-300 group-data-popup-open/button:scale-60 group-data-popup-open/button:rotate-90 group-data-popup-open/button:opacity-0'
+            className='absolute inset-0 transition-[scale,rotate,opacity] duration-300 group-data-popup-open/button:scale-60 group-data-popup-open/button:rotate-90 group-data-popup-open/button:opacity-0'
           />
           <X
             aria-hidden='true'
-            className='absolute inset-0 scale-60 -rotate-90 opacity-0 transition-all duration-300 group-data-popup-open/button:scale-100 group-data-popup-open/button:rotate-0 group-data-popup-open/button:opacity-100'
+            className='absolute inset-0 scale-60 -rotate-90 opacity-0 transition-[scale,rotate,opacity] duration-300 group-data-popup-open/button:scale-100 group-data-popup-open/button:rotate-0 group-data-popup-open/button:opacity-100'
           />
         </span>
         {text.connect.button}
@@ -117,7 +117,7 @@ export function ConnectMenu() {
                       </span>
                       <ArrowUpRight
                         aria-hidden='true'
-                        className='size-4 -translate-x-1 translate-y-1 text-muted-foreground opacity-0 transition-all group-hover/item:translate-0 group-hover/item:opacity-100 group-focus-visible/item:translate-0 group-focus-visible/item:opacity-100'
+                        className='size-4 -translate-x-1 translate-y-1 text-muted-foreground opacity-0 transition-[translate,opacity] group-hover/item:translate-0 group-hover/item:opacity-100 group-focus-visible/item:translate-0 group-focus-visible/item:opacity-100'
                       />
                     </a>
                   </li>

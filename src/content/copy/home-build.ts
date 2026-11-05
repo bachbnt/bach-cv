@@ -9,7 +9,7 @@ export const homeBuildCopy = defineCopy(
   {
     title: "What I've built at FPT",
     intro:
-      'Engineering workflows the 5-person team uses every day, from the first bug report to the merged MR.',
+      'Engineering workflows the team of 10 uses every day, from the first bug report to the merged MR.',
     items: [
       {
         title: 'Bug-fixing pipeline',
@@ -40,7 +40,7 @@ export const homeBuildCopy = defineCopy(
   {
     title: 'Những gì mình đã xây ở FPT',
     intro:
-      'Các quy trình kỹ thuật mà nhóm 5 người dùng mỗi ngày, từ báo cáo lỗi đầu tiên đến MR được merge.',
+      'Các quy trình kỹ thuật mà nhóm 10 người dùng mỗi ngày, từ báo cáo lỗi đầu tiên đến MR được merge.',
     items: [
       {
         title: 'Quy trình sửa lỗi tự động',

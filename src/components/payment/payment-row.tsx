@@ -54,10 +54,7 @@ export function PaymentRow({
       </div>
       <PaymentFields method={method} compact />
       <div className='flex flex-wrap items-center gap-2 max-[720px]:w-full'>
-        <Button
-          onClick={onCopy}
-          className='border-[1.5px] border-night max-[720px]:flex-1 pointer-coarse:h-11'
-        >
+        <Button onClick={onCopy} className='max-[720px]:flex-1'>
           <Copy aria-hidden='true' />
           {copy.copyNumber}
         </Button>
@@ -66,7 +63,7 @@ export function PaymentRow({
             variant='outline'
             onClick={onOpenQr}
             aria-label={copy.showQr(method.name)}
-            className='max-[720px]:flex-1 pointer-coarse:h-11'
+            className='max-[720px]:flex-1'
           >
             <QrCode aria-hidden='true' />
             {copy.qrCode}

@@ -42,10 +42,16 @@ const stamp = '2026-11-04T00:00:00.000000Z';
  * Answers the browser's Firestore calls from the seed, the way the rules would:
  * a collection query returns only `visible` documents. Tests stay deterministic and never touch the network.
  * Pass `overrides` to change a document, for example `{ 'site/live': { pages: { payment: 'soon' } } }`.
+ * Pass `patch` to change documents of a collection as they are served, for example to take a flag off a project.
  */
 export async function mockFirestore(
   page: Page,
   overrides: Record<string, Record<string, unknown>> = {},
+  patch?: (
+    collection: string,
+    id: string,
+    doc: Record<string, unknown>,
+  ) => Record<string, unknown>,
 ) {
   const singles = (path: string): Record<string, unknown> | undefined => {
     const [collection, id] = path.split('/');
@@ -79,7 +85,11 @@ export async function mockFirestore(
           ? docs.map(([id, d]) => ({
               document: {
                 name: `${base}/${name}/${id}`,
-                fields: fieldsOf(d as Record<string, unknown>),
+                fields: fieldsOf(
+                  patch
+                    ? patch(name, id, d as Record<string, unknown>)
+                    : (d as Record<string, unknown>),
+                ),
                 createTime: stamp,
                 updateTime: stamp,
               },
