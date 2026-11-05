@@ -14,6 +14,7 @@ import {
   serverTimestamp,
   where,
 } from 'firebase/firestore/lite';
+import { enableAppCheck } from './app-check.ts';
 import type { ContentRepository } from './repository.ts';
 import {
   COLLECTIONS,
@@ -39,9 +40,9 @@ const getDb = () => {
       'Firebase is not configured: set NEXT_PUBLIC_FIREBASE_* in .env.local',
     );
   }
-  return getFirestore(
-    getApps().length ? getApp() : initializeApp(firebaseConfig),
-  );
+  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  enableAppCheck(app);
+  return getFirestore(app);
 };
 
 /** One-shot reads only, so the lite SDK is enough and the page stays small. */
