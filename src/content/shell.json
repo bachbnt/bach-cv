@@ -5,13 +5,13 @@
   "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.webp",
   "defaultLanguage": "en",
   "languages": ["en", "vi"],
-  "seoTitle": "Bach Bui (Bùi Ngô Tôn Bách) - Software Engineer",
+  "seoTitle": "Bach Bui - Software Engineer",
   "seoDescription": "Bùi Ngô Tôn Bách (Bach Bui, Bách Bùi, Tôn Bách, Bách Dev): Team Lead at FPT Software with 7 years in software, leading 10 developers and building AI tooling.",
   "ogImage": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
   "l10n": {
     "vi": {
       "headline": "Kỹ sư phần mềm",
-      "seoTitle": "Bùi Ngô Tôn Bách (Bach Bui) - Kỹ sư phần mềm",
+      "seoTitle": "Bach Bui - Kỹ sư phần mềm",
       "seoDescription": "Bùi Ngô Tôn Bách (Bach Bui, Bách Bùi, Tôn Bách, Bách Dev): Team Lead tại FPT Software với 7 năm làm việc trong ngành phần mềm, dẫn dắt 10 lập trình viên và xây dựng công cụ AI."
     }
   }

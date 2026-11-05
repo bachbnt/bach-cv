@@ -14,8 +14,6 @@ export default defineConfig([
     'next-env.d.ts',
     // not part of the Next.js app
     'worker/**',
-    'agent-skills-main/**',
-    'skills/**',
     '.claude/**',
   ]),
 ]);

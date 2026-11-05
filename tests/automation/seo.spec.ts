@@ -64,7 +64,7 @@ test('the site tells search engines who it is about', async ({ page }) => {
   );
 });
 
-test('the other names are in the page title, the description and, in plain sight, the footer of every page', async ({
+test('the other names are in the description and, in plain sight, the footer of every page, while the tab title stays short', async ({
   page,
 }) => {
   for (const path of ['/', '/about', '/projects']) {
@@ -76,7 +76,7 @@ test('the other names are in the page title, the description and, in plain sight
     await expect(footer).toContainText('Bách Bùi');
   }
   await page.goto('/');
-  await expect(page).toHaveTitle(/Bùi Ngô Tôn Bách/);
+  await expect(page).toHaveTitle('Bach Bui - Software Engineer');
   const description = await page
     .locator('meta[name="description"]')
     .getAttribute('content');
@@ -89,7 +89,5 @@ test('the tab title follows the language', async ({ page }) => {
   await page.goto('/resume');
   await expect(page).toHaveTitle('Hồ sơ - Bach Bui');
   await page.goto('/');
-  await expect(page).toHaveTitle(
-    'Bùi Ngô Tôn Bách (Bach Bui) - Kỹ sư phần mềm',
-  );
+  await expect(page).toHaveTitle('Bach Bui - Kỹ sư phần mềm');
 });
