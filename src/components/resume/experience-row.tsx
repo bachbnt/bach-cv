@@ -94,13 +94,15 @@ export function ExperienceRow({
         )}
       </div>
       {job.logo && (
-        <Image
-          src={job.logo}
-          alt={job.company}
-          width={280}
-          height={200}
-          className='mt-2 h-[200px] max-w-[280px] flex-[1_1_220px] self-start rounded-xl bg-border object-cover'
-        />
+        <div className='relative mt-2 h-[200px] max-w-[280px] flex-[1_1_220px] self-start overflow-hidden rounded-xl bg-border'>
+          <Image
+            src={job.logo}
+            alt={job.company}
+            fill
+            sizes='280px'
+            className='object-cover'
+          />
+        </div>
       )}
     </article>
   );

@@ -57,13 +57,15 @@ function EducationCards({ degrees }: { degrees: Doc<'education'>[] }) {
           className='flex flex-col overflow-hidden rounded-2xl border bg-card'
         >
           {degree.logo && (
-            <Image
-              src={degree.logo}
-              alt={`${degree.degree}, ${degree.school}`}
-              width={600}
-              height={220}
-              className='h-[220px] w-full bg-border object-cover object-[50%_22%]'
-            />
+            <div className='relative h-[220px] w-full bg-border'>
+              <Image
+                src={degree.logo}
+                alt={`${degree.degree}, ${degree.school}`}
+                fill
+                sizes='(min-width: 721px) 560px, 100vw'
+                className='object-cover object-[50%_22%]'
+              />
+            </div>
           )}
           <div className='flex flex-1 flex-col gap-3 p-6'>
             <h3 className='text-2xl leading-[1.15]'>{degree.degree}</h3>

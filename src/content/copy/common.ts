@@ -78,7 +78,7 @@ export const commonCopy = defineCopy(
     },
     theme: {
       label: 'Giao diện',
-      system: 'Theo hệ thống',
+      system: 'Hệ thống',
       light: 'Sáng',
       dark: 'Tối',
     },

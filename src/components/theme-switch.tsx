@@ -67,7 +67,7 @@ export function ThemeSwitch() {
                 key={code}
                 value={code}
                 closeOnClick
-                className='min-h-10 gap-2.5 rounded-lg px-3 text-[15px] font-medium data-checked:font-semibold'
+                className='min-h-10 gap-2.5 rounded-lg pr-9 pl-3 text-[15px] font-medium data-checked:font-semibold'
               >
                 <ItemIcon aria-hidden='true' className='size-4' />
                 {copy.theme[code]}

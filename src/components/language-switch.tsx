@@ -55,7 +55,7 @@ export function LanguageSwitch() {
               key={code}
               value={code}
               closeOnClick
-              className='min-h-10 rounded-lg px-3 text-[15px] font-medium data-checked:font-semibold'
+              className='min-h-10 rounded-lg pr-9 pl-3 text-[15px] font-medium data-checked:font-semibold'
             >
               {names[code]}
             </DropdownMenuRadioItem>

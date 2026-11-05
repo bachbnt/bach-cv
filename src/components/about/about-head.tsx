@@ -12,7 +12,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useProfileQuery } from '@/lib/query/use-content';
 import { cn } from 'cn';
 
-const photo = 'size-full rounded-[20px] bg-border object-cover';
+/** A frame the photo fills: the photo's own width and height are never overridden by CSS, which Next.js warns about. */
+const frame = 'relative overflow-hidden rounded-[20px] bg-border';
 
 /** The tinted head of About: the profile summary, the specialty chips and the photo grid. */
 export function AboutHead() {
@@ -57,32 +58,38 @@ export function AboutHead() {
         </div>
         <div className='grid h-[520px] min-w-0 flex-[1_1_380px] grid-cols-[1.4fr_1fr] grid-rows-2 gap-4'>
           {shell.avatar && (
-            <Image
-              src={shell.avatar}
-              alt={`${copy.avatarAlt} ${shell.name}`}
-              width={600}
-              height={520}
-              priority
-              className={cn(photo, 'row-span-2')}
-            />
+            <div className={cn(frame, 'row-span-2')}>
+              <Image
+                src={shell.avatar}
+                alt={`${copy.avatarAlt} ${shell.name}`}
+                fill
+                sizes='(min-width: 901px) 320px, 60vw'
+                priority
+                className='object-cover'
+              />
+            </div>
           )}
           {top && (
-            <Image
-              src={top}
-              alt={`${copy.coverAlt} ${shell.name}`}
-              width={400}
-              height={260}
-              className={photo}
-            />
+            <div className={frame}>
+              <Image
+                src={top}
+                alt={`${copy.coverAlt} ${shell.name}`}
+                fill
+                sizes='(min-width: 901px) 220px, 40vw'
+                className='object-cover'
+              />
+            </div>
           )}
           {bottom && (
-            <Image
-              src={bottom}
-              alt={`${copy.coverAlt} ${shell.name}`}
-              width={400}
-              height={260}
-              className={photo}
-            />
+            <div className={frame}>
+              <Image
+                src={bottom}
+                alt={`${copy.coverAlt} ${shell.name}`}
+                fill
+                sizes='(min-width: 901px) 220px, 40vw'
+                className='object-cover'
+              />
+            </div>
           )}
         </div>
       </section>

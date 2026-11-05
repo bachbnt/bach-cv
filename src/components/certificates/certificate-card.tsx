@@ -65,6 +65,8 @@ export function CertificateCard({
             width={800}
             height={600}
             unoptimized
+            // the latest certificate is the first thing on the page: load it right away
+            priority={featured}
             className={cn(
               'block h-auto w-auto max-w-full object-contain shadow-[0_8px_24px_rgba(27,31,39,.14)] transition-transform duration-300 group-hover/media:scale-[1.02] motion-reduce:transition-none',
               featured ? 'max-h-[300px]' : 'max-h-[200px]',

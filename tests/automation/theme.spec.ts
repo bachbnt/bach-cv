@@ -79,7 +79,8 @@ test('the CV sheet stays white paper in dark mode, with dark ink', async ({
     .getByRole('button', { name: /download cv/i })
     .first()
     .click();
-  const sheet = page.locator('.theme-light').first();
+  // the real sheet, not the loading skeleton that is also "light paper"
+  const sheet = page.locator('.theme-light', { hasText: 'Summary' }).first();
   await expect(sheet).toBeVisible({ timeout: 15000 });
   expect(
     await sheet.evaluate((el) => getComputedStyle(el).backgroundColor),
@@ -192,4 +193,34 @@ test('the language button shows the current language code, and its menu closes a
   const vi = page.getByRole('button', { name: 'Ngôn ngữ: Tiếng Việt' });
   await expect(vi).toBeVisible();
   await expect(vi).toContainText('VI');
+});
+
+test('in Vietnamese the theme menu fits: short names and the tick never covers the text', async ({
+  page,
+}) => {
+  await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Giao diện' }).click();
+
+  for (const name of ['Hệ thống', 'Sáng', 'Tối']) {
+    await expect(page.getByRole('menuitemradio', { name })).toBeVisible();
+  }
+  // the checked item (System) has its tick to the right of the last character of the text
+  const item = page.getByRole('menuitemradio', { name: 'Hệ thống' });
+  const gap = await item.evaluate((el) => {
+    const range = document.createRange();
+    range.selectNodeContents(el.querySelector('svg + *') ?? el);
+    const text = [...el.childNodes]
+      .filter((n) => n.nodeType === Node.TEXT_NODE)
+      .map((n) => {
+        const r = document.createRange();
+        r.selectNodeContents(n);
+        return r.getBoundingClientRect().right;
+      });
+    const tick = el
+      .querySelector('[data-slot="dropdown-menu-radio-item-indicator"]')!
+      .getBoundingClientRect().left;
+    return tick - Math.max(...text);
+  });
+  expect(gap).toBeGreaterThan(4);
 });

@@ -153,12 +153,20 @@ test('the Open PDF buttons of the cards in a row line up at the bottom, whatever
   const cards = page.getByTestId('certificate');
   await expect(cards).toHaveCount(3);
 
-  // the two grid cards are in one row; one title wraps to two lines and the other does not
-  const bottoms: number[] = [];
-  for (const index of [1, 2]) {
-    const link = cards.nth(index).getByRole('link', { name: /open pdf/i });
-    const box = await link.boundingBox();
-    bottoms.push(Math.round(box!.y + box!.height));
-  }
-  expect(bottoms[0]).toBe(bottoms[1]);
+  // the two grid cards are in one row; one title wraps to two lines and the other does not.
+  // The cards slide in when they appear, so wait until the positions settle.
+  const bottoms = async () =>
+    Promise.all(
+      [1, 2].map(async (index) => {
+        const link = cards.nth(index).getByRole('link', { name: /open pdf/i });
+        const box = await link.boundingBox();
+        return Math.round(box!.y + box!.height);
+      }),
+    );
+  await expect
+    .poll(async () => {
+      const [a, b] = await bottoms();
+      return a === b;
+    })
+    .toBe(true);
 });
