@@ -71,7 +71,7 @@ export function MobileMenu({
         </SheetTrigger>
         <SheetContent
           side='right'
-          className='w-[min(360px,88vw)] gap-0 overflow-y-auto bg-card p-4 data-[side=right]:sm:max-w-[360px]'
+          className='w-[min(360px,88vw)] gap-0 overflow-y-auto rounded-l-3xl bg-card p-4 data-[side=right]:sm:max-w-[360px]'
         >
           <Link
             href='/'
