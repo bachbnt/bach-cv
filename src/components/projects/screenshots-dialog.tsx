@@ -51,6 +51,15 @@ export function ScreenshotsDialog({
         width: 900,
         height: 1600,
       }}
+      thumbnails={{
+        items: images.map((src, i) => ({
+          src,
+          label: fillCopy(copy.dialog.thumbnail, { current: i + 1 }),
+        })),
+        current: index,
+        onSelect: setIndex,
+        groupLabel: copy.dialog.thumbnails,
+      }}
       nav={
         total > 1
           ? {

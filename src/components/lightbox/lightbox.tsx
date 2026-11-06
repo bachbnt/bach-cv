@@ -10,6 +10,10 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import Image from 'next/image';
 import type { KeyboardEvent, ReactNode } from 'react';
 import {
+  LightboxThumbnails,
+  type LightboxThumbnailsProps,
+} from '@/components/lightbox/lightbox-thumbnails';
+import {
   Dialog,
   DialogClose,
   DialogOverlay,
@@ -37,6 +41,8 @@ export interface LightboxProps {
   actions?: ReactNode;
   /** leave out for a single item */
   nav?: LightboxNav;
+  /** a row of small pictures to pick from (more than one picture) */
+  thumbnails?: LightboxThumbnailsProps;
   /** accessible name of the close button, in the visitor's language */
   closeLabel: string;
   /** extra classes for the image, e.g. padding for a QR code */
@@ -58,9 +64,12 @@ export function Lightbox({
   meta,
   actions,
   nav,
+  thumbnails,
   closeLabel,
   imageClassName,
 }: LightboxProps) {
+  const showThumbnails =
+    thumbnails !== undefined && thumbnails.items.length > 1;
   const onKeyDown = (e: KeyboardEvent) => {
     if (!nav) return;
     if (e.key === 'ArrowLeft') nav.onPrev();
@@ -103,11 +112,16 @@ export function Lightbox({
               height={image.height ?? 900}
               unoptimized
               className={cn(
-                'block h-auto max-h-[calc(92vh-190px)] w-auto max-w-full bg-white shadow-[0_8px_28px_rgba(27,31,39,.18)] max-[720px]:max-h-[calc(100dvh-300px)]',
+                'block h-auto w-auto max-w-full bg-white shadow-[0_8px_28px_rgba(27,31,39,.18)]',
+                showThumbnails
+                  ? 'max-h-[calc(92vh-270px)] max-[720px]:max-h-[calc(100dvh-380px)]'
+                  : 'max-h-[calc(92vh-190px)] max-[720px]:max-h-[calc(100dvh-300px)]',
                 imageClassName,
               )}
             />
           </div>
+
+          {showThumbnails && <LightboxThumbnails {...thumbnails} />}
 
           <div className='flex flex-wrap items-center justify-between gap-3 px-5 py-3 max-[720px]:flex-col max-[720px]:items-stretch'>
             <div className='min-w-0 text-[15px] text-muted-foreground'>

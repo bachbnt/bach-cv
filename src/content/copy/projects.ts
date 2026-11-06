@@ -42,6 +42,8 @@ export const projectsCopy = defineCopy(
       next: 'Next screenshot',
       counter: '{current} of {total}',
       alt: '{name} screenshot {current}',
+      thumbnails: 'All screenshots',
+      thumbnail: 'Go to screenshot {current}',
     },
   },
   {
@@ -80,6 +82,8 @@ export const projectsCopy = defineCopy(
       next: 'Ảnh tiếp theo',
       counter: '{current} / {total}',
       alt: '{name}, ảnh chụp màn hình {current}',
+      thumbnails: 'Tất cả ảnh chụp màn hình',
+      thumbnail: 'Xem ảnh {current}',
     },
   },
 );

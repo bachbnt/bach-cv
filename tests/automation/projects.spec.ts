@@ -84,6 +84,35 @@ test('the kind chips filter the grid', async ({ page }) => {
   );
 });
 
+test('the screenshots dialog has a row of thumbnails to pick a screenshot from', async ({
+  page,
+}) => {
+  await page.goto('/projects');
+  await page.getByRole('button', { name: '6 screenshots' }).first().click();
+
+  const dialog = page.getByRole('dialog');
+  const row = dialog.getByRole('group', { name: 'All screenshots' });
+  await expect(row.getByRole('button')).toHaveCount(6);
+  await expect(
+    row.getByRole('button', { name: 'Go to screenshot 1' }),
+  ).toHaveAttribute('aria-current', 'true');
+
+  await row.getByRole('button', { name: 'Go to screenshot 4' }).click();
+  await expect(dialog.getByText('4 of 6')).toBeVisible();
+  await expect(
+    row.getByRole('button', { name: 'Go to screenshot 4' }),
+  ).toHaveAttribute('aria-current', 'true');
+  await expect(
+    row.getByRole('button', { name: 'Go to screenshot 1' }),
+  ).toHaveAttribute('aria-current', 'false');
+
+  // the arrows and the thumbnails agree
+  await page.keyboard.press('ArrowRight');
+  await expect(
+    row.getByRole('button', { name: 'Go to screenshot 5' }),
+  ).toHaveAttribute('aria-current', 'true');
+});
+
 test('the screenshots dialog steps with buttons and arrow keys, and closes with Escape', async ({
   page,
 }) => {

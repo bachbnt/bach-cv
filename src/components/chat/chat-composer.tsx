@@ -60,7 +60,7 @@ export function ChatComposer({
         aria-label={copy.messageLabel}
         onChange={(event) => onChange(event.target.value)}
         onKeyDown={onKeyDown}
-        className='max-h-24 min-h-0 resize-none rounded-xl border-[1.5px] px-3 py-2.5 text-[15px] leading-[1.4] focus-visible:border-foreground focus-visible:ring-0 pointer-coarse:text-base md:text-[15px]'
+        className='max-h-24 min-h-10 resize-none rounded-xl border-[1.5px] px-3 py-2 max-[720px]:min-h-11 pointer-coarse:min-h-11 text-[15px] leading-[1.4] focus-visible:border-foreground focus-visible:ring-0 pointer-coarse:text-base md:text-[15px]'
       />
       <Button
         type='submit'
