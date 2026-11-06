@@ -42,10 +42,10 @@ test('responsibilities open for the current role and toggle for the others', asy
   page,
 }) => {
   await page.goto('/resume');
-  await expect(page.locator('details[open]')).toHaveCount(1);
-  const show = page.locator('details:not([open]) summary').first();
-  await show.click();
-  await expect(page.locator('details[open]')).toHaveCount(2);
+  const toggles = page.getByRole('button', { name: /responsibilities/i });
+  await expect(page.locator('[aria-expanded="true"]')).toHaveCount(1);
+  await toggles.nth(1).click();
+  await expect(page.locator('[aria-expanded="true"]')).toHaveCount(2);
   await expect(
     page.getByText('Architected and developed a cross-platform payment'),
   ).toBeVisible();

@@ -5,16 +5,24 @@
 'use client';
 
 import Image from 'next/image';
+import { CurrentBadge } from '@/components/current-badge';
+import { Responsibilities } from '@/components/resume/responsibilities';
 import { SkillTags } from '@/components/resume/skill-tags';
 import { resumeCopy } from '@/content/copy/resume';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import type { Doc, Skill } from '@/lib/content/schema';
 import { formatPeriod } from '@/lib/format';
+import type { CSSProperties } from 'react';
+import { cn } from 'cn';
+
+/** The position of a part of the row in its entrance: the parts arrive one after another (see `data-part` in globals.css). */
+const part = (n: number) => ({ '--p': n }) as CSSProperties;
 
 /**
  * One role: period, company with the Current pill, role, summary, the key project, technologies,
  * the responsibilities (open for the first row), and the company logo.
+ * On wide screens a timeline runs down the left: a line that draws itself as the row appears and a dot for each role.
  */
 export function ExperienceRow({
   job,
@@ -32,21 +40,38 @@ export function ExperienceRow({
     .filter((p) => p.highlight !== null)
     .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0));
 
+  const current = !job.endMonth;
   return (
-    <article className='flex flex-wrap gap-x-12 gap-y-3 border-t px-3 py-7 transition-colors hover:bg-card active:bg-card min-[721px]:px-6 min-[721px]:py-10'>
-      <p className='flex-[0_0_150px] pt-2 text-[15px] leading-normal text-muted-foreground'>
+    <article className='group/row relative flex flex-wrap gap-x-12 gap-y-3 border-t px-3 py-7 transition-colors hover:bg-card active:bg-card min-[721px]:px-6 min-[721px]:py-10'>
+      {/* timeline: only where the date and the role share a line */}
+      <div
+        aria-hidden='true'
+        className='pointer-events-none absolute inset-y-0 left-[198px] hidden w-0 min-[920px]:block'
+      >
+        <span className='absolute -top-px bottom-0 left-0 w-px origin-top bg-border transition-[scale] delay-150 duration-700 ease-out group-first/row:top-[55px] group-last/row:bottom-[calc(100%-55px)] [[data-reveal]:not(.in)_&]:scale-y-0' />
+        <span
+          data-testid='timeline-dot'
+          className={cn(
+            'absolute top-[49px] -left-1.5 size-3 rounded-full border-2 border-page transition-[scale] delay-300 duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] [[data-reveal]:not(.in)_&]:scale-0',
+            current ? 'bg-page' : 'bg-background',
+          )}
+        >
+          {current && <span className='timeline-ring' />}
+        </span>
+      </div>
+      <p
+        data-part
+        style={part(0)}
+        className='flex-[0_0_150px] pt-2 text-[15px] leading-normal text-muted-foreground'
+      >
         {formatPeriod(job.startMonth, job.endMonth, lang)}
       </p>
       <div className='min-w-0 flex-[1_1_480px]'>
-        <h3 className='text-[28px] leading-[1.1]'>
+        <h3 data-part style={part(1)} className='text-[28px] leading-[1.1]'>
           {job.company}
-          {!job.endMonth && (
-            <span className='relative -top-0.5 ml-2.5 inline-flex items-center rounded-full bg-night px-2.5 py-[3px] align-middle text-xs font-semibold text-white'>
-              {copy.current}
-            </span>
-          )}
+          {current && <CurrentBadge>{copy.current}</CurrentBadge>}
         </h3>
-        <p className='mt-1.5 text-lg font-semibold'>
+        <p data-part style={part(2)} className='mt-1.5 text-lg font-semibold'>
           {job.role}
           {job.team && (
             <span className='font-normal text-muted-foreground'>
@@ -56,13 +81,19 @@ export function ExperienceRow({
           )}
         </p>
         {intro && (
-          <p className='mt-3 max-w-[640px] text-[17px] leading-[1.55] text-body'>
+          <p
+            data-part
+            style={part(3)}
+            className='mt-3 max-w-[640px] text-[17px] leading-[1.55] text-body'
+          >
             {intro}
           </p>
         )}
         {keyProjects.map((project) => (
           <div
             key={project.name}
+            data-part
+            style={part(4)}
             className='glow mt-5 rounded-xl border bg-card px-[18px] py-4'
           >
             <span className='mb-2 inline-flex items-center rounded-full bg-page-tint px-2.5 py-[3px] text-[13px] font-semibold whitespace-nowrap text-page'>
@@ -78,29 +109,32 @@ export function ExperienceRow({
             )}
           </div>
         ))}
-        <SkillTags ids={job.technologies} skills={skills} className='mt-4' />
+        <div data-part style={part(5)}>
+          <SkillTags ids={job.technologies} skills={skills} className='mt-4' />
+        </div>
         {job.bullets.length > 0 && (
-          <details open={open} className='group mt-5'>
-            <summary className='flex min-h-11 cursor-pointer list-none items-center text-[15px] font-semibold underline underline-offset-4 [&::-webkit-details-marker]:hidden'>
-              <span className='group-open:hidden'>{copy.show}</span>
-              <span className='hidden group-open:inline'>{copy.hide}</span>
-            </summary>
-            <ul className='mt-4 flex list-disc flex-col gap-3 pl-5 text-base leading-[1.6] text-body'>
-              {job.bullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
-              ))}
-            </ul>
-          </details>
+          <div data-part style={part(6)}>
+            <Responsibilities
+              bullets={job.bullets}
+              defaultOpen={open}
+              show={copy.show}
+              hide={copy.hide}
+            />
+          </div>
         )}
       </div>
       {job.logo && (
-        <div className='relative mt-2 h-[200px] max-w-[280px] flex-[1_1_220px] self-start overflow-hidden rounded-xl bg-border'>
+        <div
+          data-part
+          style={part(2)}
+          className='relative mt-2 h-[200px] max-w-[280px] flex-[1_1_220px] self-start overflow-hidden rounded-xl bg-border'
+        >
           <Image
             src={job.logo}
             alt={job.company}
             fill
             sizes='280px'
-            className='object-cover'
+            className='object-cover saturate-[.85] transition-[scale,filter] duration-500 ease-out group-hover/row:scale-105 group-hover/row:saturate-100 motion-reduce:transition-none motion-reduce:group-hover/row:scale-100'
           />
         </div>
       )}

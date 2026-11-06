@@ -6,6 +6,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { CurrentBadge } from '@/components/current-badge';
 import { DataState } from '@/components/data-state';
 import { RowsSkeleton } from '@/components/skeletons';
 import { homeCopy } from '@/content/copy/home';
@@ -43,16 +44,18 @@ export function WorkRows() {
             key={job.id}
             href='/resume'
             data-row
-            className='flex flex-wrap items-center gap-x-8 gap-y-3 border-b px-3 py-5 transition-colors hover:bg-card min-[721px]:px-6 min-[721px]:py-6'
+            className='group/row flex flex-wrap items-center gap-x-8 gap-y-3 border-b px-3 py-5 transition-colors hover:bg-card min-[721px]:px-6 min-[721px]:py-6'
           >
             {job.logo ? (
-              <Image
-                src={job.logo}
-                alt={job.company}
-                width={112}
-                height={80}
-                className='h-20 w-28 flex-none rounded-[10px] bg-border object-cover'
-              />
+              <div className='h-20 w-28 flex-none overflow-hidden rounded-[10px] bg-border'>
+                <Image
+                  src={job.logo}
+                  alt={job.company}
+                  width={112}
+                  height={80}
+                  className='size-full object-cover saturate-[.85] transition-[scale,filter] duration-500 ease-out group-hover/row:scale-105 group-hover/row:saturate-100 motion-reduce:transition-none motion-reduce:group-hover/row:scale-100'
+                />
+              </div>
             ) : (
               <div
                 aria-hidden='true'
@@ -64,9 +67,7 @@ export function WorkRows() {
             <h3 className='min-w-[230px] flex-[0_0_230px] text-[22px]'>
               {job.company}
               {!job.endMonth && (
-                <span className='relative -top-0.5 ml-2.5 inline-flex items-center rounded-full bg-night px-2.5 py-[3px] align-middle text-xs font-semibold text-white'>
-                  {copy.work.current}
-                </span>
+                <CurrentBadge>{copy.work.current}</CurrentBadge>
               )}
             </h3>
             <div className='min-w-0 flex-[1_1_320px]'>

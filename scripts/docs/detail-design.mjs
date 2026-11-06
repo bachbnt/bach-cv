@@ -314,6 +314,8 @@ ${table(
     [c('DataState, StateNotice, skeletons'), 'loading, empty and failed states of every data block (see 5.3)'],
     [c('Lightbox'), 'the one image dialog: screenshots, certificates and QR codes; previous/next with the counter between them, keyboard, bottom sheet on phones'],
     [c('PointerGlow, glow, lift'), 'the hover on cards: <code>lift</code> raises the card 3px with a bigger shadow (animated; the same on every card); the cursor glow: <code>glow</code> is a CSS utility (a soft spotlight and a lit edge, in the page colour); <code>PointerGlow</code> is one mouse listener that writes the pointer position into the card under it. Only with a mouse (hover and a fine pointer), and off for reduced motion'],
+    [c('Responsibilities'), 'the responsibilities of a role: a button and a list that slides open (<code>grid-template-rows</code> from 0fr to 1fr), lines arriving one after another; <code>inert</code> while shut, so it cannot be reached by keyboard'],
+    [c('CurrentBadge'), 'the Current pill with a live dot that breathes (Resume and Home)'],
     [c('MediaBadge'), 'the always-visible corner badge ("7 screenshots", "Enlarge") on a picture that opens the dialog'],
     [c('DocumentTitle'), 'the tab title in the visitor\'s language'],
     [c('ThemeProvider, ThemeSwitch'), 'light, dark or follow the system (see 5.4); the header dropdown and a group of three buttons in the phone menu'],

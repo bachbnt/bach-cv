@@ -31,6 +31,9 @@ same data.
   tokens in `src/app/globals.css` (`:root` and `.dark`); the CV sheets stay white paper in both.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
   lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). Only for a mouse, and off for "reduce motion".
+- **Experience.** On Resume a timeline runs down the roles (a line that draws itself, a dot for each, the current one breathing), the
+  parts of a role arrive one after another, the responsibilities slide open line by line and the company logo zooms on hover. The
+  "Current" pill has a live dot on Resume and Home. All of it is off for "reduce motion".
 - **Accessible.** A visible focus ring on every control (a browser test tabs through the pages and dialogs), 44 px touch targets on
   phones, one set of buttons (filled, outline, link) and one image dialog for screenshots, certificates and QR codes.
 - **CV dialog and PDF.** A preview of the CV as A4 sheets and a PDF download, both built from the visitor's language.

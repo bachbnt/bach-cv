@@ -61,6 +61,8 @@
   box inside a card does not get `lift`. The `glow` class (cursor spotlight and lit edge, set up in `globals.css`; `<PointerGlow>` feeds it the mouse
   position). It uses `::before` and `::after`, so those cannot be used on the same element: use a real child element instead.
   Rows, sections and anything without a rounded card shape do not get it.
+- Parts of a revealed block that should arrive one after another carry `data-part` and `style={{ '--p': n }}` (see the reveal block in
+  `globals.css`). Animated open/shut content uses the `grid-template-rows: 0fr → 1fr` trick plus `inert` while shut, not `<details>`.
 - `tests/unit/theme/contrast.test.ts` checks the token pairs for contrast; run it after changing a color.
 - A photo whose size CSS decides (a fixed height with `w-full`, a grid cell) is a `fill` image inside a `relative overflow-hidden`
   frame that has the size, with `object-cover` on the image. Do not set a CSS width or height on an `<Image>` that has `width` and
