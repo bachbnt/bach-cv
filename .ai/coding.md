@@ -57,6 +57,9 @@
   `bg-danger-bg` for errors. On the dark panels (`bg-night`) the light text is `text-white`, not `text-background`.
 - Paper that must stay white in dark mode (the CV sheets) carries `theme-light`, which restores the light tokens inside it. Images
   with a white background (QR codes, screenshots) keep `bg-white`.
+- A card-like surface gets the `glow` class (cursor spotlight and lit edge, set up in `globals.css`; `<PointerGlow>` feeds it the mouse
+  position). It uses `::before` and `::after`, so those cannot be used on the same element: use a real child element instead.
+  Rows, sections and anything without a rounded card shape do not get it.
 - `tests/unit/theme/contrast.test.ts` checks the token pairs for contrast; run it after changing a color.
 - A photo whose size CSS decides (a fixed height with `w-full`, a grid cell) is a `fill` image inside a `relative overflow-hidden`
   frame that has the size, with `object-cover` on the image. Do not set a CSS width or height on an `<Image>` that has `width` and

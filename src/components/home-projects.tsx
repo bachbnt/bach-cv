@@ -82,7 +82,7 @@ export function HomeProjects() {
               </>
             );
             const className =
-              'group flex flex-col overflow-hidden rounded-2xl border bg-card transition-[transform,box-shadow] duration-300 hover:-translate-y-[3px] hover:shadow-[0_14px_32px_rgba(27,31,39,.14)] active:bg-card';
+              'glow group flex flex-col overflow-hidden rounded-2xl border bg-card transition-[transform,box-shadow] duration-300 hover:-translate-y-[3px] hover:shadow-[0_14px_32px_rgba(27,31,39,.14)] active:bg-card';
             return href.startsWith('/') ? (
               <Link key={project.id} href={href} className={className}>
                 {card}

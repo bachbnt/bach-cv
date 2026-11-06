@@ -179,11 +179,16 @@
 .theme-light {
   --page: var(--page-accent);
   --page-tint: var(--page-tint-base);
+  /* the colour of the cursor glow on cards: the page colour, soft inside the card and stronger on its edge */
+  --glow: color-mix(in srgb, var(--page) 11%, transparent);
+  --glow-strong: color-mix(in srgb, var(--page) 55%, transparent);
 }
 .dark,
 .dark .page-theme {
   --page: color-mix(in srgb, var(--page-accent) 52%, white);
   --page-tint: color-mix(in srgb, var(--page-accent) 22%, var(--background));
+  --glow: color-mix(in srgb, var(--page) 16%, transparent);
+  --glow-strong: color-mix(in srgb, var(--page) 75%, transparent);
 }
 
 @layer base {
@@ -251,6 +256,51 @@
     background: #1b1f27;
     transform: none;
     box-shadow: none;
+  }
+}
+
+/*
+ * Cursor glow on a card: a soft spotlight inside it and a lit edge near the pointer. <PointerGlow> writes the pointer position
+ * into --mx / --my. Only for a mouse (hover and a fine pointer), and off for prefers-reduced-motion. Uses both ::before and
+ * ::after, so an element with `glow` cannot use them for anything else. The layers do not take the mouse (pointer-events).
+ */
+@utility glow {
+  position: relative;
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    &::before {
+      background: radial-gradient(
+        230px circle at var(--mx, 50%) var(--my, 50%),
+        var(--glow),
+        transparent 65%
+      );
+    }
+    &::after {
+      padding: 1.5px;
+      background: radial-gradient(
+        170px circle at var(--mx, 50%) var(--my, 50%),
+        var(--glow-strong),
+        transparent 70%
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+    &:hover::before,
+    &:hover::after {
+      opacity: 1;
+    }
   }
 }
 

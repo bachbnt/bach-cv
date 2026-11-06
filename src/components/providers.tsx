@@ -16,6 +16,7 @@ import {
 import { useState, type ReactNode } from 'react';
 import { ChatProvider } from '@/components/chat/chat-provider';
 import { MaintenanceGate } from '@/components/maintenance-gate';
+import { PointerGlow } from '@/components/pointer-glow';
 import { RevealOnScroll } from '@/components/reveal-on-scroll';
 import { LanguageProvider } from '@/lib/i18n/language';
 import { ThemeProvider } from '@/lib/theme/theme';
@@ -74,6 +75,7 @@ export function Providers({ children }: { children: ReactNode }) {
             <ChatProvider>
               <MaintenanceGate>
                 <RevealOnScroll />
+                <PointerGlow />
                 {children}
                 <ChatWidget />
               </MaintenanceGate>

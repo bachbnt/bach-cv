@@ -29,6 +29,8 @@ same data.
 - **Light and dark.** A Theme menu in the header (System, Light, Dark; also in the phone menu) remembers the choice and follows the
   operating system until one is chosen. A small script in `<head>` sets the theme before the first paint, so there is no flash. Colours are
   tokens in `src/app/globals.css` (`:root` and `.dark`); the CV sheets stay white paper in both.
+- **Cursor glow.** Cards light up where the mouse is: a soft spotlight inside and a lit edge, in the colour of the page (class `glow`,
+  `<PointerGlow>`). Only for a mouse, and off for "reduce motion".
 - **Accessible.** A visible focus ring on every control (a browser test tabs through the pages and dialogs), 44 px touch targets on
   phones, one set of buttons (filled, outline, link) and one image dialog for screenshots, certificates and QR codes.
 - **CV dialog and PDF.** A preview of the CV as A4 sheets and a PDF download, both built from the visitor's language.

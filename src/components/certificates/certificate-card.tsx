@@ -43,7 +43,7 @@ export function CertificateCard({
     <article
       data-testid='certificate'
       className={cn(
-        'border bg-card',
+        'glow border bg-card',
         featured
           ? 'grid items-center gap-6 rounded-3xl p-6 min-[901px]:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] min-[901px]:gap-10'
           : 'flex flex-col gap-5 rounded-2xl px-4 pt-4 pb-6',

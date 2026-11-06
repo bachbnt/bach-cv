@@ -63,7 +63,7 @@ export function ExperienceRow({
         {keyProjects.map((project) => (
           <div
             key={project.name}
-            className='mt-5 rounded-xl border bg-card px-[18px] py-4'
+            className='glow mt-5 rounded-xl border bg-card px-[18px] py-4'
           >
             <span className='mb-2 inline-flex items-center rounded-full bg-page-tint px-2.5 py-[3px] text-[13px] font-semibold whitespace-nowrap text-page'>
               {copy.keyProject}

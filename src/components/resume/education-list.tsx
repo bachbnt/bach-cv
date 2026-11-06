@@ -54,7 +54,7 @@ function EducationCards({ degrees }: { degrees: Doc<'education'>[] }) {
       {degrees.map((degree) => (
         <article
           key={degree.id}
-          className='flex flex-col overflow-hidden rounded-2xl border bg-card'
+          className='glow flex flex-col overflow-hidden rounded-2xl border bg-card'
         >
           {degree.logo && (
             <div className='relative h-[220px] w-full bg-border'>

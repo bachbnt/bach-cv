@@ -26,7 +26,7 @@ export function ProjectCard({
   const copy = useCopy(projectsCopy);
   const tags = skillsOf(project.technologies, skills);
   return (
-    <article className='flex flex-col gap-2.5 rounded-2xl border bg-card px-4 pt-4 pb-7 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(27,31,39,.1)]'>
+    <article className='glow flex flex-col gap-2.5 rounded-2xl border bg-card px-4 pt-4 pb-7 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(27,31,39,.1)]'>
       <div className='relative'>
         <ProjectCover
           project={project}
