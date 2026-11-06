@@ -5,7 +5,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, ViewTransition, type ReactNode } from 'react';
 import { ChatWidget } from '@/components/chat/chat-widget';
 import { MaintenanceGate } from '@/components/maintenance-gate';
 import { useMaintenance } from '@/components/use-maintenance';
@@ -86,7 +86,15 @@ export function SkinFrame({ children }: { children: ReactNode }) {
     return (
       <>
         <MaintenanceGate>
-          {children}
+          {/* a page change: the page fades out and the next one rises in, the header (named in <SitePage>) stays; the key is what makes it a change */}
+          <ViewTransition
+            key={pathname}
+            enter='page-in'
+            exit='page-out'
+            default='none'
+          >
+            <div className='flex flex-1 flex-col'>{children}</div>
+          </ViewTransition>
           {skin === DEFAULT_SKIN && <ChatWidget />}
         </MaintenanceGate>
         {note}

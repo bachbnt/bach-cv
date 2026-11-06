@@ -6,7 +6,7 @@
 
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { LoadingBlock } from '@/components/skeletons';
+import { LoadingBlock } from '@/components/loading-block';
 import { StateNotice } from '@/components/state-notice';
 import { Button, buttonVariants } from '@/components/ui/button';
 import {

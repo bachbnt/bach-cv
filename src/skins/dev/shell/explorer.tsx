@@ -67,10 +67,13 @@ export function Explorer({
   return (
     <aside
       className={cn(
-        'sticky top-(--top) z-19 h-[calc(100vh-var(--top)-var(--bottom))] w-[332px] flex-none overflow-auto bg-chrome font-sans text-[13px] leading-[normal] transition-[width,opacity] duration-200 [view-transition-name:explorer]',
-        !ui.explorer && 'pointer-events-none w-0 opacity-0',
+        'sticky top-(--top) z-19 h-[calc(100vh-var(--top)-var(--bottom))] w-[332px] flex-none overflow-auto bg-chrome font-sans text-[13px] leading-[normal] transition-[width,opacity,visibility] duration-200 [view-transition-name:explorer]',
+        // shut: also `invisible`, so its links are out of the tab order (a visitor on the keyboard never lands on what cannot be seen)
+        !ui.explorer && 'pointer-events-none invisible w-0 opacity-0',
+        // Zen mode (not on a phone, where the Explorer is a drawer)
+        'min-[901px]:group-data-[zen]/dv:hidden',
         // a phone: a drawer that slides in from the left, over the page and its scrim
-        'max-[900px]:fixed max-[900px]:bottom-0 max-[900px]:left-0 max-[900px]:z-97 max-[900px]:h-auto max-[900px]:w-[min(84vw,340px)] max-[900px]:pointer-events-auto max-[900px]:border-r max-[900px]:border-line-2 max-[900px]:pb-5 max-[900px]:opacity-100 max-[900px]:shadow-[18px_0_50px_rgba(0,0,0,0.45)] max-[900px]:transition-transform max-[900px]:duration-300 max-[900px]:ease-[cubic-bezier(0.2,0.8,0.2,1)] max-[900px]:[transform:translateX(-104%)] max-[900px]:[view-transition-name:none] max-[900px]:group-data-[nav-open]/dv:[transform:none]',
+        'max-[900px]:fixed max-[900px]:bottom-0 max-[900px]:left-0 max-[900px]:z-97 max-[900px]:h-auto max-[900px]:w-[min(84vw,340px)] max-[900px]:pointer-events-auto max-[900px]:invisible max-[900px]:group-data-[nav-open]/dv:visible max-[900px]:border-r max-[900px]:border-line-2 max-[900px]:pb-5 max-[900px]:opacity-100 max-[900px]:shadow-[18px_0_50px_rgba(0,0,0,0.45)] max-[900px]:transition-[transform,visibility] max-[900px]:duration-300 max-[900px]:ease-[cubic-bezier(0.2,0.8,0.2,1)] max-[900px]:[transform:translateX(-104%)] max-[900px]:[view-transition-name:none] max-[900px]:group-data-[nav-open]/dv:[transform:none]',
       )}
       id='dv-explorer'
       aria-label={copy.explorer}

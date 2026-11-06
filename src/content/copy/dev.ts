@@ -51,6 +51,13 @@ export const devCopy = defineCopy(
       minimize: 'Fold',
       maximize: 'Maximize',
       restore: 'Restore size',
+      /** the lights of the editor window itself */
+      leave: 'Close the editor and return to the standard look',
+      zen: 'Zen mode',
+      exitZen: 'Leave Zen mode',
+      fullscreen: 'Full screen',
+      exitFullscreen: 'Exit full screen',
+      zenHint: 'Zen mode. Press Esc to leave.',
     },
   },
   {
@@ -95,6 +102,12 @@ export const devCopy = defineCopy(
       minimize: 'Thu gọn',
       maximize: 'Phóng to',
       restore: 'Khôi phục kích thước',
+      leave: 'Đóng trình soạn thảo và quay về giao diện thường',
+      zen: 'Chế độ Zen',
+      exitZen: 'Thoát chế độ Zen',
+      fullscreen: 'Toàn màn hình',
+      exitFullscreen: 'Thoát toàn màn hình',
+      zenHint: 'Chế độ Zen. Nhấn Esc để thoát.',
     },
   },
 );

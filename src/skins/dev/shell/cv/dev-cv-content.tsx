@@ -47,9 +47,12 @@ export function DevCvContent({
   const title = cv ? `${cv.name} ${copy.titleSuffix}` : copy.fallbackTitle;
 
   const scrollToTop = () =>
-    body.current
-      ?.querySelector('[role="region"]')
-      ?.scrollTo({ top: 0, behavior: 'smooth' });
+    body.current?.querySelector('[role="region"]')?.scrollTo({
+      top: 0,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+    });
 
   return (
     <DevWindow

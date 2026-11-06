@@ -20,7 +20,7 @@ export function HomeBuild() {
         >
           {copy.title}
         </h2>
-        <p className='mt-4 max-w-[620px] text-[19px] leading-[1.55] text-[#b4bac6]'>
+        <p className='mt-4 max-w-[620px] text-[19px] leading-[1.55] text-night-foreground'>
           {copy.intro}
         </p>
         <div className='mt-14 grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-x-14'>
@@ -37,7 +37,7 @@ export function HomeBuild() {
                 />
                 {item.title}
               </h3>
-              <p className='mt-2.5 text-base leading-[1.6] text-[#b4bac6]'>
+              <p className='mt-2.5 text-base leading-[1.6] text-night-foreground'>
                 {item.body}
               </p>
             </div>

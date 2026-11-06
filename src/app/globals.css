@@ -58,6 +58,11 @@
   --brand-ink: #b3301f;
   /* a status that is live right now (the dot of the Current job) */
   --live: #4ade80;
+  /* on the dark panels (the contact band): the coral of a link and its hover, the same in both themes */
+  --on-night-accent: #f28b7a;
+  --on-night-accent-hover: #f5a99b;
+  /* the tile that stands in for a company logo that is not there */
+  --tile: #1e5bd8;
   /* set per page by <SitePage> and <PageThemeVars> (the light colours); --page and --page-tint are derived below */
   --page-accent: #b3301f;
   --page-tint-base: #e7e9ee;
@@ -183,22 +188,19 @@ html[data-skin]:not([data-skin-ready]) body {
 }
 @keyframes bar-in {
   from {
-    width: 0;
-  }
-  to {
-    width: 64px;
+    transform: scaleX(0);
   }
 }
 @keyframes step-on {
   0%,
   24% {
-    background: #b3301f;
+    background: var(--brand);
     transform: scale(1.18);
-    box-shadow: 0 0 0 6px rgba(179, 48, 31, 0.2);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand) 20%, transparent);
   }
   32%,
   100% {
-    background: #1b1f27;
+    background: var(--night);
     transform: none;
     box-shadow: none;
   }
@@ -306,19 +308,20 @@ html[data-skin]:not([data-skin-ready]) body {
   @media (prefers-reduced-motion: no-preference) {
     opacity: 0;
     transform: translateY(20px);
-    animation: rise 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-    animation-delay: calc(var(--i, 0) * 100ms + 120ms);
+    /* the hero is the largest thing on the first screen: it must not wait (the delay used to be 120ms plus the position) */
+    animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    animation-delay: calc(var(--i, 0) * 80ms);
   }
 }
 @utility photo-in {
   @media (prefers-reduced-motion: no-preference) {
-    animation: photo-in 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    animation-delay: 0.2s;
+    animation: photo-in 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   }
 }
 @utility bar-in {
   @media (prefers-reduced-motion: no-preference) {
-    animation: bar-in 0.8s 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    transform-origin: 0 50%;
+    animation: bar-in 0.8s 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   }
 }
 /* the pipeline step numbers light up in turn (--n is the step) */
@@ -358,6 +361,88 @@ html[data-skin]:not([data-skin-ready]) body {
   :where(html:not([data-skin])) [data-reveal].in [data-part] {
     opacity: 1;
     translate: 0 0;
+  }
+}
+
+/*
+ * Page change and list change: React's <ViewTransition> (played by the router and by startTransition) names what moves.
+ * The header keeps its place (its tint blends), the rest of the page fades out and the new one fades in. A filter swaps its list the
+ * same way, a little faster. The overlay lets the pointer through, and "reduce motion" turns all of it off.
+ */
+/* the overlay of a transition lets the pointer through (a click is never lost to it) */
+::view-transition {
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(site-header) {
+    animation-duration: 0.3s;
+  }
+  ::view-transition-old(.page-out),
+  ::view-transition-old(.list-out) {
+    animation: vt-out 0.15s ease-in both;
+  }
+  ::view-transition-new(.page-in) {
+    animation: vt-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+  }
+  ::view-transition-new(.list-in) {
+    animation: vt-in 0.28s cubic-bezier(0.2, 0.7, 0.2, 1) 0.08s both;
+  }
+}
+/* reduced motion: React still starts the transitions, so the browser's own crossfades are cut here (and in the Dev skin) */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+  /* the open/close animations of dialogs, sheets, popovers and tooltips (tw-animate-css has no reduced-motion rule of its own) */
+  [data-open],
+  [data-closed],
+  [data-starting-style],
+  [data-ending-style] {
+    animation: none !important;
+    transition-duration: 0s !important;
+  }
+}
+/* a fade, not a rise: the blocks of a page rise by themselves when they are revealed, and the two would stack */
+@keyframes vt-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* a line along the top edge that grows with the scroll; a scroll-driven animation, so no script. Hidden where it is not supported. */
+.scroll-progress {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 40;
+      height: 3px;
+      background: var(--page);
+      transform-origin: 0 50%;
+      pointer-events: none;
+      animation: scroll-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+@keyframes scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 
@@ -415,7 +500,15 @@ html[data-skin]:not([data-skin-ready]) body {
   .bb-glyph {
     transition:
       transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+      rotate 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
       opacity 0.25s ease;
+  }
+  /* not opened after a while: the button hops once and sends out its ring twice (data-nudge, set by <ChatWidget>) */
+  .bb-fab[data-nudge] {
+    animation: bb-hop 0.7s cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+  .bb-fab[data-nudge] .bb-ring {
+    animation: bb-ring 1.6s ease-out 2;
   }
   .bb-panel {
     animation: bb-panel-in 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
@@ -465,6 +558,17 @@ html[data-skin]:not([data-skin-ready]) body {
   from {
     opacity: 0;
     transform: scale(0.4) translateY(16px);
+  }
+}
+@keyframes bb-hop {
+  30% {
+    transform: translateY(-12px);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  80% {
+    transform: translateY(-4px);
   }
 }
 @keyframes bb-ring {

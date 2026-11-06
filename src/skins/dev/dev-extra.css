@@ -49,9 +49,16 @@ html[data-skin='dev'] {
     transform: translateX(100%);
   }
 }
-@keyframes dv-tabline {
+/* the bottom panel rises when it opens; the count of the status bar nudges when a problem is added */
+@keyframes dv-panelin {
   from {
-    transform: scaleX(0);
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+@keyframes dv-bump {
+  35% {
+    scale: 1.35;
   }
 }
 
@@ -77,7 +84,8 @@ html[data-skin='dev'] {
 @media (prefers-reduced-motion: reduce) {
   .dv-root *,
   .dv-root *::before,
-  .dv-root *::after {
+  .dv-root *::after,
+  .dv-root *::details-content {
     animation: none !important;
     transition: none !important;
   }

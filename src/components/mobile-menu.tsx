@@ -95,7 +95,7 @@ export function MobileMenu({
             </SheetTitle>
           </Link>
 
-          <nav aria-label='Main' className='mt-4 flex flex-col'>
+          <nav aria-label={copy.mainNav} className='mt-4 flex flex-col'>
             {NAV_PAGES.map((page) => {
               const state = live.pages[page];
               if (state === 'hidden') return null;

@@ -24,7 +24,7 @@ export function MediaBadge({
     <span
       aria-hidden='true'
       className={cn(
-        'pointer-events-none absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full bg-night/85 px-3 py-1.5 text-[13px] font-semibold text-white shadow-[0_4px_12px_rgba(27,31,39,.25)] backdrop-blur-sm transition-colors group-hover/media:bg-night group-focus-visible/media:bg-night pointer-coarse:py-2',
+        'pointer-events-none absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full bg-night/85 px-3 py-1.5 text-[13px] font-semibold text-white shadow-[0_4px_12px_rgba(27,31,39,.25)] backdrop-blur-sm transition-[background-color,translate] duration-200 group-hover/media:-translate-y-0.5 group-hover/media:bg-night group-focus-visible/media:bg-night motion-reduce:transition-none pointer-coarse:py-2',
         className,
       )}
     >

@@ -13,7 +13,7 @@ export function Crumbs({ page }: { page: PageKey }) {
   const parts = [DEV_PROJECT, ...file.folder, file.name];
   return (
     <div
-      className='flex h-[22px] items-center gap-1.5 overflow-hidden bg-editor pr-3.5 pl-5 font-sans text-[12px] leading-[normal] whitespace-nowrap text-mute max-[900px]:hidden'
+      className='flex h-[22px] items-center gap-1.5 overflow-hidden bg-editor pr-3.5 pl-5 font-sans text-[12px] leading-[normal] whitespace-nowrap text-mute max-[900px]:hidden group-data-[zen]/dv:hidden'
       aria-hidden='true'
     >
       {parts.map((part, index) => (

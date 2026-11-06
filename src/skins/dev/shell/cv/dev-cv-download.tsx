@@ -46,7 +46,7 @@ export function DevCvDownload({
       <DevButton
         variant='solid'
         size='sm'
-        className='ml-[2px] disabled:cursor-default disabled:opacity-60 data-[busy]:[&_svg]:animate-[dv-spin_0.8s_linear_infinite]'
+        className='ml-[2px] disabled:cursor-default disabled:opacity-60 data-[busy]:[&_svg]:animate-spin'
         disabled={!cv}
         aria-busy={busy}
         data-busy={busy || undefined}

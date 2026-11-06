@@ -6,7 +6,7 @@
 
 import type { CSSProperties } from 'react';
 import { DataState } from '@/components/data-state';
-import { CardsSkeleton } from '@/components/skeletons';
+import { CardsSkeleton } from '@/components/cards-skeleton';
 import { SkillIcon } from '@/components/skills/skill-icon';
 import { SKILL_COLORS } from '@/components/skills/skill-icons';
 import { evidenceLine } from '@/components/skills/skill-text';

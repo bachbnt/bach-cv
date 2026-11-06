@@ -142,7 +142,7 @@ export function ContactForm({
           variant='brand'
           size='lg'
           disabled={sending}
-          className='min-w-[140px] transition-transform hover:enabled:-translate-y-0.5 disabled:opacity-70 max-[720px]:w-full'
+          className='min-w-[140px] motion-safe:hover:enabled:-translate-y-0.5 disabled:opacity-70 max-[720px]:w-full'
         >
           {sending ? (
             <>

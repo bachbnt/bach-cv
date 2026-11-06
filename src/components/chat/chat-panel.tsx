@@ -118,8 +118,16 @@ export function ChatPanel({
           <strong className='block font-heading text-base leading-tight font-bold tracking-[-0.01em]'>
             {botName}
           </strong>
-          <small className='block text-xs text-[#b4bac6]'>
-            {copy.roleLabel}
+          <small className='flex items-center gap-1.5 text-xs text-night-foreground'>
+            {available && (
+              // the assistant can be reached (the chat address is set): a breathing green dot and the word, like a chat app
+              <>
+                <span aria-hidden='true' className='current-dot' />
+                <span className='font-semibold text-white'>{copy.online}</span>
+                <span aria-hidden='true'>·</span>
+              </>
+            )}
+            <span>{copy.roleLabel}</span>
           </small>
         </div>
         <Button

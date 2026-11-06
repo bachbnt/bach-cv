@@ -8,6 +8,10 @@ html[data-skin='dev'] {
   --chrome: #161b22;
   --chrome-2: #010409;
   --act: #010409;
+  /* the icons of the activity bar and its badge (the colours of VS Code), and the dark screen of the service drawings */
+  --act-ink: #858585;
+  --act-badge: #007acc;
+  --art: #0b0f14;
   --line: #21262d;
   --line-2: #30363d;
   --fg: #c9d1d9;
@@ -37,6 +41,9 @@ html[data-skin='dev']:not(.dark) {
   --chrome: #f6f8fa;
   --chrome-2: #eaeef2;
   --act: #24292f;
+  --act-ink: #858585;
+  --act-badge: #007acc;
+  --art: #0b0f14;
   --line: #d8dee4;
   --line-2: #d0d7de;
   --fg: #1f2328;
@@ -71,17 +78,22 @@ html[data-skin='dev']:not(.dark) {
 .dv-root button:where(:not([data-slot^='dev-'])) {
   font: inherit;
 }
-.dv-js [data-reveal] {
+/* A block waits hidden and, once it is in view (data-in), rises with an animation. It is an animation, not a transition, on purpose:
+   unlayered CSS beats utilities, so a `transition` list here would replace the hover transitions of every card that is revealed, and
+   a fill that kept `translate: 0 0` would beat their lift. `backwards` keeps the first keyframe during the delay only. */
+.dv-js [data-reveal]:not([data-in]) {
   opacity: 0;
   translate: 0 14px;
-  transition:
-    opacity 0.55s ease,
-    translate 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
-  transition-delay: calc(var(--i, 0) * 55ms);
 }
 .dv-js [data-reveal][data-in] {
-  opacity: 1;
-  translate: 0 0;
+  animation: dv-reveal 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+@keyframes dv-reveal {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
 }
 
 /* file-type icons */
@@ -187,11 +199,6 @@ html[data-skin='dev']:not(.dark) {
     opacity: 0;
   }
 }
-@keyframes dv-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 @keyframes dv-fill {
   0% {
     transform: scaleX(0);
@@ -215,29 +222,18 @@ html[data-skin='dev']:not(.dark) {
   font-size: 14px;
 }
 
-/* ---- page change: the window stays, only the editor changes (cross-document view transitions, where the browser has them) */
-@view-transition {
-  navigation: auto;
-}
-.dv-root ::view-transition-group(root) {
-  animation-duration: 0.2s;
-}
-.dv-root ::view-transition-old(editor) {
-  animation: dv-vt-out 0.16s ease both;
-}
-.dv-root ::view-transition-new(editor) {
-  animation: dv-vt-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-@keyframes dv-vt-out {
-  to {
-    opacity: 0;
-    translate: 0 -6px;
+/* ---- page change: the window stays, the page of the editor fades out and the next rises in (React view transitions, started by the
+   router; the keyframes `vt-out` and `vt-in` are the ones of globals.css; the active tab line glides to its new tab because it is the one element named `dv-tabline`) */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-skin='dev']::view-transition-old(.dv-vt-out) {
+    animation: vt-out 0.15s ease-in both;
   }
-}
-@keyframes dv-vt-in {
-  from {
-    opacity: 0;
-    translate: 0 12px;
+  html[data-skin='dev']::view-transition-new(.dv-vt-in) {
+    animation: vt-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.08s both;
+  }
+  html[data-skin='dev']::view-transition-group(dv-tabline) {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 }
 

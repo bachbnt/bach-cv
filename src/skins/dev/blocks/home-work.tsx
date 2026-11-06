@@ -58,7 +58,7 @@ export function HomeWork() {
               className='grid grid-cols-[104px_210px_1fr_auto] items-center gap-5 border-b border-line px-5 py-3.5 last:border-b-0 hover:bg-hov max-[900px]:grid-cols-[90px_1fr]'
               data-reveal
             >
-              <div className='grid h-16 w-[104px] place-items-center overflow-hidden rounded-[6px] border border-line-2 bg-[#1e5bd8]'>
+              <div className='grid h-16 w-[104px] place-items-center overflow-hidden rounded-[6px] border border-line-2 bg-tile'>
                 {job.logo ? (
                   <Image
                     src={job.logo}

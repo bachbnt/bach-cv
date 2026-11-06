@@ -12,6 +12,7 @@ import { skillsOf } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
+import { cn } from 'cn';
 
 /** One project in the "All projects" grid. */
 export function ProjectCard({
@@ -27,12 +28,19 @@ export function ProjectCard({
   const tags = skillsOf(project.technologies, skills);
   return (
     <article className='glow lift flex flex-col gap-2.5 rounded-2xl border bg-card px-4 pt-4 pb-7'>
-      <div className='relative'>
-        <ProjectCover
-          project={project}
-          firstSkill={tags[0]}
-          className='h-[220px] rounded-xl'
-        />
+      <div className='group/cover relative'>
+        {/* the picture zooms a little under the mouse, inside its own frame (the focus ring of the button stays whole) */}
+        <div className='overflow-hidden rounded-xl'>
+          <ProjectCover
+            project={project}
+            firstSkill={tags[0]}
+            className={cn(
+              'h-[220px] rounded-xl',
+              project.images.length > 0 &&
+                'transition-transform duration-[600ms] ease-out motion-safe:group-hover/cover:scale-[1.05] motion-reduce:transition-none',
+            )}
+          />
+        </div>
         <ScreenshotsOverlay project={project} onOpen={onOpenScreenshots} />
       </div>
       <div className='mt-2 flex items-center gap-2'>

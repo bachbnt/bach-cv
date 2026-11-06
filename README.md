@@ -31,16 +31,22 @@ same data.
   tokens in `src/app/globals.css` (`:root` and `.dark`); the CV sheets stay white paper in both.
 - **Skins.** The header has a Skin menu next to Theme and Language. Standard is the site itself; Dev shows the same content as the window of
   a code editor (a file for every page, a git log for the career, a small working Terminal, an Output tab with a live log of the page).
+  Its three window lights work: red goes back to Standard, yellow is Zen mode, green is full screen.
   The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`) and the URL does not change. A skin is loaded only when it is chosen,
-  so Standard visitors download nothing extra. See `.ai/skins.md` and `src/skins/dev/README.md`.
+  so Standard visitors download none of its scripts (its styles share the one Tailwind build, about 15 KB gzip more). See `.ai/skins.md` and `src/skins/dev/README.md`.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
   lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). The tinted head of each page also lights up softly under the
   mouse (class `band-glow`). Only for a mouse, and off for "reduce motion".
 - **Experience.** On Resume a timeline runs down the roles (a line that draws itself, a dot for each, the current one breathing), the
   parts of a role arrive one after another, the responsibilities slide open line by line and the company logo zooms on hover. The
   "Current" pill has a live dot on Resume and Home. All of it is off for "reduce motion".
+- **Page and list motion.** A page change blends: the header stays put (only its tint changes) and the page fades out and the next
+  fades in (React view transitions). A filter on Projects or Payment swaps its list the same way. A thin line along the top grows with the scroll,
+  a project cover zooms a little under the mouse, the personal photos (Home, About) rise like a card and zoom slowly, the arrow of an outside link nudges, the specialty chips on About lean toward the mouse like a magnet, and the picture of a dialog fades in when it changes.
+  All of it is off for "reduce motion", and a browser without support just swaps.
 - **Accessible.** A visible focus ring on every control (a browser test tabs through the pages and dialogs), 44 px touch targets on
-  phones, one set of buttons (filled, outline, link) and one image dialog for screenshots, certificates and QR codes.
+  phones, one set of buttons (filled, outline, link) and one image dialog for screenshots, certificates and QR codes. The moving list of
+  skills has a pause button (also for the keyboard), and names read by a screen reader are in the visitor's language.
 - **CV dialog and PDF.** A preview of the CV as A4 sheets and a PDF download, both built from the visitor's language.
 
 ## Stack

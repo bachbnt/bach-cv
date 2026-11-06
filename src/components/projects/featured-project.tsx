@@ -12,6 +12,7 @@ import { ScreenshotsOverlay } from '@/components/projects/screenshots-overlay';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
+import { cn } from 'cn';
 
 /** A large card for a featured project: cover, kind, name, summary, technologies, screenshots and links. */
 export function FeaturedProject({
@@ -27,12 +28,19 @@ export function FeaturedProject({
   const tags = skillsOf(project.technologies, skills);
   return (
     <article className='glow lift grid items-center gap-5 rounded-3xl border bg-card p-5 min-[721px]:grid-cols-[minmax(0,320px)_minmax(0,1fr)] min-[721px]:gap-8'>
-      <div className='relative'>
-        <ProjectCover
-          project={project}
-          firstSkill={tags[0]}
-          className='h-[260px] rounded-xl'
-        />
+      <div className='group/cover relative'>
+        {/* the picture zooms a little under the mouse, inside its own frame (the focus ring of the button stays whole) */}
+        <div className='overflow-hidden rounded-xl'>
+          <ProjectCover
+            project={project}
+            firstSkill={tags[0]}
+            className={cn(
+              'h-[260px] rounded-xl',
+              project.images.length > 0 &&
+                'transition-transform duration-[600ms] ease-out motion-safe:group-hover/cover:scale-[1.05] motion-reduce:transition-none',
+            )}
+          />
+        </div>
         <ScreenshotsOverlay project={project} onOpen={onOpenScreenshots} />
       </div>
       <div className='flex min-w-0 flex-col gap-3'>

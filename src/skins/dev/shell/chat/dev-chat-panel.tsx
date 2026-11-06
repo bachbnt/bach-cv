@@ -152,9 +152,21 @@ export function DevChatPanel({
           />
         </span>
         <div className='flex min-w-0 items-baseline gap-2'>
-          <b className="block font-code text-[13.5px] leading-[normal] font-bold whitespace-nowrap text-head after:ml-2 after:inline-block after:size-[7px] after:animate-[dv-bbonline_2.4s_ease-in-out_infinite] after:rounded-full after:bg-signal after:align-[1px] after:content-['']">
+          <b
+            className={cn(
+              'block font-code text-[13.5px] leading-[normal] font-bold whitespace-nowrap text-head',
+              // the dot and the word only while the assistant can be reached (the chat address is set)
+              available &&
+                "after:ml-2 after:inline-block after:size-[7px] after:animate-[dv-bbonline_2.4s_ease-in-out_infinite] after:rounded-full after:bg-signal after:align-[1px] after:content-['']",
+            )}
+          >
             {botName}
           </b>
+          {available && (
+            <span className='font-code text-[12px] leading-[normal] text-signal'>
+              {copy.online}
+            </span>
+          )}
           <span className='truncate text-[12px] leading-[normal] text-mute'>
             {copy.roleLabel}
           </span>

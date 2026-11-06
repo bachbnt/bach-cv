@@ -34,7 +34,12 @@ export function ProjectLinkItem({
       )}
     >
       {linkLabel(link, copy.links)}
-      {external && <ExternalLink className='size-3.5' aria-hidden='true' />}
+      {external && (
+        <ExternalLink
+          className='size-3.5 transition-transform duration-200 motion-safe:group-hover/button:translate-x-0.5 motion-safe:group-hover/button:-translate-y-0.5 motion-reduce:transition-none'
+          aria-hidden='true'
+        />
+      )}
     </a>
   );
 }

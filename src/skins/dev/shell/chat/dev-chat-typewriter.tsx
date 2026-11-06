@@ -17,7 +17,7 @@ export function DevChatTypewriter({ text }: { text: string }) {
       <span
         key={i}
         data-word=''
-        className='animate-[dv-bbword_0.2s_ease-out_both] [animation-delay:min(calc(var(--w)*14ms),4s)]'
+        className='animate-[dv-lbfade_0.2s_ease-out_both] [animation-delay:min(calc(var(--w)*14ms),4s)]'
         style={{ '--w': i / 2 } as CSSProperties}
       >
         {part}

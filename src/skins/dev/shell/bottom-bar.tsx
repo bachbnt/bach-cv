@@ -4,6 +4,7 @@
 
 'use client';
 
+import { useIsFetching } from '@tanstack/react-query';
 import { useRef, useState } from 'react';
 import { devCopy } from '@/content/copy/dev';
 import { devOutputCopy } from '@/content/copy/dev-output';
@@ -19,6 +20,7 @@ import { clearEntries } from '@/skins/dev/shell/devlog/store';
 import { useDevLog } from '@/skins/dev/shell/devlog/use-devlog';
 import type { Caret } from '@/skins/dev/shell/editor-frame';
 import { DevTerminal } from '@/skins/dev/shell/terminal/dev-terminal';
+import { useBumps } from '@/skins/dev/shell/use-bumps';
 import type { DevTool, DevUi } from '@/skins/dev/shell/use-dev-ui';
 
 /** A tab of the panel (Problems, Output, Terminal): a grey caption, white with a green line under it when it is open. */
@@ -27,7 +29,7 @@ const PANEL_TAB =
 
 /** A button (or a plain item) of the status bar: white on the red bar, lighter when pointed at or on. */
 const STATUS_BUTTON =
-  'inline-flex h-full cursor-pointer items-center gap-[5px] bg-transparent px-[9px] text-white hover:bg-[rgba(255,255,255,0.14)] aria-pressed:bg-[rgba(255,255,255,0.2)]';
+  'inline-flex h-full cursor-pointer items-center gap-[5px] bg-transparent px-[9px] text-white hover:bg-[rgba(255,255,255,0.14)] aria-pressed:bg-[rgba(255,255,255,0.2)] focus-visible:-outline-offset-2!';
 const STATUS_ITEM =
   'inline-flex h-full cursor-pointer items-center gap-[5px] px-[9px]';
 
@@ -50,6 +52,9 @@ export function BottomBar({
   const output = useCopy(devOutputCopy);
   const errors = useDevLog((state) => state.errors);
   const warnings = useDevLog((state) => state.warnings);
+  // the sync icon turns while the page is reading data, and the problem count nudges when a problem is added
+  const fetching = useIsFetching() > 0;
+  const bumps = useBumps(errors + warnings);
   const file = DEV_FILES[page];
   const tools: { tool: DevTool; label: string }[] = [
     { tool: 'problems', label: copy.panel.problems },
@@ -66,10 +71,10 @@ export function BottomBar({
   };
 
   return (
-    <div className='fixed inset-x-0 bottom-0 z-70 [view-transition-name:bottom]'>
+    <div className='fixed inset-x-0 bottom-0 z-70 [view-transition-name:bottom] min-[901px]:group-data-[zen]/dv:hidden'>
       <div
         data-slot='dev-panel'
-        className='flex h-[220px] flex-col border-t border-line-2 bg-editor'
+        className='flex h-[220px] flex-col border-t border-line-2 bg-editor not-[[hidden]]:animate-[dv-panelin_0.2s_ease-out_both]'
         hidden={!ui.panel}
       >
         <div className='flex h-8 flex-none items-center gap-[18px] px-3.5 font-sans text-[11px] leading-[normal] tracking-[0.04em]'>
@@ -142,8 +147,12 @@ export function BottomBar({
           className={STATUS_BUTTON}
           tabIndex={-1}
           aria-hidden='true'
+          data-fetching={fetching || undefined}
         >
-          <DevIcon name='sync' className='size-3.5' />
+          <DevIcon
+            name='sync'
+            className={cn('size-3.5', fetching && 'animate-spin')}
+          />
           0↓ {GIT_PENDING}↑
         </button>
         <button
@@ -153,10 +162,18 @@ export function BottomBar({
           aria-label={fill(output.status, { errors, warnings })}
           onClick={() => toggle('problems')}
         >
-          <DevIcon name='error' className='size-3.5' />
-          {errors} &nbsp;
-          <DevIcon name='warning' className='size-3.5' />
-          {warnings}
+          <span
+            key={bumps}
+            className={cn(
+              'inline-flex items-center gap-[5px]',
+              bumps > 0 && 'animate-[dv-bump_0.45s_ease-out]',
+            )}
+          >
+            <DevIcon name='error' className='size-3.5' />
+            {errors} &nbsp;
+            <DevIcon name='warning' className='size-3.5' />
+            {warnings}
+          </span>
         </button>
         <button
           type='button'

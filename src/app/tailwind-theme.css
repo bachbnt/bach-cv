@@ -58,6 +58,9 @@
   --color-page-tint: var(--page-tint);
   --color-night: var(--night);
   --color-night-foreground: var(--night-foreground);
+  --color-on-night-accent: var(--on-night-accent);
+  --color-on-night-accent-hover: var(--on-night-accent-hover);
+  --color-tile: var(--tile);
   --color-body: var(--body);
   --color-danger: var(--danger);
   --color-danger-bg: var(--danger-bg);
@@ -78,6 +81,9 @@
   --color-chrome: var(--chrome);
   --color-chrome-2: var(--chrome-2);
   --color-activity: var(--act);
+  --color-act-ink: var(--act-ink);
+  --color-act-badge: var(--act-badge);
+  --color-art: var(--art);
   --color-line: var(--line);
   --color-line-2: var(--line-2);
   --color-ink: var(--fg);

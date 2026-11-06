@@ -20,7 +20,7 @@ export function ChatTyping({ botName }: { botName: string }) {
         {[0, 1, 2].map((i) => (
           <i
             key={i}
-            className={`bb-dot block size-[7px] rounded-full bg-[#8a92a0]`}
+            className={`bb-dot block size-[7px] rounded-full bg-muted-foreground`}
           />
         ))}
       </span>

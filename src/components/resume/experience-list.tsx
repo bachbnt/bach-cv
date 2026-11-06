@@ -6,7 +6,7 @@
 
 import { DataState } from '@/components/data-state';
 import { ExperienceRow } from '@/components/resume/experience-row';
-import { RowsSkeleton } from '@/components/skeletons';
+import { RowsSkeleton } from '@/components/rows-skeleton';
 import { useSkills } from '@/components/skills/use-skills';
 import { useContentQuery } from '@/lib/query/use-content';
 

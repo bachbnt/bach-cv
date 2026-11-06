@@ -8,6 +8,8 @@ import type { ReactNode } from 'react';
 import { shell } from '@/lib/content/shell';
 import { useContentQuery } from '@/lib/query/use-content';
 import { CodeWindow } from '@/skins/dev/blocks/code-window';
+import { shortDegree } from '@/skins/dev/blocks/short-degree';
+import { yearsSince } from '@/skins/dev/blocks/years-since';
 import { FileIcon } from '@/skins/dev/icons/file-icon';
 
 /** The areas of the stack, as the Resume groups its skills; the names are words of the trade, the same in both languages. */
@@ -18,9 +20,22 @@ const STACK = [
 ] as const;
 
 const str = (value: string) => <span className='dv-str'>{`"${value}"`}</span>;
-const attr = (name: string, value: ReactNode) => (
+const num = (value: number) => (
+  <>
+    {'{'}
+    <span className='dv-num'>{value}</span>
+    {'}'}
+  </>
+);
+const attr = (name: string, value: ReactNode, note?: string) => (
   <>
     <span className='dv-at'>{name}</span>={value}
+    {note && (
+      <>
+        {' '}
+        <span className='dv-cmt'>{`// ${note}`}</span>
+      </>
+    )}
   </>
 );
 
@@ -28,8 +43,17 @@ const attr = (name: string, value: ReactNode) => (
 export function HomeProfileWindow() {
   const { data: experience = [] } = useContentQuery('experience');
   const { data: skills = [] } = useContentQuery('skills');
-  const job = experience.find((j) => !j.endMonth) ?? experience[0];
-  const since = experience.map((j) => j.startMonth.slice(0, 4)).sort()[0];
+  const { data: education = [] } = useContentQuery('education');
+  const current = experience.find((j) => !j.endMonth);
+  const job = current ?? experience[0];
+  // the first role on the site to now (the roles the owner keeps hidden do not count)
+  const first = experience.map((j) => j.startMonth).sort()[0];
+  // `now` only has to be right to the year
+  const years = first ? yearsSince(first, new Date()) : 0;
+  // the latest degree (the same one the photo card shows)
+  const degree = [...education].sort((a, b) =>
+    b.startMonth.localeCompare(a.startMonth),
+  )[0];
   const stack = STACK.filter(([category]) =>
     skills.some((s) => s.listed && s.category === category),
   ).map(([, name]) => name);
@@ -38,15 +62,9 @@ export function HomeProfileWindow() {
     attr('name', str(shell.name)),
     job && attr('role', str(job.role)),
     job && attr('company', str(job.company)),
-    since &&
-      attr(
-        'since',
-        <>
-          {'{'}
-          <span className='dv-num'>{since}</span>
-          {'}'}
-        </>,
-      ),
+    // since when I have been in the current role (a past role has no "since")
+    current && attr('since', num(Number(current.startMonth.slice(0, 4)))),
+    years > 0 && attr('experience', num(years), 'years of experience'),
     stack.length > 0 &&
       attr(
         'stack',
@@ -61,6 +79,7 @@ export function HomeProfileWindow() {
           {']}'}
         </>,
       ),
+    degree && attr('degree', str(shortDegree(degree.degree))),
   ].filter(Boolean);
 
   const lines: ReactNode[] = [

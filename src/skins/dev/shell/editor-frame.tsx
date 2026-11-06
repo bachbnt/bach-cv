@@ -94,7 +94,7 @@ export function EditorFrame({
 
   return (
     <div
-      className='relative min-w-0 flex-1 pr-[112px] pb-10 pl-[74px] [view-transition-name:editor] max-[900px]:px-[18px] max-[900px]:pb-[30px] max-[1180px]:pr-7'
+      className='relative min-w-0 flex-1 pr-[112px] pb-10 pl-[74px] max-[900px]:px-[18px] max-[900px]:pb-[30px] max-[1180px]:pr-7'
       ref={editor}
       onPointerMove={onMove}
       onPointerLeave={() => setHover(null)}

@@ -297,6 +297,25 @@ ${table(
     ['Stays light', 'the CV sheets (preview and skeleton) carry <code>theme-light</code>, which restores the light tokens inside them. The PDF is not themed. QR codes and screenshots keep their white background.'],
     ['Checks', 'a unit test measures the contrast of every token pair and every page colour in both themes; a browser test fails on text that is hard to read on its background in dark mode, and checks the menu, the saved choice, the system setting and the CV sheet.'],
   ],
+)}
+<h3>5.5 Skins</h3>
+<p>A <b>skin</b> is another look for the same content. The visitor picks <b>Standard</b> or <b>Dev</b> (the site as the window of a code editor) in the header; the choice is kept in <code>localStorage</code> (<code>bach-cv-skin</code>, or <code>?skin=dev</code>) and the URL does not change. The static HTML is always Standard.</p>
+${table(
+  ['Part', 'How it works'],
+  [
+    ['Before the first paint', 'a small inline script in <code>&lt;head&gt;</code> puts the saved choice on <code>&lt;html data-skin&gt;</code>; the body stays hidden until <code>data-skin-ready</code>. Standard visitors get no attribute and no delay. If the skin has not become ready after 8 seconds, the script removes the attribute and Standard shows (no blank page when a chunk fails to load).'],
+    ['Loading', '<code>SkinFrame</code> shows Standard (<code>children</code>) or loads the skin with <code>import()</code> from the registry. A skin is a <code>SkinDefinition</code>: <code>Frame</code>, one component per page, <code>NotFound</code>, <code>Maintenance</code>; a missing page does not compile. Its code is downloaded only when chosen.'],
+    ['Same content', 'a skin reads the same hooks (<code>lib/query</code>, <code>use-live</code>) and the same interface copy as Standard, so data states, errors, switches, keyboard and both languages behave the same. Layers do not change: a skin sits beside <code>components</code> and never imports Firebase.'],
+    ['Styling', 'one Tailwind build for every skin (<code>globals.css</code> scans <code>src/skins</code>); the Dev palette is theme colours whose values sit on <code>html[data-skin=\'dev\']</code>, dark and light, and the shadcn tokens are mapped to it so dialogs follow the skin. CSS files hold only keyframes, view transitions and token colours.'],
+    ['Dev only: Terminal', 'a small working shell in the bottom panel (<code>help</code>, <code>ls</code>, <code>cd</code>, <code>cv</code>, <code>connect</code>, <code>ask</code>, <code>clear</code>, <code>exit</code>) that drives what Standard already has: navigation, the CV window, the Connect menu and BB Bot. It honours the <code>site/live</code> switches (a hidden page does not exist, a soon page says so).'],
+    ['Dev only: Output and Problems', 'a log of the current page load in the format of logcat, built only from typed events and allow-lists (route, collection names, counts, durations, language, theme, skin, which window opened). It never holds document contents, emails, URLs, messages or raw error text, lives in memory, is never sent and never printed to the console. Problems lists the failed queries and runtime errors.'],
+    ['Dev only: Connect', 'the account menu is a command palette at the bottom left (a bottom sheet on a phone): type to filter, arrow keys, Enter; same links, email with Copy, and location as Standard.'],
+    ['Dev only: window lights', 'the three lights of the title bar work: red closes the editor (back to the Standard look, the same as the Skin menu), yellow is Zen mode (the chrome around the page is hidden with CSS, so nothing is unmounted and the terminal keeps its scrollback; Esc or the light leaves it, an open window takes Esc first), green is the full screen of the page (the Fullscreen API; grey where the browser cannot do it). A phone has no lights.'],
+    ['Dev only: motion', 'a page change is a view transition (<code>&lt;ViewTransition key={page}&gt;</code> in the shell): the window stays, the page fades out and the next fades in, and the green line of the open tab glides to its new tab (the one element named <code>dv-tabline</code>). The sync icon of the status bar turns while TanStack Query is fetching, the problem count nudges when it goes up, and the bottom panel rises when it opens. The photos of About zoom slowly and their frame takes the accent colour. All off for reduced motion.'],
+    ['Browser storage', '<code>bach-cv-skin</code> for the choice and <code>bach-cv-dev-ui</code> for the chrome of the Dev skin (Explorer, folders, panel: booleans and paths, no personal data).'],
+    ['CSP', 'the policy of <code>firebase.json</code> applies to every skin. The Dev picture viewer asks the image host for the size and for Download; both are refused on the live policy and the viewer degrades on purpose (no size, Download opens the picture in a new tab).'],
+    ['Checks', 'unit tests for the skin ids, the CSS rules, the terminal and the log (hostile values fed to every event); a Playwright spec per area runs the same visible checks in the Dev skin (shell, home and about, resume and certificates, projects and payment, services, overlays, terminal, output, hover, motion) and one switches skins.'],
+  ],
 )}`,
   },
   {
@@ -314,10 +333,12 @@ ${table(
     [c('DataState, StateNotice, skeletons'), 'loading, empty and failed states of every data block (see 5.3)'],
     [c('Lightbox'), 'the one image dialog: screenshots, certificates and QR codes; previous/next with the counter between them, keyboard, bottom sheet on phones'],
     [c('PointerGlow, glow, lift'), 'the hover on cards: <code>lift</code> raises the card 3px with a bigger shadow (animated; the same on every card); the head of each page lights up softly under the mouse too (<code>band-glow</code>, on the header block and the title block together); the cursor glow: <code>glow</code> is a CSS utility (a soft spotlight and a lit edge, in the page colour); <code>PointerGlow</code> is one mouse listener that writes the pointer position into the card under it. Only with a mouse (hover and a fine pointer), and off for reduced motion'],
+    [c('ViewTransition, ScrollProgress, useMagnet'), 'motion that is more than a hover. <code>SitePage</code> names the header (<code>site-header</code>, so it stays in place and only its tint blends) and <code>SkinFrame</code> wraps the page in a <code>&lt;ViewTransition key={pathname}&gt;</code>: on a route change the old page fades out and the new one fades in (<code>page-out</code>, <code>page-in</code>). A filter on Projects and Payment wraps its list with <code>key={filter}</code> and sets the filter inside <code>startTransition</code>, which swaps the list the same way (<code>list-out</code>, <code>list-in</code>). <code>ScrollProgress</code> is a 3px line in the page colour driven by a CSS scroll timeline (no script). A project cover zooms 1.05 under the mouse inside its own frame; the personal photos (Home, About) rise like a card (<code>lift</code>) and zoom 1.05 slowly (600 ms; small pictures 1.03); the arrow of an outside link nudges, the lightbox picture fades in when it changes; the specialty chips on About lean up to 11px toward the mouse when it comes within 120px of their edge (<code>useMagnet</code>, one pointer listener, written as CSS variables that the chips turn into <code>translate</code> and <code>scale</code>) and let go when it leaves. The BB Bot button lifts on hover, shows a small breathing green dot while the chat can be reached, and hops and sends its ring twice once, after 20 seconds, if the chat was never opened; the header of its panel says Online next to a breathing dot while the chat can be reached (both skins). All of it is off for reduced motion (view transitions still start, so their animations are given a duration of 0, and the open/close animations of dialogs are removed); a browser without the View Transitions API or scroll timelines just swaps or shows nothing.'],
     [c('Responsibilities'), 'the responsibilities of a role: a button and a list that slides open (<code>grid-template-rows</code> from 0fr to 1fr), lines arriving one after another; <code>inert</code> while shut, so it cannot be reached by keyboard'],
     [c('CurrentBadge'), 'the Current pill with a live dot that breathes (Resume and Home)'],
     [c('MediaBadge'), 'the always-visible corner badge ("7 screenshots", "Enlarge") on a picture that opens the dialog'],
     [c('DocumentTitle'), 'the tab title in the visitor\'s language'],
+    [c('SkinProvider, SkinFrame, SkinSwitch'), 'the choice of skin (see 5.5): the frame shows Standard or loads the chosen skin; a menu next to Theme and Language is built from the list of skin ids'],
     [c('ThemeProvider, ThemeSwitch'), 'light, dark or follow the system (see 5.4); the header dropdown and a group of three buttons in the phone menu'],
     [c('RevealOnScroll'), 'fades sections in; off for reduced motion; also picks up content that arrives after mount'],
     [c('useContentQuery'), 'one collection, sorted (dates newest first, otherwise <code>sort</code>, featured first when asked), translated'],
@@ -412,6 +433,8 @@ npm run test:automation          # PW_CHANNEL=chrome uses an installed Chrome`)}
 <li>The email is a nudge after the save, never part of it.</li>
 <li>One data-state component and one action vocabulary, so pages cannot drift apart.</li>
 <li>The theme is a class on the root and tokens, not a second stylesheet: a new colour has two values in one place.</li>
+<li>A skin changes presentation, never content or features; the Terminal, Output and Problems tabs of the Dev skin only drive or report what Standard already has.</li>
+<li>One Tailwind build for all skins: a second stylesheet loaded later reorders utilities of the same name and breaks the Standard header.</li>
 </ul></div>
 <div class="card"><h3>Known limits</h3><ul>
 <li>The static HTML (search results, link previews) carries English titles and descriptions; only the tab title follows the language.</li>
@@ -423,6 +446,8 @@ npm run test:automation          # PW_CHANNEL=chrome uses an installed Chrome`)}
 <li>Email reaches only the Resend account's own address until a domain is verified.</li>
 <li>App Check is not enforced (see Security). Messages can still be written by a script within the rules.</li>
 <li>Free tiers change often (Workers AI, Resend, reCAPTCHA): check their pages before relying on a limit.</li>
+<li>Because the Dev skin shares the Tailwind build, the Standard stylesheet is about 35 KB gzip (it was about 20 KB); the scripts of the skin still load only when it is chosen. A lazy, scoped stylesheet would remove the difference.</li>
+<li>On the live CSP the Dev viewer logs one console violation per picture (the size request to the image host) and has no size in its status line.</li>
 <li>Skills are read in full (62 documents) even where only the listed ones are shown.</li>
 </ul></div>
 </div>`,

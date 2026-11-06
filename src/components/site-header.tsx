@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { ConnectMenu } from '@/components/connect-menu';
 import { LanguageSwitch } from '@/components/language-switch';
 import { commonCopy } from '@/content/copy/common';
+import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { MobileMenu } from '@/components/mobile-menu';
 import { SkinSwitch } from '@/components/skin-switch';
@@ -34,7 +35,7 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
     <header className='mx-auto flex w-full max-w-[1200px] items-center justify-between gap-6 px-5 py-6 min-[721px]:px-12'>
       <Link
         href='/'
-        aria-label={`${shell.name}, home`}
+        aria-label={fill(copy.homeLink, { name: shell.name })}
         className='group flex items-center gap-3 font-heading text-xl font-bold tracking-[-0.02em] whitespace-nowrap'
       >
         <Image
@@ -43,7 +44,7 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
           width={36}
           height={34}
           priority
-          className='h-auto w-9 origin-[50%_60%] transition-transform duration-[450ms] ease-[cubic-bezier(.34,1.7,.5,1)] group-hover:scale-110 group-hover:-rotate-[9deg] group-active:scale-90 group-active:rotate-[4deg] motion-reduce:transition-none'
+          className='h-auto w-9 origin-[50%_60%] transition-transform duration-[450ms] ease-[cubic-bezier(.34,1.7,.5,1)] motion-safe:group-hover:scale-110 motion-safe:group-hover:-rotate-[9deg] motion-safe:group-active:scale-90 motion-safe:group-active:rotate-[4deg] motion-reduce:transition-none'
         />
         <span className='bg-[linear-gradient(var(--page),var(--page))] bg-size-[0_2px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-size-[100%_2px] motion-reduce:transition-none'>
           {shell.name}
@@ -51,7 +52,7 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
       </Link>
 
       <div className='hidden items-center gap-7 min-[1200px]:flex'>
-        <nav aria-label='Main' className='flex items-center gap-7'>
+        <nav aria-label={copy.mainNav} className='flex items-center gap-7'>
           {NAV_PAGES.map((page) => {
             const state = live.pages[page];
             if (state === 'hidden') return null;

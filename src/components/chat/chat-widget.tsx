@@ -18,6 +18,9 @@ import { useChat } from './chat-provider';
 import { useChatSession } from './use-chat-session';
 import { useKeyboardInset } from './use-keyboard-inset';
 
+/** How long a visitor can leave the button alone before it calls attention to itself, once. */
+const NUDGE_AFTER_MS = 20_000;
+
 /** Until `site/settings` arrives (or if it cannot be read) the defaults of the schema apply. */
 const DEFAULT_CHAT = settingsSchema.parse({}).chat;
 
@@ -32,6 +35,9 @@ export function ChatWidget() {
   const fabRef = useRef<HTMLButtonElement>(null);
   const [draft, setDraft] = useState('');
   const inset = useKeyboardInset(isOpen);
+  // the button hops and sends out its ring one more time if the chat has not been opened after a while (once per page load)
+  const [nudged, setNudged] = useState(false);
+  const everOpened = useRef(false);
 
   // the settings are read when the chat first opens, not on page load
   const { data: settings } = useQuery({
@@ -49,6 +55,18 @@ export function ChatWidget() {
   useEffect(() => {
     if (isOpen) warmUp();
   }, [isOpen, warmUp]);
+
+  useEffect(() => {
+    if (isOpen) everOpened.current = true;
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (nudged || everOpened.current) return;
+    const timer = setTimeout(() => {
+      if (!everOpened.current) setNudged(true);
+    }, NUDGE_AFTER_MS);
+    return () => clearTimeout(timer);
+  }, [nudged]);
 
   const close = () => {
     closeChat();
@@ -105,15 +123,27 @@ export function ChatWidget() {
         aria-expanded={isOpen}
         aria-label={isOpen ? copy.close : copy.open}
         onClick={isOpen ? close : openChat}
-        className={`bb-fab relative inline-flex size-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_10px_24px_rgba(179,48,31,.35)] transition-[transform,filter] outline-none hover:brightness-[.92] focus-visible:shadow-[0_0_0_3px_var(--foreground)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white active:scale-95`}
+        data-nudge={nudged && !isOpen ? '' : undefined}
+        className={`bb-fab group/fab relative inline-flex size-14 items-center justify-center rounded-full bg-brand text-white shadow-[0_10px_24px_rgba(179,48,31,.35)] transition-[transform,translate,scale,filter,box-shadow] duration-200 outline-none hover:brightness-[.92] focus-visible:shadow-[0_0_0_3px_var(--foreground)] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-white active:scale-95 motion-safe:hover:-translate-y-[3px] motion-safe:hover:shadow-[0_16px_32px_rgba(179,48,31,.42)] motion-reduce:transition-none`}
       >
         <span
+          // the nudge restarts the ring: a new key plays its animation again
+          key={nudged ? 'nudge' : 'first'}
           aria-hidden='true'
           className={`bb-ring pointer-events-none absolute inset-0 rounded-full border-2 border-brand`}
         />
+        {session.available && !isOpen && (
+          // the assistant can be reached (the chat address is set): a small green dot, breathing like the one of the Current job
+          <span
+            aria-hidden='true'
+            className='pointer-events-none absolute top-px right-px grid size-4 place-items-center rounded-full bg-background'
+          >
+            <span className='current-dot' />
+          </span>
+        )}
         <span aria-hidden='true' className='relative size-6'>
           <MessageCircle
-            className={`bb-glyph bb-chat`}
+            className={`bb-glyph bb-chat motion-safe:group-hover/fab:data-[on=true]:-rotate-12`}
             data-on={!isOpen}
             size={24}
           />

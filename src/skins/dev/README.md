@@ -22,12 +22,36 @@ the URL does not change.
 4. **Window lights** (red/yellow/green, `ui/window-dots.tsx`) really work in the windows that are windows (viewer, CV, chat; Connect is a palette and has none). A light
    with no action in such a window is grey (the viewer's yellow when it has nothing to hide: otherwise it hides the thumbnails and tags); lights that are only decoration (the editor, the terminal cards) keep their
    colours and the hover, but cannot be pressed. Files of the Explorer that open nothing are faded like a cut file.
+   **The three lights of the editor window itself (the title bar) work too:** red closes the editor (back to the Standard look, like the
+   Skin menu), yellow is **Zen mode** (the tabs, breadcrumb, activity bar, Explorer, minimap, bottom panel and status bar are hidden with
+   CSS, so the terminal keeps its scrollback; the title bar and the page stay; Esc or the light leaves it, and an open window takes Esc
+   first; not on a phone), green is the **full screen** of the page (`shell/use-fullscreen.ts`; a browser that cannot do it, such as an iPhone,
+   leaves it grey).
 5. Dev-only strings (command lines like `whoami`) are decoration: `aria-hidden`. Anything a visitor reads or operates uses the Standard
    copy (`content/copy/*`), so both languages work. A new string needs `en` and `vi` (`defineCopy`).
 6. Buttons that look like commands (`./download-cv.sh`) keep the Standard accessible name (`aria-label`), so tests and screen readers find
    the same control in every skin (`ui/dev-download-cv.tsx`).
 7. Phone: `max-[900px]:` utilities (the root, `ui/dev-root.tsx`, carries the state of the drawer); the Explorer is a drawer, and Connect and the CV button live in it
    (the account menu opens as a bottom sheet).
+
+## Motion
+
+Beyond hovers, and all of it off for "reduce motion":
+
+- **Page change** is a React view transition: `shell/dev-shell.tsx` wraps the page in `<ViewTransition key={page}>`, so the window stays and the
+  page fades out while the next one fades in (`.dv-vt-out`, `.dv-vt-in` in `dev.css`, which play the keyframes `vt-out` and `vt-in` of
+  `globals.css`). The green line of the open tab is the one element named `dv-tabline`, so it glides to the new tab. The selectors have no space before
+  `::view-transition` (the pseudo-elements hang off `<html>`). Reduced motion: the `reduce` block of `globals.css` gives every
+  view-transition animation a duration of 0 (React still starts the transition), and `.dv-root` rules cut the rest, including the folders
+  (`::details-content`) and the portaled windows (viewer, CV, Connect palette, listed in `css/services-chat-cv.css`).
+- **Reveal** is an animation (`dv-reveal`), not a transition: unlayered CSS beats utilities, so a transition list on `[data-reveal]` would
+  replace the hover transitions of every card that is revealed.
+- **Status bar**: the sync icon turns while TanStack Query is fetching (`useIsFetching`), and the count of problems nudges when it goes up
+  (`shell/use-bumps.ts`: nothing moves on load or when it goes down).
+- **Bottom panel** rises (`dv-panelin`) when it opens. The Connect palette, the windows and the chat have their own pop-in. The chat
+  header says `online` with a breathing dot while the chat can be reached.
+- **Photos**: on About the picture zooms slowly inside its frame and the frame takes the accent colour under the mouse; the photo of the card on Home only zooms.
+- The terminal card types its command and the caret blinks (`.dv-typed`), the marquee of skills and the live pill are older motion.
 
 ## The Terminal
 

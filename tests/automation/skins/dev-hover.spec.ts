@@ -38,6 +38,8 @@ test.describe('highlight occurrences in the code windows', () => {
     const profile = codeWindow(page, 'Profile.tsx');
     const template = bot.locator('.dv-tg', { hasText: /^template$/ });
     await expect(template).toHaveCount(2);
+    // the Profile window grows when its data arrives and moves the windows below it: hover only after that, or the pointer is no longer over the token
+    await expect(profile).toContainText('degree=');
 
     await template.first().hover();
     await expect(template.first()).toHaveAttribute('data-hit', '');

@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CurrentBadge } from '@/components/current-badge';
 import { DataState } from '@/components/data-state';
-import { RowsSkeleton } from '@/components/skeletons';
+import { RowsSkeleton } from '@/components/rows-skeleton';
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -44,7 +44,7 @@ export function WorkRows() {
             key={job.id}
             href='/resume'
             data-row
-            className='group/row flex flex-wrap items-center gap-x-8 gap-y-3 border-b px-3 py-5 transition-colors hover:bg-card min-[721px]:px-6 min-[721px]:py-6'
+            className='group/row flex flex-wrap items-center gap-x-8 gap-y-3 border-b px-3 py-5 transition-colors hover:bg-card active:bg-card min-[721px]:px-6 min-[721px]:py-6'
           >
             {job.logo ? (
               <div className='h-20 w-28 flex-none overflow-hidden rounded-[10px] bg-border'>
@@ -53,13 +53,13 @@ export function WorkRows() {
                   alt={job.company}
                   width={112}
                   height={80}
-                  className='size-full object-cover saturate-[.85] transition-[scale,filter] duration-500 ease-out group-hover/row:scale-105 group-hover/row:saturate-100 motion-reduce:transition-none motion-reduce:group-hover/row:scale-100'
+                  className='size-full object-cover saturate-[.85] transition-[scale,filter] duration-[600ms] ease-out group-hover/row:scale-105 group-hover/row:saturate-100 motion-reduce:transition-none motion-reduce:group-hover/row:scale-100'
                 />
               </div>
             ) : (
               <div
                 aria-hidden='true'
-                className='flex h-20 w-28 flex-none items-center justify-center rounded-[10px] bg-[#1e5bd8] font-heading text-[26px] font-bold tracking-[-0.02em] text-white'
+                className='flex h-20 w-28 flex-none items-center justify-center rounded-[10px] bg-tile font-heading text-[26px] font-bold tracking-[-0.02em] text-white'
               >
                 {job.shortName || job.company.slice(0, 3)}
               </div>

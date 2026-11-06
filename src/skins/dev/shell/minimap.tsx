@@ -126,7 +126,7 @@ export function Minimap() {
   return (
     <div
       data-slot='dev-minimap'
-      className='group/map fixed top-(--top) right-0 bottom-(--bottom) z-5 w-[90px] cursor-default overflow-hidden bg-editor opacity-90 select-none [view-transition-name:minimap] max-[1180px]:hidden'
+      className='group/map fixed top-(--top) right-0 bottom-(--bottom) z-5 w-[90px] cursor-default overflow-hidden bg-editor opacity-90 select-none [view-transition-name:minimap] max-[1180px]:hidden group-data-[zen]/dv:hidden'
       aria-hidden='true'
       ref={map}
     >

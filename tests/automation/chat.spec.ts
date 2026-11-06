@@ -370,3 +370,24 @@ test('changing the language keeps the conversation', async ({ page }) => {
   await expect(panel.getByRole('textbox', { name: 'Tin nhắn' })).toBeVisible();
   await expect(panel.getByText('1/20 tin nhắn')).toBeVisible();
 });
+
+test('the panel says the assistant is online, in both languages', async ({
+  page,
+}) => {
+  await mockWorker(page, () => ({ body: { text: 'ok' } }));
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Open chat' }).click();
+  const panel = page.getByRole('dialog');
+  await expect(panel.getByText('Online', { exact: true })).toBeVisible();
+  await expect(panel.getByText('AI assistant', { exact: true })).toBeVisible();
+});
+
+test('the panel says Trực tuyến in Vietnamese', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
+  await mockWorker(page, () => ({ body: { text: 'ok' } }));
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Mở chat' }).click();
+  await expect(
+    page.getByRole('dialog').getByText('Trực tuyến', { exact: true }),
+  ).toBeVisible();
+});

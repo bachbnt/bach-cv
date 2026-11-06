@@ -5,7 +5,14 @@
 'use client';
 
 import { Info } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  startTransition,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  ViewTransition,
+} from 'react';
 import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
 import { summaryOf, splitMethods } from '@/components/payment/payment-details';
 import { DataState } from '@/components/data-state';
@@ -160,7 +167,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
                   key={k}
                   type='button'
                   aria-pressed={filter === k}
-                  onClick={() => setFilter(k)}
+                  onClick={() => startTransition(() => setFilter(k))}
                   className='rounded-full border-[1.5px] bg-card px-[18px] py-[9px] text-[15px] font-medium transition-colors hover:border-foreground active:border-foreground aria-pressed:border-page aria-pressed:bg-page aria-pressed:text-background pointer-coarse:min-h-11'
                 >
                   {k === 'all' ? copy.filterAll : copy.kinds[k]}
@@ -173,16 +180,23 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
               ))}
             </div>
           )}
-          <ul className='mt-6 flex list-none flex-col gap-3 p-0'>
-            {shownRows.map((m) => (
-              <PaymentRow
-                key={m.id}
-                method={m}
-                onCopy={() => void copyAccount(m)}
-                onOpenQr={() => setQrId(m.id)}
-              />
-            ))}
-          </ul>
+          <ViewTransition
+            key={filter}
+            enter='list-in'
+            exit='list-out'
+            default='none'
+          >
+            <ul className='mt-6 flex list-none flex-col gap-3 p-0'>
+              {shownRows.map((m) => (
+                <PaymentRow
+                  key={m.id}
+                  method={m}
+                  onCopy={() => void copyAccount(m)}
+                  onOpenQr={() => setQrId(m.id)}
+                />
+              ))}
+            </ul>
+          </ViewTransition>
         </section>
       )}
 

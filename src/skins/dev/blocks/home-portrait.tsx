@@ -24,18 +24,18 @@ export function HomePortrait() {
   return (
     <div className='flex flex-1 overflow-hidden rounded-[8px] border border-line-2 bg-chrome max-[520px]:flex-col'>
       {shell.avatar && (
-        <div className='relative min-h-[170px] w-[42%] flex-none border-r border-line-2 max-[520px]:h-[170px] max-[520px]:w-full max-[520px]:border-r-0 max-[520px]:border-b'>
+        <div className='group/photo relative min-h-[170px] w-[42%] overflow-hidden flex-none border-r border-line-2 max-[520px]:h-[170px] max-[520px]:w-full max-[520px]:border-r-0 max-[520px]:border-b'>
           <Image
             src={shell.avatar}
             alt={`${copy.avatarAlt} ${shell.name}`}
             fill
             sizes='(min-width: 901px) 230px, (min-width: 521px) 40vw, 100vw'
             priority
-            className='object-cover object-[50%_22%]'
+            className='object-cover object-[50%_22%] transition-transform duration-[600ms] ease-out motion-safe:group-hover/photo:scale-[1.05]'
           />
         </div>
       )}
-      <p className='m-0 min-w-0 flex-1 self-center px-4 py-3 text-[14px] leading-[1.6] text-mute'>
+      <p className='m-0 min-w-0 flex-1 self-center px-4 py-3 max-[520px]:self-stretch max-[520px]:text-left text-[14px] leading-[1.6] text-mute'>
         <b className='font-code text-head'>{profile?.fullName || shell.name}</b>
         {job && (
           <>

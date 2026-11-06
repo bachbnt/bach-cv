@@ -112,7 +112,7 @@ export function Lightbox({
               height={image.height ?? 900}
               unoptimized
               className={cn(
-                'block h-auto w-auto max-w-full bg-white shadow-[0_8px_28px_rgba(27,31,39,.18)]',
+                'block h-auto w-auto max-w-full bg-white shadow-[0_8px_28px_rgba(27,31,39,.18)] duration-200 animate-in fade-in-0 motion-reduce:animate-none',
                 showThumbnails
                   ? 'max-h-[calc(92vh-270px)] max-[720px]:max-h-[calc(100dvh-380px)]'
                   : 'max-h-[calc(92vh-190px)] max-[720px]:max-h-[calc(100dvh-300px)]',

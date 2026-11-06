@@ -8,6 +8,7 @@ import {
   resolveItems,
   type CollectionName,
   type Doc,
+  type Orderable,
 } from '@/lib/content/schema';
 import { queryKeys } from './keys';
 
@@ -64,9 +65,7 @@ export const contentQueryOptions = <N extends CollectionName>(
         return docs
           .filter((d) => d.visible)
           .sort((a, b) => dateOf(b).localeCompare(dateOf(a)));
-      return resolveItems(
-        docs as unknown as Parameters<typeof resolveItems>[0],
-        options,
-      ) as unknown as Doc<N>[];
+      // every collection that is ordered by `sort` has these four fields (the schemas say so)
+      return resolveItems(docs as (Doc<N> & Orderable)[], options);
     },
   });

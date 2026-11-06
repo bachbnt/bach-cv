@@ -14,8 +14,10 @@ import { DevChip } from '@/skins/dev/ui/dev-chip';
 
 /** the photos are frames the pictures fill */
 const PHOTO =
-  'relative min-h-0 overflow-hidden rounded-[8px] border border-line-2';
-const PICTURE = 'object-cover object-[50%_28%]';
+  'group/photo relative min-h-0 overflow-hidden rounded-[8px] border border-line-2 transition-colors duration-300 hover:border-signal';
+/** the picture zooms a little, slowly, under the mouse (inside its frame) */
+const PICTURE =
+  'object-cover object-[50%_28%] transition-transform duration-[600ms] ease-out motion-safe:group-hover/photo:scale-[1.05]';
 
 /** Under the page title: the profile summary with the specialties, and the photo grid beside them. */
 export function AboutHead() {

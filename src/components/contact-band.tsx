@@ -56,12 +56,12 @@ export function ContactBand() {
             {email && (
               <a
                 href={email.url}
-                className='mt-6 inline-block font-heading text-2xl font-bold tracking-[-0.02em] break-all text-white underline decoration-[#f28b7a] decoration-[3px] underline-offset-8 hover:text-[#f5a99b] min-[401px]:text-[32px]'
+                className='mt-6 inline-block font-heading text-2xl font-bold tracking-[-0.02em] break-all text-white underline decoration-on-night-accent decoration-[3px] underline-offset-8 hover:text-on-night-accent-hover min-[401px]:text-[32px]'
               >
                 {email.label}
               </a>
             )}
-            <p className='mt-6 leading-[1.7] text-[#b4bac6]'>
+            <p className='mt-6 leading-[1.7] text-night-foreground'>
               {profile?.location}
               {phone && (
                 <>

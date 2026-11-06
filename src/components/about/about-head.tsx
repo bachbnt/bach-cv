@@ -5,15 +5,21 @@
 'use client';
 
 import Image from 'next/image';
+import { useRef } from 'react';
 import { Tag } from '@/components/tag';
+import { useMagnet } from '@/components/use-magnet';
 import { aboutCopy } from '@/content/copy/about';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useProfileQuery } from '@/lib/query/use-content';
 import { cn } from 'cn';
 
-/** A frame the photo fills: the photo's own width and height are never overridden by CSS, which Next.js warns about. */
-const frame = 'relative overflow-hidden rounded-[20px] bg-border';
+/** A frame the photo fills: the photo's own width and height are never overridden by CSS, which Next.js warns about. It rises under the mouse like a card. */
+const frame =
+  'group/photo lift relative overflow-hidden rounded-[20px] bg-border';
+/** The photo inside zooms a little, slowly, under the mouse (inside its own frame). */
+const photo =
+  'object-cover transition-transform duration-[600ms] ease-out motion-safe:group-hover/photo:scale-[1.05] motion-reduce:transition-none';
 
 /** The tinted head of About: the profile summary, the specialty chips and the photo grid. */
 export function AboutHead() {
@@ -21,6 +27,9 @@ export function AboutHead() {
   const { data: profile } = useProfileQuery();
   const specialties = (profile?.specialties ?? []).filter((s) => s.visible);
   const [top, bottom] = profile?.covers ?? [];
+  // the chips lean toward the mouse when it comes near
+  const chips = useRef<HTMLUListElement>(null);
+  useMagnet(chips);
 
   return (
     <div className='band-glow rounded-b-[40px] bg-page-tint'>
@@ -39,9 +48,16 @@ export function AboutHead() {
             </p>
           )}
           {specialties.length > 0 && (
-            <ul className='m-0 flex list-none flex-wrap gap-2.5 p-0'>
+            <ul
+              ref={chips}
+              className='relative m-0 flex list-none flex-wrap gap-2.5 p-0'
+            >
               {specialties.map((s) => (
-                <li key={s.name}>
+                <li
+                  key={s.name}
+                  data-magnet
+                  className='[scale:var(--s,1)] [translate:var(--tx,0px)_var(--ty,0px)] transition-[translate,scale] duration-200 ease-out motion-reduce:transition-none'
+                >
                   <Tag
                     tone={s.tone === 'primary' ? 'neutral' : s.tone}
                     className={cn(
@@ -65,7 +81,7 @@ export function AboutHead() {
                 fill
                 sizes='(min-width: 901px) 320px, 60vw'
                 priority
-                className='object-cover'
+                className={photo}
               />
             </div>
           )}
@@ -76,7 +92,7 @@ export function AboutHead() {
                 alt={`${copy.coverAlt} ${shell.name}`}
                 fill
                 sizes='(min-width: 901px) 220px, 40vw'
-                className='object-cover'
+                className={photo}
               />
             </div>
           )}
@@ -87,7 +103,7 @@ export function AboutHead() {
                 alt={`${copy.coverAlt} ${shell.name}`}
                 fill
                 sizes='(min-width: 901px) 220px, 40vw'
-                className='object-cover'
+                className={photo}
               />
             </div>
           )}

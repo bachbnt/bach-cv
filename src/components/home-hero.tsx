@@ -52,14 +52,14 @@ export function HomeHero() {
           {shell.avatar && (
             // a frame of a fixed height with the photo filling it: the photo's own width and height are never
             // overridden by CSS, which Next.js warns about
-            <div className='photo-in relative h-[420px] w-full overflow-hidden rounded-[20px] bg-border min-[901px]:h-[560px]'>
+            <div className='photo-in group/photo lift relative h-[420px] w-full overflow-hidden rounded-[20px] bg-border min-[901px]:h-[560px]'>
               <Image
                 src={shell.avatar}
                 alt={`${shell.name} reading a book`}
                 fill
                 sizes='(min-width: 901px) 560px, 100vw'
                 priority
-                className='object-cover object-[50%_35%]'
+                className='object-cover object-[50%_35%] transition-transform duration-[600ms] ease-out motion-safe:group-hover/photo:scale-[1.05] motion-reduce:transition-none'
               />
             </div>
           )}

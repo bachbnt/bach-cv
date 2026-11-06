@@ -40,7 +40,7 @@ export function PaymentFeature({
             width={240}
             height={240}
             unoptimized
-            className='block h-auto max-h-60 w-full rounded-md bg-white object-contain transition-transform duration-300 group-hover/media:scale-[1.03] motion-reduce:transition-none'
+            className='block h-auto max-h-60 w-full rounded-md bg-white object-contain transition-transform duration-300 motion-safe:group-hover/media:scale-[1.03] motion-reduce:transition-none'
           />
           <MediaBadge
             icon={ZoomIn}

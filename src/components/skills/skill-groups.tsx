@@ -6,7 +6,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { DataState } from '@/components/data-state';
-import { CardsSkeleton } from '@/components/skeletons';
+import { CardsSkeleton } from '@/components/cards-skeleton';
 import { SkillChip } from '@/components/skills/skill-chip';
 import { SkillTip, type ActiveTip } from '@/components/skills/skill-tip';
 import { tipText } from '@/components/skills/skill-text';

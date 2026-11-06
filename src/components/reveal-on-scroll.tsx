@@ -38,11 +38,14 @@ export function RevealOnScroll() {
       { threshold: 0.1, rootMargin: '0px 0px -5% 0px' },
     );
 
+    let frame = 0;
     const scan = () => {
+      frame = 0;
       document.querySelectorAll<HTMLElement>(SELECTOR).forEach((el) => {
-        // another skin (`data-skin-root`) reveals its own blocks
-        if (seen.has(el) || el.closest('.hi, [data-skin-root]')) return;
+        if (seen.has(el)) return;
         seen.add(el);
+        // another skin (`data-skin-root`) reveals its own blocks, and the entrance blocks (`hi`) have their own animation
+        if (el.closest('.hi, [data-skin-root]')) return;
         const parent = el.parentElement;
         const index = parent
           ? Array.prototype.indexOf.call(parent.children, el)
@@ -53,10 +56,16 @@ export function RevealOnScroll() {
       });
     };
 
+    // one scan per frame, however many changes arrive (a streamed chat answer changes the page for every word)
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(scan);
+    };
+
     scan();
-    const mo = new MutationObserver(scan);
+    const mo = new MutationObserver(schedule);
     mo.observe(document.body, { childList: true, subtree: true });
     return () => {
+      cancelAnimationFrame(frame);
       mo.disconnect();
       io.disconnect();
     };

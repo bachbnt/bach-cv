@@ -33,12 +33,17 @@ const leafVariants = cva(
   {
     variants: {
       kind: {
-        link: 'text-ink hover:bg-hov hover:pl-3.5',
-        selected: 'bg-sel text-head hover:pl-3.5',
+        link: 'text-ink hover:bg-hov',
+        selected: 'bg-sel text-head',
         dim: 'cursor-default text-mute opacity-45',
       },
       top: { true: 'pl-7', false: '' },
     },
+    // a file that opens a page nudges to the right under the pointer (4px from where it rests)
+    compoundVariants: [
+      { kind: ['link', 'selected'], top: false, className: 'hover:pl-3.5' },
+      { kind: ['link', 'selected'], top: true, className: 'hover:pl-8' },
+    ],
     defaultVariants: { kind: 'link', top: false },
   },
 );

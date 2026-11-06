@@ -9,7 +9,7 @@ import { DataState } from '@/components/data-state';
 import { FeaturedProject } from '@/components/projects/featured-project';
 import { ProjectGrid } from '@/components/projects/project-grid';
 import { ScreenshotsDialog } from '@/components/projects/screenshots-dialog';
-import { CardsSkeleton } from '@/components/skeletons';
+import { CardsSkeleton } from '@/components/cards-skeleton';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';

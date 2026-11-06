@@ -16,7 +16,7 @@ import type { CodiconName } from '@/skins/dev/icons/codicons';
 
 /** A button of the strip: grey, white when pointed at, and white with a bar at its left edge when it is on. */
 const BUTTON =
-  'relative grid size-12 cursor-pointer place-items-center bg-transparent text-[#858585] hover:text-white aria-pressed:text-white aria-pressed:before:absolute aria-pressed:before:top-2.5 aria-pressed:before:bottom-2.5 aria-pressed:before:left-0 aria-pressed:before:w-0.5 aria-pressed:before:bg-white aria-pressed:before:content-[""]';
+  'relative grid size-12 cursor-pointer place-items-center bg-transparent text-act-ink hover:text-white aria-pressed:text-white aria-pressed:before:absolute aria-pressed:before:top-2.5 aria-pressed:before:bottom-2.5 aria-pressed:before:left-0 aria-pressed:before:w-0.5 aria-pressed:before:bg-white aria-pressed:before:content-[""]';
 
 /** The strip of icons at the left of the editor. */
 export function ActivityBar({
@@ -45,7 +45,7 @@ export function ActivityBar({
 
   return (
     <nav
-      className='sticky top-(--top) z-25 flex h-[calc(100vh-var(--top)-var(--bottom))] w-12 flex-none flex-col items-center bg-activity [view-transition-name:act] max-[900px]:hidden'
+      className='sticky top-(--top) z-25 flex h-[calc(100vh-var(--top)-var(--bottom))] w-12 flex-none flex-col items-center bg-activity [view-transition-name:act] max-[900px]:hidden group-data-[zen]/dv:hidden'
       aria-label={copy.activity.label}
     >
       <button
@@ -69,7 +69,7 @@ export function ActivityBar({
         >
           <DevIcon name={item.name} className='size-6' />
           {item.badge !== undefined && (
-            <span className='absolute right-2 bottom-[9px] h-4 min-w-4 rounded-[8px] bg-[#007acc] px-[3px] text-center font-sans text-[10px] leading-4 font-semibold text-white'>
+            <span className='absolute right-2 bottom-[9px] h-4 min-w-4 rounded-[8px] bg-act-badge px-[3px] text-center font-sans text-[10px] leading-4 font-semibold text-white'>
               {item.badge}
             </span>
           )}

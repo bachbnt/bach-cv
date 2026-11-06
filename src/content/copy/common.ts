@@ -16,6 +16,9 @@ export const commonCopy = defineCopy(
       payment: 'Payment',
     },
     footer: { rights: 'All rights reserved.' },
+    /** names of landmarks and links for assistive technology */
+    mainNav: 'Main',
+    homeLink: '{name}, home',
     soon: 'Soon',
     menu: { open: 'Open menu', label: 'Menu' },
     language: {
@@ -71,6 +74,8 @@ export const commonCopy = defineCopy(
       payment: 'Thanh toán',
     },
     footer: { rights: 'Bảo lưu mọi quyền.' },
+    mainNav: 'Chính',
+    homeLink: '{name}, trang chủ',
     soon: 'Sắp có',
     menu: { open: 'Mở menu', label: 'Menu' },
     language: {

@@ -43,7 +43,7 @@ const LINES: Record<Service['art'], string[]> = {
 export function ServiceArt({ art }: { art: Service['art'] }) {
   return (
     <div
-      className='mb-3.5 h-[100px] overflow-hidden rounded-[6px] border border-line-2 bg-[#0b0f14] px-[13px] py-[11px] font-code text-[12px]/[1.6] whitespace-nowrap text-[#c9d1d9]'
+      className='mb-3.5 h-[100px] overflow-hidden rounded-[6px] border border-line-2 bg-art px-[13px] py-[11px] font-code text-[12px]/[1.6] whitespace-nowrap text-ink'
       aria-hidden='true'
     >
       {LINES[art].map((line) =>
@@ -54,7 +54,7 @@ export function ServiceArt({ art }: { art: Service['art'] }) {
         ) : (
           <div
             key={line}
-            className={line.startsWith('✓') ? 'text-signal' : 'text-[#858585]'}
+            className={line.startsWith('✓') ? 'text-signal' : 'text-act-ink'}
           >
             {line}
           </div>

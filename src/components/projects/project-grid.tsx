@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { startTransition, useState, ViewTransition } from 'react';
 import { ProjectCard } from '@/components/projects/project-card';
 import { kindsPresent } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
@@ -13,7 +13,7 @@ import type { Doc } from '@/lib/content/schema';
 import { cn } from 'cn';
 
 const chip =
-  'inline-flex min-h-11 items-center rounded-full border-[1.5px] px-[18px] py-[9px] text-[15px] font-medium transition-[color,background-color,border-color,transform] active:scale-[.97] min-[721px]:min-h-0 pointer-coarse:min-h-11';
+  'inline-flex min-h-11 items-center rounded-full border-[1.5px] px-[18px] py-[9px] text-[15px] font-medium transition-[color,background-color,border-color,scale] active:scale-[.97] min-[721px]:min-h-0 pointer-coarse:min-h-11';
 
 /** The filter chips (All plus each kind that has a project) and the grid of cards under them. */
 export function ProjectGrid({
@@ -46,7 +46,7 @@ export function ProjectGrid({
                 key={value}
                 type='button'
                 aria-pressed={pressed}
-                onClick={() => setFilter(value)}
+                onClick={() => startTransition(() => setFilter(value))}
                 className={cn(
                   chip,
                   pressed
@@ -60,16 +60,24 @@ export function ProjectGrid({
           })}
         </div>
       )}
-      <div className='mt-8 grid grid-cols-[repeat(auto-fill,minmax(min(100%,320px),1fr))] gap-6'>
-        {shown.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            skills={skills}
-            onOpenScreenshots={onOpenScreenshots}
-          />
-        ))}
-      </div>
+      {/* a filter swaps the grid: the old cards fade out and the new ones rise in (a transition, so it is off for "reduce motion") */}
+      <ViewTransition
+        key={filter}
+        enter='list-in'
+        exit='list-out'
+        default='none'
+      >
+        <div className='mt-8 grid grid-cols-[repeat(auto-fill,minmax(min(100%,320px),1fr))] gap-6'>
+          {shown.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              skills={skills}
+              onOpenScreenshots={onOpenScreenshots}
+            />
+          ))}
+        </div>
+      </ViewTransition>
     </>
   );
 }

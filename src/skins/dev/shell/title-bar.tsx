@@ -12,12 +12,14 @@ import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useSkin } from '@/lib/skin/skin';
-import { isSkinId, SKIN_IDS } from '@/lib/skin/skins';
+import { DEFAULT_SKIN, isSkinId, SKIN_IDS } from '@/lib/skin/skins';
 import { preloadSkin } from '@/skins/registry';
 import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
 import { DEV_PROJECT } from '@/skins/dev/config';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { emit } from '@/skins/dev/shell/devlog/store';
+import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
+import { useFullscreen } from '@/skins/dev/shell/use-fullscreen';
 import { DevMenu } from '@/skins/dev/ui/dev-menu';
 import { WindowDots } from '@/skins/dev/ui/window-dots';
 
@@ -32,9 +34,14 @@ const NAV_ICON =
 export function TitleBar({
   navOpen,
   onToggleNav,
+  zen,
+  onToggleZen,
 }: {
   navOpen: boolean;
   onToggleNav: () => void;
+  /** Zen mode is on: the chrome around the page is hidden */
+  zen: boolean;
+  onToggleZen: () => void;
 }) {
   const dev = useCopy(devCopy);
   const common = useCopy(commonCopy);
@@ -42,6 +49,16 @@ export function TitleBar({
   const { theme, setTheme } = useTheme();
   const skins = useCopy(skinsCopy);
   const { skin, setSkin } = useSkin();
+  const { say } = useDevOverlays();
+  const fullscreen = useFullscreen();
+  const lights = dev.windowLights;
+
+  /** Goes to a skin. This shell goes away with the skin, so the line is written here; the log lasts while the page is open. */
+  const chooseSkin = (value: string) => {
+    if (!isSkinId(value)) return;
+    if (value !== skin) emit({ kind: 'setting', name: 'skin', value });
+    setSkin(value);
+  };
 
   const languages = LANGS.filter((code) => shell.languages.includes(code));
   const names: Record<Lang, string> = {
@@ -76,7 +93,24 @@ export function TitleBar({
           }
         />
       </button>
-      <WindowDots className='max-[900px]:hidden' />
+      <WindowDots
+        className='max-[900px]:hidden'
+        // red closes the editor (back to the standard look), yellow is Zen mode, green is the full screen of the page
+        onClose={() => chooseSkin(DEFAULT_SKIN)}
+        closeLabel={lights.leave}
+        onMinimize={() => {
+          onToggleZen();
+          if (!zen) say(lights.zenHint);
+        }}
+        folded={zen}
+        minimizeLabel={zen ? lights.exitZen : lights.zen}
+        // a browser that cannot do full screen (an iPhone) leaves the light grey
+        onMaximize={fullscreen.supported ? fullscreen.toggle : undefined}
+        maximized={fullscreen.active}
+        maximizeLabel={
+          fullscreen.active ? lights.exitFullscreen : lights.fullscreen
+        }
+      />
       <div className='mx-auto flex h-[22px] w-[min(46%,440px)] items-center justify-center gap-2 overflow-hidden rounded-[6px] border border-line-2 bg-editor px-3 whitespace-nowrap text-mute max-[900px]:hidden'>
         <DevIcon name='search' className='mr-1.5 size-[13px]' />
         {DEV_PROJECT}
@@ -109,12 +143,7 @@ export function TitleBar({
             label: skins.names[id].name,
             hint: skins.names[id].hint,
           }))}
-          onSelect={(value) => {
-            if (!isSkinId(value)) return;
-            // this shell goes away with the skin, so the line is written here; the log lasts while the page is open
-            if (value !== skin) emit({ kind: 'setting', name: 'skin', value });
-            setSkin(value);
-          }}
+          onSelect={chooseSkin}
           onPreview={(value) => isSkinId(value) && preloadSkin(value)}
         />
         <DevMenu

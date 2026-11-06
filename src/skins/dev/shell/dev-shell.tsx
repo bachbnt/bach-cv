@@ -9,6 +9,7 @@ import {
   useEffect,
   useRef,
   useState,
+  ViewTransition,
   type ReactNode,
 } from 'react';
 import type { PageKey } from '@/lib/content/schema';
@@ -46,6 +47,8 @@ export function DevShell({
   const [ui, setUi] = useDevUi();
   const [caret, setCaret] = useState<Caret>({ line: 1, column: 1 });
   const [accountOpen, setAccountOpen] = useState(false);
+  // Zen mode (the yellow light): the chrome around the page is hidden, only the title bar and the page stay; Esc leaves it
+  const [zen, setZen] = useState(false);
   // the phone drawer: it belongs to the page it was opened on, so going to another page shuts it
   const [nav, setNav] = useState({ open: false, page: current });
   const navOpen = nav.open && nav.page === current;
@@ -57,6 +60,17 @@ export function DevShell({
     [current],
   );
   const closeAccount = useCallback(() => setAccountOpen(false), []);
+
+  useEffect(() => {
+    if (!zen) return;
+    const onKey = (event: KeyboardEvent) => {
+      // a window that is open (the chat, a viewer, the palette) takes Esc first
+      if (event.key === 'Escape' && !document.querySelector('[role="dialog"]'))
+        setZen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [zen]);
 
   useEffect(() => {
     if (!navOpen) return;
@@ -72,11 +86,12 @@ export function DevShell({
       <DevRoot
         ref={root}
         data-nav-open={navOpen || undefined}
-        data-panel={ui.panel ? 'open' : undefined}
+        data-zen={zen || undefined}
+        data-panel={ui.panel && !zen ? 'open' : undefined}
         // the bottom panel (220px) is above the status bar: everything that sits above the status bar (the activity bar and its account
         // button, the Explorer, the minimap, the chat button) rises over it
         className={cn(
-          'dv-js data-[panel=open]:[--bottom:242px]',
+          'dv-js data-[panel=open]:[--bottom:242px] min-[901px]:data-[zen]:[--bottom:0px] min-[901px]:data-[zen]:[--top:30px]',
           navOpen && 'max-[900px]:overflow-hidden',
         )}
       >
@@ -86,6 +101,8 @@ export function DevShell({
           <TitleBar
             navOpen={navOpen}
             onToggleNav={() => setNav({ open: !navOpen, page: current })}
+            zen={zen}
+            onToggleZen={() => setZen((on) => !on)}
           />
           <TabBar page={current} />
           <Crumbs page={current} />
@@ -107,7 +124,17 @@ export function DevShell({
               setAccountOpen(true);
             }}
           />
-          <EditorFrame onCaret={setCaret}>{children}</EditorFrame>
+          <EditorFrame onCaret={setCaret}>
+            {/* a page change: the page fades out and the next one rises in, the window around it stays (classes in dev.css) */}
+            <ViewTransition
+              key={current}
+              enter='dv-vt-in'
+              exit='dv-vt-out'
+              default='none'
+            >
+              <div>{children}</div>
+            </ViewTransition>
+          </EditorFrame>
         </div>
         <Minimap />
         <BottomBar

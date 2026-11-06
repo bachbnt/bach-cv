@@ -461,7 +461,7 @@ export interface Content {
 
 // ---------------------------------------------------------------- resolve helpers
 
-type Orderable = {
+export type Orderable = {
   id: string;
   visible: boolean;
   sort?: number;

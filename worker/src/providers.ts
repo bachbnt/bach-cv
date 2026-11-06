@@ -51,6 +51,13 @@ const handleProviderResponse = async (
   return response.json();
 };
 
+/** The part of each provider's answer that is read; anything else in the JSON is ignored, and a missing part gives `...`. */
+type GeminiReply = {
+  candidates?: { content?: { parts?: { text?: string }[] } }[];
+};
+type OpenAIReply = { choices?: { message?: { content?: string } }[] };
+type AnthropicReply = { content?: { text?: string }[] };
+
 export const callGemini = async (
   apiKey: string | undefined,
   messages: ChatMessage[],
@@ -71,7 +78,10 @@ export const callGemini = async (
       })),
     }),
   });
-  const data = (await handleProviderResponse(response, 'Gemini')) as any;
+  const data = (await handleProviderResponse(
+    response,
+    'Gemini',
+  )) as GeminiReply;
   return data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '...';
 };
 
@@ -100,7 +110,10 @@ export const callOpenAI = async (
       ],
     }),
   });
-  const data = (await handleProviderResponse(response, 'OpenAI')) as any;
+  const data = (await handleProviderResponse(
+    response,
+    'OpenAI',
+  )) as OpenAIReply;
   return data?.choices?.[0]?.message?.content ?? '...';
 };
 
@@ -128,7 +141,10 @@ export const callClaude = async (
       })),
     }),
   });
-  const data = (await handleProviderResponse(response, 'Anthropic')) as any;
+  const data = (await handleProviderResponse(
+    response,
+    'Anthropic',
+  )) as AnthropicReply;
   return data?.content?.[0]?.text ?? '...';
 };
 

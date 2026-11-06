@@ -8,7 +8,7 @@ import { BookOpen, CalendarDays } from 'lucide-react';
 import Image from 'next/image';
 import { DataState } from '@/components/data-state';
 import { SkillTags } from '@/components/resume/skill-tags';
-import { CardsSkeleton } from '@/components/skeletons';
+import { CardsSkeleton } from '@/components/cards-skeleton';
 import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
 import type { Doc } from '@/lib/content/schema';

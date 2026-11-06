@@ -2,16 +2,18 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { CSSProperties, ReactNode } from 'react';
+import { ViewTransition, type CSSProperties, type ReactNode } from 'react';
 import { SiteFooter } from '@/components/site-footer';
 import { DocumentTitle } from '@/components/document-title';
 import { PageThemeVars } from '@/components/page-theme-vars';
+import { ScrollProgress } from '@/components/scroll-progress';
 import { SiteHeader } from '@/components/site-header';
 import type { PageKey } from '@/lib/content/schema';
 import { NEUTRAL_THEME, PAGE_META } from '@/lib/pages';
 
 /**
  * Frame shared by every page: sets the page's colour pair, then header, content, footer.
+ * A page change is a view transition (React's `<ViewTransition>`, played by the router; browsers without it just swap): the header is named here, the rest of the page is wrapped by `<SkinFrame>`.
  * The tinted band behind the header continues into the page head, so the page passes it in `children`.
  */
 export function SitePage({
@@ -34,9 +36,13 @@ export function SitePage({
     >
       <DocumentTitle page={page} />
       <PageThemeVars accent={theme.accent} tint={theme.tint} />
-      <div className='band-glow bg-page-tint'>
-        <SiteHeader current={page} />
-      </div>
+      <ScrollProgress />
+      {/* the header stays where it is while the page changes (only its tint blends); <SkinFrame> fades the rest, see "page change" in globals.css. `default='none'` keeps it out of the transitions of a filter */}
+      <ViewTransition name='site-header' share='auto' default='none'>
+        <div className='band-glow bg-page-tint'>
+          <SiteHeader current={page} />
+        </div>
+      </ViewTransition>
       {children}
       <SiteFooter />
     </div>

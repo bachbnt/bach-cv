@@ -5,7 +5,7 @@
 'use client';
 
 import { DataState } from '@/components/data-state';
-import { CardsSkeleton } from '@/components/skeletons';
+import { CardsSkeleton } from '@/components/cards-skeleton';
 import { ServiceCard } from '@/components/services/service-card';
 import { servicesCopy } from '@/content/copy/services';
 import { useCopy } from '@/lib/i18n/copy';

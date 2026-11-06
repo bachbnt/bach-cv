@@ -34,11 +34,6 @@
     scale: 0.97;
   }
 }
-@keyframes dv-bbword {
-  from {
-    opacity: 0;
-  }
-}
 @keyframes dv-bbring {
   0% {
     opacity: 0.7;
@@ -49,13 +44,16 @@
     transform: scale(1.25, 1.5);
   }
 }
+/* the online dot breathes: opacity and scale only (a box-shadow would be painted again at every frame, for ever) */
 @keyframes dv-bbonline {
   0%,
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--and) 45%, transparent);
+    opacity: 0.55;
+    scale: 0.85;
   }
   50% {
-    box-shadow: 0 0 0 4px transparent;
+    opacity: 1;
+    scale: 1;
   }
 }
 
@@ -63,7 +61,9 @@
   [data-slot='dev-viewer'],
   [data-slot='dev-viewer'] *,
   [data-slot='dev-cv-window'],
-  [data-slot='dev-cv-window'] * {
+  [data-slot='dev-cv-window'] *,
+  [data-slot='dev-connect-palette'],
+  [data-slot='dev-connect-palette'] * {
     animation: none !important;
     transition: none !important;
   }

@@ -34,6 +34,8 @@ export const homeCopy = defineCopy(
       ],
     },
     technologies: 'Technologies',
+    pauseTechnologies: 'Pause the moving list of technologies',
+    playTechnologies: 'Play the moving list of technologies',
     work: {
       title: "Where I've worked",
       all: 'Full resume',
@@ -70,6 +72,8 @@ export const homeCopy = defineCopy(
       ],
     },
     technologies: 'Công nghệ',
+    pauseTechnologies: 'Tạm dừng danh sách công nghệ đang chạy',
+    playTechnologies: 'Cho danh sách công nghệ chạy lại',
     work: {
       title: 'Nơi mình đã làm việc',
       all: 'Xem hồ sơ đầy đủ',

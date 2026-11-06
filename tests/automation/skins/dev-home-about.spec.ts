@@ -12,6 +12,39 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Home in the Dev skin', () => {
+  test('Profile.tsx says since when I am in the current role, the years of experience and my degree', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const profile = page.locator('pre', { hasText: 'function' }).first();
+    // the current role (FPT Software) started in 2026 in the fixtures
+    await expect(profile).toContainText('since={2026}');
+    await expect(profile).toContainText(
+      /experience=\{\d+\} \/\/ years of experience/,
+    );
+    await expect(profile).toContainText('degree="MSc"');
+    // the place is no longer a prop: it was replaced by `since`
+    await expect(profile).not.toContainText('location=');
+  });
+
+  test('the photo card on a phone has its text on the left, like the other blocks', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoSkin(page, '/');
+    const name = page.locator('b', { hasText: 'Bùi Ngô Tôn Bách' }).first();
+    await name.scrollIntoViewIfNeeded();
+    const info = name.locator('xpath=..');
+    const box = await info.boundingBox();
+    const card = await info.locator('xpath=..').boundingBox();
+    // the text box fills the card (it was shrunk to its text and centred)
+    expect(box && card && Math.abs(box.x - card.x) < 4).toBe(true);
+    expect(box && card && Math.abs(box.width - card.width) < 4).toBe(true);
+    expect(await info.evaluate((el) => getComputedStyle(el).textAlign)).toMatch(
+      /left|start/,
+    );
+  });
+
   test('the hero, the pipeline and the sections render', async ({ page }) => {
     await gotoSkin(page, '/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText(

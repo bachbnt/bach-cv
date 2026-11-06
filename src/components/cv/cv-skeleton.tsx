@@ -4,7 +4,7 @@
 
 'use client';
 
-import { LoadingBlock } from '@/components/skeletons';
+import { LoadingBlock } from '@/components/loading-block';
 import { Skeleton } from '@/components/ui/skeleton';
 
 /** A white sheet of grey blocks where the CV will be (name, contacts, then a few sections). */

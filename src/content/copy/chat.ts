@@ -8,6 +8,7 @@ import { defineCopy } from '@/lib/i18n/define-copy';
 export const chatCopy = defineCopy(
   {
     roleLabel: 'AI assistant',
+    online: 'Online',
     open: 'Open chat',
     close: 'Close chat',
     panelLabel: '{name}, AI assistant',
@@ -46,6 +47,7 @@ export const chatCopy = defineCopy(
   },
   {
     roleLabel: 'Trợ lý AI',
+    online: 'Trực tuyến',
     open: 'Mở chat',
     close: 'Đóng chat',
     panelLabel: '{name}, trợ lý AI',
