@@ -180,6 +180,7 @@
   --page: var(--page-accent);
   --page-tint: var(--page-tint-base);
   /* the colour of the cursor glow on cards: the page colour, soft inside the card and stronger on its edge */
+  --lift-shadow: rgba(27, 31, 39, 0.13);
   --glow: color-mix(in srgb, var(--page) 11%, transparent);
   --glow-strong: color-mix(in srgb, var(--page) 55%, transparent);
 }
@@ -187,6 +188,7 @@
 .dark .page-theme {
   --page: color-mix(in srgb, var(--page-accent) 52%, white);
   --page-tint: color-mix(in srgb, var(--page-accent) 22%, var(--background));
+  --lift-shadow: rgba(0, 0, 0, 0.5);
   --glow: color-mix(in srgb, var(--page) 16%, transparent);
   --glow-strong: color-mix(in srgb, var(--page) 75%, transparent);
 }
@@ -256,6 +258,23 @@
     background: #1b1f27;
     transform: none;
     box-shadow: none;
+  }
+}
+
+/*
+ * Hover on a card: it rises 3px and its shadow grows, smoothly. The same on every card (class `lift`). `translate` is its own
+ * property in Tailwind 4, so it is named in the transition; <RevealOnScroll> cards list it in their own transition below.
+ * Only for a mouse, and off for prefers-reduced-motion.
+ */
+@utility lift {
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    transition:
+      translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.35s ease;
+    &:hover {
+      translate: 0 -3px;
+      box-shadow: 0 14px 32px var(--lift-shadow);
+    }
   }
 }
 
@@ -340,7 +359,8 @@
     transition:
       opacity 0.6s ease,
       transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
-      box-shadow 0.3s ease,
+      translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 0.35s ease,
       background-color 0.25s ease;
     transition-delay: var(--d, 0ms);
   }

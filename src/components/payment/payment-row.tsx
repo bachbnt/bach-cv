@@ -25,7 +25,7 @@ export function PaymentRow({
   return (
     <li
       data-testid='payment-method'
-      className='glow grid grid-cols-1 items-center gap-x-6 gap-y-3 rounded-2xl border bg-card px-5 py-4 min-[721px]:grid-cols-[minmax(0,1fr)_auto] min-[901px]:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_auto]'
+      className='glow lift grid grid-cols-1 items-center gap-x-6 gap-y-3 rounded-2xl border bg-card px-5 py-4 min-[721px]:grid-cols-[minmax(0,1fr)_auto] min-[901px]:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_auto]'
     >
       <div className='flex min-w-0 items-center gap-3.5'>
         {method.logo ? (

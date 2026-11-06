@@ -57,7 +57,8 @@
   `bg-danger-bg` for errors. On the dark panels (`bg-night`) the light text is `text-white`, not `text-background`.
 - Paper that must stay white in dark mode (the CV sheets) carries `theme-light`, which restores the light tokens inside it. Images
   with a white background (QR codes, screenshots) keep `bg-white`.
-- A card-like surface gets the `glow` class (cursor spotlight and lit edge, set up in `globals.css`; `<PointerGlow>` feeds it the mouse
+- A card-like surface gets `lift` (rises 3px, bigger shadow, animated) and `glow`. Do not write a per-card hover; a form or a small
+  box inside a card does not get `lift`. The `glow` class (cursor spotlight and lit edge, set up in `globals.css`; `<PointerGlow>` feeds it the mouse
   position). It uses `::before` and `::after`, so those cannot be used on the same element: use a real child element instead.
   Rows, sections and anything without a rounded card shape do not get it.
 - `tests/unit/theme/contrast.test.ts` checks the token pairs for contrast; run it after changing a color.

@@ -73,7 +73,7 @@ export function ContactBand() {
           </DataState>
         </div>
         {live.features.chat && (
-          <div className='glow flex flex-[0_1_340px] flex-col gap-4 rounded-2xl bg-card p-7 text-foreground'>
+          <div className='glow lift flex flex-[0_1_340px] flex-col gap-4 rounded-2xl bg-card p-7 text-foreground'>
             <h3 className='text-[22px]'>{chat.askCard.title}</h3>
             <p className='leading-normal text-muted-foreground'>
               {chat.askCard.body}

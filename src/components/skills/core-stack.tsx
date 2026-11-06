@@ -47,7 +47,7 @@ export function CoreStack({ className }: { className?: string }) {
             <article
               key={skill.id}
               style={color ? ({ '--c': color } as CSSProperties) : undefined}
-              className='glow flex flex-col gap-3.5 overflow-hidden rounded-2xl border bg-card px-[18px] pt-5 pb-[18px] motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:hover:-translate-y-[3px] hover:shadow-[0_14px_30px_rgba(27,31,39,.1)] active:shadow-[0_14px_30px_rgba(27,31,39,.1)]'
+              className='glow lift flex flex-col gap-3.5 overflow-hidden rounded-2xl border bg-card px-[18px] pt-5 pb-[18px]'
             >
               <span
                 aria-hidden='true'

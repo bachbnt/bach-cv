@@ -25,7 +25,7 @@ export function PaymentFeature({
   return (
     <article
       data-testid='payment-method'
-      className='glow flex items-center gap-6 rounded-3xl border bg-card p-5 max-[720px]:flex-col max-[720px]:items-stretch'
+      className='glow lift flex items-center gap-6 rounded-3xl border bg-card p-5 max-[720px]:flex-col max-[720px]:items-stretch'
     >
       {method.qr && (
         <button

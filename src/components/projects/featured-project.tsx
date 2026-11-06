@@ -26,7 +26,7 @@ export function FeaturedProject({
   const copy = useCopy(projectsCopy);
   const tags = skillsOf(project.technologies, skills);
   return (
-    <article className='glow grid items-center gap-5 rounded-3xl border bg-card p-5 transition-shadow duration-300 hover:shadow-[0_14px_32px_rgba(27,31,39,.1)] min-[721px]:grid-cols-[minmax(0,320px)_minmax(0,1fr)] min-[721px]:gap-8'>
+    <article className='glow lift grid items-center gap-5 rounded-3xl border bg-card p-5 min-[721px]:grid-cols-[minmax(0,320px)_minmax(0,1fr)] min-[721px]:gap-8'>
       <div className='relative'>
         <ProjectCover
           project={project}

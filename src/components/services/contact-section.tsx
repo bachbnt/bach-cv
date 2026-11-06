@@ -58,7 +58,7 @@ export function ContactSection() {
           ) : (
             <div
               role='note'
-              className='glow flex flex-col gap-1.5 rounded-2xl border border-border bg-card p-6'
+              className='glow lift flex flex-col gap-1.5 rounded-2xl border border-border bg-card p-6'
             >
               <p className='font-heading text-xl font-bold'>{copy.off.title}</p>
               <p className='leading-[1.55] text-body'>{copy.off.body}</p>

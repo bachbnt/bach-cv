@@ -313,7 +313,7 @@ ${table(
     ['Focus rings', 'the global <code>:focus-visible</code> outline is kept: no control sets <code>outline-none</code> without its own ring. A browser test tabs through the pages and the dialogs and fails on any control without one.'],
     [c('DataState, StateNotice, skeletons'), 'loading, empty and failed states of every data block (see 5.3)'],
     [c('Lightbox'), 'the one image dialog: screenshots, certificates and QR codes; previous/next with the counter between them, keyboard, bottom sheet on phones'],
-    [c('PointerGlow, glow'), 'the cursor glow on cards: <code>glow</code> is a CSS utility (a soft spotlight and a lit edge, in the page colour); <code>PointerGlow</code> is one mouse listener that writes the pointer position into the card under it. Only with a mouse (hover and a fine pointer), and off for reduced motion'],
+    [c('PointerGlow, glow, lift'), 'the hover on cards: <code>lift</code> raises the card 3px with a bigger shadow (animated; the same on every card); the cursor glow: <code>glow</code> is a CSS utility (a soft spotlight and a lit edge, in the page colour); <code>PointerGlow</code> is one mouse listener that writes the pointer position into the card under it. Only with a mouse (hover and a fine pointer), and off for reduced motion'],
     [c('MediaBadge'), 'the always-visible corner badge ("7 screenshots", "Enlarge") on a picture that opens the dialog'],
     [c('DocumentTitle'), 'the tab title in the visitor\'s language'],
     [c('ThemeProvider, ThemeSwitch'), 'light, dark or follow the system (see 5.4); the header dropdown and a group of three buttons in the phone menu'],
