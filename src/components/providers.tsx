@@ -15,12 +15,12 @@ import {
 } from '@tanstack/react-query-persist-client';
 import { useState, type ReactNode } from 'react';
 import { ChatProvider } from '@/components/chat/chat-provider';
-import { MaintenanceGate } from '@/components/maintenance-gate';
 import { PointerGlow } from '@/components/pointer-glow';
 import { RevealOnScroll } from '@/components/reveal-on-scroll';
+import { SkinFrame } from '@/components/skin-frame';
+import { SkinProvider } from '@/lib/skin/skin';
 import { LanguageProvider } from '@/lib/i18n/language';
 import { ThemeProvider } from '@/lib/theme/theme';
-import { ChatWidget } from '@/components/chat/chat-widget';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
@@ -71,16 +71,15 @@ export function Providers({ children }: { children: ReactNode }) {
     >
       <LanguageProvider>
         <ThemeProvider>
-          <TooltipProvider>
-            <ChatProvider>
-              <MaintenanceGate>
+          <SkinProvider>
+            <TooltipProvider>
+              <ChatProvider>
                 <RevealOnScroll />
                 <PointerGlow />
-                {children}
-                <ChatWidget />
-              </MaintenanceGate>
-            </ChatProvider>
-          </TooltipProvider>
+                <SkinFrame>{children}</SkinFrame>
+              </ChatProvider>
+            </TooltipProvider>
+          </SkinProvider>
         </ThemeProvider>
       </LanguageProvider>
     </PersistQueryClientProvider>

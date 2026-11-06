@@ -40,7 +40,8 @@ export function RevealOnScroll() {
 
     const scan = () => {
       document.querySelectorAll<HTMLElement>(SELECTOR).forEach((el) => {
-        if (seen.has(el) || el.closest('.hi')) return;
+        // another skin (`data-skin-root`) reveals its own blocks
+        if (seen.has(el) || el.closest('.hi, [data-skin-root]')) return;
         seen.add(el);
         const parent = el.parentElement;
         const index = parent

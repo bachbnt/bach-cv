@@ -9,6 +9,7 @@ Read first:
 - `.ai/coding.md`
 - `.ai/structure.md`
 - `.ai/testing.md`
+- `.ai/skins.md` (when the work touches the looks of the site or `src/skins`)
 
 For code review:
 

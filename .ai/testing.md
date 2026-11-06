@@ -40,6 +40,8 @@ npm run test:automation
 Playwright starts `next dev` on port 3100. Tests target user-visible behavior:
 navigation, forms and validation, responsive layout, the chatbot flow, critical
 layout regressions, and the 404 page. Prefer roles, labels, and text selectors.
+Shared stubs live in `tests/automation/support/` (`mockFirestore`, `mockWorker`, `mockNotify`, `servePayments`, `mockImages`, `useSkin`): use them
+instead of copying a stub into a spec, and wait for a condition (`expect`, `expect.poll`), never for a fixed time.
 Add `aria-label` to icon-only controls instead of using class selectors.
 
 ## When To Add Tests

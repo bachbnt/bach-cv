@@ -7,28 +7,21 @@
 import Image from 'next/image';
 import type { CSSProperties, ReactNode } from 'react';
 import { commonCopy } from '@/content/copy/common';
-import { useLive } from '@/hooks/use-live';
-import { localize } from '@/lib/content/schema';
+import { useMaintenance } from '@/components/use-maintenance';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
-import { useLang } from '@/lib/i18n/language';
 import { NEUTRAL_THEME } from '@/lib/pages';
-import { useContentQuery } from '@/lib/query/use-content';
 
 /**
  * Replaces the whole site with a maintenance screen while `site/live.maintenance.enabled` is true.
  * While the switches load (or cannot be read) the site shows, as everywhere else: it fails open.
  */
 export function MaintenanceGate({ children }: { children: ReactNode }) {
-  const { maintenance } = useLive();
-  const { lang } = useLang();
+  const { enabled, message, email } = useMaintenance();
   const copy = useCopy(commonCopy);
-  const { data: contacts = [] } = useContentQuery('contacts');
 
-  if (!maintenance.enabled) return <>{children}</>;
+  if (!enabled) return <>{children}</>;
 
-  const message = localize(maintenance, lang).message || copy.maintenance.body;
-  const email = contacts.find((c) => c.kind === 'email');
   return (
     <div
       role='status'

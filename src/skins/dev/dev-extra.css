@@ -1,0 +1,84 @@
+/*
+ * More of the Dev look, kept apart from dev.css: what the shell needs that utilities cannot say (keyframes, the animated folders of the
+ * Explorer, the focus ring), the shadcn tokens in the Dev palette and reduced motion. The shell itself (title bar, tabs, Explorer,
+ * status bar, Connect palette, state screens) is styled with utilities in `shell/*` and `ui/*`.
+ */
+
+/* every control shows a ring when it is reached with the keyboard */
+.dv-root :focus-visible {
+  outline: 2px solid var(--dv-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.dv-root input:focus-visible,
+.dv-root textarea:focus-visible {
+  outline-offset: 0;
+}
+
+/* the code font: its next/font variable is defined on .dv-root, so the family is composed here (the palette on html cannot see it) */
+.dv-root {
+  --mono:
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* the shadcn tokens in the Dev palette: Dialog, Sheet, Popover, Tooltip, Skeleton, ... follow the skin, also in a portal */
+html[data-skin='dev'] {
+  --background: var(--bg);
+  --foreground: var(--fg);
+  --card: var(--chrome);
+  --card-foreground: var(--fg);
+  --popover: var(--chrome);
+  --popover-foreground: var(--fg);
+  --primary: var(--brand);
+  --primary-foreground: #fff;
+  --secondary: var(--chrome-2);
+  --secondary-foreground: var(--fg);
+  --muted: var(--chrome);
+  --muted-foreground: var(--dv-muted);
+  --accent: var(--hover);
+  --accent-foreground: var(--head);
+  --destructive: var(--red);
+  --border: var(--line-2);
+  --input: var(--line-2);
+  --ring: var(--dv-accent);
+}
+
+/* animations of the shell (used through `animate-[...]` in the components) */
+@keyframes dv-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes dv-tabline {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* the folders of the Explorer open and shut smoothly (`<details>` content cannot be styled with utilities) */
+.dv-workspace,
+.dv-dir {
+  interpolate-size: allow-keywords;
+}
+.dv-workspace::details-content,
+.dv-dir::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size 0.22s ease,
+    content-visibility 0.22s allow-discrete;
+}
+.dv-workspace[open]::details-content,
+.dv-dir[open]::details-content {
+  block-size: auto;
+}
+
+/* reduced motion: also the pseudo-elements (the live dot, the typed caret) */
+@media (prefers-reduced-motion: reduce) {
+  .dv-root *,
+  .dv-root *::before,
+  .dv-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

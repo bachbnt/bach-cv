@@ -2,78 +2,7 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
-/* dark mode: the `dark` class on <html> (set by the theme script in the layout and by <ThemeProvider>) */
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-heading:
-    var(--font-bricolage), var(--font-public-sans), ui-sans-serif, system-ui,
-    sans-serif;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-3xl: 20px;
-  --radius-4xl: 40px;
-
-  --animate-marquee: marquee 45s linear infinite;
-
-  /* design tokens from the design mockup */
-  --color-brand: var(--brand);
-  --color-brand-ink: var(--brand-ink);
-  --color-live: var(--live);
-  --color-page: var(--page);
-  --color-page-tint: var(--page-tint);
-  --color-night: var(--night);
-  --color-night-foreground: var(--night-foreground);
-  --color-body: var(--body);
-  --color-danger: var(--danger);
-  --color-danger-bg: var(--danger-bg);
-  --color-danger-border: var(--danger-border);
-  --color-paper: var(--paper);
-  --color-mobile: var(--mobile);
-  --color-mobile-foreground: var(--mobile-foreground);
-  --color-web: var(--web);
-  --color-web-foreground: var(--web-foreground);
-  --color-ai: var(--ai);
-  --color-ai-foreground: var(--ai-foreground);
-  --color-tools: var(--tools);
-  --color-tools-foreground: var(--tools-foreground);
-}
+@import './tailwind-theme.css';
 
 /*
  * Palette from the design mockup: ink on a cool grey, one accent red, and a colour pair per page.
@@ -199,6 +128,12 @@
   --band-tail: color-mix(in srgb, var(--page) 9%, transparent);
   --glow: color-mix(in srgb, var(--page) 16%, transparent);
   --glow-strong: color-mix(in srgb, var(--page) 75%, transparent);
+}
+
+/* A visitor who chose another skin (the head script sets `data-skin`) does not see the default one while the chosen skin loads;
+   <SkinFrame> adds `data-skin-ready` once it is on screen. The default skin never has `data-skin`, so it is never hidden. */
+html[data-skin]:not([data-skin-ready]) body {
+  visibility: hidden;
 }
 
 @layer base {
@@ -394,9 +329,9 @@
   }
 }
 
-/* scroll reveal: <RevealOnScroll> marks elements with data-reveal and adds .in when they enter the viewport */
+/* scroll reveal: <RevealOnScroll> marks elements with data-reveal and adds .in when they enter the viewport; another skin (data-skin on <html>) reveals its own blocks */
 @media (prefers-reduced-motion: no-preference) {
-  [data-reveal] {
+  :where(html:not([data-skin])) [data-reveal] {
     opacity: 0;
     transform: translateY(16px);
     transition:
@@ -407,12 +342,12 @@
       background-color 0.25s ease;
     transition-delay: var(--d, 0ms);
   }
-  [data-reveal].in {
+  :where(html:not([data-skin])) [data-reveal].in {
     opacity: 1;
     transform: none;
   }
   /* the parts of a row (date, company, role, ...) arrive one after another once the row is in view; --p is the position */
-  [data-reveal] [data-part] {
+  :where(html:not([data-skin])) [data-reveal] [data-part] {
     opacity: 0;
     translate: 0 10px;
     transition:
@@ -420,7 +355,7 @@
       translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
     transition-delay: calc(var(--p, 0) * 70ms + 120ms);
   }
-  [data-reveal].in [data-part] {
+  :where(html:not([data-skin])) [data-reveal].in [data-part] {
     opacity: 1;
     translate: 0 0;
   }

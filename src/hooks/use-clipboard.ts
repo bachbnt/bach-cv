@@ -5,6 +5,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { announceCopied } from '@/lib/copied-event';
 
 /** Copies text and reports `copied` for a moment so the button can confirm it. */
 export function useClipboard(resetMs = 1600) {
@@ -17,6 +18,7 @@ export function useClipboard(resetMs = 1600) {
     async (text: string) => {
       try {
         await navigator.clipboard.writeText(text);
+        announceCopied();
         setCopied(true);
         clearTimeout(timer.current);
         timer.current = setTimeout(() => setCopied(false), resetMs);

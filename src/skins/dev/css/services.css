@@ -1,0 +1,10 @@
+/*
+ * What the Services page cannot say with utilities: the keyframes of the "message sent" card (`animate-[dv-sent-in_...]` in
+ * blocks/contact-sent.tsx). The rest of the page is Tailwind utilities in its blocks.
+ */
+@keyframes dv-sent-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}

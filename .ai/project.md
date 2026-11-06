@@ -22,6 +22,7 @@ This Next.js version differs from older releases. Read the relevant guide in
 - `src/app`: routes, layouts, metadata, global CSS (App Router).
 - `src/components/ui`: shadcn/ui components, added with the shadcn CLI.
 - `src/components`: app components, one file per component.
+- `src/skins`: the other looks of the site (see `.ai/skins.md`), loaded only when the visitor picks one.
 - `src/lib/content`: the data contract (`schema.ts`), the repository interface,
   the Firestore lite implementation, and the embedded `shell`.
 - `src/lib/query`: TanStack Query keys, options and hooks.

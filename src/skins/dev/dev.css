@@ -1,0 +1,293 @@
+/*
+ * The look of the Dev skin: the window of a code editor and the blocks of every page. Every class has the prefix dv- and every rule is
+ * scoped to .dv-root (or to html[data-skin='dev'] for the palette, so portals see it). Dark values are the base; the light theme is
+ * `html:not(.dark)`. The palette names do not clash with the shadcn tokens (`--dv-accent`, `--dv-muted`).
+ */
+html[data-skin='dev'] {
+  --bg: #0d1117;
+  --chrome: #161b22;
+  --chrome-2: #010409;
+  --act: #010409;
+  --line: #21262d;
+  --line-2: #30363d;
+  --fg: #c9d1d9;
+  --head: #f0f6fc;
+  --dv-muted: #8b949e;
+  --dim: #7d8590;
+  --kw: #ff7b72;
+  --str: #a5d6ff;
+  --num: #79c0ff;
+  --fn: #d2a8ff;
+  --field: #ffa657;
+  --cmt: #8b949e;
+  --sel: #388bfd26;
+  --hover: #ffffff0f;
+  --k3: #e44857;
+  --and: #7ee787;
+  --dv-accent: #7ee787;
+  --red: #ff7b72;
+  --blue: #79c0ff;
+  --yellow: #e3b341;
+  --status: #b3301f;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: var(--font-public-sans), system-ui, sans-serif;
+}
+html[data-skin='dev']:not(.dark) {
+  --bg: #ffffff;
+  --chrome: #f6f8fa;
+  --chrome-2: #eaeef2;
+  --act: #24292f;
+  --line: #d8dee4;
+  --line-2: #d0d7de;
+  --fg: #1f2328;
+  --head: #0b0d0f;
+  --dv-muted: #57606a;
+  --dim: #6e7781;
+  --kw: #cf222e;
+  --str: #0a3069;
+  --num: #0550ae;
+  --fn: #8250df;
+  --field: #953800;
+  --cmt: #6e7781;
+  --sel: #ddf4ff;
+  --hover: #0000000a;
+  --and: #1a7f37;
+  --dv-accent: #1a7f37;
+  --red: #cf222e;
+  --blue: #0969da;
+  --yellow: #9a6700;
+}
+/* The base of links, images and buttons inside the window. Unlayered on purpose: a plain link takes the colour of its text (a class
+   that only sets `color` loses to this), while the controls of the primitives (`ui/dev-*.tsx`, `data-slot='dev-*'`)
+   set their own colour and font with utilities and are left out. */
+.dv-root a:where(:not([data-slot^='dev-'])) {
+  color: inherit;
+  text-decoration: none;
+}
+.dv-root img {
+  max-width: 100%;
+  display: block;
+}
+.dv-root button:where(:not([data-slot^='dev-'])) {
+  font: inherit;
+}
+.dv-js [data-reveal] {
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 0.55s ease,
+    translate 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 55ms);
+}
+.dv-js [data-reveal][data-in] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* file-type icons */
+.dv-fi {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform 0.2s;
+}
+.dv-fi svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.dv-fi.dv-kt svg {
+  fill: url(#g-kt);
+}
+.dv-fi.dv-py svg {
+  fill: url(#g-py);
+}
+.dv-fi.dv-dart {
+  color: #0175c2;
+}
+.dv-fi.dv-swift {
+  color: #f05138;
+}
+.dv-fi.dv-ts {
+  color: #3178c6;
+}
+.dv-fi.dv-tsx {
+  color: #61dafb;
+}
+
+.dv-codicon {
+  font-size: 16px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ------------------------------------------------ content */
+/* in the base layer, so a utility on a heading (colour, margin, tracking) wins over this default */
+@layer base {
+  .dv-root h1,
+  .dv-root h2,
+  .dv-root h3,
+  .dv-root h4 {
+    font-family: var(--mono);
+    color: var(--head);
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .dv-root h1 {
+    font-weight: 700;
+    font-size: clamp(30px, 4.2vw, 50px);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin: 10px 0 12px;
+  }
+}
+.dv-kw {
+  color: var(--kw);
+}
+.dv-str {
+  color: var(--str);
+}
+.dv-num {
+  color: var(--num);
+}
+.dv-fn {
+  color: var(--fn);
+}
+.dv-tg {
+  color: var(--and);
+}
+.dv-at {
+  color: var(--blue);
+}
+.dv-cmt {
+  color: var(--cmt);
+  font-style: italic;
+}
+/* "highlight occurrences" (blocks/use-token-highlight.ts): the tokens equal to the one under the mouse carry data-hit */
+:is(.dv-kw, .dv-str, .dv-num, .dv-fn, .dv-tg, .dv-at, .dv-cmt) {
+  border-radius: 2px;
+  transition: background-color 0.12s;
+}
+:is(.dv-kw, .dv-str, .dv-num, .dv-fn, .dv-tg, .dv-at, .dv-cmt)[data-hit] {
+  background-color: color-mix(in srgb, currentColor 24%, transparent);
+}
+.dv-caret {
+  display: inline-block;
+  width: 3px;
+  height: 0.95em;
+  background: var(--head);
+  vertical-align: -3px;
+  margin-left: 5px;
+  animation: dv-blink 1.05s steps(1) infinite;
+}
+@keyframes dv-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes dv-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dv-fill {
+  0% {
+    transform: scaleX(0);
+  }
+  40%,
+  70% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+[data-slot='dev-card'] h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+[data-slot='dev-card'] p {
+  margin: 0;
+  color: var(--dv-muted);
+  font-size: 14px;
+}
+
+/* ---- page change: the window stays, only the editor changes (cross-document view transitions, where the browser has them) */
+@view-transition {
+  navigation: auto;
+}
+.dv-root ::view-transition-group(root) {
+  animation-duration: 0.2s;
+}
+.dv-root ::view-transition-old(editor) {
+  animation: dv-vt-out 0.16s ease both;
+}
+.dv-root ::view-transition-new(editor) {
+  animation: dv-vt-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes dv-vt-out {
+  to {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+@keyframes dv-vt-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+/* ---- motion: the terminal types its command and its heading rises, code lines arrive one by one */
+.dv-typed {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  width: calc(var(--n) * 1ch);
+  animation: dv-typing calc(var(--n) * 55ms) steps(var(--n)) 0.25s both;
+}
+@keyframes dv-typing {
+  from {
+    width: 0;
+  }
+}
+.dv-js [data-slot='dev-term-body'] h1 {
+  animation: dv-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.9s both;
+}
+@keyframes dv-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+.dv-js [data-reveal] pre .dv-l {
+  opacity: 0;
+  translate: -8px 0;
+}
+.dv-js [data-reveal][data-in] pre .dv-l {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.45s ease,
+    translate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--k, 0) * 55ms + 0.3s);
+}
+
+/* the animations and transitions themselves are switched off in dev-extra.css */
+@media (prefers-reduced-motion: reduce) {
+  .dv-js [data-reveal] {
+    opacity: 1;
+    translate: none;
+  }
+  .dv-js [data-reveal] pre .dv-l {
+    opacity: 1;
+    translate: none;
+  }
+  .dv-typed {
+    width: auto;
+  }
+}

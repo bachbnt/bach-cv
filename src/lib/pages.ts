@@ -47,3 +47,9 @@ export const PAGE_META: Record<
 export const NEUTRAL_THEME = { accent: '#b3301f', tint: '#e7e9ee' };
 
 export const NAV_PAGES = PAGES.filter((page) => page !== 'home');
+
+/** The page of a path (`/` is Home, `/about` is About), or `null` for a path that is not a page, such as the 404 screen. */
+export function pageOfPath(pathname: string): PageKey | null {
+  const clean = pathname.replace(/\/+$/, '') || '/';
+  return PAGES.find((page) => PAGE_META[page].href === clean) ?? null;
+}

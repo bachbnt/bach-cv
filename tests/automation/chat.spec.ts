@@ -2,49 +2,9 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test, type Page, type Route } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
-
-// The dev server needs NEXT_PUBLIC_CHAT_PROXY_URL=http://localhost:9999/chat (the Playwright config sets it).
-const PROXY = 'http://localhost:9999/chat';
-const CORS = {
-  'access-control-allow-origin': '*',
-  'access-control-allow-headers': 'content-type',
-  'access-control-allow-methods': 'POST, OPTIONS',
-};
-
-type Body = {
-  provider?: string;
-  systemPrompt: string;
-  messages: { role: string; content: string }[];
-};
-
-/** Stands in for the Worker. `reply` decides each answer; the bodies it received are returned. */
-async function mockWorker(
-  page: Page,
-  reply: (
-    n: number,
-    body: Body,
-  ) => { status?: number; body: unknown; delay?: number },
-) {
-  const received: Body[] = [];
-  await page.route(PROXY, async (route: Route) => {
-    const request = route.request();
-    if (request.method() === 'OPTIONS') {
-      return route.fulfill({ status: 204, headers: CORS });
-    }
-    const body = request.postDataJSON() as Body;
-    received.push(body);
-    const out = reply(received.length, body);
-    if (out.delay) await new Promise((r) => setTimeout(r, out.delay));
-    return route.fulfill({
-      status: out.status ?? 200,
-      headers: { ...CORS, 'content-type': 'application/json' },
-      body: JSON.stringify(out.body),
-    });
-  });
-  return received;
-}
+import { mockWorker } from './support/worker';
 
 const openChat = async (page: Page) => {
   await page.getByRole('button', { name: 'Open chat' }).click();

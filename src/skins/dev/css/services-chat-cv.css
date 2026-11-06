@@ -1,0 +1,70 @@
+/*
+ * Animations of the Dev skin for the windows above the page (picture viewer, CV window, BB Bot chat). The look of these windows is
+ * Tailwind utilities in `shell/` (they name the keyframes below with `animate-[...]`); only the keyframes live here. The reduced
+ * motion rule reaches the portaled windows, which sit outside .dv-root (the one in dev-extra.css covers the chat).
+ */
+@keyframes dv-lbfade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes dv-lbpop {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+    scale: 0.98;
+  }
+}
+@keyframes dv-dockin {
+  from {
+    opacity: 0;
+    translate: -50% 14px;
+  }
+}
+@keyframes dv-bbin {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(18px);
+  }
+}
+@keyframes dv-bbpop {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+    scale: 0.97;
+  }
+}
+@keyframes dv-bbword {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes dv-bbring {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25, 1.5);
+  }
+}
+@keyframes dv-bbonline {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--and) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 4px transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot='dev-viewer'],
+  [data-slot='dev-viewer'] *,
+  [data-slot='dev-cv-window'],
+  [data-slot='dev-cv-window'] * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

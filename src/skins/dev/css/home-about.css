@@ -1,0 +1,10 @@
+/*
+ * Extra CSS of the Dev skin for Home and About, on top of dev.css. What is left is what utilities cannot say: the keyframes of
+ * the marquee of skills (`animate-[dv-marquee_...]` in blocks/home-tech-strip.tsx).
+ */
+
+@keyframes dv-marquee {
+  to {
+    transform: translateX(calc(-50% - 5px));
+  }
+}

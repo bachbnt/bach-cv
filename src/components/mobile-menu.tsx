@@ -22,7 +22,10 @@ import { type Live } from '@/lib/content/schema';
 import { NAV_PAGES, PAGE_META } from '@/lib/pages';
 import { commonCopy } from '@/content/copy/common';
 import { useCopy } from '@/lib/i18n/copy';
+import { skinsCopy } from '@/content/copy/skins';
 import { useLang } from '@/lib/i18n/language';
+import { useSkin } from '@/lib/skin/skin';
+import { SKIN_IDS } from '@/lib/skin/skins';
 import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
 import { LANGS, type Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
@@ -44,6 +47,8 @@ export function MobileMenu({
   const copy = useCopy(commonCopy);
   const { lang, setLang } = useLang();
   const { theme, setTheme } = useTheme();
+  const { skin, setSkin } = useSkin();
+  const skins = useCopy(skinsCopy);
   const [cvOpen, setCvOpen] = useState(false);
   // the CV opens once the drawer has finished closing, so two modals never overlap
   const openCvAfterClose = useRef(false);
@@ -170,6 +175,34 @@ export function MobileMenu({
                     </button>
                   ),
                 )}
+              </div>
+            </div>
+          )}
+
+          {SKIN_IDS.length > 1 && (
+            <div className='mt-3.5 flex items-center justify-between gap-3 border-t pt-3.5'>
+              <p className='text-[13px] font-semibold text-muted-foreground'>
+                {skins.label}
+              </p>
+              <div
+                role='group'
+                aria-label={skins.label}
+                className='inline-flex rounded-xl bg-background p-[3px]'
+              >
+                {SKIN_IDS.map((id) => (
+                  <button
+                    key={id}
+                    type='button'
+                    aria-pressed={skin === id}
+                    onClick={() => {
+                      setSkin(id);
+                      setMenuOpen(false);
+                    }}
+                    className='min-h-10 min-w-14 cursor-pointer rounded-[10px] px-3.5 text-[15px] font-semibold text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
+                  >
+                    {skins.names[id].name}
+                  </button>
+                ))}
               </div>
             </div>
           )}

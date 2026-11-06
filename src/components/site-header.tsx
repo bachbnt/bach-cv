@@ -12,6 +12,7 @@ import { LanguageSwitch } from '@/components/language-switch';
 import { commonCopy } from '@/content/copy/common';
 import { useCopy } from '@/lib/i18n/copy';
 import { MobileMenu } from '@/components/mobile-menu';
+import { SkinSwitch } from '@/components/skin-switch';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { liveSchema, type PageKey } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
@@ -83,6 +84,7 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
         </nav>
         <div className='flex items-center gap-2'>
           <LanguageSwitch />
+          <SkinSwitch />
           <ThemeSwitch />
         </div>
         {live.features.connectMenu && <ConnectMenu />}

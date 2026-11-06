@@ -4,6 +4,7 @@
 
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
+import { mockNotify } from './support/worker';
 
 test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
@@ -117,30 +118,6 @@ test('a message is written to Firestore and the success state shows', async ({
   await expect(page.getByLabel('Name')).toBeFocused();
   await expect(page.getByLabel('Name')).toHaveValue('');
 });
-
-const NOTIFY = 'http://localhost:9999/notify';
-const CORS = {
-  'access-control-allow-origin': '*',
-  'access-control-allow-headers': 'content-type',
-  'access-control-allow-methods': 'POST, OPTIONS',
-};
-
-/** The Worker's /notify, answering with `status` and recording what it was sent. */
-async function mockNotify(page: Page, status = 200) {
-  const received: Record<string, unknown>[] = [];
-  await page.route(NOTIFY, async (route) => {
-    const request = route.request();
-    if (request.method() === 'OPTIONS')
-      return route.fulfill({ status: 204, headers: CORS });
-    received.push(request.postDataJSON() as Record<string, unknown>);
-    return route.fulfill({
-      status,
-      headers: { ...CORS, 'content-type': 'application/json' },
-      body: JSON.stringify({ ok: status === 200, sent: status === 200 }),
-    });
-  });
-  return received;
-}
 
 test('after the message is saved the Worker is asked to email it to the owner', async ({
   page,

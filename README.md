@@ -29,6 +29,10 @@ same data.
 - **Light and dark.** A Theme menu in the header (System, Light, Dark; also in the phone menu) remembers the choice and follows the
   operating system until one is chosen. A small script in `<head>` sets the theme before the first paint, so there is no flash. Colours are
   tokens in `src/app/globals.css` (`:root` and `.dark`); the CV sheets stay white paper in both.
+- **Skins.** The header has a Skin menu next to Theme and Language. Standard is the site itself; Dev shows the same content as the window of
+  a code editor (a file for every page, a git log for the career, a small working Terminal, an Output tab with a live log of the page).
+  The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`) and the URL does not change. A skin is loaded only when it is chosen,
+  so Standard visitors download nothing extra. See `.ai/skins.md` and `src/skins/dev/README.md`.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
   lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). The tinted head of each page also lights up softly under the
   mouse (class `band-glow`). Only for a mouse, and off for "reduce motion".
