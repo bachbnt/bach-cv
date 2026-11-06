@@ -71,7 +71,7 @@
   `<ScrollProgress>` (a CSS scroll-driven animation, no script). Every one is off for "reduce motion" (view transitions still start, so a `reduce` block gives their animations a duration of 0) and for browsers without support.
   The pseudo-elements hang off `<html>`: write `html[data-skin='dev']::view-transition-new(.x)`, never with a space before `::view-transition`.
   A test of a transition reads the animations it really plays (`tests/automation/support/view-transitions.ts`), because a selector that does not match leaves the browser's own fade.
-  A magnetic list (the chips of About) is `useMagnet(ref)` with `data-magnet` on each item, which turns `--tx`, `--ty` and `--s` into `translate` and `scale`. A photo frame is `group/photo lift` with the picture zooming on `group-hover/photo`; it does not take `glow`, whose spotlight would sit under a `fill` image.
+  A magnetic list (the chips of About) is `useMagnet(ref)` with `data-magnet` on each item, which turns `--tx`, `--ty` and `--s` into `translate` and `scale`; `lib/magnet-overlaps.ts` keeps the pulled items from lying on top of each other. A photo frame is `group/photo lift` with the picture zooming on `group-hover/photo`; it does not take `glow`, whose spotlight would sit under a `fill` image.
   `scale-*` utilities set the `scale` property, so a test reads `getComputedStyle(el).scale`, not `transform`.
 - `tests/unit/theme/contrast.test.ts` checks the token pairs for contrast; run it after changing a color.
 - A photo whose size CSS decides (a fixed height with `w-full`, a grid cell) is a `fill` image inside a `relative overflow-hidden`

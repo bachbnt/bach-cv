@@ -7,7 +7,8 @@ Standard is the app itself (`app/**`, `components/**`); every other skin lives i
 ## How it works
 
 - The static HTML is always Standard. `lib/skin/skin-script.ts` (in `<head>`) puts the saved choice on `<html data-skin>`; until the
-  skin has loaded, `globals.css` keeps the body hidden (`data-skin-ready`). Standard visitors get nothing: no attribute, no delay.
+  skin has loaded, `globals.css` keeps the body hidden (`data-skin-ready`) and runs a thin line along the top (`html::after`, no words, so it is the
+  same in every language) so the page is not blank on a slow connection. Standard visitors get nothing: no attribute, no delay.
 - `lib/skin/skin.tsx` holds the choice; `components/skin-frame.tsx` shows Standard (`children`) or the skin: its `Frame` around the
   component of the current page, its `NotFound` for a path that is not a page, its `Maintenance` instead of everything.
 - A skin is a `SkinDefinition` (`skins/types.ts`): `Frame`, `pages: Record<PageKey, …>`, `NotFound`, `Maintenance`. A missing page does

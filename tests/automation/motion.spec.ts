@@ -200,20 +200,66 @@ test.describe('motion', () => {
       });
     expect((await shift()).translate).toMatch(/^(none|0px(?: 0px)?)$/);
 
-    // the mouse comes near, to the right of the chip: it moves right and grows a little
-    await page.mouse.move(cx + box.width / 2 + 50, cy);
-    await expect
-      .poll(async () => parseFloat((await shift()).translate))
-      .toBeGreaterThan(2);
+    // the mouse comes near, above the chip (no other chip is in the way): it moves up and grows a little
+    const lift = async () =>
+      -parseFloat((await shift()).translate.split(' ')[1]);
+    await page.mouse.move(cx, box.y - 40);
+    await expect.poll(lift).toBeGreaterThan(2);
     expect((await shift()).scale).toBeGreaterThan(1);
     // and it never travels far
-    expect(parseFloat((await shift()).translate)).toBeLessThanOrEqual(12);
+    expect(await lift()).toBeLessThanOrEqual(12);
 
     // far away it lets go
     await page.mouse.move(cx, cy + 700);
     await expect
       .poll(async () => (await shift()).translate)
       .toMatch(/^(none|0px(?: 0px)?)$/);
+  });
+
+  test('chips pulled toward the same pointer from both sides do not lie on top of each other', async ({
+    page,
+  }) => {
+    await page.goto('/about');
+    const chips = page.locator('[data-magnet]');
+    await expect(chips.nth(1)).toBeVisible();
+    const gapOf = async () => {
+      const [a, b] = await Promise.all([
+        chips.nth(0).boundingBox(),
+        chips.nth(1).boundingBox(),
+      ]);
+      return b!.x - (a!.x + a!.width);
+    };
+    // the two chips are on one row, with a little space between them
+    const [first, second] = await Promise.all([
+      chips.nth(0).boundingBox(),
+      chips.nth(1).boundingBox(),
+    ]);
+    expect(Math.abs(first!.y - second!.y)).toBeLessThan(2);
+    const rest = await gapOf();
+    expect(rest).toBeGreaterThan(6);
+
+    // the mouse is in the space between them: both are pulled toward it, so they come closer, but never touch
+    await page.mouse.move(
+      first!.x + first!.width + rest / 2,
+      first!.y + first!.height / 2,
+    );
+    await expect.poll(gapOf).toBeLessThan(rest - 1);
+    // (the chips move with a short transition: wait for it to end before measuring)
+    await expect
+      .poll(async () => {
+        const before = await gapOf();
+        await page.evaluate(
+          () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() =>
+                requestAnimationFrame(() => resolve()),
+              ),
+            ),
+        );
+        return Math.abs(before - (await gapOf())) < 0.1;
+      })
+      .toBe(true);
+    expect(await gapOf()).toBeGreaterThanOrEqual(3);
   });
 
   test('the BB Bot button has a green dot, lifts on hover, and calls attention once if it is left alone', async ({

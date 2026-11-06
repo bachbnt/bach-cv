@@ -5,12 +5,15 @@
 'use client';
 
 import { useEffect, type RefObject } from 'react';
+import { separateMagnets, type MagnetBox } from '@/lib/magnet-overlaps';
 
 /** How far from the edge of a chip the pointer starts to pull it, in px. */
 const REACH = 120;
 /** The most a chip moves toward the pointer, in px, and how much bigger it gets (a fraction). */
 const PULL = 11;
 const GROW = 0.07;
+/** The least space left between two chips that are pulled at the same time, in px. */
+const GAP = 4;
 
 /**
  * Pulls the items of `ref` that carry `data-magnet` (direct children, and `ref` must be positioned: it is their offset parent) a little toward the pointer when it comes near, like a magnet, and lets them go
@@ -63,31 +66,40 @@ export function useMagnet(ref: RefObject<HTMLElement | null>) {
 
       // read everything first, then write (a write between two reads would make the browser lay the page out again for each chip).
       // `offsetLeft` and `offsetTop` ignore transforms, so a chip is measured where it rests, not where the pull has moved it
-      const pulls = items().map((el) => {
+      const els = items();
+      const boxes: MagnetBox[] = els.map((el) => {
         const left = area.left + el.offsetLeft;
         const top = area.top + el.offsetTop;
-        const dx = x - (left + el.offsetWidth / 2);
-        const dy = y - (top + el.offsetHeight / 2);
+        const w = el.offsetWidth;
+        const h = el.offsetHeight;
+        const dx = x - (left + w / 2);
+        const dy = y - (top + h / 2);
         // the distance from the pointer to the edge of the chip: a wide chip pulls as much as a narrow one
         const edge = Math.hypot(
-          Math.max(left - x, 0, x - (left + el.offsetWidth)),
-          Math.max(top - y, 0, y - (top + el.offsetHeight)),
+          Math.max(left - x, 0, x - (left + w)),
+          Math.max(top - y, 0, y - (top + h)),
         );
         const strength = Math.max(0, 1 - edge / REACH);
         const centre = Math.hypot(dx, dy);
         const reach = Math.min(centre, PULL * strength);
         return {
-          el,
+          cx: left + w / 2,
+          cy: top + h / 2,
+          w,
+          h,
           tx: centre > 0 ? (dx / centre) * reach : 0,
           ty: centre > 0 ? (dy / centre) * reach : 0,
-          strength,
+          s: 1 + GROW * strength,
         };
       });
-      for (const { el, tx, ty, strength } of pulls) {
+      // chips pulled toward the same pointer from both sides would lie on top of each other: push such pairs apart again
+      separateMagnets(boxes, GAP);
+      els.forEach((el, i) => {
+        const { tx, ty, s } = boxes[i];
         el.style.setProperty('--tx', `${tx.toFixed(1)}px`);
         el.style.setProperty('--ty', `${ty.toFixed(1)}px`);
-        el.style.setProperty('--s', String(1 + GROW * strength));
-      }
+        el.style.setProperty('--s', String(s));
+      });
     };
 
     const onMove = (event: PointerEvent) => {

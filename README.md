@@ -42,7 +42,7 @@ same data.
   "Current" pill has a live dot on Resume and Home. All of it is off for "reduce motion".
 - **Page and list motion.** A page change blends: the header stays put (only its tint changes) and the page fades out and the next
   fades in (React view transitions). A filter on Projects or Payment swaps its list the same way. A thin line along the top grows with the scroll,
-  a project cover zooms a little under the mouse, the personal photos (Home, About) rise like a card and zoom slowly, the arrow of an outside link nudges, the specialty chips on About lean toward the mouse like a magnet, and the picture of a dialog fades in when it changes.
+  a project cover zooms a little under the mouse, the personal photos (Home, About) rise like a card and zoom slowly, the arrow of an outside link nudges, the specialty chips on About lean toward the mouse like a magnet (and do not pile up when two are pulled at once), and the picture of a dialog fades in when it changes.
   All of it is off for "reduce motion", and a browser without support just swaps.
 - **Accessible.** A visible focus ring on every control (a browser test tabs through the pages and dialogs), 44 px touch targets on
   phones, one set of buttons (filled, outline, link) and one image dialog for screenshots, certificates and QR codes. The moving list of
