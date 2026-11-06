@@ -18,7 +18,7 @@ export function PageHead({
   children?: ReactNode;
 }) {
   return (
-    <div className='rounded-b-[40px] bg-page-tint'>
+    <div className='band-glow rounded-b-[40px] bg-page-tint'>
       <div className='mx-auto w-full max-w-[1200px] px-5 pt-6 pb-14 min-[721px]:px-12'>
         <h1 className='text-[38px] leading-[1.04] min-[721px]:text-[60px]'>
           {title}

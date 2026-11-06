@@ -30,7 +30,8 @@ same data.
   operating system until one is chosen. A small script in `<head>` sets the theme before the first paint, so there is no flash. Colours are
   tokens in `src/app/globals.css` (`:root` and `.dark`); the CV sheets stay white paper in both.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
-  lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). Only for a mouse, and off for "reduce motion".
+  lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). The tinted head of each page also lights up softly under the
+  mouse (class `band-glow`). Only for a mouse, and off for "reduce motion".
 - **Experience.** On Resume a timeline runs down the roles (a line that draws itself, a dot for each, the current one breathing), the
   parts of a role arrive one after another, the responsibilities slide open line by line and the company logo zooms on hover. The
   "Current" pill has a live dot on Resume and Home. All of it is off for "reduce motion".

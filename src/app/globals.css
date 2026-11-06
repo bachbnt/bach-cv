@@ -184,6 +184,9 @@
   --page-tint: var(--page-tint-base);
   /* the colour of the cursor glow on cards: the page colour, soft inside the card and stronger on its edge */
   --lift-shadow: rgba(27, 31, 39, 0.13);
+  /* the soft light that follows the mouse over the tinted head of a page: a bright core and a wider tint of the page colour */
+  --band-core: rgb(255 255 255 / 0.6);
+  --band-tail: color-mix(in srgb, var(--page) 9%, transparent);
   --glow: color-mix(in srgb, var(--page) 11%, transparent);
   --glow-strong: color-mix(in srgb, var(--page) 55%, transparent);
 }
@@ -192,6 +195,8 @@
   --page: color-mix(in srgb, var(--page-accent) 52%, white);
   --page-tint: color-mix(in srgb, var(--page-accent) 22%, var(--background));
   --lift-shadow: rgba(0, 0, 0, 0.5);
+  --band-core: color-mix(in srgb, var(--page) 22%, transparent);
+  --band-tail: color-mix(in srgb, var(--page) 9%, transparent);
   --glow: color-mix(in srgb, var(--page) 16%, transparent);
   --glow-strong: color-mix(in srgb, var(--page) 75%, transparent);
 }
@@ -278,6 +283,41 @@
       translate: 0 -3px;
       box-shadow: 0 14px 32px var(--lift-shadow);
     }
+  }
+}
+
+/*
+ * The tinted head of a page lights up softly where the mouse is. It is the element's own background-image over its tint, so it
+ * sits behind the text. --band-o (0 or 1, written by <PointerGlow> on every band at once, so the light goes on across the join
+ * of the header and the page title) fades it in and out. Only for a mouse, and off for prefers-reduced-motion.
+ */
+@property --band-o {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+@utility band-glow {
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    background-image:
+      radial-gradient(
+        260px circle at var(--mx, 50%) var(--my, 50%),
+        color-mix(
+          in srgb,
+          var(--band-core),
+          transparent calc(100% - var(--band-o) * 100%)
+        ),
+        transparent 70%
+      ),
+      radial-gradient(
+        480px circle at var(--mx, 50%) var(--my, 50%),
+        color-mix(
+          in srgb,
+          var(--band-tail),
+          transparent calc(100% - var(--band-o) * 100%)
+        ),
+        transparent 70%
+      );
+    transition: --band-o 0.45s ease;
   }
 }
 

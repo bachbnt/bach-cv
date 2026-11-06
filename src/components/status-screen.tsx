@@ -16,7 +16,7 @@ export function StatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
   const copy = useCopy(commonCopy);
   const text = copy.status[variant];
   return (
-    <div className='rounded-b-[40px] bg-page-tint'>
+    <div className='band-glow rounded-b-[40px] bg-page-tint'>
       <section className='mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6 px-5 pt-24 pb-[120px] min-[721px]:px-12'>
         <p className='font-heading text-[80px] leading-none font-bold tracking-[-0.04em] text-brand-ink min-[721px]:text-[120px]'>
           {variant === 'soon' ? copy.soon : '404'}

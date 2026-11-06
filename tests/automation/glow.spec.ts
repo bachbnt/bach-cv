@@ -197,3 +197,87 @@ test('with reduced motion the cards do not move on hover', async ({ page }) => {
   const after = await lifted(card);
   expect(after.translate === 'none' || after.translate === '0px').toBe(true);
 });
+
+test('the tinted head of a page lights up softly under the mouse, across the header and the title', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/projects');
+  const bands = page.locator('.band-glow');
+  await expect(bands).toHaveCount(2);
+  // the page listens to the mouse once it has started up
+  await page.waitForTimeout(800);
+
+  // resting: dark
+  await page.mouse.move(640, 700, { steps: 3 });
+  await expect
+    .poll(() =>
+      bands.evaluateAll((els) =>
+        els.map((e) => (e as HTMLElement).style.getPropertyValue('--band-o')),
+      ),
+    )
+    .toEqual(['0', '0']);
+
+  // the mouse over the title part: both blocks light, with the same centre seen from the page
+  await page.mouse.move(700, 160, { steps: 6 });
+  await expect
+    .poll(() =>
+      bands.evaluateAll((els) =>
+        els.map((e) => (e as HTMLElement).style.getPropertyValue('--band-o')),
+      ),
+    )
+    .toEqual(['1', '1']);
+  const seen = await bands.evaluateAll((els) =>
+    els.map((el) => {
+      const box = el.getBoundingClientRect();
+      const s = (el as HTMLElement).style;
+      return {
+        x: box.left + parseFloat(s.getPropertyValue('--mx')),
+        y: box.top + parseFloat(s.getPropertyValue('--my')),
+        image: getComputedStyle(el).backgroundImage,
+      };
+    }),
+  );
+  for (const band of seen) {
+    expect(Math.abs(band.x - 700)).toBeLessThan(2);
+    expect(Math.abs(band.y - 160)).toBeLessThan(2);
+    expect(band.image).toContain('radial-gradient');
+  }
+
+  // and it goes out again below the head
+  await page.mouse.move(640, 700, { steps: 6 });
+  await expect
+    .poll(() =>
+      bands.evaluateAll((els) =>
+        els.map((e) => (e as HTMLElement).style.getPropertyValue('--band-o')),
+      ),
+    )
+    .toEqual(['0', '0']);
+});
+
+test('every page has a lit head, and with reduced motion there is none', async ({
+  page,
+}) => {
+  for (const path of [
+    '/',
+    '/about',
+    '/resume',
+    '/certificates',
+    '/services',
+    '/payment',
+  ]) {
+    await page.goto(path);
+    expect(
+      await page.locator('.band-glow').count(),
+      `bands on ${path}`,
+    ).toBeGreaterThanOrEqual(2);
+  }
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/projects');
+  await page.mouse.move(700, 160, { steps: 4 });
+  const images = await page
+    .locator('.band-glow')
+    .evaluateAll((els) => els.map((e) => getComputedStyle(e).backgroundImage));
+  expect(images).toEqual(['none', 'none']);
+});

@@ -34,7 +34,7 @@ export function SitePage({
     >
       <DocumentTitle page={page} />
       <PageThemeVars accent={theme.accent} tint={theme.tint} />
-      <div className='bg-page-tint'>
+      <div className='band-glow bg-page-tint'>
         <SiteHeader current={page} />
       </div>
       {children}

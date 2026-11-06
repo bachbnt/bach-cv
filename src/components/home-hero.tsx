@@ -20,7 +20,7 @@ export function HomeHero() {
   const copy = useCopy(homeCopy);
   const { pipeline } = copy;
   return (
-    <div className='rounded-b-[40px] bg-page-tint'>
+    <div className='band-glow rounded-b-[40px] bg-page-tint'>
       <section
         className={`${wrap} flex flex-wrap items-center gap-14 pt-12 pb-14 min-[721px]:pt-[72px]`}
       >

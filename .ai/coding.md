@@ -61,6 +61,8 @@
   box inside a card does not get `lift`. The `glow` class (cursor spotlight and lit edge, set up in `globals.css`; `<PointerGlow>` feeds it the mouse
   position). It uses `::before` and `::after`, so those cannot be used on the same element: use a real child element instead.
   Rows, sections and anything without a rounded card shape do not get it.
+- The tinted head of a page (the header block and the title block, both `bg-page-tint`) carries `band-glow`: a soft light under the mouse
+  that is the block's own background-image, so it sits behind the text. Every `band-glow` is lit together by `<PointerGlow>`.
 - Parts of a revealed block that should arrive one after another carry `data-part` and `style={{ '--p': n }}` (see the reveal block in
   `globals.css`). Animated open/shut content uses the `grid-template-rows: 0fr → 1fr` trick plus `inert` while shut, not `<details>`.
 - `tests/unit/theme/contrast.test.ts` checks the token pairs for contrast; run it after changing a color.

@@ -23,7 +23,7 @@ export function AboutHead() {
   const [top, bottom] = profile?.covers ?? [];
 
   return (
-    <div className='rounded-b-[40px] bg-page-tint'>
+    <div className='band-glow rounded-b-[40px] bg-page-tint'>
       <section className='mx-auto flex w-full max-w-[1200px] flex-wrap items-center gap-14 px-5 pt-14 pb-20 min-[721px]:px-12'>
         <div className='flex min-w-0 flex-[1_1_460px] flex-col gap-6'>
           <h1 className='text-[38px] leading-[1.04] min-[721px]:text-[60px]'>
