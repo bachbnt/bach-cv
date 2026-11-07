@@ -12,10 +12,8 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { DevSkeleton } from '@/skins/dev/ui/dev-skeleton';
 import { statesCopy } from '@/content/copy/states';
 import { cn } from '@/lib/utils';
+import { stripSkills } from '@/lib/derive/skill-strip';
 import { DevChip } from '@/skins/dev/ui/dev-chip';
-
-const CATEGORY_ORDER = ['mobile', 'web', 'ai', 'tools'] as const;
-const LIMIT = 20;
 
 /** A slow marquee of skills, mobile first. It stops on hover, with a pause button, and becomes a wrapped list for reduced motion. */
 export function HomeTechStrip() {
@@ -24,9 +22,7 @@ export function HomeTechStrip() {
   // a moving list needs a way to stop it that does not need a mouse (WCAG 2.2.2)
   const [paused, setPaused] = useState(false);
   const { data: skills = [], isPending } = useContentQuery('skills');
-  const shown = CATEGORY_ORDER.flatMap((category) =>
-    skills.filter((s) => s.listed && s.category === category),
-  ).slice(0, LIMIT);
+  const shown = stripSkills(skills);
 
   if (isPending) {
     return (

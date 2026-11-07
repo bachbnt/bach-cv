@@ -13,6 +13,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import type { Doc, Skill } from '@/lib/content/schema';
 import { formatPeriod } from '@/lib/format';
+import { highlighted } from '@/lib/derive/highlighted';
+import { isCurrent } from '@/lib/derive/current-job';
 import type { CSSProperties } from 'react';
 import { cn } from 'cn';
 
@@ -36,11 +38,9 @@ export function ExperienceRow({
   const { experience: copy } = useCopy(resumeCopy);
   const { lang } = useLang();
   const intro = job.summary || job.tagline;
-  const keyProjects = job.projects
-    .filter((p) => p.highlight !== null)
-    .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0));
+  const keyProjects = highlighted(job.projects);
 
-  const current = !job.endMonth;
+  const current = isCurrent(job);
   return (
     <article className='group/row relative flex flex-wrap gap-x-12 gap-y-3 border-t px-3 py-7 transition-colors hover:bg-card active:bg-card min-[721px]:px-6 min-[721px]:py-10'>
       {/* timeline: only where the date and the role share a line */}

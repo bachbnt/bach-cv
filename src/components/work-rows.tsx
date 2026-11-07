@@ -14,6 +14,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { formatPeriod } from '@/lib/format';
 import { useContentQuery } from '@/lib/query/use-content';
+import { isCurrent } from '@/lib/derive/current-job';
+import { jobBadge } from '@/lib/derive/job-badge';
 
 const LIMIT = 4;
 
@@ -61,12 +63,12 @@ export function WorkRows() {
                 aria-hidden='true'
                 className='flex h-20 w-28 flex-none items-center justify-center rounded-[10px] bg-tile font-heading text-[26px] font-bold tracking-[-0.02em] text-white'
               >
-                {job.shortName || job.company.slice(0, 3)}
+                {jobBadge(job)}
               </div>
             )}
             <h3 className='min-w-[230px] flex-[0_0_230px] text-[22px]'>
               {job.company}
-              {!job.endMonth && (
+              {isCurrent(job) && (
                 <CurrentBadge>{copy.work.current}</CurrentBadge>
               )}
             </h3>

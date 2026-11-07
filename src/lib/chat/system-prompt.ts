@@ -11,6 +11,7 @@ import {
   type Profile,
   type Shell,
 } from '@/lib/content/schema';
+import { issuedNewestFirst, newestFirst } from '@/lib/derive/recency';
 import { WORKER_LIMITS } from './chat-api';
 
 /** What the assistant may know. Payments are left out on purpose: bank details are never sent to a model. */
@@ -25,15 +26,6 @@ export interface ChatContext {
   services?: Doc<'services'>[];
   contacts?: Doc<'contacts'>[];
 }
-
-const newestFirst = <T extends { endMonth: string | null; startMonth: string }>(
-  items: T[],
-): T[] =>
-  [...items].sort((a, b) =>
-    `${b.endMonth ?? '9999-12'} ${b.startMonth}`.localeCompare(
-      `${a.endMonth ?? '9999-12'} ${a.startMonth}`,
-    ),
-  );
 
 const visible = <T extends { visible: boolean }>(items: T[] = []): T[] =>
   items.filter((item) => item.visible);
@@ -102,9 +94,7 @@ const sectionsOf = (c: ChatContext): string[][] => {
     ]);
   }
 
-  const certificates = [...visible(c.certificates)].sort((a, b) =>
-    b.issuedAt.localeCompare(a.issuedAt),
-  );
+  const certificates = issuedNewestFirst(visible(c.certificates));
   if (certificates.length) {
     sections.push([
       '## Certificates',

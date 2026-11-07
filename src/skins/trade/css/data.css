@@ -1,0 +1,42 @@
+/*
+ * Keyframes and token colours of the Trade skin for Projects, Resume and Certificates. Classes have the prefix tv-, scoped to the skin root; the look itself is
+ * Tailwind utilities in the TSX, and `animate-[name_...]` names the keyframes here. `prefers-reduced-motion` is handled once in trade.css.
+ */
+html[data-skin='trade'] {
+  --tv-data-personal: var(--tv-accent);
+  --tv-data-freelance: var(--tv-up);
+  --tv-data-company: var(--tv-gold);
+  --tv-data-academic: var(--tv-violet);
+}
+
+/* a heatmap tile pops in, a card or a row rises, a calendar row slides in from the left (the individual transform properties, so they never fight a hover) */
+@keyframes tv-pop {
+  from {
+    opacity: 0;
+    scale: 0.88;
+  }
+}
+@keyframes tv-fade-up {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+@keyframes tv-slide-in {
+  from {
+    opacity: 0;
+    translate: -14px 0;
+  }
+}
+/* a bar of the tenure grows from its start */
+@keyframes tv-grow {
+  from {
+    scale: 0 1;
+  }
+}
+@keyframes tv-tip-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}

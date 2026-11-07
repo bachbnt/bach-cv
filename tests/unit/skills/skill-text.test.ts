@@ -10,7 +10,8 @@ import {
   placeTip,
   tipText,
 } from '@/components/skills/skill-text';
-import { COLLECTIONS, skillEvidence, type Doc } from '@/lib/content/schema';
+import { COLLECTIONS, type Doc } from '@/lib/content/schema';
+import { skillEvidence } from '@/lib/derive/skill-use';
 
 const { evidence, tip } = resumeCopy.en.skills;
 const vi = resumeCopy.vi.skills;

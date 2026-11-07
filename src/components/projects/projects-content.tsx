@@ -15,6 +15,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
+import { highlighted } from '@/lib/derive/highlighted';
 
 const heading = 'text-[30px] min-[721px]:text-[40px]';
 
@@ -36,9 +37,7 @@ export function ProjectsContent() {
   };
 
   const projects = projectsQuery.data ?? [];
-  const featured = projects
-    .filter((p) => p.highlight !== null)
-    .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0));
+  const featured = highlighted(projects);
 
   return (
     <section className='mx-auto w-full max-w-[1200px] px-5 pt-14 pb-24 min-[721px]:px-12'>

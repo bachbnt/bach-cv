@@ -1,0 +1,52 @@
+/*
+ * Keyframes and token colours of the Trade skin for the terminal frame, the watchlist and Home. Classes have the prefix tv-, scoped to the skin root; the look itself is
+ * Tailwind utilities in the TSX, and `animate-[name_...]` names the keyframes here. Only transform and opacity move. Reduced motion is cut in trade.css
+ * (and the ticker tape has its own static row for it, in the TSX).
+ */
+
+/* the ticker tape: the belt holds the list twice, so moving by half of it comes back to where it began */
+@keyframes tv-tape {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* the row of the page that was just opened lights up and fades */
+@keyframes tv-flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* a panel that is switched on slides in from its edge */
+@keyframes tv-slide-r {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+/* the sparkline of a technology grows from its baseline */
+@keyframes tv-spark {
+  from {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+}
+
+/* the three dots of the BB Bot while the answer is on its way */
+@keyframes tv-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}

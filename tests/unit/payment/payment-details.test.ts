@@ -4,27 +4,10 @@
 
 import { describe, expect, it } from 'vitest';
 import {
-  initialsOf,
   qrFileName,
   splitMethods,
   summaryOf,
 } from '@/components/payment/payment-details';
-
-describe('initialsOf', () => {
-  it.each([
-    ['Vietcombank', 'VI'],
-    ['VietinBank', 'VB'],
-    ['Binance', 'BI'],
-    ['Viettel Money', 'VM'],
-    ['ZaloPay', 'ZP'],
-    ['VNPay', 'VN'],
-    ['PayPal', 'PP'],
-    ['ShopeePay', 'SP'],
-    ['momo', 'MO'],
-  ])('%s -> %s', (name, initials) => {
-    expect(initialsOf(name)).toBe(initials);
-  });
-});
 
 describe('summaryOf', () => {
   const labels = {

@@ -7,7 +7,7 @@
 import type { CSSProperties } from 'react';
 import { SkillIcon } from '@/components/skills/skill-icon';
 import { SKILL_COLORS } from '@/components/skills/skill-icons';
-import { SIDE_PROJECTS } from '@/lib/content/schema';
+import { SIDE_PROJECTS } from '@/lib/derive/skill-use';
 import { useSkills } from '@/components/skills/use-skills';
 import { devResumeCopy } from '@/content/copy/dev-resume-certificates';
 import { resumeCopy } from '@/content/copy/resume';

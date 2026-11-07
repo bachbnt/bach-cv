@@ -13,7 +13,6 @@ import {
   settingsSchema,
   shellSchema,
   skillSchema,
-  skillEvidence,
 } from '@/lib/content/schema';
 
 describe('fail-open defaults', () => {
@@ -96,44 +95,6 @@ describe('references', () => {
       experience: [{ id: 'e', technologies: ['x'], projects: [] } as never],
     });
     expect(broken).toEqual(['experience/e.technologies -> skills/x']);
-  });
-});
-
-describe('skillEvidence', () => {
-  it('counts only visible roles, newest first, with the first year', () => {
-    const experience = [
-      {
-        id: 'a',
-        visible: true,
-        shortName: 'A',
-        company: 'A Co',
-        startMonth: '2022-05',
-        technologies: ['kotlin'],
-        projects: [],
-      },
-      {
-        id: 'b',
-        visible: true,
-        shortName: 'B',
-        company: 'B Co',
-        startMonth: '2026-01',
-        technologies: ['kotlin'],
-        projects: [],
-      },
-      {
-        id: 'c',
-        visible: false,
-        shortName: 'C',
-        company: 'C Co',
-        startMonth: '2019-07',
-        technologies: ['kotlin'],
-        projects: [],
-      },
-    ];
-    expect(skillEvidence(experience, []).get('kotlin')).toEqual({
-      usedAt: ['B', 'A'],
-      since: 2022,
-    });
   });
 });
 

@@ -10,6 +10,7 @@ import {
   type Doc,
   type Orderable,
 } from '@/lib/content/schema';
+import { recencyKey } from '@/lib/derive/recency';
 import { queryKeys } from './keys';
 
 const FIVE_MINUTES = 5 * 60 * 1000;
@@ -40,10 +41,8 @@ export const settingsQueryOptions = () =>
 /** Collections that read newest first by their own date, not by a hand-set `sort`. */
 const DATE_OF: Partial<Record<CollectionName, (doc: never) => string>> = {
   // a role with no end comes first, then the latest end, then the latest start
-  experience: (d: Doc<'experience'>) =>
-    `${d.endMonth ?? '9999-12'} ${d.startMonth}`,
-  education: (d: Doc<'education'>) =>
-    `${d.endMonth ?? '9999-12'} ${d.startMonth}`,
+  experience: (d: Doc<'experience'>) => recencyKey(d),
+  education: (d: Doc<'education'>) => recencyKey(d),
   certificates: (d: Doc<'certificates'>) => d.issuedAt,
 };
 

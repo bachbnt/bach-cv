@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = 3100;
+// the shared dev server; set PW_PORT (and NEXT_DIST_DIR) to run a second one beside it
+const port = Number(process.env.PW_PORT) || 3100;
 
 // the chat tests talk to a stubbed proxy on this address
 process.env.NEXT_PUBLIC_CHAT_PROXY_URL = 'http://localhost:9999/chat';

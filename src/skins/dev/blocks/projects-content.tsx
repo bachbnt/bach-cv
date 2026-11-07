@@ -9,6 +9,7 @@ import { devCopy } from '@/content/copy/dev';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
+import { highlighted } from '@/lib/derive/highlighted';
 import { FeaturedProject } from '@/skins/dev/blocks/featured-project';
 import { ProjectGrid } from '@/skins/dev/blocks/project-grid';
 import { useOpenScreenshots } from '@/skins/dev/blocks/use-open-screenshots';
@@ -30,9 +31,7 @@ export function ProjectsContent() {
   const openScreenshots = useOpenScreenshots(skills);
 
   const projects = projectsQuery.data ?? [];
-  const featured = projects
-    .filter((p) => p.highlight !== null)
-    .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0));
+  const featured = highlighted(projects);
 
   return (
     <DevDataState

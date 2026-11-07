@@ -9,6 +9,7 @@ import { devCopy } from '@/content/copy/dev';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
+import { highlighted } from '@/lib/derive/highlighted';
 import { HomeProjectCard } from '@/skins/dev/blocks/home-project-card';
 import { countHint } from '@/skins/dev/ui/count-hint';
 import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
@@ -27,10 +28,7 @@ export function HomeProjects() {
     () => new Map(skillList.map((s) => [s.id, s])),
     [skillList],
   );
-  const featured = (projectsQuery.data ?? [])
-    .filter((p) => p.highlight !== null)
-    .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0))
-    .slice(0, LIMIT);
+  const featured = highlighted(projectsQuery.data ?? []).slice(0, LIMIT);
 
   // featured projects are an extra: with none, or if they fail to load, the section is left out
   if (projectsQuery.isError || (!projectsQuery.isPending && !featured.length))

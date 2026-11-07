@@ -6,13 +6,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  fillCopy,
-  initialsOf,
-  skillsOf,
-} from '@/components/projects/project-helpers';
+import { fillCopy, skillsOf } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import type { Doc } from '@/lib/content/schema';
+import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { DevChip } from '@/skins/dev/ui/dev-chip';

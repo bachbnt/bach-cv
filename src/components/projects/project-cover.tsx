@@ -5,7 +5,8 @@
 'use client';
 
 import Image from 'next/image';
-import { fillCopy, initialsOf } from '@/components/projects/project-helpers';
+import { fillCopy } from '@/components/projects/project-helpers';
+import { initialsOf } from '@/lib/derive/initials';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';

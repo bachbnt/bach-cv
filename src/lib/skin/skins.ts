@@ -3,7 +3,7 @@
  */
 
 /** The looks (skins) of the site. */
-export const SKIN_IDS = ['standard', 'dev'] as const;
+export const SKIN_IDS = ['standard', 'dev', 'trade'] as const;
 export type SkinId = (typeof SKIN_IDS)[number];
 
 /** The skin of the static HTML and of every visitor who has not chosen another. */

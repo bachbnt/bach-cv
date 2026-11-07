@@ -32,8 +32,10 @@ same data.
 - **Skins.** The header has a Skin menu next to Theme and Language. Standard is the site itself; Dev shows the same content as the window of
   a code editor (a file for every page, a git log for the career, a small working Terminal, an Output tab with a live log of the page).
   Its three window lights work: red goes back to Standard, yellow is Zen mode, green is full screen.
-  The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`) and the URL does not change. A skin is loaded only when it is chosen,
-  so Standard visitors download none of its scripts (its styles share the one Tailwind build, about 15 KB gzip more). See `.ai/skins.md` and `src/skins/dev/README.md`.
+  Trade is a chart terminal with its own interface for every page (the career as a working chart with chart types, indicators,
+  drawing tools and a bar replay; a symbol search, a ticker tape and a watchlist; a screener, financials and a calendar for the data pages).
+  The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`, `?skin=trade`) and the URL does not change. A skin is loaded only when it is chosen,
+  so Standard visitors download none of its scripts (its styles share the one Tailwind build: the main stylesheet is about 40 KB gzip, it was about 20 KB before skins). See `.ai/skins.md` and the README of each skin in `src/skins/<id>/`.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
   lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). The tinted head of each page also lights up softly under the
   mouse (class `band-glow`). Only for a mouse, and off for "reduce motion".

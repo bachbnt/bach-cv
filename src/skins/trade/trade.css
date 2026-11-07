@@ -1,0 +1,183 @@
+/*
+ * The look of the Trade skin: a candlestick chart terminal. Every class has the prefix tv- and every rule is scoped to .tv-root (or to
+ * html[data-skin='trade'] for the palette, so portals see it). Dark values are the base; the light theme is `html:not(.dark)`.
+ * Names of the palette all start with --tv-, so they cannot clash with the shadcn tokens or with another skin.
+ */
+html[data-skin='trade'] {
+  --tv-bg: #131722;
+  --tv-panel: #1e222d;
+  --tv-hover: #2a2e39;
+  --tv-line: #2a2e39;
+  --tv-ink: #d1d4dc;
+  /* a little lighter than the original grey (#787b86) so small text keeps its contrast on the dark background */
+  --tv-mute: #8b8e99;
+  --tv-dim: #5d606b;
+  --tv-grid: #1f2430;
+  --tv-up: #26a69a;
+  --tv-down: #ef5350;
+  --tv-up-bg: #26a69a22;
+  --tv-down-bg: #ef535022;
+  --tv-accent: #2962ff;
+  --tv-accent-hover: #1e53e5;
+  --tv-accent-ink: #7b9bff;
+  --tv-gold: #f7a600;
+  --tv-violet: #7c3aed;
+  --tv-sky: #0ea5e9;
+  --tv-orange: #f97316;
+  --tv-tip: #363a45;
+  --tv-night: #0b0e14;
+  --tv-font:
+    -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu,
+    sans-serif;
+}
+html[data-skin='trade']:not(.dark) {
+  --tv-bg: #ffffff;
+  --tv-panel: #ffffff;
+  --tv-hover: #f0f3fa;
+  --tv-line: #e0e3eb;
+  --tv-ink: #131722;
+  --tv-mute: #6a6d78;
+  --tv-dim: #9598a1;
+  --tv-grid: #f0f3fa;
+  --tv-up: #089981;
+  --tv-down: #f23645;
+  --tv-up-bg: #08998120;
+  --tv-down-bg: #f2364520;
+  --tv-accent-ink: #2962ff;
+  --tv-tip: #131722;
+  --tv-night: #131722;
+}
+
+/* the shadcn tokens, and the Standard ones the reused windows read (picture viewer, CV, chat, Connect), in the Trade palette */
+html[data-skin='trade'] {
+  --background: var(--tv-bg);
+  --foreground: var(--tv-ink);
+  --card: var(--tv-panel);
+  --card-foreground: var(--tv-ink);
+  --popover: var(--tv-panel);
+  --popover-foreground: var(--tv-ink);
+  --primary: var(--tv-accent);
+  --primary-foreground: #fff;
+  --secondary: var(--tv-hover);
+  --secondary-foreground: var(--tv-ink);
+  --muted: var(--tv-hover);
+  --muted-foreground: var(--tv-mute);
+  --accent: var(--tv-hover);
+  --accent-foreground: var(--tv-ink);
+  --destructive: var(--tv-down);
+  --border: var(--tv-line);
+  --input: var(--tv-line);
+  --ring: var(--tv-accent);
+  --radius: 0.375rem;
+  --body: var(--tv-ink);
+  --night: var(--tv-night);
+  --night-foreground: #b2b5be;
+  --brand: var(--tv-accent);
+  --brand-ink: var(--tv-accent-ink);
+  --page: var(--tv-accent);
+  --page-tint: var(--tv-hover);
+  --danger: var(--tv-down);
+  --danger-bg: var(--tv-down-bg);
+  --danger-border: var(--tv-down);
+  --live: var(--tv-up);
+  --mobile: var(--tv-up-bg);
+  --mobile-foreground: var(--tv-up);
+  --web: color-mix(in srgb, var(--tv-sky) 16%, transparent);
+  --web-foreground: var(--tv-sky);
+  --ai: color-mix(in srgb, var(--tv-violet) 18%, transparent);
+  --ai-foreground: color-mix(in srgb, var(--tv-violet) 60%, var(--tv-ink));
+  --tools: color-mix(in srgb, var(--tv-gold) 18%, transparent);
+  --tools-foreground: var(--tv-gold);
+  --tile: var(--tv-accent);
+  font-family: var(--tv-font);
+}
+html[data-skin='trade']:not(.dark) {
+  --web-foreground: #0369a1;
+  --tools-foreground: #8f5a00;
+  --mobile-foreground: #067a67;
+}
+
+/* headings of the skin are the same sans as the rest; Standard's own are Bricolage */
+@layer base {
+  .tv-root :is(h1, h2, h3, h4) {
+    font-family: var(--tv-font);
+    letter-spacing: normal;
+  }
+}
+
+/* every control shows a ring when it is reached with the keyboard */
+.tv-root :focus-visible:not(input, textarea, select) {
+  outline: 2px solid var(--tv-accent);
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+.tv-root a:where(:not([data-slot^='tv-'])) {
+  color: inherit;
+  text-decoration: none;
+}
+.tv-root img {
+  max-width: 100%;
+}
+
+/* the live dot next to the legend of the chart sends out a ring now and then (the decoration of a ticking market) */
+.tv-live {
+  animation: tv-ring 2s infinite;
+}
+@keyframes tv-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--tv-up) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+@keyframes tv-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+/* a block rises a little when it arrives (a page change, a tab) */
+@keyframes tv-rise {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+.tv-rise {
+  animation: tv-rise 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+/* page change: the terminal stays, the panel fades out and the next one comes in (React view transitions; keyframes of globals.css) */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-skin='trade']::view-transition-old(.tv-vt-out) {
+    animation: vt-out 0.12s ease-in both;
+  }
+  html[data-skin='trade']::view-transition-new(.tv-vt-in) {
+    animation: vt-in 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) 0.06s both;
+  }
+}
+
+/* reduced motion: the live dot, the shimmer, the rise and the windows of the skin stand still */
+@media (prefers-reduced-motion: reduce) {
+  .tv-root *,
+  .tv-root *::before,
+  .tv-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  /* what opens over the page lives in a portal outside .tv-root: its enter and exit stand still too */
+  html[data-skin='trade']
+    :is(
+      [data-slot='dialog-content'],
+      [data-slot='dialog-overlay'],
+      [data-slot='sheet-content'],
+      [data-slot='sheet-overlay'],
+      [data-slot='popover-content'],
+      [data-slot='dropdown-menu-content'],
+      [data-slot='dropdown-menu-sub-content'],
+      [data-slot='tooltip-content']
+    ) {
+    animation: none !important;
+    transition: none !important;
+  }
+}

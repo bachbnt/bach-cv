@@ -8,30 +8,19 @@ import { useSkills } from '@/components/skills/use-skills';
 import { tipText } from '@/components/skills/skill-text';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { resumeCopy } from '@/content/copy/resume';
-import { SKILL_CATEGORIES } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
+import { skillGroups } from '@/lib/derive/skill-groups';
 import { DevSkillChip } from '@/skins/dev/blocks/skill-chip';
 import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevCard } from '@/skins/dev/ui/dev-card';
-
-/** AI first; the rest follows. */
-const ORDER = [
-  'ai',
-  'mobile',
-  'web',
-  'tools',
-] as const satisfies readonly (typeof SKILL_CATEGORIES)[number][];
 
 /** The listed skills grouped by area, each chip with a tip ("Used at FPT, MoMo. First used 2022."). */
 export function DevSkillGroups() {
   const copy = useCopy(resumeCopy);
   const { skills, evidence, isPending, isError, refetch } = useSkills();
 
-  const groups = ORDER.map((category) => ({
-    category,
-    items: skills.filter((s) => s.listed && s.category === category),
-  })).filter((group) => group.items.length);
+  const groups = skillGroups(skills);
 
   return (
     <DevDataState

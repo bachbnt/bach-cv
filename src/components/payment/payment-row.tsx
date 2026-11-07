@@ -4,7 +4,7 @@
 
 import { Copy, QrCode } from 'lucide-react';
 import Image from 'next/image';
-import { initialsOf } from '@/components/payment/payment-details';
+import { methodInitials } from '@/lib/derive/initials';
 import { PaymentFields } from '@/components/payment/payment-fields';
 import { Button } from '@/components/ui/button';
 import { paymentCopy } from '@/content/copy/payment';
@@ -42,7 +42,7 @@ export function PaymentRow({
             aria-hidden='true'
             className='flex size-11 flex-none items-center justify-center rounded-xl bg-page-tint font-heading text-base font-bold text-page'
           >
-            {initialsOf(method.name)}
+            {methodInitials(method.name)}
           </span>
         )}
         <div className='min-w-0'>

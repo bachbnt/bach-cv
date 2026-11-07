@@ -12,6 +12,8 @@ import { formatPeriod } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { cn } from '@/lib/utils';
+import { highlighted } from '@/lib/derive/highlighted';
+import { isCurrent } from '@/lib/derive/current-job';
 import { shortHash } from '@/skins/dev/blocks/short-hash';
 import { DevKeyBox } from '@/skins/dev/blocks/key-box';
 import { DevLivePill } from '@/skins/dev/blocks/live-pill';
@@ -37,11 +39,9 @@ export function DevExperienceRow({
 }) {
   const { experience: copy } = useCopy(resumeCopy);
   const { lang } = useLang();
-  const current = !job.endMonth;
+  const current = isCurrent(job);
   const intro = job.summary || job.tagline;
-  const keyProjects = job.projects
-    .filter((p) => p.highlight !== null)
-    .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0));
+  const keyProjects = highlighted(job.projects);
 
   return (
     <article

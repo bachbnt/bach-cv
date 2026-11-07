@@ -5,6 +5,8 @@
 import type { CvCopy } from '@/content/copy/cv';
 import type { Doc, Lang, Profile, Shell } from '@/lib/content/schema';
 import { formatMonth, formatPeriod } from '@/lib/format';
+import { issuedNewestFirst, newestFirst } from '@/lib/derive/recency';
+import { STRIP_ORDER } from '@/lib/derive/skill-strip';
 
 /**
  * The CV as plain data. The preview sheets and the PDF both render this one model,
@@ -88,15 +90,6 @@ export interface CvInput {
   certificates: Doc<'certificates'>[];
 }
 
-const SKILL_GROUP_ORDER = ['mobile', 'web', 'ai', 'tools'] as const;
-
-/** A role with no end comes first, then the latest end, then the latest start. */
-const recency = (d: { startMonth: string; endMonth: string | null }) =>
-  `${d.endMonth ?? '9999-12'} ${d.startMonth}`;
-const newestFirst = <T extends { startMonth: string; endMonth: string | null }>(
-  items: T[],
-): T[] => [...items].sort((a, b) => recency(b).localeCompare(recency(a)));
-
 const rank = (highlight: number | null) =>
   highlight ?? Number.POSITIVE_INFINITY;
 
@@ -167,16 +160,15 @@ export const buildCv = (input: CvInput, copy: CvCopy, lang: Lang): CvModel => {
     technologies: e.cv === 'compact' ? [] : names(e.technologies),
   }));
 
-  const certificates = [...input.certificates]
-    .filter((c) => c.visible)
-    .sort((a, b) => b.issuedAt.localeCompare(a.issuedAt))
-    .map((c) => ({
-      id: c.id,
-      date: formatMonth(c.issuedAt, lang),
-      name: c.name,
-    }));
+  const certificates = issuedNewestFirst(
+    input.certificates.filter((c) => c.visible),
+  ).map((c) => ({
+    id: c.id,
+    date: formatMonth(c.issuedAt, lang),
+    name: c.name,
+  }));
 
-  const skills = SKILL_GROUP_ORDER.map((category) => ({
+  const skills = STRIP_ORDER.map((category) => ({
     id: category,
     title: copy.skillGroups[category],
     skills: input.skills

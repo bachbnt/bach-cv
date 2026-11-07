@@ -6,19 +6,6 @@ import type { Payment } from '@/lib/content/schema';
 
 type Method = Pick<Payment, 'name' | 'holder' | 'account'>;
 
-/**
- * Two letters for the tile of a method: its first two capitals ('VietinBank' -> 'VB', 'VNPay' -> 'VN'),
- * or its first two letters when it has one capital ('Binance' -> 'BI').
- */
-export const initialsOf = (name: string): string => {
-  const capitals = name.match(/\p{Lu}/gu) ?? [];
-  if (capitals.length >= 2) return capitals.slice(0, 2).join('');
-  return Array.from(name.replace(/[^\p{L}\p{N}]/gu, ''))
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
-};
-
 /** What "Copy all details" puts on the clipboard. A missing account name is left out, not printed blank. */
 export const summaryOf = (
   m: Method,

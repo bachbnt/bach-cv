@@ -13,6 +13,7 @@ import { skillsOf } from '@/components/projects/project-helpers';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
+import { highlighted } from '@/lib/derive/highlighted';
 
 /** How many featured projects the Home page shows. */
 const LIMIT = 3;
@@ -27,10 +28,7 @@ export function HomeProjects() {
     () => new Map(skillList.map((s) => [s.id, s])),
     [skillList],
   );
-  const featured = projects
-    .filter((p) => p.highlight !== null)
-    .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0))
-    .slice(0, LIMIT);
+  const featured = highlighted(projects).slice(0, LIMIT);
   // featured projects are an extra, so with none (or if they fail to load) the section is simply left out
   if (projectsQuery.isError || (!projectsQuery.isPending && !featured.length))
     return null;

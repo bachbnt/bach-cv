@@ -6,7 +6,6 @@ import { describe, expect, it } from 'vitest';
 import { projectsCopy } from '@/content/copy/projects';
 import {
   fillCopy,
-  initialsOf,
   kindsPresent,
   linkLabel,
   skillsOf,
@@ -109,22 +108,6 @@ describe('copy', () => {
         ? Object.entries(o).flatMap(([k, v]) => keys(v, `${prefix}${k}.`))
         : [prefix];
     expect(keys(projectsCopy.vi)).toEqual(keys(projectsCopy.en));
-  });
-});
-
-describe('initialsOf', () => {
-  it('takes the first letters of the words', () => {
-    expect(initialsOf('FinHub MCP')).toBe('FM');
-    expect(initialsOf('Good Morning Coffee & Tea')).toBe('GM');
-  });
-
-  it('splits a single camel-case word', () => {
-    expect(initialsOf('DevPad')).toBe('DP');
-    expect(initialsOf('bachbntdev')).toBe('B');
-  });
-
-  it('is empty for an empty name', () => {
-    expect(initialsOf('  ')).toBe('');
   });
 });
 

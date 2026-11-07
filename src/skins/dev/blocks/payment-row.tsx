@@ -6,7 +6,7 @@
 
 import { QrCode } from 'lucide-react';
 import Image from 'next/image';
-import { initialsOf } from '@/components/payment/payment-details';
+import { methodInitials } from '@/lib/derive/initials';
 import { paymentCopy } from '@/content/copy/payment';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
@@ -51,7 +51,7 @@ export function PaymentRow({
               className='size-full bg-white object-cover'
             />
           ) : (
-            initialsOf(method.name)
+            methodInitials(method.name)
           )}
         </span>
         <div>

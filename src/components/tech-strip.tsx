@@ -12,6 +12,7 @@ import { Tag, type TagTone } from '@/components/tag';
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
 import { SKILL_CATEGORIES } from '@/lib/content/schema';
+import { stripSkills } from '@/lib/derive/skill-strip';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
 
@@ -21,9 +22,6 @@ const TONE: Record<(typeof SKILL_CATEGORIES)[number], TagTone> = {
   ai: 'ai',
   tools: 'tools',
 };
-/** Mobile first, as on the mockup. */
-const CATEGORY_ORDER = ['mobile', 'web', 'ai', 'tools'] as const;
-const LIMIT = 20;
 
 /** A slow marquee of skills. It stops on hover, with a pause button, and becomes a wrapped list for reduced motion. */
 export function TechStrip({ className }: { className?: string }) {
@@ -31,9 +29,7 @@ export function TechStrip({ className }: { className?: string }) {
   // a moving list needs a way to stop it that does not need a mouse (WCAG 2.2.2)
   const [paused, setPaused] = useState(false);
   const { data: skills = [], isPending } = useContentQuery('skills');
-  const shown = CATEGORY_ORDER.flatMap((category) =>
-    skills.filter((s) => s.listed && s.category === category),
-  ).slice(0, LIMIT);
+  const shown = stripSkills(skills);
   if (isPending)
     return (
       <LoadingBlock

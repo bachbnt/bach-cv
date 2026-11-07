@@ -7,6 +7,8 @@
 import Image from 'next/image';
 import { aboutCopy } from '@/content/copy/about';
 import { shell } from '@/lib/content/shell';
+import { latestDegree } from '@/lib/derive/latest-degree';
+import { latestJob } from '@/lib/derive/current-job';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 
@@ -16,10 +18,8 @@ export function HomePortrait() {
   const { data: profile } = useProfileQuery();
   const { data: experience = [] } = useContentQuery('experience');
   const { data: education = [] } = useContentQuery('education');
-  const job = experience.find((j) => !j.endMonth) ?? experience[0];
-  const degree = [...education].sort((a, b) =>
-    b.startMonth.localeCompare(a.startMonth),
-  )[0];
+  const job = latestJob(experience);
+  const degree = latestDegree(education);
 
   return (
     <div className='flex flex-1 overflow-hidden rounded-[8px] border border-line-2 bg-chrome max-[520px]:flex-col'>

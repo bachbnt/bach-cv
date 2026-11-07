@@ -3,12 +3,13 @@
  */
 
 import type { Page } from '@playwright/test';
+import type { SkinId } from '@/lib/skin/skins';
 
 /**
- * Makes the page open in a skin (`dev`, or `standard` for the default look): the visitor's choice is kept in the browser, so it is
+ * Makes the page open in a skin (`dev`, `trade`, or `standard` for the default look): the visitor's choice is kept in the browser, so it is
  * written before any script of the page runs. Call it before `page.goto`.
  */
-export async function useSkin(page: Page, skin: 'standard' | 'dev') {
+export async function useSkin(page: Page, skin: SkinId) {
   await page.addInitScript((id) => {
     window.localStorage.setItem('bach-cv-skin', id);
   }, skin);

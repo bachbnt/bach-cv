@@ -42,20 +42,6 @@ export const fillCopy = (
     key in values ? String(values[key]) : slot,
   );
 
-/** Up to two capitals for the tile that stands in for a missing cover: "FinHub MCP" is FM, "DevPad" is DP. */
-export const initialsOf = (name: string) => {
-  const words = name.trim().split(/\s+/).filter(Boolean);
-  const parts =
-    words.length > 1
-      ? words
-      : (words[0]?.match(/[A-Z][a-z0-9]*|[a-z0-9]+/g) ?? words);
-  return parts
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase();
-};
-
 /** The order of the filter chips, as on the mockup. */
 export const KIND_ORDER = [
   'personal',

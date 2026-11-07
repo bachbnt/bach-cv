@@ -5,7 +5,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { skillEvidence } from '@/lib/content/schema';
+import { skillEvidence } from '@/lib/derive/skill-use';
 import { useContentQuery } from '@/lib/query/use-content';
 
 /**

@@ -13,18 +13,11 @@ import { tipText } from '@/components/skills/skill-text';
 import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
 import { useCopy } from '@/lib/i18n/copy';
-import { SKILL_CATEGORIES } from '@/lib/content/schema';
+import type { Skill } from '@/lib/content/schema';
+import { skillGroups } from '@/lib/derive/skill-groups';
 import { cn } from 'cn';
 
-/** AI first, as in the design mockup; the rest follows the mockup order. */
-const ORDER = [
-  'ai',
-  'mobile',
-  'web',
-  'tools',
-] as const satisfies readonly (typeof SKILL_CATEGORIES)[number][];
-
-const DOT: Record<(typeof ORDER)[number], string> = {
+const DOT: Record<Skill['category'], string> = {
   ai: 'bg-ai-foreground',
   mobile: 'bg-mobile-foreground',
   web: 'bg-web-foreground',
@@ -62,10 +55,7 @@ export function SkillGroups({ className }: { className?: string }) {
     };
   }, [tip, hide]);
 
-  const groups = ORDER.map((category) => ({
-    category,
-    items: skills.filter((s) => s.listed && s.category === category),
-  })).filter((group) => group.items.length);
+  const groups = skillGroups(skills);
 
   return (
     <DataState

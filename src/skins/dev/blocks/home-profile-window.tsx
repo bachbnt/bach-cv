@@ -6,18 +6,21 @@
 
 import type { ReactNode } from 'react';
 import { shell } from '@/lib/content/shell';
+import { careerYears } from '@/lib/derive/career-years';
+import { latestDegree } from '@/lib/derive/latest-degree';
+import { currentJob, latestJob } from '@/lib/derive/current-job';
+import { areasWithSkills, type Area } from '@/lib/derive/skill-groups';
+import { shortDegree } from '@/lib/derive/short-degree';
 import { useContentQuery } from '@/lib/query/use-content';
 import { CodeWindow } from '@/skins/dev/blocks/code-window';
-import { shortDegree } from '@/skins/dev/blocks/short-degree';
-import { yearsSince } from '@/skins/dev/blocks/years-since';
 import { FileIcon } from '@/skins/dev/icons/file-icon';
 
-/** The areas of the stack, as the Resume groups its skills; the names are words of the trade, the same in both languages. */
-const STACK = [
-  ['mobile', 'Mobile'],
-  ['web', 'Web'],
-  ['ai', 'AI'],
-] as const;
+/** The names of the areas of the stack, as the Resume groups its skills; they are words of the trade, the same in both languages. */
+const AREA_NAMES: Record<Area, string> = {
+  mobile: 'Mobile',
+  web: 'Web',
+  ai: 'AI',
+};
 
 const str = (value: string) => <span className='dv-str'>{`"${value}"`}</span>;
 const num = (value: number) => (
@@ -44,19 +47,16 @@ export function HomeProfileWindow() {
   const { data: experience = [] } = useContentQuery('experience');
   const { data: skills = [] } = useContentQuery('skills');
   const { data: education = [] } = useContentQuery('education');
-  const current = experience.find((j) => !j.endMonth);
-  const job = current ?? experience[0];
-  // the first role on the site to now (the roles the owner keeps hidden do not count)
-  const first = experience.map((j) => j.startMonth).sort()[0];
-  // `now` only has to be right to the year
-  const years = first ? yearsSince(first, new Date()) : 0;
+  const current = currentJob(experience);
+  const job = latestJob(experience);
+  // the first role on the site to now (the roles the owner keeps hidden do not count); `now` only has to be right to the year
+  const years = careerYears(
+    experience.map((j) => j.startMonth),
+    new Date(),
+  );
   // the latest degree (the same one the photo card shows)
-  const degree = [...education].sort((a, b) =>
-    b.startMonth.localeCompare(a.startMonth),
-  )[0];
-  const stack = STACK.filter(([category]) =>
-    skills.some((s) => s.listed && s.category === category),
-  ).map(([, name]) => name);
+  const degree = latestDegree(education);
+  const stack = areasWithSkills(skills).map((area) => AREA_NAMES[area]);
 
   const props: ReactNode[] = [
     attr('name', str(shell.name)),
@@ -64,7 +64,9 @@ export function HomeProfileWindow() {
     job && attr('company', str(job.company)),
     // since when I have been in the current role (a past role has no "since")
     current && attr('since', num(Number(current.startMonth.slice(0, 4)))),
-    years > 0 && attr('experience', num(years), 'years of experience'),
+    years !== null &&
+      years > 0 &&
+      attr('experience', num(years), 'years of experience'),
     stack.length > 0 &&
       attr(
         'stack',

@@ -1,0 +1,92 @@
+/*
+ * Keyframes and token colours of the Trade skin for About, Services, Payment and the system screens. Classes have the prefix tv-, scoped to the skin root; the look itself is
+ * Tailwind utilities in the TSX, and `animate-[name_...]` names the keyframes here. Every one moves only transform or opacity; they stand still for reduced motion
+ * (the rule at the end of trade.css).
+ */
+/* the check of a sent message pops in */
+@keyframes tv-pop {
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+}
+@keyframes tv-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+/* a row of the timeline slides in from the left */
+@keyframes tv-slide-in {
+  from {
+    opacity: 0;
+    translate: -14px 0;
+  }
+}
+/* the bars of the loading chart breathe */
+@keyframes tv-bar {
+  0%,
+  100% {
+    scale: 1 0.55;
+  }
+  50% {
+    scale: 1 1;
+  }
+}
+/* a soft light sweeps over the loading chart */
+@keyframes tv-sweep {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 400% 0;
+  }
+}
+/* the thin line at the top of a block that is loading */
+@keyframes tv-load {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 300% 0;
+  }
+}
+/* a candle of the 404 and the maintenance screens is drawn from its foot */
+@keyframes tv-candle-draw {
+  from {
+    opacity: 0;
+    scale: 1 0;
+  }
+}
+@keyframes tv-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* the drawings of the services: a line is drawn from its start, a depth bar breathes, a bar grows, a caret blinks (transform and opacity only) */
+@keyframes tv-art-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes tv-art-depth {
+  from {
+    scale: 0.7 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes tv-art-grow {
+  from {
+    scale: 0 1;
+  }
+}
+@keyframes tv-art-caret {
+  50% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,31 @@
+/* The theme colours of the `trade` skin as utilities. Their values are defined once on html[data-skin='trade'] in
+   skins/trade/trade.css (dark and light). globals.css imports this file: one Tailwind build for Standard and every skin. */
+@theme inline {
+  --color-tv-bg: var(--tv-bg);
+  --color-tv-panel: var(--tv-panel);
+  --color-tv-hover: var(--tv-hover);
+  --color-tv-line: var(--tv-line);
+  --color-tv-ink: var(--tv-ink);
+  --color-tv-mute: var(--tv-mute);
+  --color-tv-dim: var(--tv-dim);
+  --color-tv-grid: var(--tv-grid);
+  --color-tv-up: var(--tv-up);
+  --color-tv-down: var(--tv-down);
+  --color-tv-up-bg: var(--tv-up-bg);
+  --color-tv-down-bg: var(--tv-down-bg);
+  --color-tv-accent: var(--tv-accent);
+  --color-tv-accent-hover: var(--tv-accent-hover);
+  --color-tv-accent-ink: var(--tv-accent-ink);
+  --color-tv-gold: var(--tv-gold);
+  --color-tv-violet: var(--tv-violet);
+  --color-tv-sky: var(--tv-sky);
+  --color-tv-orange: var(--tv-orange);
+  --color-tv-tip: var(--tv-tip);
+  --color-tv-data-personal: var(--tv-data-personal);
+  --color-tv-data-freelance: var(--tv-data-freelance);
+  --color-tv-data-company: var(--tv-data-company);
+  --color-tv-data-academic: var(--tv-data-academic);
+  /* one shadow for what floats over the page (menu, popover, tip) and one for what covers it (dialog, palette) */
+  --shadow-tv-menu: 0 8px 30px rgb(0 0 0 / 0.35);
+  --shadow-tv-dialog: 0 20px 60px rgb(0 0 0 / 0.5);
+}

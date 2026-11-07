@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { SIDE_PROJECTS, type SkillEvidence } from '@/lib/content/schema';
+import { SIDE_PROJECTS, type SkillEvidence } from '@/lib/derive/skill-use';
 
 export interface EvidenceCopy {
   usedAt: string;

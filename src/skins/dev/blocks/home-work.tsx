@@ -12,6 +12,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { formatPeriod } from '@/lib/format';
 import { useContentQuery } from '@/lib/query/use-content';
+import { isCurrent } from '@/lib/derive/current-job';
+import { jobBadge } from '@/lib/derive/job-badge';
 import { DevLivePill } from '@/skins/dev/blocks/live-pill';
 import { countHint } from '@/skins/dev/ui/count-hint';
 import { DevSkeleton } from '@/skins/dev/ui/dev-skeleton';
@@ -72,13 +74,13 @@ export function HomeWork() {
                     className='font-code text-[20px] leading-[normal] font-bold text-white'
                     aria-hidden='true'
                   >
-                    {job.shortName || job.company.slice(0, 3)}
+                    {jobBadge(job)}
                   </span>
                 )}
               </div>
               <h3 className='text-[17px]'>
                 {job.company}
-                {!job.endMonth && (
+                {isCurrent(job) && (
                   <DevLivePill>{copy.work.current}</DevLivePill>
                 )}
               </h3>
