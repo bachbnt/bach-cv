@@ -15,7 +15,7 @@ import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { skillsOf } from '@/components/projects/project-helpers';
 import { useLive } from '@/hooks/use-live';
-import { featured } from '@/lib/derive/featured';
+import { highlighted } from '@/lib/derive/highlighted';
 import { stripSkills } from '@/lib/derive/skill-strip';
 import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
@@ -170,7 +170,7 @@ export function HomeFeatured() {
   const query = useContentQuery('projects');
   const { data: skillList = [] } = useContentQuery('skills');
   const byId = new Map(skillList.map((s) => [s.id, s]));
-  const shown = featured(query.data ?? []).slice(0, 3);
+  const shown = highlighted(query.data ?? []).slice(0, 3);
   // featured projects are an extra: with none (or if they fail to load) the block is left out, as in Standard
   if (query.isError || (!query.isPending && !shown.length)) return null;
   return (
