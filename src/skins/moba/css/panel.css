@@ -1,0 +1,78 @@
+/* The page panel: the page opens over the map like an in-game window. A page change fades the next page in. */
+.mb-panel {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mb-gold) 7%, transparent),
+      transparent 22%
+    ),
+    color-mix(in srgb, var(--mb-panel) 97%, transparent);
+  border-left: 1px solid var(--mb-gold);
+  box-shadow:
+    inset 1px 0 0 color-mix(in srgb, var(--mb-gold-hi) 18%, transparent),
+    inset 4px 0 0 color-mix(in srgb, var(--mb-gold-lo) 45%, transparent),
+    -14px 0 36px rgb(0 0 0 / 0.45);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 0.7, 0.25, 1),
+    opacity 0.28s ease,
+    visibility 0.4s;
+}
+.mb-panel[data-open='false'] {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(36px);
+  pointer-events: none;
+}
+@media (max-width: 1099px) {
+  .mb-panel {
+    border-left: 0;
+    border-top: 1px solid var(--mb-gold);
+  }
+  .mb-panel[data-open='false'] {
+    transform: translateY(28px);
+  }
+}
+.mb-panel-head {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mb-gold) 12%, var(--mb-panel)),
+    var(--mb-panel)
+  );
+  border-bottom: 1px solid var(--mb-gold-lo);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--mb-gold-hi) 12%, transparent);
+}
+.mb-page-in {
+  animation: mb-page-in 0.42s cubic-bezier(0.22, 0.7, 0.25, 1) both;
+}
+@keyframes mb-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.mb-fold-tab {
+  animation: mb-fold-tab 0.4s cubic-bezier(0.22, 0.7, 0.25, 1) both;
+}
+@keyframes mb-fold-tab {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mb-page-in,
+  .mb-fold-tab {
+    animation: none;
+  }
+  .mb-panel {
+    transition: none;
+  }
+}

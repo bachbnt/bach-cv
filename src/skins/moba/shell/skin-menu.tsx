@@ -1,0 +1,33 @@
+/**
+ * Copyright (c) 2026 bachbnt. All rights reserved.
+ */
+
+'use client';
+
+import { LayoutTemplate } from 'lucide-react';
+import { skinsCopy } from '@/content/copy/skins';
+import { useCopy } from '@/lib/i18n/copy';
+import { useSkin } from '@/lib/skin/skin';
+import { isSkinId, SKIN_IDS } from '@/lib/skin/skins';
+import { preloadSkin } from '@/skins/registry';
+import { MbMenu } from '@/skins/moba/shell/mb-menu';
+
+/** The Skin menu, built from `SKIN_IDS` like the Standard one (`Skin: Moba`): it is how a visitor leaves this skin. */
+export function SkinMenu() {
+  const copy = useCopy(skinsCopy);
+  const { skin, setSkin } = useSkin();
+  return (
+    <MbMenu
+      icon={<LayoutTemplate aria-hidden='true' className='size-[18px]' />}
+      label={`${copy.label}: ${copy.names[skin].name}`}
+      value={skin}
+      items={SKIN_IDS.map((id) => ({
+        value: id,
+        label: copy.names[id].name,
+        hint: copy.names[id].hint,
+      }))}
+      onSelect={(value) => isSkinId(value) && setSkin(value)}
+      onPreview={(value) => isSkinId(value) && preloadSkin(value)}
+    />
+  );
+}

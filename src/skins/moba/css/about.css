@@ -1,0 +1,31 @@
+/* The about page of the Moba skin: the gold frames of the photos. */
+.mb-photo {
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 45%,
+    var(--mb-gold-lo)
+  );
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px),
+    0 14px
+  );
+}
+.mb-photo-in {
+  clip-path: polygon(
+    11px 0,
+    calc(100% - 11px) 0,
+    100% 11px,
+    100% calc(100% - 11px),
+    calc(100% - 11px) 100%,
+    11px 100%,
+    0 calc(100% - 11px),
+    0 11px
+  );
+}

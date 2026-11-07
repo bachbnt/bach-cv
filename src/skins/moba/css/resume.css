@@ -1,0 +1,220 @@
+/* The resume page of the Moba skin: the lane that joins the towers (the roles), the key skills, the item tiles of the areas, the tip. */
+
+/* the lane: a line down the badge column, red at the nexus (the current role) and gold where the career began */
+.mb-lane::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  bottom: 28px;
+  left: 20px;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--mb-red),
+    var(--mb-gold) 45%,
+    var(--mb-gold-lo)
+  );
+  -webkit-mask: repeating-linear-gradient(
+    180deg,
+    #000 0 10px,
+    transparent 10px 15px
+  );
+  mask: repeating-linear-gradient(180deg, #000 0 10px, transparent 10px 15px);
+}
+@media (max-width: 719px) {
+  .mb-lane::before {
+    left: 15px;
+  }
+}
+
+/* the badge of a tower: a hexagon with its number; the nexus is red and holds a crystal */
+.mb-tower {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 40px;
+  height: 44px;
+  place-items: center;
+  font-family: var(--font-mb-display), Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  color: #1c1405;
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 60%,
+    var(--mb-gold-lo)
+  );
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  filter: drop-shadow(0 2px 0 rgb(0 0 0 / 0.35));
+}
+.mb-tower-nexus {
+  color: #fff;
+  background: linear-gradient(
+    160deg,
+    var(--mb-red-ink),
+    var(--mb-red) 55%,
+    color-mix(in srgb, var(--mb-red) 55%, #000)
+  );
+}
+@media (max-width: 719px) {
+  .mb-tower {
+    width: 32px;
+    height: 36px;
+    font-size: 15px;
+  }
+}
+
+/* the frame of a role lights up once when the visitor comes from its tower of the map */
+.mb-role-card[data-flash]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 2px var(--mb-teal-ink),
+    inset 0 0 34px color-mix(in srgb, var(--mb-teal) 45%, transparent);
+  animation: mb-role-flash 1.5s ease-out both;
+}
+@keyframes mb-role-flash {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* a responsibility: a small gold diamond for its bullet */
+.mb-bullet::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  background: var(--mb-gold);
+  transform: rotate(45deg);
+}
+
+/* the mark of a key skill: an octagon with a bevel in the colour of the skill (or gold) */
+.mb-orb {
+  padding: 2px;
+  background: linear-gradient(
+    160deg,
+    var(--c, var(--mb-gold-hi)),
+    var(--mb-gold-lo)
+  );
+  clip-path: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px),
+    0 10px
+  );
+}
+.mb-orb-in {
+  width: 100%;
+  height: 100%;
+  color: color-mix(in srgb, var(--c, var(--mb-gold-hi)) 65%, var(--mb-ink));
+  background: radial-gradient(
+    circle at 50% 30%,
+    color-mix(in srgb, var(--c, var(--mb-gold)) 28%, var(--mb-raised)),
+    var(--mb-well)
+  );
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  );
+}
+
+/* how much of the career the roles that list a skill cover */
+.mb-used {
+  height: 6px;
+  max-width: 220px;
+  background: var(--mb-void);
+  border: 1px solid var(--mb-gold-lo);
+}
+.mb-used-fill {
+  width: var(--w, 0%);
+  height: 100%;
+  background: linear-gradient(90deg, var(--mb-teal), var(--mb-teal-ink));
+}
+
+/* an item tile of the areas: square, so its focus ring is not cut; the stripe is the colour of the area (the tile's own colour) */
+.mb-tile {
+  background: var(--mb-well);
+  border: 1px solid color-mix(in srgb, var(--mb-gold-lo) 75%, transparent);
+  border-left: 3px solid currentColor;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease;
+}
+.mb-tile[data-core] {
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--mb-gold) 45%, transparent);
+}
+.mb-tile[aria-describedby] {
+  background: color-mix(in srgb, var(--mb-gold) 16%, var(--mb-well));
+}
+@media (hover: hover) {
+  .mb-tile:hover {
+    background: color-mix(in srgb, var(--mb-gold) 16%, var(--mb-well));
+    border-top-color: var(--mb-gold);
+    border-right-color: var(--mb-gold);
+    border-bottom-color: var(--mb-gold);
+  }
+}
+.mb-dot {
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+/* the tip of a tile: a window with an arrow toward its tile */
+.mb-tip {
+  animation: mb-tip-in 0.15s ease-out both;
+}
+.mb-tip::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: var(--ax, 50%);
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: var(--mb-panel);
+  border: 1px solid var(--mb-gold-lo);
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+}
+.mb-tip[data-below='true']::after {
+  top: -6px;
+  bottom: auto;
+  border: 1px solid var(--mb-gold-lo);
+  border-right: 0;
+  border-bottom: 0;
+}
+@keyframes mb-tip-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* the key cap of a key skill reads on the parchment of the day theme too (the shared cap is pale gold) */
+.mb-core .mb-kbd {
+  color: var(--mb-gold-ink);
+}

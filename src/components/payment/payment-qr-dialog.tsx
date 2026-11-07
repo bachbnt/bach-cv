@@ -13,7 +13,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 
 /** Saves the QR image, or opens it in a new tab when the browser blocks the download (for example no CORS). */
-async function saveQr(
+export async function saveQr(
   method: Doc<'payments'>,
   say: (message: string) => void,
   toast: { qrSaved: string; qrOpened: string },

@@ -12,6 +12,7 @@ import { SKILL_COLORS } from '@/components/skills/skill-icons';
 import { evidenceLine } from '@/components/skills/skill-text';
 import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
+import { coreSkills } from '@/lib/derive/core-skills';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from 'cn';
 
@@ -19,7 +20,7 @@ import { cn } from 'cn';
 export function CoreStack({ className }: { className?: string }) {
   const copy = useCopy(resumeCopy);
   const { skills, evidence, isPending, isError, refetch } = useSkills();
-  const core = skills.filter((skill) => skill.listed && skill.highlight);
+  const core = coreSkills(skills);
 
   return (
     <DataState

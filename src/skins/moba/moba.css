@@ -1,0 +1,243 @@
+/*
+ * The look of the Moba skin: the site as an in-game arena (a top-down map, a HUD and the pages as panels). Every class has the prefix mb-
+ * and every rule is scoped to .mb-root (or to html[data-skin='moba'] for the palette, so portals see it). Dark ("night") is the base
+ * and the light theme ("day") is `html:not(.dark)`. Names of the palette all start with --mb-, so they cannot clash with the shadcn
+ * tokens or with another skin.
+ */
+html[data-skin='moba'] {
+  --mb-void: #010a13;
+  --mb-bg: #07141a;
+  --mb-panel: #0b1f27;
+  --mb-raised: #11303a;
+  --mb-well: #061017;
+  --mb-line: #5c4a26;
+  --mb-ink: #ece4d0;
+  --mb-mute: #9fb0ad;
+  --mb-dim: #66787a;
+  --mb-gold: #c8aa6e;
+  --mb-gold-hi: #f4e7c5;
+  --mb-gold-lo: #785a28;
+  /* titles and key caps: the bright gold on night, a deep one on the parchment of day */
+  --mb-title: #f4e7c5;
+  /* gold used as text on a panel */
+  --mb-gold-ink: #d9bd7d;
+  --mb-teal: #0ac8b9;
+  --mb-teal-ink: #3fdccf;
+  --mb-blue: #3d8bff;
+  --mb-red: #e84057;
+  --mb-red-ink: #ff7285;
+  --mb-green: #3ec47f;
+  --mb-violet: #9b72f2;
+  --mb-orange: #f0883a;
+  --mb-hp: #2fb36b;
+  --mb-mp: #3a86ff;
+  /* the map */
+  --mb-m-void: #04100f;
+  --mb-m-wall: #071a17;
+  --mb-m-wall-hi: #0c2824;
+  --mb-m-floor-1: #14403a;
+  --mb-m-floor-2: #0e302d;
+  --mb-m-floor-3: #0a2523;
+  --mb-m-moss: #1d5a45;
+  --mb-m-lane-1: #46565c;
+  --mb-m-lane-2: #2f3d44;
+  --mb-m-lane-edge: #1c272d;
+  --mb-m-river-1: #12829c;
+  --mb-m-river-2: #0a5671;
+  --mb-m-river-3: #063a50;
+  --mb-m-foam: #7fe3ee;
+  --mb-m-brush-1: #17704b;
+  --mb-m-brush-2: #0e4c35;
+  --mb-m-rock-1: #4d5c63;
+  --mb-m-rock-2: #2a363c;
+  --mb-m-trail: #6c5a3a;
+  --mb-m-fog: #02080c;
+  --mb-team-blue: #3fa2ff;
+  --mb-team-red: #ff5468;
+  --mb-font:
+    var(--font-public-sans), ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+}
+html[data-skin='moba']:not(.dark) {
+  --mb-void: #e9dfc4;
+  --mb-bg: #f1e9d3;
+  --mb-panel: #f8f2e2;
+  --mb-raised: #fffaf0;
+  --mb-well: #e6dcc0;
+  --mb-line: #b19a62;
+  --mb-ink: #16262d;
+  --mb-mute: #4a5c61;
+  --mb-dim: #6b7b7e;
+  --mb-gold: #a98139;
+  --mb-gold-hi: #e5c777;
+  --mb-gold-lo: #8c6a2c;
+  --mb-title: #6b4c12;
+  --mb-gold-ink: #7d5c1d;
+  --mb-teal: #0a9b91;
+  --mb-teal-ink: #067a72;
+  --mb-blue: #1f64d6;
+  --mb-red: #c92a43;
+  --mb-red-ink: #b3203a;
+  --mb-green: #1f8f54;
+  --mb-violet: #6d45c9;
+  --mb-orange: #c2601a;
+  --mb-hp: #25a05f;
+  --mb-mp: #2f6fe0;
+  --mb-m-void: #6a8f66;
+  --mb-m-wall: #2f6a47;
+  --mb-m-wall-hi: #3d7f55;
+  --mb-m-floor-1: #7cbd68;
+  --mb-m-floor-2: #6aab5b;
+  --mb-m-floor-3: #5a9a50;
+  --mb-m-moss: #86c66e;
+  --mb-m-lane-1: #d9cba2;
+  --mb-m-lane-2: #bfae82;
+  --mb-m-lane-edge: #8a7a55;
+  --mb-m-river-1: #6fd6ee;
+  --mb-m-river-2: #3fb0d6;
+  --mb-m-river-3: #2a8ab5;
+  --mb-m-foam: #ffffff;
+  --mb-m-brush-1: #2f8a46;
+  --mb-m-brush-2: #1f6b36;
+  --mb-m-rock-1: #a6a395;
+  --mb-m-rock-2: #787563;
+  --mb-m-trail: #b99a5f;
+  --mb-m-fog: #1e3b2e;
+  --mb-team-blue: #1f7ae0;
+  --mb-team-red: #d8344a;
+}
+
+/* the shadcn tokens, and the Standard ones the reused windows read (picture viewer, CV, chat, Connect), in the Moba palette */
+html[data-skin='moba'] {
+  --background: var(--mb-bg);
+  --foreground: var(--mb-ink);
+  --card: var(--mb-panel);
+  --card-foreground: var(--mb-ink);
+  --popover: var(--mb-raised);
+  --popover-foreground: var(--mb-ink);
+  --primary: var(--mb-gold);
+  --primary-foreground: #1c1405;
+  --secondary: var(--mb-raised);
+  --secondary-foreground: var(--mb-ink);
+  --muted: var(--mb-well);
+  --muted-foreground: var(--mb-mute);
+  --accent: var(--mb-raised);
+  --accent-foreground: var(--mb-ink);
+  --destructive: var(--mb-red-ink);
+  --border: var(--mb-line);
+  --input: var(--mb-line);
+  --ring: var(--mb-teal);
+  --radius: 0.375rem;
+  --body: var(--mb-ink);
+  --paper: var(--mb-well);
+  --night: #061017;
+  --night-foreground: #a9bab7;
+  --brand: var(--mb-gold);
+  --brand-ink: var(--mb-gold-ink);
+  --page: var(--mb-gold);
+  --page-tint: var(--mb-raised);
+  --danger: var(--mb-red-ink);
+  --danger-bg: color-mix(in srgb, var(--mb-red) 16%, transparent);
+  --danger-border: var(--mb-red);
+  --live: var(--mb-green);
+  --mobile: color-mix(in srgb, var(--mb-green) 18%, transparent);
+  --mobile-foreground: var(--mb-green);
+  --web: color-mix(in srgb, var(--mb-blue) 18%, transparent);
+  --web-foreground: color-mix(in srgb, var(--mb-blue) 70%, var(--mb-ink));
+  --ai: color-mix(in srgb, var(--mb-violet) 20%, transparent);
+  --ai-foreground: color-mix(in srgb, var(--mb-violet) 65%, var(--mb-ink));
+  --tools: color-mix(in srgb, var(--mb-gold) 20%, transparent);
+  --tools-foreground: var(--mb-gold-ink);
+  --on-night-accent: var(--mb-gold-hi);
+  --on-night-accent-hover: #fff;
+  --tile: color-mix(in srgb, var(--mb-teal) 70%, #031a1a);
+  font-family: var(--mb-font);
+}
+html[data-skin='moba']:not(.dark) {
+  --primary-foreground: #fff8e6;
+  --night: #16262d;
+  --night-foreground: #c9d6d3;
+  --web-foreground: #1f4fb0;
+}
+
+/* headings are the carved serif; the Standard ones are Bricolage */
+@layer base {
+  .mb-root :is(h1, h2, h3, h4) {
+    font-family: var(--font-mb-display), Georgia, serif;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+  }
+}
+
+.mb-root {
+  /* the HUD is fixed to the window; the stage never scrolls (the page panel does) */
+  color-scheme: dark;
+}
+html[data-skin='moba']:not(.dark) .mb-root {
+  color-scheme: light;
+}
+.mb-root :focus-visible {
+  outline: 2px solid var(--mb-teal-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.mb-btn:focus-visible,
+.mb-slot:focus-visible,
+.mb-chip:focus-visible,
+.mb-top-btn:focus-visible,
+.mb-place:focus-visible,
+.mb-tag:focus-visible,
+.mb-plaque:focus-visible {
+  /* the cut corners of a frame would clip a ring that sits outside it */
+  outline-offset: -4px;
+}
+.mb-root a:where(:not([data-slot^='mb-'])) {
+  color: inherit;
+  text-decoration: none;
+}
+.mb-root img {
+  max-width: 100%;
+}
+html[data-skin='moba'] body {
+  overflow: hidden;
+}
+
+/* the gold frame: a bevelled double line, used by the panel, the HUD and the dialogs (the corners are cut, never rounded) */
+.mb-frame {
+  --mb-cut: 10px;
+  position: relative;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mb-gold) 7%, transparent),
+      transparent 40%
+    ),
+    var(--mb-panel);
+  border: 1px solid var(--mb-gold-lo);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--mb-gold-hi) 14%, transparent),
+    inset 0 0 0 3px var(--mb-well),
+    inset 0 0 0 4px color-mix(in srgb, var(--mb-gold) 36%, transparent),
+    0 0 0 0 transparent;
+  clip-path: polygon(
+    var(--mb-cut) 0,
+    calc(100% - var(--mb-cut)) 0,
+    100% var(--mb-cut),
+    100% calc(100% - var(--mb-cut)),
+    calc(100% - var(--mb-cut)) 100%,
+    var(--mb-cut) 100%,
+    0 calc(100% - var(--mb-cut)),
+    0 var(--mb-cut)
+  );
+}
+.mb-hairline {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--mb-gold-lo),
+    var(--mb-gold),
+    var(--mb-gold-lo),
+    transparent
+  );
+  height: 1px;
+}

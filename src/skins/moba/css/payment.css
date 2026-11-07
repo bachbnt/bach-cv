@@ -1,0 +1,97 @@
+/* The payment page of the Moba skin: the chests of the preferred methods, the coin purses and the coins. */
+
+/* titles are the bright gold on the dark theme; on the parchment of the light theme that gold is too pale to read */
+.mb-pay-title {
+  color: var(--mb-title);
+}
+html[data-skin='moba']:not(.dark) .mb-pay-title {
+  color: var(--mb-gold-ink);
+}
+
+/* a treasure chest: a banded lid with rivets across the top of the plaque */
+.mb-chest::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 12px;
+  background:
+    radial-gradient(
+        circle at 12px 6px,
+        var(--mb-gold-hi) 0 1.5px,
+        transparent 2px
+      )
+      0 0 / 24px 12px repeat-x,
+    linear-gradient(180deg, var(--mb-gold), var(--mb-gold-lo));
+  opacity: 0.55;
+}
+.mb-chest::after {
+  content: '';
+  position: absolute;
+  inset: 12px 0 auto 0;
+  height: 1px;
+  background: var(--mb-gold-lo);
+}
+
+/* the gold plate that holds the QR code: it keeps its focus ring inside, because its corners are cut */
+.mb-qr-plate {
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 45%,
+    var(--mb-gold-lo)
+  );
+  clip-path: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px),
+    0 10px
+  );
+  transition: filter 0.16s ease;
+}
+.mb-qr-plate:focus-visible {
+  outline-offset: -5px;
+}
+@media (hover: hover) {
+  .mb-qr-plate:hover {
+    filter: brightness(1.12);
+  }
+}
+
+/* a coin: a gold rim round a dark face */
+.mb-coin {
+  border-radius: 50%;
+  background: conic-gradient(
+    from 30deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 30%,
+    var(--mb-gold-lo) 60%,
+    var(--mb-gold) 85%,
+    var(--mb-gold-hi)
+  );
+}
+.mb-coin-face {
+  background: radial-gradient(
+    circle at 50% 30%,
+    var(--mb-raised),
+    var(--mb-well)
+  );
+}
+
+/* a coin purse: a plaque that clinks up under the pointer; a gold rule marks its edge */
+.mb-purse::before {
+  content: '';
+  position: absolute;
+  inset: 10px auto 10px 8px;
+  width: 3px;
+  background: var(--mb-gold);
+  opacity: 0.6;
+}
+
+/* a button with cut corners keeps its focus ring inside, or the cut would clip it away */
+.mb-focus-in:focus-visible {
+  outline-offset: -4px;
+}

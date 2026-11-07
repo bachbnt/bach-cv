@@ -1,0 +1,225 @@
+/* The map: the camera, the champion, the tags over the landmarks, and the slow motion of the art (halos, water, floating relics).
+   Every motion is paused with `data-paused` on the map (hidden window, off screen, reduced motion) and the walk is the only thing
+   that moves a transform. */
+.mb-root .mb-world,
+.mb-root .mb-champion {
+  /* at rest the camera and the champion glide to a new place (a page chosen from the list); while walking they follow every frame */
+  transition: transform 0.55s cubic-bezier(0.22, 0.7, 0.25, 1);
+}
+.mb-root [data-walking] .mb-world,
+.mb-root [data-walking] .mb-champion {
+  transition: none;
+}
+
+.mb-tag {
+  position: relative;
+  color: var(--mb-ink);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mb-gold) 14%, transparent),
+      transparent
+    ),
+    color-mix(in srgb, var(--mb-panel) 94%, transparent);
+  border: 1px solid var(--mb-gold-lo);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--mb-gold-hi) 16%, transparent),
+    0 4px 10px rgb(0 0 0 / 0.4);
+  clip-path: polygon(
+    7px 0,
+    calc(100% - 7px) 0,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0 calc(100% - 7px),
+    0 7px
+  );
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease;
+}
+.mb-tag[data-here] {
+  border-color: var(--mb-teal);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--mb-teal) 50%, transparent),
+    0 0 14px color-mix(in srgb, var(--mb-teal) 55%, transparent);
+}
+.mb-tag[data-walking] {
+  border-color: var(--mb-title);
+}
+.mb-tag-role[data-nexus] {
+  border-color: var(--mb-red);
+}
+.mb-tag-role[data-taken] {
+  border-color: var(--mb-teal);
+}
+@media (hover: hover) {
+  .mb-tag:hover {
+    transform: translateY(-2px);
+    border-color: var(--mb-title);
+  }
+}
+.mb-tag:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.mb-plate {
+  background: color-mix(in srgb, var(--mb-void) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mb-gold) 60%, transparent);
+  text-shadow: 0 1px 2px #000;
+}
+.mb-hex {
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.mb-hex-gold {
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 45%,
+    var(--mb-gold-lo)
+  );
+}
+.mb-ground {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--mb-teal) 45%, transparent),
+    transparent
+  );
+  border: 2px solid var(--mb-teal);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--mb-teal) 70%, transparent);
+}
+.mb-recall {
+  opacity: 0;
+  border: 3px dashed var(--mb-gold-hi);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--mb-gold-hi) 60%, transparent);
+}
+.mb-champion[data-recalling] .mb-recall {
+  opacity: 1;
+  animation: mb-recall 0.9s ease-in forwards;
+}
+
+.mb-ping {
+  border: 3px solid var(--mb-gold-hi);
+  animation: mb-ping 0.9s ease-out forwards;
+}
+
+.mb-pulse {
+  animation: mb-pulse 4.2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.mb-spin {
+  animation: mb-spin 14s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.mb-spin-slow {
+  animation: mb-spin 26s linear infinite;
+  transform-box: view-box;
+  transform-origin: 0 0;
+}
+.mb-float {
+  animation: mb-float 3.4s ease-in-out infinite;
+}
+.mb-flow {
+  animation: mb-flow 5s linear infinite;
+}
+.mb-flow-slow {
+  animation-duration: 9s;
+  animation-direction: reverse;
+}
+.mb-ripple {
+  animation: mb-ripple 2.8s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.mb-ripple-late {
+  animation-delay: 1.4s;
+}
+
+.mb-root [data-paused] *,
+.mb-root[data-paused] * {
+  animation-play-state: paused !important;
+}
+
+@keyframes mb-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+@keyframes mb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes mb-float {
+  0%,
+  100% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+@keyframes mb-flow {
+  to {
+    stroke-dashoffset: -160;
+  }
+}
+@keyframes mb-ripple {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+@keyframes mb-ping {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+@keyframes mb-recall {
+  0% {
+    transform: scale(1.5) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.4) rotate(180deg);
+    opacity: 0.2;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mb-root *,
+  .mb-root *::before,
+  .mb-root *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* past the edge of the arena the forest goes on in the same dark: the world fades into it instead of ending in a hard line */
+.mb-map {
+  background: var(--mb-m-wall);
+}
+.mb-world {
+  box-shadow: 0 0 70px 50px var(--mb-m-wall);
+}

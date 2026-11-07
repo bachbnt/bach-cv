@@ -1,0 +1,117 @@
+/* Home: the portrait frame, the marquee of skills, the rows of the match history. */
+.mb-portrait {
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 45%,
+    var(--mb-gold-lo)
+  );
+  padding: 3px;
+  clip-path: polygon(
+    14px 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% calc(100% - 14px),
+    calc(100% - 14px) 100%,
+    14px 100%,
+    0 calc(100% - 14px),
+    0 14px
+  );
+}
+.mb-portrait > img {
+  position: absolute;
+  inset: 3px;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  clip-path: polygon(
+    11px 0,
+    calc(100% - 11px) 0,
+    100% 11px,
+    100% calc(100% - 11px),
+    calc(100% - 11px) 100%,
+    11px 100%,
+    0 calc(100% - 11px),
+    0 11px
+  );
+}
+.mb-marquee {
+  display: flex;
+  width: max-content;
+  gap: 10px;
+  animation: mb-marquee 55s linear infinite;
+}
+.mb-marquee-mask {
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 92%,
+    transparent
+  );
+}
+@media (hover: hover) {
+  .mb-marquee:hover {
+    animation-play-state: paused;
+  }
+}
+.mb-marquee-paused {
+  animation-play-state: paused;
+}
+@keyframes mb-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mb-marquee {
+    width: auto;
+    flex-wrap: wrap;
+    animation: none;
+    padding: 0 24px;
+  }
+  .mb-marquee-mask {
+    mask-image: none;
+  }
+}
+.mb-row {
+  position: relative;
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--mb-gold) 8%, transparent),
+      transparent 60%
+    ),
+    var(--mb-raised);
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--mb-gold-lo) 80%, transparent);
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+@media (hover: hover) {
+  .mb-row:hover {
+    box-shadow:
+      inset 0 0 0 1px var(--mb-gold),
+      inset 3px 0 0 var(--mb-teal);
+    transform: translateX(3px);
+  }
+}
+.mb-row:active {
+  transform: none;
+}
+.mb-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 23px;
+  left: 52px;
+  right: -14px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--mb-gold-lo), transparent);
+  display: none;
+}
+@media (min-width: 760px) {
+  .mb-step:not(:last-child)::after {
+    display: block;
+  }
+}

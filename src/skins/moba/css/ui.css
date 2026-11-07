@@ -1,0 +1,301 @@
+/* The small parts every page is made of: buttons, key caps, slots, bars. The corners of a part that is a frame are cut, never rounded. */
+.mb-btn {
+  --cut: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  clip-path: polygon(
+    var(--cut) 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut)),
+    0 var(--cut)
+  );
+  transition:
+    filter 0.16s ease,
+    transform 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
+}
+.mb-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+.mb-btn[disabled],
+.mb-btn[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.mb-btn-gold {
+  color: #1c1405;
+  background: linear-gradient(
+    180deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 55%,
+    var(--mb-gold-lo)
+  );
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
+}
+html[data-skin='moba']:not(.dark) .mb-btn-gold {
+  color: #fff8e6;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mb-gold-hi) 70%, var(--mb-gold)),
+    var(--mb-gold) 55%,
+    var(--mb-gold-lo)
+  );
+}
+.mb-btn-ghost,
+.mb-btn-teal {
+  color: var(--mb-gold-ink);
+  background: color-mix(in srgb, var(--mb-well) 80%, transparent);
+  box-shadow:
+    inset 0 0 0 1px var(--mb-gold-lo),
+    inset 0 0 0 3px color-mix(in srgb, var(--mb-gold) 12%, transparent);
+}
+.mb-btn-teal {
+  color: var(--mb-teal-ink);
+  box-shadow:
+    inset 0 0 0 1px var(--mb-teal),
+    inset 0 0 0 3px color-mix(in srgb, var(--mb-teal) 14%, transparent);
+}
+@media (hover: hover) {
+  .mb-btn-gold:hover {
+    filter: brightness(1.1) saturate(1.05);
+  }
+  .mb-btn-ghost:hover {
+    color: var(--mb-title);
+    background: color-mix(in srgb, var(--mb-gold) 16%, var(--mb-well));
+  }
+  .mb-btn-teal:hover {
+    background: color-mix(in srgb, var(--mb-teal) 18%, var(--mb-well));
+  }
+}
+
+.mb-kbd {
+  display: inline-grid;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  place-items: center;
+  padding: 0 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--mb-title);
+  background: var(--mb-void);
+  border: 1px solid var(--mb-gold-lo);
+  border-radius: 3px;
+}
+
+/* a slot of the champion bar: an octagon with a gold bevel, the thing inside and its key under it */
+.mb-slot {
+  --cut: 9px;
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  cursor: pointer;
+  color: var(--mb-title);
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 45%,
+    var(--mb-gold-lo)
+  );
+  clip-path: polygon(
+    var(--cut) 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut)),
+    0 var(--cut)
+  );
+  transition:
+    filter 0.16s ease,
+    transform 0.16s ease;
+}
+.mb-slot > .mb-slot-in {
+  position: absolute;
+  inset: 2px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at 50% 30%,
+    color-mix(in srgb, var(--mb-raised) 90%, #fff),
+    var(--mb-well)
+  );
+  clip-path: inherit;
+}
+.mb-slot[data-tone='teal'] {
+  background: linear-gradient(
+    160deg,
+    var(--mb-teal-ink),
+    var(--mb-teal) 50%,
+    var(--mb-gold-lo)
+  );
+}
+.mb-slot[data-empty] {
+  cursor: default;
+  filter: saturate(0.4) brightness(0.7);
+}
+.mb-slot[aria-expanded='true'],
+.mb-slot[aria-pressed='true'] {
+  filter: brightness(1.25);
+}
+.mb-slot:active:not([data-empty]) {
+  transform: scale(0.94);
+}
+@media (hover: hover) {
+  .mb-slot:hover:not([data-empty]) {
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+  }
+}
+.mb-slot-key {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  z-index: 2;
+}
+
+/* the share of the career a key skill covers, as a ring around its slot (it is not a cooldown: it stays) */
+.mb-ring {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: conic-gradient(
+    var(--mb-teal) calc(var(--p, 0) * 1%),
+    transparent 0
+  );
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 3px),
+    #000 calc(100% - 3px)
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 3px),
+    #000 calc(100% - 3px)
+  );
+  border-radius: 50%;
+}
+
+/* a bar with a tick for every unit it counts */
+.mb-bar {
+  position: relative;
+  height: 14px;
+  background: var(--mb-void);
+  border: 1px solid var(--mb-gold-lo);
+  padding: 1px;
+}
+.mb-bar-fill {
+  height: 100%;
+}
+.mb-bar-ticks {
+  position: absolute;
+  inset: 1px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(var(--tick) - 1px),
+    rgb(0 0 0 / 0.55) calc(var(--tick) - 1px),
+    rgb(0 0 0 / 0.55) var(--tick)
+  );
+}
+
+/* a plaque: the card of the pages */
+.mb-plaque {
+  --cut: 9px;
+  position: relative;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mb-gold) 7%, transparent),
+      transparent 55%
+    ),
+    var(--mb-raised);
+  box-shadow:
+    inset 0 0 0 1px var(--mb-gold-lo),
+    inset 0 0 0 3px color-mix(in srgb, var(--mb-void) 55%, transparent),
+    inset 0 0 0 4px color-mix(in srgb, var(--mb-gold) 22%, transparent);
+  clip-path: polygon(
+    var(--cut) 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut)),
+    0 var(--cut)
+  );
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+@media (hover: hover) {
+  .mb-plaque-lift:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+  }
+}
+.mb-plaque-lift:active {
+  transform: translateY(0);
+}
+.mb-chip {
+  clip-path: polygon(
+    5px 0,
+    calc(100% - 5px) 0,
+    100% 5px,
+    100% calc(100% - 5px),
+    calc(100% - 5px) 100%,
+    5px 100%,
+    0 calc(100% - 5px),
+    0 5px
+  );
+}
+
+/* the parts of a page arrive one after another: `--i` is the place of the part */
+.mb-rise {
+  animation: mb-rise 0.5s cubic-bezier(0.22, 0.7, 0.25, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+@keyframes mb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.mb-section + .mb-section {
+  border-top: 1px solid color-mix(in srgb, var(--mb-gold-lo) 55%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mb-rise {
+    animation: none;
+  }
+}
+
+/* a slot the phone leaves to its menu (the class sets `display` itself, so a `hidden` utility would lose to it) */
+@media (max-width: 719px) {
+  .mb-slot.mb-hide-phone {
+    display: none;
+  }
+}

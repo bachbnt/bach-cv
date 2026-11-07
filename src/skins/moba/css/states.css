@@ -1,0 +1,83 @@
+/* The loading screen of a block, the skeleton, the error card and the closed screen. */
+.mb-load-bar {
+  position: relative;
+  height: 14px;
+  overflow: hidden;
+  background: var(--mb-void);
+  border: 1px solid var(--mb-gold-lo);
+  padding: 2px;
+}
+.mb-load-bar > span {
+  display: block;
+  height: 100%;
+  width: 38%;
+  background: linear-gradient(
+    90deg,
+    var(--mb-gold-lo),
+    var(--mb-gold-hi),
+    var(--mb-gold-lo)
+  );
+  animation: mb-load 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes mb-load {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(263%);
+  }
+}
+.mb-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--mb-gold) 9%, var(--mb-well));
+  border: 1px solid color-mix(in srgb, var(--mb-gold-lo) 60%, transparent);
+}
+.mb-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, var(--mb-gold-hi) 16%, transparent) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  animation: mb-sheen 1.6s ease-in-out infinite;
+}
+@keyframes mb-sheen {
+  to {
+    transform: translateX(100%);
+  }
+}
+.mb-notice-error {
+  border-color: var(--mb-red);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--mb-red) 40%, transparent),
+    inset 0 0 0 3px var(--mb-well),
+    inset 0 0 0 4px color-mix(in srgb, var(--mb-red) 30%, transparent);
+}
+.mb-code {
+  text-shadow: 0 0 28px color-mix(in srgb, var(--mb-gold) 40%, transparent);
+}
+.mb-closed {
+  background:
+    radial-gradient(
+      60% 50% at 50% 30%,
+      color-mix(in srgb, var(--mb-teal) 14%, transparent),
+      transparent
+    ),
+    var(--mb-void);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mb-load-bar > span {
+    width: 50%;
+    animation: none;
+    transform: none;
+  }
+  .mb-skeleton::after {
+    animation: none;
+    opacity: 0;
+  }
+}

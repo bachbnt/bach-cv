@@ -1,0 +1,16 @@
+/* The projects page of the Moba skin. */
+
+/* a filter swaps the grid: the new cards rise in (opacity and transform only; the global rule of map.css stops it for reduced motion) */
+.mb-swap {
+  animation: mb-swap 0.32s cubic-bezier(0.22, 0.7, 0.25, 1) both;
+}
+@keyframes mb-swap {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

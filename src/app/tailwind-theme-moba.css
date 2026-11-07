@@ -1,0 +1,29 @@
+/* The theme colours of the `moba` skin as utilities. Their values are defined once on html[data-skin='moba'] in
+   skins/moba/moba.css (dark and light). globals.css imports this file: one Tailwind build for Standard and every skin. */
+@theme inline {
+  --color-mb-bg: var(--mb-bg);
+  --color-mb-panel: var(--mb-panel);
+  --color-mb-raised: var(--mb-raised);
+  --color-mb-well: var(--mb-well);
+  --color-mb-line: var(--mb-line);
+  --color-mb-ink: var(--mb-ink);
+  --color-mb-mute: var(--mb-mute);
+  --color-mb-dim: var(--mb-dim);
+  --color-mb-gold: var(--mb-gold);
+  --color-mb-gold-hi: var(--mb-gold-hi);
+  --color-mb-gold-lo: var(--mb-gold-lo);
+  --color-mb-gold-ink: var(--mb-gold-ink);
+  --color-mb-title: var(--mb-title);
+  --color-mb-teal: var(--mb-teal);
+  --color-mb-teal-ink: var(--mb-teal-ink);
+  --color-mb-blue: var(--mb-blue);
+  --color-mb-red: var(--mb-red);
+  --color-mb-red-ink: var(--mb-red-ink);
+  --color-mb-green: var(--mb-green);
+  --color-mb-violet: var(--mb-violet);
+  --color-mb-orange: var(--mb-orange);
+  --color-mb-hp: var(--mb-hp);
+  --color-mb-mp: var(--mb-mp);
+  --color-mb-void: var(--mb-void);
+  --font-mb-display: var(--font-mb-display), Georgia, 'Times New Roman', serif;
+}

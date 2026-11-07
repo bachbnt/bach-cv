@@ -1,0 +1,215 @@
+/* The HUD: the top bar with the scoreboard, the list of places, the champion bar and the minimap. The bars sit on the stage edge-to-edge,
+   so they have a gold line on the inner edge instead of a cut frame. */
+.mb-top {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mb-void) 94%, transparent),
+    color-mix(in srgb, var(--mb-void) 70%, transparent)
+  );
+  border-bottom: 1px solid var(--mb-gold-lo);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--mb-gold-hi) 14%, transparent),
+    0 8px 18px rgb(0 0 0 / 0.28);
+}
+html[data-skin='moba']:not(.dark) .mb-top {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mb-panel) 96%, transparent),
+    color-mix(in srgb, var(--mb-bg) 88%, transparent)
+  );
+}
+.mb-top-btn {
+  --cut: 6px;
+  background: color-mix(in srgb, var(--mb-well) 70%, transparent);
+  box-shadow: inset 0 0 0 1px var(--mb-gold-lo);
+  clip-path: polygon(
+    var(--cut) 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut)),
+    0 var(--cut)
+  );
+  transition:
+    color 0.16s ease,
+    background-color 0.16s ease;
+}
+@media (hover: hover) {
+  .mb-top-btn:hover {
+    color: var(--mb-title);
+    background: color-mix(in srgb, var(--mb-gold) 18%, var(--mb-well));
+  }
+}
+
+.mb-score {
+  background: color-mix(in srgb, var(--mb-well) 85%, transparent);
+  box-shadow:
+    inset 0 0 0 1px var(--mb-gold-lo),
+    inset 0 0 0 3px color-mix(in srgb, var(--mb-gold) 10%, transparent);
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 100%, 0 100%);
+  padding: 0 14px;
+}
+.mb-score-cell {
+  color: var(--mb-title);
+}
+.mb-score-cell[data-team='blue'] > svg,
+.mb-score-cell[data-team='blue'] > span:last-child {
+  color: var(--mb-team-blue);
+}
+.mb-score-cell[data-team='red'] > svg,
+.mb-score-cell[data-team='red'] > span:last-child {
+  color: var(--mb-red-ink);
+}
+.mb-score-cell[data-team='gold'] > svg,
+.mb-score-cell[data-team='gold'] > span:last-child {
+  color: var(--mb-gold-ink);
+}
+.mb-score-cell + .mb-score-cell {
+  border-left: 1px solid color-mix(in srgb, var(--mb-gold-lo) 70%, transparent);
+}
+
+/* the list of places on the left of the stage */
+.mb-place {
+  --cut: 8px;
+  background: color-mix(in srgb, var(--mb-panel) 90%, transparent);
+  box-shadow: inset 0 0 0 1px var(--mb-gold-lo);
+  clip-path: polygon(
+    var(--cut) 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut)),
+    0 var(--cut)
+  );
+  transition:
+    color 0.16s ease,
+    background-color 0.16s ease,
+    transform 0.16s ease;
+}
+.mb-place[data-here] {
+  color: var(--mb-title);
+  background: color-mix(in srgb, var(--mb-gold) 22%, var(--mb-panel));
+  box-shadow:
+    inset 0 0 0 1px var(--mb-gold),
+    inset 0 -3px 0 var(--mb-teal);
+}
+.mb-place:active {
+  transform: scale(0.97);
+}
+@media (hover: hover) {
+  .mb-place:hover:not([data-soon]) {
+    color: var(--mb-title);
+    background: color-mix(in srgb, var(--mb-gold) 14%, var(--mb-panel));
+  }
+}
+
+/* the champion bar */
+.mb-hud {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mb-gold) 8%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mb-panel) 96%, transparent),
+      var(--mb-void)
+    );
+  border-top: 1px solid var(--mb-gold);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--mb-gold-hi) 20%, transparent),
+    inset 0 3px 0 color-mix(in srgb, var(--mb-gold-lo) 50%, transparent),
+    0 -10px 24px rgb(0 0 0 / 0.35);
+}
+html[data-skin='moba']:not(.dark) .mb-hud {
+  background: linear-gradient(180deg, var(--mb-panel), var(--mb-bg));
+}
+.mb-badge {
+  display: grid;
+  min-width: 26px;
+  height: 26px;
+  place-items: center;
+  padding: 0 4px;
+  font-family: var(--font-mb-display), Georgia, serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  color: #1c1405;
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 60%,
+    var(--mb-gold-lo)
+  );
+  border: 1px solid var(--mb-void);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.mb-card {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mb-gold) 8%, transparent),
+      transparent 40%
+    ),
+    var(--mb-panel);
+  color: var(--mb-ink);
+  border: 1px solid var(--mb-gold-lo);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--mb-gold-hi) 14%, transparent),
+    inset 0 0 0 3px var(--mb-well),
+    inset 0 0 0 4px color-mix(in srgb, var(--mb-gold) 30%, transparent),
+    0 12px 30px rgb(0 0 0 / 0.5);
+}
+
+/* the minimap */
+.mb-minimap {
+  background: linear-gradient(
+    160deg,
+    var(--mb-gold-hi),
+    var(--mb-gold) 45%,
+    var(--mb-gold-lo)
+  );
+  box-shadow: 0 0 0 1px var(--mb-void);
+}
+.mb-pin {
+  background: var(--mb-void);
+  border: 2px solid var(--mb-gold);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.6);
+}
+.mb-pin[data-here] {
+  border-color: var(--mb-teal-ink);
+  background: var(--mb-teal);
+}
+.mb-pin[data-walking] {
+  border-color: var(--mb-title);
+  background: var(--mb-gold);
+}
+.mb-pin-role {
+  width: 7px;
+  height: 7px;
+  background: var(--mb-team-red);
+  border: 1px solid #fff;
+  border-radius: 1px;
+}
+.mb-pin-role[data-taken] {
+  background: var(--mb-team-blue);
+}
+.mb-pin-role[data-nexus] {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.mb-me {
+  z-index: 5;
+  background: var(--mb-gold-hi);
+  border: 2px solid var(--mb-teal);
+  box-shadow:
+    0 0 0 2px #000,
+    0 0 10px var(--mb-teal);
+}

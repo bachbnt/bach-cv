@@ -1,0 +1,22 @@
+/* The certificates page of the Moba skin. */
+
+/* the slot that was asked for from the champion bar flashes a ring twice (opacity and transform only) */
+.mb-ping::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 2px solid var(--mb-teal-ink);
+  opacity: 0;
+  animation: mb-ping 0.9s ease-out 2;
+}
+@keyframes mb-ping {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
