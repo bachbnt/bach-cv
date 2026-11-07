@@ -300,7 +300,7 @@ ${table(
   ],
 )}
 <h3>5.5 Skins</h3>
-<p>A <b>skin</b> is another look for the same content. The visitor picks <b>Standard</b>, <b>Dev</b> (the window of a code editor) or <b>Trade</b> (a chart terminal) in the header; the choice is kept in <code>localStorage</code> (<code>bach-cv-skin</code>, or <code>?skin=dev</code>, <code>?skin=trade</code>) and the URL does not change. The static HTML is always Standard.</p>
+<p>A <b>skin</b> is another look for the same content. The visitor picks <b>Standard</b>, <b>Dev</b> (the window of a code editor), <b>Trade</b> (a chart terminal) or <b>Moba</b> (an in-game arena) in the header; the choice is kept in <code>localStorage</code> (<code>bach-cv-skin</code>, or <code>?skin=dev</code>, <code>?skin=trade</code>, <code>?skin=moba</code>) and the URL does not change. The static HTML is always Standard.</p>
 ${table(
   ['Part', 'How it works'],
   [

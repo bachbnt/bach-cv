@@ -11,7 +11,7 @@ import { ProjectCover } from '@/components/projects/project-cover';
 import { skillsOf } from '@/components/projects/project-helpers';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { mobaHomeCopy } from '@/content/copy/moba-home';
-import { featured } from '@/lib/derive/featured';
+import { highlighted } from '@/lib/derive/highlighted';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { MbSection } from '@/skins/moba/ui/mb-section';
@@ -33,7 +33,7 @@ export function HomeFeatured() {
     () => new Map(skillList.map((s) => [s.id, s])),
     [skillList],
   );
-  const shown = featured(query.data ?? []).slice(0, LIMIT);
+  const shown = highlighted(query.data ?? []).slice(0, LIMIT);
   if (query.isError || (!query.isPending && !shown.length)) return null;
   return (
     <MbSection

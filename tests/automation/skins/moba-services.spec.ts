@@ -70,6 +70,8 @@ test.describe('the shop', () => {
 
   test('every kind of service draws its own emblem', async ({ page }) => {
     await gotoSkin(page, '/services');
+    // the shop fills in when the services arrive
+    await expect(page.locator('[data-art]').first()).toBeAttached();
     const arts = await page
       .locator('[data-art]')
       .evaluateAll((els) => els.map((e) => e.getAttribute('data-art')));

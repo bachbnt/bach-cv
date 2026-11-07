@@ -9,7 +9,7 @@ import { fillCopy, skillsOf } from '@/components/projects/project-helpers';
 import { mobaProjectsCopy } from '@/content/copy/moba-projects';
 import { projectsCopy } from '@/content/copy/projects';
 import type { Doc } from '@/lib/content/schema';
-import { featured } from '@/lib/derive/featured';
+import { highlighted } from '@/lib/derive/highlighted';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { ProjectCard } from '@/skins/moba/blocks/projects-card';
@@ -48,7 +48,7 @@ export function ProjectsBoard() {
     [skillList],
   );
   const projects = query.data ?? [];
-  const top = featured(projects);
+  const top = highlighted(projects);
 
   const openScreenshots = (project: Doc<'projects'>) =>
     openViewer(
