@@ -1,0 +1,575 @@
+/*
+ * The map of the Travel skin: the sky behind it, the world that is panned and zoomed, the waves, the sprites and the controls.
+ * Everything here is decoration or a control of the map; the prefix is tl-.
+ */
+.tl-map {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  background: linear-gradient(
+    180deg,
+    var(--tl-sky-1) 0%,
+    var(--tl-sky-2) 62%,
+    color-mix(in srgb, var(--tl-sea-1) 40%, var(--tl-sky-2)) 100%
+  );
+  outline-offset: -4px;
+}
+.tl-map.tl-dragging {
+  cursor: grabbing;
+}
+.tl-view {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.tl-view.tl-fly {
+  transition: transform 0.8s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+/* ---- sky */
+.tl-sun,
+.tl-moon {
+  position: absolute;
+  border-radius: 50%;
+  transition: opacity 0.6s;
+}
+.tl-sun {
+  left: 12%;
+  top: 11%;
+  width: 84px;
+  height: 84px;
+  background: radial-gradient(circle at 40% 35%, #fff8d6, #ffd36b 60%, #ffb347);
+  box-shadow: 0 0 90px 30px rgba(255, 210, 100, 0.5);
+  opacity: calc(1 - var(--tl-night));
+}
+.tl-moon {
+  right: 14%;
+  top: 9%;
+  width: 78px;
+  height: 78px;
+  background: radial-gradient(circle at 36% 34%, #fffdf0, #ece6c6 60%, #cfc79e);
+  box-shadow: 0 0 70px 24px rgba(190, 205, 255, 0.35);
+  opacity: var(--tl-night);
+}
+.tl-stars {
+  position: absolute;
+  inset: 0;
+  opacity: var(--tl-night);
+}
+.tl-stars i {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.85;
+  animation: tl-twinkle 3s ease-in-out infinite alternate;
+}
+@keyframes tl-twinkle {
+  from {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+.tl-far {
+  position: absolute;
+  left: -6%;
+  width: 112%;
+  bottom: 26%;
+  height: 34%;
+}
+.tl-far-1 {
+  fill: var(--tl-far-1);
+  opacity: 0.75;
+}
+.tl-far-2 {
+  fill: var(--tl-far-2);
+  bottom: 20%;
+  height: 28%;
+  opacity: 0.9;
+}
+.tl-cloud {
+  position: absolute;
+  left: 0;
+  height: 30px;
+  border-radius: 40px;
+  background: var(--tl-cloud);
+  animation: tl-drift linear infinite;
+}
+.tl-cloud::before,
+.tl-cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+.tl-cloud::before {
+  width: 44%;
+  height: 150%;
+  left: 14%;
+  bottom: 30%;
+}
+.tl-cloud::after {
+  width: 34%;
+  height: 120%;
+  left: 50%;
+  bottom: 20%;
+}
+@keyframes tl-drift {
+  from {
+    transform: translateX(-30vw);
+  }
+  to {
+    transform: translateX(130vw);
+  }
+}
+.tl-bird {
+  position: absolute;
+  left: 0;
+  animation: tl-bird linear infinite;
+  opacity: 0.7;
+}
+@keyframes tl-bird {
+  from {
+    transform: translate(-10vw, 0);
+  }
+  50% {
+    transform: translate(55vw, -18px);
+  }
+  to {
+    transform: translate(115vw, 6px);
+  }
+}
+.tl-haze {
+  position: absolute;
+  inset: auto 0 0;
+  height: 42%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--tl-sea-1) 30%, var(--tl-sky-2))
+  );
+  opacity: 0.6;
+}
+
+/* ---- waves: two layers of strokes drifting over the sea, moved by the compositor only */
+.tl-wave {
+  position: absolute;
+  left: -200px;
+  top: -200px;
+  width: calc(100% + 400px);
+  height: calc(100% + 400px);
+  background: var(--tl-foam);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48'%3E%3Cg fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 14q8-8 16 0t16 0'/%3E%3Cpath d='M56 38q8-8 16 0t16 0'/%3E%3Cpath d='M60 10q5-5 10 0t10 0' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48'%3E%3Cg fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 14q8-8 16 0t16 0'/%3E%3Cpath d='M56 38q8-8 16 0t16 0'/%3E%3Cpath d='M60 10q5-5 10 0t10 0' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E");
+  -webkit-mask-size: 96px 48px;
+  mask-size: 96px 48px;
+  opacity: 0.5;
+  animation: tl-wave-a 9s linear infinite;
+  will-change: transform;
+}
+.tl-wave-b {
+  -webkit-mask-size: 150px 74px;
+  mask-size: 150px 74px;
+  opacity: 0.32;
+  animation: tl-wave-b 14s linear infinite;
+}
+@keyframes tl-wave-a {
+  to {
+    transform: translate3d(-96px, 48px, 0);
+  }
+}
+@keyframes tl-wave-b {
+  to {
+    transform: translate3d(150px, 74px, 0);
+  }
+}
+.tl-ground {
+  pointer-events: none;
+}
+.tl-windows {
+  opacity: var(--tl-night);
+}
+
+/* ---- the route */
+.tl-route {
+  pointer-events: none;
+}
+
+/* ---- sprites: they stand on their point and keep a readable size at every zoom */
+.tl-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.tl-sprite > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.tl-art {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+}
+.tl-art svg {
+  display: block;
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+}
+.tl-name {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  transform: translateX(-50%) scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  translate: none;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--tl-ink);
+  background: var(--tl-panel);
+  padding: 2px 8px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.tl-tag-left .tl-name {
+  transform: translateX(calc(-100% - 10px)) scale(var(--tl-sc));
+  transform-origin: 100% 0;
+  top: -40px;
+}
+.tl-tag-right .tl-name {
+  transform: translateX(10px) scale(var(--tl-sc));
+  transform-origin: 0 0;
+  top: -40px;
+}
+.tl-boat > * {
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  translate: none;
+  animation: tl-bob var(--tl-dur, 28s) ease-in-out infinite alternate;
+}
+@keyframes tl-bob {
+  from {
+    margin-left: -30px;
+    margin-top: 0;
+  }
+  50% {
+    margin-top: 5px;
+  }
+  to {
+    margin-left: 34px;
+    margin-top: -3px;
+  }
+}
+.tl-cable-line {
+  pointer-events: none;
+  z-index: 700;
+}
+.tl-cable-line line {
+  stroke: var(--tl-ink);
+  stroke-width: 1.6;
+  stroke-dasharray: 3 4;
+  opacity: 0.6;
+}
+.tl-gondola {
+  z-index: 701;
+  width: 14px;
+  height: 12px;
+  margin: -6px 0 0 -7px;
+  border-radius: 4px 4px 7px 7px;
+  background: var(--tl-coral);
+  box-shadow: 0 0 0 2px var(--tl-solid);
+  offset-path: var(--tl-path);
+  offset-rotate: 0deg;
+  animation: tl-gondola 24s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes tl-gondola {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+/* ---- pins of the stops */
+.tl-pin {
+  pointer-events: none;
+}
+.tl-pin > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: none;
+  transform-origin: 0 0;
+}
+.tl-pin-btn {
+  pointer-events: auto;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  display: block;
+  padding-bottom: 12px;
+  cursor: pointer;
+  transition: scale 0.25s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+.tl-pin-head {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 6px;
+  border-radius: 50% 50% 50% 8px;
+  transform: rotate(-45deg);
+  background: var(--tl-pc);
+  border: 3px solid #fff;
+  box-shadow:
+    0 8px 16px -4px rgba(0, 0, 0, 0.4),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.14);
+  color: #fff;
+}
+.tl-pin-head svg {
+  transform: rotate(45deg);
+  width: 22px;
+  height: 22px;
+}
+.tl-pin-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--tl-pc);
+  border: 3px solid #fff;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.tl-pin-label {
+  position: absolute;
+  left: calc(50% + 34px);
+  bottom: 18px;
+  white-space: nowrap;
+  text-align: left;
+  background: var(--tl-panel);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  border-left: 4px solid var(--tl-pc);
+  padding: 6px 10px 6px 11px;
+  box-shadow: var(--tl-shadow);
+  color: var(--tl-ink);
+}
+.tl-pin-label b {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.15;
+}
+.tl-pin-label small {
+  display: block;
+  font-size: 10.5px;
+  color: var(--tl-muted);
+  margin-top: 1px;
+}
+.tl-pin-left .tl-pin-label {
+  left: auto;
+  right: calc(50% + 34px);
+  border-left: 0;
+  border-right: 4px solid var(--tl-pc);
+  text-align: right;
+}
+.tl-pin-on .tl-pin-btn {
+  scale: 1.14;
+}
+.tl-pin-btn:focus-visible {
+  outline: none;
+}
+.tl-pin-btn:focus-visible .tl-pin-head {
+  outline: 3px solid var(--tl-coral);
+  outline-offset: 3px;
+}
+@media (hover: hover) {
+  .tl-pin-btn:hover {
+    scale: 1.14;
+  }
+}
+.tl-pin-flag {
+  transform: translate(-50%, -100%) translateY(-84px) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--tl-coral);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  box-shadow: 0 8px 18px -6px var(--tl-coral);
+}
+.tl-pin-flag i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* ---- the traveller */
+.tl-traveller {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.tl-traveller-in {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+}
+.tl-traveller-badge {
+  display: block;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  overflow: hidden;
+  box-shadow:
+    0 8px 16px -4px rgba(0, 0, 0, 0.4),
+    0 0 0 3px var(--tl-coral);
+  background: var(--tl-coral);
+}
+.tl-traveller-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tl-traveller-tag {
+  position: absolute;
+  left: 50%;
+  top: -26px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff;
+  color: #c13a28;
+  padding: 2px 8px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tl-moving .tl-traveller-tag {
+  opacity: 1;
+}
+
+/* ---- edge signs: places that are off the map */
+.tl-edge {
+  position: absolute;
+  display: none;
+}
+
+/* ---- controls */
+.tl-controls {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.tl-compass {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--tl-panel);
+  box-shadow: var(--tl-shadow);
+  backdrop-filter: blur(10px);
+  color: var(--tl-ink);
+}
+.tl-compass svg {
+  width: 40px;
+  height: 40px;
+}
+.tl-zoom {
+  display: flex;
+  flex-direction: column;
+  background: var(--tl-panel);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: var(--tl-shadow);
+  overflow: hidden;
+}
+.tl-zoom button {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: var(--tl-ink);
+}
+.tl-zoom button + button {
+  border-top: 1px solid var(--tl-line);
+}
+.tl-zoom svg {
+  width: 20px;
+  height: 20px;
+}
+@media (hover: hover) {
+  .tl-zoom button:hover {
+    background: var(--tl-chip);
+  }
+}
+.tl-credits {
+  position: absolute;
+  left: 8px;
+  bottom: 4px;
+  z-index: 3;
+  margin: 0;
+  max-width: calc(100% - 16px);
+  font-size: 10px;
+  color: var(--tl-ink);
+  opacity: 0.7;
+  background: color-mix(in srgb, var(--tl-solid) 55%, transparent);
+  padding: 1px 8px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* ---- paused: off screen or hidden */
+.tl-paused *,
+.tl-paused *::before,
+.tl-paused *::after {
+  animation-play-state: paused !important;
+}
+
+/* a long name (a school) is cut inside its pin label instead of making the label wider than the map */
+.tl-pin-label b {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

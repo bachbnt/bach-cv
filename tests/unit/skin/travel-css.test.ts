@@ -1,0 +1,94 @@
+/**
+ * Copyright (c) 2026 bachbnt. All rights reserved.
+ */
+
+import { readdirSync, readFileSync } from 'node:fs';
+import postcss from 'postcss';
+import { describe, expect, it } from 'vitest';
+
+const DIR = 'src/skins/travel';
+const FILES = [
+  `${DIR}/travel.css`,
+  ...readdirSync(`${DIR}/css`).map((name) => `${DIR}/css/${name}`),
+];
+
+const rules = () => {
+  const found: postcss.Rule[] = [];
+  for (const file of FILES)
+    postcss.parse(readFileSync(file, 'utf8')).walkRules((rule) => {
+      const parent = rule.parent;
+      if (
+        parent?.type === 'atrule' &&
+        /keyframes$/.test((parent as postcss.AtRule).name)
+      )
+        return;
+      found.push(rule);
+    });
+  return found;
+};
+
+describe('the CSS of the Travel skin', () => {
+  it('keeps every hover style inside @media (hover: hover)', () => {
+    const bare = rules().filter((rule) => {
+      if (!rule.selector.includes(':hover')) return false;
+      for (let n: postcss.Node | undefined = rule.parent; n; n = n.parent)
+        if (
+          n.type === 'atrule' &&
+          /hover\s*:\s*hover/.test((n as postcss.AtRule).params)
+        )
+          return false;
+      return true;
+    });
+    expect(bare.map((r) => r.selector)).toEqual([]);
+  });
+
+  it('gives every class the tl- prefix, so it cannot touch another skin', () => {
+    const foreign = rules().flatMap((rule) =>
+      [...rule.selector.matchAll(/\.([A-Za-z_][\w-]*)/g)]
+        .map((m) => m[1])
+        // `dark` is the class that the theme puts on <html>
+        .filter((name) => !name.startsWith('tl-') && name !== 'dark'),
+    );
+    expect([...new Set(foreign)]).toEqual([]);
+  });
+
+  it('names its palette with --tl-, in both themes, and gives every colour a day and a night value', () => {
+    const palette = (selector: RegExp) =>
+      rules()
+        .filter((r) => selector.test(r.selector))
+        .flatMap((r) =>
+          r.nodes.filter((n): n is postcss.Declaration => n.type === 'decl'),
+        )
+        .map((d) => d.prop)
+        .filter((p) => p.startsWith('--tl-'));
+    const night = new Set(palette(/^html\[data-skin='travel'\]$/));
+    const day = new Set(palette(/^html\[data-skin='travel'\]:not\(\.dark\)$/));
+    for (const name of [
+      '--tl-sea-1',
+      '--tl-land-1',
+      '--tl-coral',
+      '--tl-panel',
+      '--tl-ink',
+      '--tl-stop-1',
+    ]) {
+      expect(night.has(name), name).toBe(true);
+      expect(day.has(name), name).toBe(true);
+    }
+  });
+
+  it('defines every theme colour the utilities use', () => {
+    const theme = readFileSync('src/app/tailwind-theme-travel.css', 'utf8');
+    const css = readFileSync(`${DIR}/travel.css`, 'utf8');
+    const used = [...theme.matchAll(/var\((--tl-[\w-]+)\)/g)]
+      .map((m) => m[1])
+      .filter((v) => v !== '--tl-shadow');
+    for (const name of used) expect(css, name).toContain(`${name}:`);
+  });
+
+  it('turns every motion off for reduced motion', () => {
+    const css = readFileSync(`${DIR}/travel.css`, 'utf8');
+    expect(css).toMatch(
+      /prefers-reduced-motion: reduce\)[\s\S]*animation: none !important/,
+    );
+  });
+});

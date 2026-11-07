@@ -1,0 +1,291 @@
+/*
+ * The look of the Travel skin: a trip map of Nha Trang. Every class has the prefix tl- and every rule is scoped to .tl-root (or to
+ * html[data-skin='travel'] for the palette, so portals see it). The base values are the night ones; the day theme is
+ * `html:not(.dark)`. The palette (names --tl-*) is the mock's: a soft teal sea, coral accent, one colour for every stop.
+ */
+html[data-skin='travel'] {
+  --tl-night: 1;
+  --tl-ink: #eef1ff;
+  --tl-muted: #a9b1dc;
+  --tl-panel: rgba(22, 24, 64, 0.88);
+  --tl-panel-2: rgba(40, 44, 100, 0.7);
+  --tl-solid: #181b48;
+  --tl-line: rgba(190, 200, 255, 0.16);
+  --tl-chip: #2b2f78;
+  --tl-chip-ink: #a8f0e8;
+  --tl-teal: #46d9cf;
+  --tl-coral: #ff8a6e;
+  --tl-coral-2: #5a2e4e;
+  --tl-sun: #ffc24d;
+  --tl-shadow:
+    0 10px 30px -8px rgba(0, 0, 10, 0.6), 0 2px 6px rgba(10, 40, 70, 0.12);
+  --tl-sky-1: #0c0f3d;
+  --tl-sky-2: #3a2f7d;
+  --tl-far-1: #26306e;
+  --tl-far-2: #1a2158;
+  --tl-cloud: rgba(120, 130, 210, 0.22);
+  --tl-sea-1: #1b4f8f;
+  --tl-sea-2: #10286b;
+  --tl-sea-3: #0a1650;
+  --tl-foam: #a9b8ff;
+  --tl-land-1: #27406a;
+  --tl-land-2: #1d3560;
+  --tl-park: #1b3a58;
+  --tl-wood: #1a4660;
+  --tl-built: #3b4079;
+  --tl-river: #2b63ad;
+  --tl-sand: #4b4f86;
+  --tl-sand-2: #3d4177;
+  --tl-road: #272c5c;
+  --tl-walk: #464a86;
+  --tl-lane: #ffd98a;
+  --tl-rock: #3a3f78;
+  --tl-rock-2: #565b99;
+  --tl-soil: #2c2552;
+  --tl-soil-2: #1b1840;
+  --tl-glass: #ffcf72;
+  --tl-hill-s: #254b6c;
+  --tl-hill-w: #1a3b5e;
+  --tl-hill-t: #2f5879;
+  --tl-mtn-s: #2a4676;
+  --tl-mtn-w: #1e3563;
+  --tl-mtn-t: #6c7fc0;
+  --tl-brick: #8d5560;
+  --tl-stop-1: #8ea6ff;
+  --tl-stop-2: #3fd6cf;
+  --tl-stop-3: #ff6fa3;
+  --tl-stop-4: #ffbf4d;
+  --tl-stop-5: #b494f5;
+  --tl-stop-6: #5fd49a;
+  --tl-danger: #ff9a8f;
+  --tl-stop-0: var(--tl-coral);
+  --tl-on-coral: #2a0f1a;
+  --tl-stone: #6b6fa8;
+  --tl-wall: #7e83bf;
+  --tl-roof: #a8566e;
+  --tl-leaf: #1f5a58;
+  --tl-trunk: #3b2f5a;
+  --tl-hull: #b24a64;
+  /* postcards and the passport cover are paper and ink in both themes */
+  --tl-paper: #fffdf7;
+  --tl-paper-ink: #1a3040;
+  --tl-paper-muted: #4f6676;
+  --tl-paper-line: #cfd8dc;
+  --tl-paper-tag: #e6f6f4;
+  --tl-paper-tag-ink: #0b6e69;
+  --tl-paper-hot: #ffe3dc;
+  --tl-paper-hot-ink: #b3321f;
+  --tl-cover-1: #17496e;
+  --tl-cover-2: #1d6f8c;
+  --tl-bldg-top: #6a6fb0;
+  --tl-bldg-l: #3a3f80;
+  --tl-bldg-r: #2a2f6a;
+  --tl-bldg-line: rgba(255, 207, 114, 0.55);
+  --tl-font:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+html[data-skin='travel']:not(.dark) {
+  --tl-night: 0;
+  --tl-ink: #0f2f44;
+  --tl-muted: #4a6877;
+  --tl-panel: rgba(255, 255, 255, 0.9);
+  --tl-panel-2: rgba(255, 255, 255, 0.62);
+  --tl-solid: #ffffff;
+  --tl-line: rgba(15, 47, 68, 0.12);
+  --tl-chip: #e6f6f4;
+  --tl-chip-ink: #0b6e69;
+  --tl-teal: #0e9f99;
+  --tl-coral: #d63f2a;
+  --tl-on-coral: #ffffff;
+  --tl-coral-2: #ffd9cf;
+  --tl-shadow:
+    0 10px 30px -8px rgba(10, 60, 90, 0.35), 0 2px 6px rgba(10, 40, 70, 0.12);
+  --tl-sky-1: #8fdcf0;
+  --tl-sky-2: #e8f8ee;
+  --tl-far-1: #9fcfd0;
+  --tl-far-2: #7fbfb4;
+  --tl-cloud: rgba(255, 255, 255, 0.9);
+  --tl-sea-1: #7fe9d9;
+  --tl-sea-2: #27bfd0;
+  --tl-sea-3: #1488b8;
+  --tl-foam: #ffffff;
+  --tl-land-1: #cfe9a4;
+  --tl-land-2: #aedb8a;
+  --tl-park: #8fcf74;
+  --tl-wood: #8ccb74;
+  --tl-built: #e6dfc8;
+  --tl-river: #5bc9dc;
+  --tl-sand: #f6e3b0;
+  --tl-sand-2: #ecd08e;
+  --tl-road: #7d8a99;
+  --tl-walk: #e9e4d6;
+  --tl-lane: #ffffff;
+  --tl-rock: #8d8a86;
+  --tl-rock-2: #b9b3a8;
+  --tl-soil: #b88a56;
+  --tl-soil-2: #8d6638;
+  --tl-glass: #aee2f0;
+  --tl-hill-s: #79c06e;
+  --tl-hill-w: #53a563;
+  --tl-hill-t: #9bd783;
+  --tl-mtn-s: #6fb48b;
+  --tl-mtn-w: #4b9577;
+  --tl-mtn-t: #cfeadb;
+  --tl-brick: #d4793f;
+  --tl-stop-1: #5b78f0;
+  --tl-stop-2: #0ea5a0;
+  --tl-stop-3: #d8386f;
+  --tl-stop-4: #d48806;
+  --tl-stop-5: #7d52d3;
+  --tl-stop-6: #1f9d62;
+  --tl-danger: #c13a28;
+  --tl-stone: #d9cfba;
+  --tl-wall: #fdf6e6;
+  --tl-roof: #d9552b;
+  --tl-leaf: #3f9e4d;
+  --tl-trunk: #8a5a2b;
+  --tl-hull: #e8503a;
+  --tl-bldg-top: #f4efe4;
+  --tl-bldg-l: #cfe3ee;
+  --tl-bldg-r: #a9c6d6;
+  --tl-bldg-line: rgba(15, 47, 68, 0.14);
+}
+
+/* the shadcn tokens, and the Standard ones the reused windows read (picture viewer, CV, chat, Connect), in the Travel palette */
+html[data-skin='travel'] {
+  --background: var(--tl-solid);
+  --foreground: var(--tl-ink);
+  --card: var(--tl-solid);
+  --card-foreground: var(--tl-ink);
+  --popover: var(--tl-solid);
+  --popover-foreground: var(--tl-ink);
+  --primary: var(--tl-coral);
+  --primary-foreground: #fff;
+  --secondary: var(--tl-chip);
+  --secondary-foreground: var(--tl-chip-ink);
+  --muted: var(--tl-chip);
+  --muted-foreground: var(--tl-muted);
+  --accent: var(--tl-chip);
+  --accent-foreground: var(--tl-chip-ink);
+  --destructive: var(--tl-danger);
+  --border: var(--tl-line);
+  --input: var(--tl-line);
+  --ring: var(--tl-coral);
+  --radius: 1rem;
+  --body: var(--tl-ink);
+  --night: var(--tl-sky-1);
+  --night-foreground: var(--tl-ink);
+  --brand: var(--tl-coral);
+  --brand-ink: var(--tl-coral);
+  --page: var(--tl-coral);
+  --page-tint: var(--tl-chip);
+  --danger: var(--tl-danger);
+  --danger-bg: var(--tl-coral-2);
+  --danger-border: var(--tl-danger);
+  --live: var(--tl-teal);
+  --mobile: color-mix(in srgb, var(--tl-teal) 18%, transparent);
+  --mobile-foreground: var(--tl-chip-ink);
+  --web: color-mix(in srgb, var(--tl-stop-1) 18%, transparent);
+  --web-foreground: var(--tl-stop-1);
+  --ai: color-mix(in srgb, var(--tl-stop-5) 18%, transparent);
+  --ai-foreground: var(--tl-stop-5);
+  --tools: color-mix(in srgb, var(--tl-stop-4) 18%, transparent);
+  --tools-foreground: var(--tl-stop-4);
+  --tile: var(--tl-coral);
+  font-family: var(--tl-font);
+}
+
+/* headings are the same sans as the rest; Standard's own are Bricolage */
+@layer base {
+  .tl-root :is(h1, h2, h3, h4) {
+    font-family: var(--tl-font);
+    letter-spacing: normal;
+  }
+}
+
+/* every control shows a ring when it is reached with the keyboard */
+.tl-root :focus-visible:not(input, textarea, select) {
+  outline: 3px solid var(--tl-coral);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+.tl-root a:where(:not([data-slot^='tl-'])) {
+  color: inherit;
+  text-decoration: none;
+}
+.tl-root img {
+  max-width: 100%;
+}
+
+/* a block rises a little when it arrives (a page change, a card) */
+@keyframes tl-rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+.tl-rise {
+  animation: tl-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes tl-live {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.85);
+  }
+  100% {
+    box-shadow: 0 0 0 9px rgba(255, 255, 255, 0);
+  }
+}
+.tl-live {
+  animation: tl-live 1.6s infinite;
+}
+@keyframes tl-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes tl-hop-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.tl-spin-slow {
+  animation: tl-spin 5s linear infinite;
+}
+@keyframes tl-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes tl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* page change: the map stays, the panel fades out and the next one comes in (React view transitions; keyframes of globals.css) */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-skin='travel']::view-transition-old(.tl-vt-out) {
+    animation: vt-out 0.12s ease-in both;
+  }
+  html[data-skin='travel']::view-transition-new(.tl-vt-in) {
+    animation: vt-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) 0.06s both;
+  }
+}
+
+/* reduced motion: everything of the skin stands still */
+@media (prefers-reduced-motion: reduce) {
+  .tl-root *,
+  .tl-root *::before,
+  .tl-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

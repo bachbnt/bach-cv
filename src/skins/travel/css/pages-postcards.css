@@ -1,0 +1,69 @@
+/* Travel skin: pages-postcards (Projects, Certificates, Services). Prefix tl-, hover only inside @media (hover: hover). */
+
+/* a postcard leans a little; a pointer or the keyboard straightens and lifts the one it is on (on a phone they stand straight) */
+.tl-postcard {
+  transform: rotate(var(--r, 0deg));
+  transition:
+    transform 0.25s cubic-bezier(0.3, 1.5, 0.5, 1),
+    box-shadow 0.25s;
+}
+.tl-postcard:focus-within {
+  transform: rotate(0deg) translateY(-6px);
+}
+@media (hover: hover) {
+  .tl-postcard:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.03);
+  }
+}
+@media (max-width: 767px) {
+  .tl-postcard,
+  .tl-postcard:focus-within {
+    transform: none;
+  }
+}
+
+/* the photo darkens a touch under the pointer, so the button reads as one */
+.tl-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background-color 0.2s;
+}
+.tl-cover:active::after {
+  background: rgb(0 0 0 / 0.1);
+}
+@media (hover: hover) {
+  .tl-cover:hover::after {
+    background: rgb(0 0 0 / 0.1);
+  }
+}
+
+/* a stamp lands on the page: it arrives large and settles, one after another (`--dl` is its turn) */
+@keyframes tl-stamp-in {
+  from {
+    transform: rotate(var(--r)) scale(2.2);
+    opacity: 0;
+  }
+}
+.tl-stamp {
+  transform: rotate(var(--r, 0deg));
+  animation: tl-stamp-in 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) var(--dl, 0s) both;
+}
+
+/* the ruled lines of a passport page */
+.tl-ruled {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent 0 31px,
+    color-mix(in srgb, var(--tl-ink) 7%, transparent) 31px 32px
+  );
+}
+
+/* a tour slides toward the pointer when it is a button (when the form is off it is only a card) */
+@media (hover: hover) {
+  .tl-tour:has(> button:hover) {
+    transform: translateX(-3px);
+    box-shadow: var(--tl-shadow);
+  }
+}

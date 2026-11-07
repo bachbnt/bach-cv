@@ -78,4 +78,13 @@ watchlist (pages, technologies with a sparkline of the years they were used, rol
 calendar for Certificates, a symbol profile for About, an order ticket for Services and a deposit page for Payment. Prefix `tv-`, colours
 `tv-*`. The chart is its own lazy chunk; the watchlist counts are read from the cache only.
 
+## The Travel skin
+
+See `src/skins/travel/README.md`. A 2.5D trip map of Nha Trang: the map is real (`map/geo.ts` is generated from OpenStreetMap by
+`scripts/travel/build-geo.mjs`, credit "© OpenStreetMap contributors (ODbL)" in the UI and the README), the stops of the trip are the real roles
+(`routeStops` in `src/lib/derive/route-stops.ts`, placed along the real coast road by `map/route.ts`), and the famous sights are decoration
+(`aria-hidden`, copy in `content/copy/travel-map.ts`). Every page is a card over the map (a sheet on a phone) and a real link in the rail, so the map
+is never the only way to anything. Styling: Tailwind with the `--tl-*` tokens (`travel.css`, night base and day `:not(.dark)`), CSS only for keyframes
+and the map, class prefix `tl-`.
+
 A new skin follows the skill `.claude/skills/build-skin` (read its SKILL.md first).
