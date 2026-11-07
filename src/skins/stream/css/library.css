@@ -1,0 +1,30 @@
+/*
+ * Keyframes and token colours of the Stream skin for Certificates, Payment and Services. Classes have the prefix sm-, scoped to .sm-root; the look itself is
+ * Tailwind utilities in the TSX, and `animate-[name_...]` names the keyframes here.
+ */
+
+/* the card of the certificates playlist: the blue of the links, faded into the surface, like the tinted head of a playlist page */
+.sm-root .sm-lib-card {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--sm-blue) 26%, var(--sm-surface)) 0%,
+    var(--sm-surface) 70%
+  );
+}
+
+/* a row, a post or a tier slides up a few pixels while it fades in */
+@keyframes sm-lib-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* the band of a membership level and of the Join page's header: the red and the blue of the skin, faded into the surface */
+.sm-root .sm-lib-band {
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--sm-red) 26%, var(--sm-surface)) 0%,
+    color-mix(in srgb, var(--sm-blue) 22%, var(--sm-surface)) 100%
+  );
+}

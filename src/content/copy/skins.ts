@@ -12,6 +12,7 @@ export const skinsCopy = defineCopy(
     names: {
       standard: { name: 'Standard', hint: 'Default look' },
       dev: { name: 'Dev', hint: 'Code editor' },
+      stream: { name: 'Stream', hint: 'Video and live' },
     } satisfies Record<SkinId, { name: string; hint: string }>,
     loadFailed: 'That skin could not be loaded. Showing the standard one.',
   },
@@ -20,6 +21,7 @@ export const skinsCopy = defineCopy(
     names: {
       standard: { name: 'Chuẩn', hint: 'Giao diện mặc định' },
       dev: { name: 'Dev', hint: 'Trình soạn thảo code' },
+      stream: { name: 'Stream', hint: 'Video và phát trực tiếp' },
     } satisfies Record<SkinId, { name: string; hint: string }>,
     loadFailed: 'Không tải được skin này. Đang hiển thị skin chuẩn.',
   },

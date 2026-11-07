@@ -17,6 +17,10 @@ app -> components -> lib/query -> lib/content
 
 Components never import Firebase. They call query options from `lib/query`.
 
+`lib/derive`: the pure functions that turn content into the values the UI shows (years in software, the current and the first role, the
+months a skill was used, a degree abbreviation, counts and orderings). Standard and every skin import them; a skin never re-derives them
+(see "One change, every skin" in `.ai/skins.md`).
+
 ## Data rules
 
 - Only `firebase/firestore/lite` runs in the browser. Never import

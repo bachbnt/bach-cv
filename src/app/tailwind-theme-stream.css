@@ -1,0 +1,20 @@
+/* The theme colours of the `stream` skin as utilities (`bg-sm-surface`, `text-sm-mute`, ...). Their values are defined once on
+   html[data-skin='stream'] in src/skins/stream/stream.css. globals.css imports this file: one Tailwind build for Standard and every skin. */
+@theme inline {
+  --color-sm-bg: var(--sm-bg);
+  --color-sm-surface: var(--sm-surface);
+  --color-sm-hover: var(--sm-hover);
+  --color-sm-hover2: var(--sm-hover2);
+  --color-sm-ink: var(--sm-ink);
+  --color-sm-mute: var(--sm-mute);
+  --color-sm-line: var(--sm-line);
+  --color-sm-red: var(--sm-red);
+  --color-sm-red-ink: var(--sm-red-ink);
+  --color-sm-blue: var(--sm-blue);
+  --color-sm-chip: var(--sm-chip);
+  --color-sm-chip-on: var(--sm-chip-on);
+  --color-sm-chip-on-ink: var(--sm-chip-on-ink);
+  --color-sm-pop: var(--sm-pop);
+  --color-sm-owner: var(--sm-owner);
+  --color-sm-owner-ink: var(--sm-owner-ink);
+}

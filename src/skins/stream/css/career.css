@@ -1,0 +1,19 @@
+/*
+ * Keyframes of the career player (Home and Resume) of the Stream skin. Classes have the prefix sm-, scoped to .sm-root; the look itself is
+ * Tailwind utilities in the TSX, and `animate-[name_...]` names the keyframes here. "Reduce motion" cuts all of it in stream.css.
+ */
+
+/* a part of a scene arrives when the scene becomes the one that plays */
+@keyframes sm-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* the thin red line along the bottom of a project preview: it fills while one screenshot is shown */
+@keyframes sm-preview {
+  from {
+    transform: scaleX(0);
+  }
+}

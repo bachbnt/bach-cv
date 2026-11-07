@@ -24,8 +24,23 @@ Standard is the app itself (`app/**`, `components/**`); every other skin lives i
 
 ## Rules
 
-- **Same content, same features as Standard.** Read the Standard component of a block first, reuse its hooks and copy; a skin never
-  invents content or drops a feature (data states, errors, keyboard, dialogs, `site/live` switches, both languages).
+- **Same information, same features as Standard.** Read the Standard component of a block first, reuse its hooks and copy; a skin never
+  invents content or drops a feature (data states, errors, keyboard, dialogs, `site/live` switches, both languages). Its layout and
+  components may be entirely its own (Stream is not Standard in other colours): the test is that nothing Standard tells or
+  lets a visitor do is missing, not that the blocks look alike.
+- **One change, every skin. A skin shows data; it never works out new data.** Two rules that keep a growing number of skins maintainable:
+  1. **No derived data in a skin.** A number, label, ordering, grouping or "which one is current / first / latest" that more than one place
+     needs (years in software, a degree abbreviation, the current role, the months a skill was used and its "Used at", the series of the
+     chart, counts, sorting, date and period text) comes from ONE pure function in `src/lib/derive/` (no React, the copyright header, a
+     unit test in `tests/unit/lib/derive/`), imported by Standard and by every skin. If it does not exist yet, create it there FIRST and
+     use it; never copy a helper into a skin, and when you find a copy, replace it with the shared function. If the data lacks what the UI
+     needs (a flag, a label, a number), add the field to the schema and the documents (`lib/content/schema.ts`, the seed, the docs) and
+     read it everywhere, instead of guessing it in a component. Only maths that is purely visual (layout, geometry, animation) stays in
+     the skin.
+  2. **Maintenance goes to every skin in the same change.** When a feature is added, a behaviour changes or a data bug is fixed, apply it
+     to Standard and to EVERY skin (`SKIN_IDS`), with its copy keys (en and vi), tests and docs. Before finishing, search the other skins
+     for the same concept (the hook, the helper, the copy key, the component) and say in the report what was done in each skin or why it
+     does not apply. A change that touches how one skin presents data and not the others is not finished.
 - Data only through `lib/query` hooks; never Firebase. Interface copy in `content/copy/*` with `defineCopy` (en + vi). A string that
   only a skin has goes in `content/copy/<skin>.ts`; decoration (a command line) is `aria-hidden`.
 - A control that looks different keeps the Standard accessible name (`aria-label`), so tests and screen readers find the same control.
@@ -43,7 +58,8 @@ Standard is the app itself (`app/**`, `components/**`); every other skin lives i
   (`dv-`), and CSS outside a layer beats utilities, so do not leave rules behind that target an element that carries utilities.
 - **One Tailwind build.** `app/globals.css` scans `src/skins` too. A skin never has a Tailwind stylesheet of its own: a second one,
   loaded later, reorders utilities of the same name (`hidden` after `md:flex`) and breaks the header of Standard. New theme colours or
-  fonts a skin needs go in `app/tailwind-theme.css`, with values on `html[data-skin='<id>']`.
+  fonts a skin needs go in `app/tailwind-theme.css` (Dev) or in the file of the skin, `app/tailwind-theme-<id>.css` (imported by `globals.css`), with
+  values on `html[data-skin='<id>']`.
 - Window-like skins: the lights, menus and state screens (loading skeleton, empty, error with Try again, 404, Coming soon,
   maintenance) exist in every skin.
 
@@ -51,3 +67,14 @@ Standard is the app itself (`app/**`, `components/**`); every other skin lives i
 
 See `src/skins/dev/README.md`. Its look is Tailwind in the TSX; `dev.css`, `dev-extra.css` and `css/<area>.css` hold the palette, the base rules and the keyframes.
 **On a phone there is no activity bar, so Connect and the CV button live in the Explorer drawer** (the account menu opens as a bottom sheet).
+
+## The Stream skin
+
+See `src/skins/stream/README.md`. A video platform (YouTube look) with its own interface for every page: Home is a **career player** (the
+real roles played scene by scene at 1x, 1.5x or 2x, a seek bar of chapters), Resume the full replay (chapters, a transcript, skills as
+hashtags, education as a playlist), Projects a Shorts reel (it goes on by itself when its bar is full, with controls to stop it) with the
+real BB Bot chat beside it, About a channel page, Certificates a playlist, Payment a memberships page, Services a community tab with the
+contact form as the comment box. Prefix `sm-`, colours `sm-*`. Nothing a video site has and Standard has not is built (views, likes,
+subscribe, a fake chat); the red LIVE badge is only where Standard shows its Current badge.
+
+A new skin follows the skill `.claude/skills/build-skin` (read its SKILL.md first).

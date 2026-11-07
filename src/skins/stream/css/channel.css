@@ -1,0 +1,28 @@
+/*
+ * Keyframes of the Stream skin for the channel page and the system screens (404, Coming soon, maintenance): the red segment that waits
+ * on the scrubber of the player, the buffering wheel and the ring that widens round the clock of the Premiere. The look itself is
+ * Tailwind utilities in the TSX, and `animate-[name_...]` names the keyframes here. Reduced motion stops all of them (stream.css).
+ */
+@keyframes sm-wait-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(400%);
+  }
+}
+@keyframes sm-wait-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes sm-wait-ring {
+  from {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}

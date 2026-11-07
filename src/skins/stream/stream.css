@@ -1,0 +1,161 @@
+/*
+ * The look of the Stream skin: the palette of a video site (dark is the base, the light theme is `html:not(.dark)`), the shadcn and
+ * Standard tokens mapped to it so portals (dialogs, sheets, menus, the CV and the picture viewer) follow the skin, the page change and
+ * the keyframes. Every class has the prefix sm- and every rule is scoped to .sm-root or html[data-skin='stream'].
+ */
+html[data-skin='stream'] {
+  --sm-bg: #0f0f0f;
+  --sm-surface: #181818;
+  --sm-hover: #272727;
+  --sm-hover2: #3f3f3f;
+  --sm-ink: #f1f1f1;
+  --sm-mute: #aaaaaa;
+  --sm-line: #303030;
+  --sm-red: #e6002e;
+  --sm-red-ink: #ff6680;
+  --sm-blue: #3ea6ff;
+  --sm-chip: #272727;
+  --sm-chip-on: #f1f1f1;
+  --sm-chip-on-ink: #0f0f0f;
+  --sm-pop: #282828;
+  /* the badge of the channel owner in the chat: yellow with black text, in both themes */
+  --sm-owner: #ffd600;
+  --sm-owner-ink: #000000;
+  /* the player of the home page is dark in both themes */
+  --sm-stage-a: #1a1a2e;
+  --sm-stage-b: #0b0b14;
+  --sm-glow-red: #ff0033;
+  --sm-glow-blue: #3ea6ff;
+  /* the same family everywhere, also in a portal: the variable is put on <html> by the root of the skin */
+  --font-public-sans:
+    var(--font-roboto, Roboto), Roboto, 'Segoe UI', system-ui, sans-serif;
+  --font-bricolage: var(--font-public-sans);
+
+  /* shadcn tokens: Dialog, Sheet, Popover, Dropdown, Skeleton ... */
+  --background: var(--sm-bg);
+  --foreground: var(--sm-ink);
+  --card: var(--sm-surface);
+  --card-foreground: var(--sm-ink);
+  --popover: var(--sm-pop);
+  --popover-foreground: var(--sm-ink);
+  --primary: var(--sm-ink);
+  --primary-foreground: var(--sm-bg);
+  --secondary: var(--sm-hover);
+  --secondary-foreground: var(--sm-ink);
+  --muted: var(--sm-hover);
+  --muted-foreground: var(--sm-mute);
+  --accent: var(--sm-hover);
+  --accent-foreground: var(--sm-ink);
+  --destructive: var(--sm-red-ink);
+  --border: var(--sm-line);
+  --input: var(--sm-hover2);
+  --ring: var(--sm-blue);
+
+  /* the Standard tokens that the Standard overlays used here (picture viewer, CV window, Connect, chat parts) read */
+  --body: var(--sm-ink);
+  --paper: #3f3f3f;
+  --night: #000000;
+  --night-foreground: var(--sm-mute);
+  --brand: #065fd4;
+  --brand-ink: var(--sm-blue);
+  --page: var(--sm-blue);
+  --page-tint: var(--sm-hover);
+  --danger: #ff8a8a;
+  --danger-bg: #3a1414;
+  --danger-border: #6b2525;
+}
+html[data-skin='stream']:not(.dark) {
+  --sm-bg: #ffffff;
+  --sm-surface: #f2f2f2;
+  --sm-hover: #f2f2f2;
+  --sm-hover2: #e5e5e5;
+  --sm-ink: #0f0f0f;
+  --sm-mute: #606060;
+  --sm-line: #e5e5e5;
+  --sm-red-ink: #cc0000;
+  --sm-blue: #065fd4;
+  --sm-chip: #f2f2f2;
+  --sm-chip-on: #0f0f0f;
+  --sm-chip-on-ink: #ffffff;
+  --sm-pop: #ffffff;
+  --paper: #d9d9d9;
+  --night: #0f0f0f;
+  --danger: #b3261e;
+  --danger-bg: #fdecea;
+  --danger-border: #f0b8b3;
+}
+
+/* every control shows a ring when it is reached with the keyboard */
+.sm-root :focus-visible {
+  outline: 2px solid var(--sm-blue);
+  outline-offset: 2px;
+}
+
+/* ---- page change: the frame stays (its parts are named), the page fades out and the next one fades in (React view transitions) */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-skin='stream']::view-transition-old(.sm-vt-out) {
+    animation: vt-out 0.15s ease-in both;
+  }
+  html[data-skin='stream']::view-transition-new(.sm-vt-in) {
+    animation: vt-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) 0.08s both;
+  }
+}
+
+/* ---- motion of the skin (used through `animate-[...]` in the components) */
+@keyframes sm-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+/* the fill of the segment of the open project: it grows with a transform (a width would be laid out again at every frame), and when
+   it is full the reel goes on to the next project (onAnimationEnd in blocks/reel-card.tsx) */
+@keyframes sm-prog {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes sm-blink {
+  50% {
+    opacity: 0.3;
+    transform: translateY(-2px);
+  }
+}
+@keyframes sm-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* reduced motion: also the pseudo-elements; the progress of the reel stands still, full, and the reel does not go on by itself */
+@media (prefers-reduced-motion: reduce) {
+  .sm-root *,
+  .sm-root *::before,
+  .sm-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- the screen of the home player: a dark stage with a red and a blue glow, dark in both themes like a real player */
+.sm-root .sm-stage {
+  background:
+    radial-gradient(
+      circle at 78% 30%,
+      color-mix(in srgb, var(--sm-glow-red) 25%, transparent),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 15% 85%,
+      color-mix(in srgb, var(--sm-glow-blue) 19%, transparent),
+      transparent 50%
+    ),
+    linear-gradient(135deg, var(--sm-stage-a), var(--sm-stage-b));
+}
+
+/* the reel changes project: the new one rises in */
+@keyframes sm-slide {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}

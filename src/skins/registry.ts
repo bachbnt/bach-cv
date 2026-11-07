@@ -11,6 +11,7 @@ type Loader = () => Promise<{ default: SkinDefinition }>;
 /** Where each skin's module is. */
 export const SKIN_LOADERS: Record<Exclude<SkinId, 'standard'>, Loader> = {
   dev: () => import('@/skins/dev/skin'),
+  stream: () => import('@/skins/stream/skin'),
 };
 
 export const hasLoader = (id: SkinId): id is keyof typeof SKIN_LOADERS =>
