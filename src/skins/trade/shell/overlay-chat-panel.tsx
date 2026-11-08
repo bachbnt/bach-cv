@@ -119,7 +119,7 @@ export function ChatPanel({
         className,
       )}
     >
-      <header className='flex h-[38px] flex-none items-center gap-2.5 border-b border-tv-line pr-1.5 pl-3.5'>
+      <header className='flex h-[38px] flex-none items-center gap-2.5 border-b border-tv-line pr-1.5 pl-3.5 pointer-coarse:h-11'>
         <Image
           src='/logo.png'
           alt=''

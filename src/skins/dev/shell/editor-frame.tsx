@@ -118,7 +118,7 @@ export function EditorFrame({
       </div>
       <main className='relative z-1 max-w-[1120px]' ref={wrap}>
         {children}
-        <footer className='pt-[30px] pb-1.5 font-code text-[13px] leading-[normal] text-mute'>
+        <footer className='pt-[30px] pb-1.5 font-code text-[13px] leading-[normal] text-mute max-[520px]:pr-16'>
           &copy; {new Date().getFullYear()} {shell.name}. {copy.footer.rights}
         </footer>
       </main>

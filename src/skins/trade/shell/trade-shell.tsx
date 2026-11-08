@@ -50,6 +50,7 @@ import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
 import { useSearchHotkey } from '@/skins/trade/shell/use-search-hotkey';
 import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
 import { useScrollToPage } from '@/skins/trade/shell/use-scroll-to-page';
+import { useStickyOffset } from '@/skins/trade/shell/use-sticky-offset';
 import { useViewportHeight } from '@/skins/trade/shell/use-viewport-height';
 import { useWide } from '@/skins/trade/shell/use-wide';
 import { Watchlist } from '@/skins/trade/shell/watchlist';
@@ -98,6 +99,7 @@ function Terminal({
   const wide = useWide();
   const panel = useRef<HTMLElement>(null);
   useScrollToPage(panel, page, !wide);
+  useStickyOffset();
   const reduced = useReducedMotion();
   const viewport = useViewportHeight();
   // a phone has no rails, so what was chosen for the wide terminal does not apply there

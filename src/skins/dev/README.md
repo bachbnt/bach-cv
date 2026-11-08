@@ -31,7 +31,10 @@ the URL does not change.
    copy (`content/copy/*`), so both languages work. A new string needs `en` and `vi` (`defineCopy`).
 6. Buttons that look like commands (`./download-cv.sh`) keep the Standard accessible name (`aria-label`), so tests and screen readers find
    the same control in every skin (`ui/dev-download-cv.tsx`).
-7. Phone: `max-[900px]:` utilities (the root, `ui/dev-root.tsx`, carries the state of the drawer); the Explorer is a drawer, and Connect and the CV button live in it
+7. Phone: `max-[900px]:` utilities (the root, `ui/dev-root.tsx`, carries the state of the drawer); below 640 px the status bar keeps only its buttons
+   (Problems, Output, Terminal) and the items that only decorate it (project, branch, sync, language, Prettier, bell) give way, so no real control
+   is cut off; the footer leaves room for the chat button; on touch the small controls (title bar menus, Files, status bar) reach 44 px with an
+   invisible area around them; the Explorer is a drawer, and Connect and the CV button live in it
    (the account menu opens as a bottom sheet).
 
 ## Motion

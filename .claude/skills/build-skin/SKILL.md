@@ -70,8 +70,11 @@ No id: ask which one. One skin per run.
   name never contains "Giao diện". A control that looks different keeps the Standard accessible name.
 - **A map, scene or chart is decoration plus a real control set.** The art is `aria-hidden` (or honestly named), and every page and
   item is reachable by Tab and Enter without the pointer; hotkeys are shortcuts, never the only way, and never take Tab or Enter.
-  Focus returns to the trigger after a dialog or menu. Touch targets are 44 px under `pointer-coarse`; the phone layout (390 px) has
-  no horizontal page scroll and moves what a phone cannot use into a drawer or bottom bar.
+  Focus returns to the trigger after a dialog or menu. Touch targets are 44 px under `pointer-coarse` (a small control gets an invisible `::after` area, never wider than the gap to its
+  neighbour: a bigger one lies over the neighbour's centre and the tap opens the wrong thing); the phone layout (320 and 375 px: an iPhone SE) has
+  no horizontal page scroll, no control cut off by `overflow-hidden` (what only decorates gives way first) and nothing under a fixed button;
+  it moves what a phone cannot use into a drawer or bottom bar, and anything sticky at the top is subtracted from what scrolls under it
+  (`scroll-padding-top`).
 - **Original art only.** No trademark art, logos, names or assets of games, map apps or brands: inline SVG/CSS made for the skin,
   "inspired by", never a copy. Use the owner's own logo and photo that Standard uses. Map data from OpenStreetMap needs its credit.
 - **Everything that opens** (viewer, chat, CV, Connect, QR, dialogs) is built on `components/ui` (shadcn on Base UI: focus trap, Esc,

@@ -29,6 +29,10 @@ export interface FlagView {
  * readers reach it; it opens that job on the Resume page, or the education there. A tip names what it is. A flag drops in with a little
  * bounce, one after another the first time the chart shows (`intro`), at once when the replay reaches it.
  */
+/**
+ * The invisible hit area of a flag is 24px wide and 46px tall: flags are never closer than 24px (`spreadFlags`), so a wider area would lie
+ * over the centre of the neighbour (it did, at 14px: a tap on a job opened the degree next to it).
+ */
 /** How far a flag must be from the edge of the plot for its tip to be centred on it (the tip is at most 220px wide). */
 const TIP_EDGE = 112;
 
@@ -69,7 +73,7 @@ export const FlagsLayer = memo(function FlagsLayer({
               style={{
                 animationDelay: intro ? `${900 + k * 140}ms` : undefined,
               }}
-              className={`tv-chart-flag group/marker pointer-events-auto absolute grid h-[18px] min-w-5 -translate-x-1/2 cursor-pointer place-items-center rounded-[3px] text-[11px] transition-[background-color,scale] duration-100 active:scale-90 leading-none font-bold text-white before:absolute before:-top-1.5 before:left-1/2 before:-ml-[5px] before:border-x-[5px] before:border-b-[6px] before:border-x-transparent before:content-[""] after:absolute after:-inset-3.5 after:content-[""] ${tone}`}
+              className={`tv-chart-flag group/marker pointer-events-auto absolute grid h-[18px] min-w-5 -translate-x-1/2 cursor-pointer place-items-center rounded-[3px] text-[11px] transition-[background-color,scale] duration-100 active:scale-90 leading-none font-bold text-white before:absolute before:-top-1.5 before:left-1/2 before:-ml-[5px] before:border-x-[5px] before:border-b-[6px] before:border-x-transparent before:content-[""] after:absolute after:-inset-x-0.5 after:-inset-y-3.5 after:content-[""] ${tone}`}
             >
               {degree ? (
                 <GraduationCap aria-hidden='true' className='size-3.5' />

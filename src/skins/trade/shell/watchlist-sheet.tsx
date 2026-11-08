@@ -15,6 +15,7 @@ import { tradeShellCopy } from '@/content/copy/trade-shell';
 import type { PageKey } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { Watchlist } from '@/skins/trade/shell/watchlist';
+import { TvButton } from '@/skins/trade/ui/tv-button';
 import { useState, type ReactElement } from 'react';
 
 /**
@@ -44,15 +45,19 @@ export function WatchlistSheet({
           )
             setOpen(false);
         }}
-        className='h-[85dvh] max-h-[85dvh] gap-0 overflow-y-auto rounded-t-lg border-tv-line bg-tv-bg p-0 text-tv-ink duration-240 ease-tv-out'
+        className='data-[side=bottom]:h-[80dvh] max-h-[calc(100dvh-16px)] gap-0 overflow-y-auto rounded-t-lg border-t border-tv-line bg-tv-bg p-0 text-tv-ink'
       >
-        <Watchlist page={page} className='min-h-full border-t-0' />
-        <SheetClose
-          aria-label={copy.closeSheet}
-          className='absolute top-0 right-0 grid size-11 cursor-pointer place-items-center rounded text-tv-mute transition-[background-color,color,scale] duration-100 hover:bg-tv-hover hover:text-tv-ink active:scale-90 active:bg-tv-hover'
-        >
-          <X aria-hidden='true' className='size-[18px]' />
-        </SheetClose>
+        <Watchlist
+          page={page}
+          className='min-h-full border-t-0'
+          action={
+            <SheetClose
+              render={<TvButton size='icon' aria-label={copy.closeSheet} />}
+            >
+              <X aria-hidden='true' />
+            </SheetClose>
+          }
+        />
       </SheetContent>
     </Sheet>
   );

@@ -58,7 +58,7 @@ export function RangeBar({
     <div
       role='toolbar'
       aria-label={copy.ranges.label}
-      className='relative flex h-8 items-center gap-0.5 overflow-x-auto border-t border-tv-line bg-tv-bg px-2 text-xs max-[1100px]:h-11 min-[1101px]:col-2 min-[1101px]:row-3'
+      className='relative flex min-h-8 flex-wrap items-center gap-0.5 border-t border-tv-line bg-tv-bg px-2 text-xs max-[1100px]:min-h-11 min-[1101px]:col-2 min-[1101px]:row-3 min-[1101px]:h-8 min-[1101px]:flex-nowrap min-[1101px]:overflow-x-auto min-[1101px]:[scrollbar-width:none]'
     >
       <div
         role='group'
@@ -130,7 +130,7 @@ export function RangeBar({
           aria-label={copy.toolbar.shortcuts}
           disabled={!ready}
           onClick={() => chartStore.setShortcutsOpen(true)}
-          className={cn(button, 'disabled:opacity-50')}
+          className={cn(button, 'disabled:opacity-50 pointer-coarse:hidden')}
         >
           <Keyboard aria-hidden='true' />
         </button>

@@ -5,6 +5,7 @@
 'use client';
 
 import { Tabs } from '@base-ui/react/tabs';
+import type { ReactNode } from 'react';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
 import { tradeCopy } from '@/content/copy/trade';
 import type { PageKey } from '@/lib/content/schema';
@@ -24,9 +25,12 @@ const TABS = ['pages', 'skills', 'roles'] as const;
 export function Watchlist({
   page,
   className,
+  action,
 }: {
   page: PageKey | null;
   className?: string;
+  /** at the right end of the header (the close button when it is a sheet): the header is the one of the BB Bot panel */
+  action?: ReactNode;
 }) {
   const title = useCopy(tradeCopy).watchlist.title;
   const words = useCopy(tradeShellCopy).watch;
@@ -38,8 +42,11 @@ export function Watchlist({
         className,
       )}
     >
-      <div className='flex h-[38px] flex-none items-center border-b border-tv-line px-3.5 pointer-coarse:h-11'>
-        <h2 className='text-[13px] font-bold'>{title}</h2>
+      <div className='flex h-[38px] flex-none items-center gap-2.5 border-b border-tv-line pr-1.5 pl-3.5 pointer-coarse:h-11'>
+        <h2 className='min-w-0 flex-1 truncate text-[13px] leading-tight font-bold'>
+          {title}
+        </h2>
+        {action}
       </div>
       <Tabs.Root
         defaultValue='pages'

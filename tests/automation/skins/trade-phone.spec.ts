@@ -138,6 +138,108 @@ test.describe('on a phone', () => {
   });
 });
 
+for (const size of [
+  { width: 375, height: 667 },
+  { width: 320, height: 568 },
+]) {
+  test.describe(`the marks of the chart at ${size.width} px`, () => {
+    test.use({ viewport: size, hasTouch: true });
+
+    /** The part of the page that starts at `selector`, measured against the bottom of the toolbar that sticks to the top. */
+    const under = (page: Page, selector: string) =>
+      page.evaluate((css) => {
+        const el = document.querySelector(css);
+        const bar = document.querySelector('[data-tv-toolbar]');
+        if (!el || !bar) return null;
+        return Math.round(
+          el.getBoundingClientRect().top - bar.getBoundingClientRect().bottom,
+        );
+      }, selector);
+
+    test('each mark opens its own job or the education, which stops under the toolbar and not behind it', async ({
+      page,
+    }) => {
+      await gotoSkin(page, '/');
+      await expect(page.locator('button.tv-chart-flag')).toHaveCount(6);
+      const labels = await page
+        .locator('button.tv-chart-flag')
+        .evaluateAll((els) => els.map((e) => e.getAttribute('aria-label')!));
+      for (let i = 0; i < labels.length; i += 1) {
+        await gotoSkin(page, '/');
+        await expect(page.locator('button.tv-chart-flag')).toHaveCount(6);
+        await page.waitForTimeout(1200);
+        const label = labels[i];
+        // a plain click is refused when another control lies over the centre of the mark: the hit area of a neighbour used to
+        await page.getByRole('button', { name: label }).click();
+        await expect(page).toHaveURL(/\/resume(#tv-education)?$/);
+        const degree = /(Bachelor|Master) of Science/.test(label);
+        const target = degree
+          ? '#tv-education'
+          : '[data-job][data-active="true"]';
+        if (degree) {
+          await expect(page.locator('#tv-education')).toBeVisible();
+        } else {
+          const company = /at (.+?)\. Show/.exec(label)![1];
+          const row = page.locator(target);
+          await expect(row).toHaveCount(1);
+          await expect(row).toContainText(company);
+        }
+        // it ends up just under the toolbar: not behind it (a negative number) and not left far below the screen
+        await expect
+          .poll(
+            async () => {
+              const v = await under(page, target);
+              return v !== null && v >= 0 && v < 48;
+            },
+            { timeout: 8000 },
+          )
+          .toBe(true);
+      }
+    });
+
+    test('the hit areas of two marks never lie over each other', async ({
+      page,
+    }) => {
+      await gotoSkin(page, '/');
+      await expect(page.locator('button.tv-chart-flag')).toHaveCount(6);
+      await page.waitForTimeout(1500);
+      const overlaps = await page.evaluate(() => {
+        const areas = [
+          ...document.querySelectorAll('button.tv-chart-flag'),
+        ].map((el) => {
+          const r = el.getBoundingClientRect();
+          const after = getComputedStyle(el, '::after');
+          const x = parseFloat(after.left);
+          const w = parseFloat(after.width);
+          const y = parseFloat(after.top);
+          const h = parseFloat(after.height);
+          return {
+            left: r.left + x,
+            right: r.left + x + w,
+            top: r.top + y,
+            bottom: r.top + y + h,
+          };
+        });
+        let count = 0;
+        for (let i = 0; i < areas.length; i += 1)
+          for (let j = i + 1; j < areas.length; j += 1) {
+            const a = areas[i];
+            const b = areas[j];
+            if (
+              a.left < b.right - 0.5 &&
+              a.right > b.left + 0.5 &&
+              a.top < b.bottom &&
+              a.bottom > b.top
+            )
+              count += 1;
+          }
+        return count;
+      });
+      expect(overlaps).toBe(0);
+    });
+  });
+}
+
 test.describe('on the wide terminal', () => {
   test.use({ viewport: { width: 1440, height: 900 } });
 

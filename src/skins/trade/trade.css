@@ -175,6 +175,14 @@ html[data-skin='trade'] {
   }
 }
 
+/* a phone: the toolbar sticks to the top, so whatever scrolls to a part of the page stops under it (`--tv-sticky` is its height, set by
+   shell/use-sticky-offset.ts); the wide terminal has panels of its own and is not affected */
+@media (max-width: 1100px) {
+  html[data-skin='trade'] {
+    scroll-padding-top: var(--tv-sticky, 0px);
+  }
+}
+
 /* a tab in the background, or a loop scrolled out of view: the endless loops (live ring, pulse, skeleton, the drawings of the services) wait
    instead of running for nobody. The shell sets data-hidden on the root (shell/trade-shell.tsx) and `useLoopGate` sets data-off on the root
    of a loop that is off screen (shell/use-loop-gate.ts); the ticker tape and the chart tick stop by their own hooks. */

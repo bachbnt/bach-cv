@@ -26,7 +26,13 @@ that is the navigation, and a rail with the chat and Connect. It is one of the *
    Roles and Details: every page is one tap away; it closes when a page is chosen, and has its own close button, because a phone has no Esc).
    The toolbar sticks to the top: when a page is chosen the page opens just under it, never at the scroll offset of the page before
    (`shell/use-scroll-to-page.ts`; a visitor still at the chart stays where they are). The search takes the whole screen and has a close
-   button. The language, theme and Skin menus and the CV button stay in the toolbar.
+   button. The language, theme and Skin menus and the CV button stay in the toolbar. The bar under the chart (ranges, Go to date, zoom,
+   log, auto, fit) wraps into a second row instead of scrolling sideways, and the list of keyboard shortcuts is not offered on touch. The
+   sheets of the watchlist and of BB Bot share one header (the same height, padding and close button).
+   **The toolbar sticks to the top of a phone**, so it writes its height to `--tv-sticky` (`shell/use-sticky-offset.ts`) and `trade.css`
+   turns that into `scroll-padding-top`: a mark of the chart that opens a job or the education, and a jump link, stop under the toolbar
+   and not behind it. The hit area of a mark is 24 px wide and 46 px tall (flags are never closer than 24 px), so it never lies over the
+   centre of the next mark.
 5. **Reduced motion** stops the live tick of the last candle (a timer, so `useReducedMotion` guards it) and, in `trade.css`, every animation.
 
 ## The chart (`chart/`, `lib/derive/career-series.ts`, `shell/range-bar.tsx`, `shell/tool-rail.tsx`, `content/copy/trade-chart.ts`)

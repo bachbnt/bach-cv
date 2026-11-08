@@ -575,8 +575,14 @@ test.describe('the symbol search', () => {
     await page.keyboard.press('Control+k');
     await expect(page.getByRole('group', { name: 'Recent' })).toHaveCount(0);
     await box(page).fill('services');
+    // Enter picks the first result: wait until it is Services (the index is made as the content arrives), or it picks another one
+    await expect(page.getByRole('option').first()).toContainText('Services', {
+      timeout: 15_000,
+    });
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/services$/, SLOW);
+    // reopening while the window is still closing (160 ms) brings back the old one with what was typed: wait for it to be gone
+    await expect(page.getByRole('dialog', { name: 'Search' })).toBeHidden();
     await page.keyboard.press('Control+k');
     const recent = page.getByRole('group', { name: 'Recent' });
     await expect(recent.getByRole('option')).toHaveText([/Services/]);
