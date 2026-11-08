@@ -52,6 +52,7 @@ export const tradeShellCopy = defineCopy(
       count: '{count} results',
       countOne: '1 result',
       partial: 'Some of the content could not be loaded.',
+      closeLabel: 'Close search',
       hints: { move: 'to move', open: 'to open', close: 'to close' },
       kinds: {
         page: 'Page',
@@ -72,6 +73,7 @@ export const tradeShellCopy = defineCopy(
     },
     watch: {
       tabs: 'Watchlists',
+      closeSheet: 'Close the watchlist',
       pages: 'Pages',
       skills: 'Skills',
       roles: 'Roles',
@@ -141,6 +143,7 @@ export const tradeShellCopy = defineCopy(
       count: '{count} kết quả',
       countOne: '1 kết quả',
       partial: 'Một số nội dung chưa tải được.',
+      closeLabel: 'Đóng tìm kiếm',
       hints: { move: 'để di chuyển', open: 'để mở', close: 'để đóng' },
       kinds: {
         page: 'Trang',
@@ -161,6 +164,7 @@ export const tradeShellCopy = defineCopy(
     },
     watch: {
       tabs: 'Các danh sách theo dõi',
+      closeSheet: 'Đóng danh sách theo dõi',
       pages: 'Trang',
       skills: 'Kỹ năng',
       roles: 'Vai trò',

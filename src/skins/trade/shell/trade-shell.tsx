@@ -49,6 +49,7 @@ import { TradeOverlays } from '@/skins/trade/shell/trade-overlays';
 import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
 import { useSearchHotkey } from '@/skins/trade/shell/use-search-hotkey';
 import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useScrollToPage } from '@/skins/trade/shell/use-scroll-to-page';
 import { useViewportHeight } from '@/skins/trade/shell/use-viewport-height';
 import { useWide } from '@/skins/trade/shell/use-wide';
 import { Watchlist } from '@/skins/trade/shell/watchlist';
@@ -95,6 +96,8 @@ function Terminal({
   const words = useCopy(tradeShellCopy).panelBar;
   const resize = useCopy(tradeShellCopy).resize;
   const wide = useWide();
+  const panel = useRef<HTMLElement>(null);
+  useScrollToPage(panel, page, !wide);
   const reduced = useReducedMotion();
   const viewport = useViewportHeight();
   // a phone has no rails, so what was chosen for the wide terminal does not apply there
@@ -185,7 +188,10 @@ function Terminal({
       {layout.tape && (
         <TickerTape className='border-t border-b-0 border-tv-line min-[1101px]:col-2 min-[1101px]:row-4' />
       )}
-      <main className='relative flex min-h-0 min-w-0 flex-col border-t border-tv-line min-[1101px]:col-2 min-[1101px]:row-5'>
+      <main
+        ref={panel}
+        className='relative flex min-h-0 min-w-0 flex-col border-t border-tv-line min-[1101px]:col-2 min-[1101px]:row-5'
+      >
         {wide && layout.panel && (
           <Splitter
             orientation='horizontal'

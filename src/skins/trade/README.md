@@ -21,8 +21,12 @@ that is the navigation, and a rail with the chat and Connect. It is one of the *
 3. **Accessible names are the Standard ones**: `Language: English`, `Theme`, `Skin: Trade`, `Download CV`, `Connect`, `Open chat`, the
    navigation `Main` (a page that is coming soon is marked and is not a link; a hidden page is absent).
 4. **Phone** (below 1101px): no rails; toolbar, chart, range buttons, the page, then the watchlist and a row with the chat and
-   Connect, and a bar of the four main pages (a page that is coming soon stays in it with the Soon mark and is not a link; a hidden one is absent, as in the Standard
-   menu). The language, theme and Skin menus and the CV button stay in the toolbar.
+   Connect, and a bar of three pages (Home, About, Resume: a page that is coming soon stays in it with the Soon mark and is not a link; a
+   hidden one is absent, as in the Standard menu) and a **Watchlist** button that opens the watchlist as a sheet from the bottom (Pages, Skills,
+   Roles and Details: every page is one tap away; it closes when a page is chosen, and has its own close button, because a phone has no Esc).
+   The toolbar sticks to the top: when a page is chosen the page opens just under it, never at the scroll offset of the page before
+   (`shell/use-scroll-to-page.ts`; a visitor still at the chart stays where they are). The search takes the whole screen and has a close
+   button. The language, theme and Skin menus and the CV button stay in the toolbar.
 5. **Reduced motion** stops the live tick of the last candle (a timer, so `useReducedMotion` guards it) and, in `trade.css`, every animation.
 
 ## The chart (`chart/`, `lib/derive/career-series.ts`, `shell/range-bar.tsx`, `shell/tool-rail.tsx`, `content/copy/trade-chart.ts`)

@@ -11,7 +11,8 @@ what to copy from it. The mock was `design/skins/trade.html` (TradingView look: 
   on the left (drawing tools in grouped flyouts); the chart; a range bar (3M ... All, Go to date, log, auto); a ticker tape; the page in a
   bottom panel; a right column with the **watchlist** (the navigation: Pages, Skills with a sparkline of the years used, Roles) and the
   docked BB Bot panel; a rail with chat and Connect. Dividers are real separators (keyboard, persisted). Phone: no rails, a bottom bar
-  of the main pages with the Soon mark.
+  of three pages (Home, About, Resume, with the Soon mark) and a Watchlist button that opens the watchlist as a sheet, the page opens
+  under the sticky toolbar after a page change, the search is full screen with a close button.
 - **Pages are interfaces, not blocks:** Home = symbol overview (profile card, years in software, counts, hero note, pipeline card, work,
   featured projects), Projects = screener (grid / cards / heatmap, columns, filters), Resume = financials (roles as bars, statements,
   skill heat, corporate actions for education), Certificates = calendar and feed, About = symbol profile and facts, Services = catalogue

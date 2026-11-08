@@ -854,10 +854,12 @@ test.describe('on a phone', () => {
       await expect(page.getByRole('button', { name }).first()).toBeVisible();
     }
     const bar = page.getByRole('navigation', { name: 'Quick links' });
-    await expect(bar.getByRole('link')).toHaveCount(4);
-    await bar.getByRole('link', { name: 'Projects' }).click();
-    await expect(page).toHaveURL(/\/projects$/, SLOW);
-    await expect(bar.getByRole('link', { name: 'Projects' })).toHaveAttribute(
+    // three pages and the button that opens the watchlist, which has all of them
+    await expect(bar.getByRole('link')).toHaveCount(3);
+    await expect(bar.getByRole('button', { name: 'Watchlist' })).toBeVisible();
+    await bar.getByRole('link', { name: 'About' }).click();
+    await expect(page).toHaveURL(/\/about$/, SLOW);
+    await expect(bar.getByRole('link', { name: 'About' })).toHaveAttribute(
       'aria-current',
       'page',
     );

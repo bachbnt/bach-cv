@@ -4,7 +4,7 @@
 
 'use client';
 
-import { CornerDownLeft, Search } from 'lucide-react';
+import { CornerDownLeft, Search, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
   useEffect,
@@ -17,6 +17,7 @@ import {
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import {
   Dialog,
+  DialogClose,
   DialogDescription,
   DialogOverlay,
   DialogPortal,
@@ -80,7 +81,7 @@ export function SearchPalette() {
           // the same backdrop and the same opening as the windows of the skin (a fade and a scale from .96), not the zoom of the shadcn dialog
           className={cn(
             TV_DIALOG_MOTION,
-            'fixed top-[10vh] left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 gap-0 overflow-hidden rounded-md border border-tv-line bg-tv-panel p-0 text-sm text-tv-ink shadow-tv-dialog outline-none sm:max-w-[640px] max-[700px]:inset-0 max-[700px]:top-0 max-[700px]:left-0 max-[700px]:h-dvh max-[700px]:max-w-none max-[700px]:translate-x-0 max-[700px]:rounded-none max-[700px]:border-0',
+            'fixed top-[10vh] left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 gap-0 overflow-hidden rounded-md border border-tv-line bg-tv-panel p-0 text-sm text-tv-ink shadow-tv-dialog outline-none sm:max-w-[640px] max-[700px]:inset-0 max-[700px]:top-0 max-[700px]:left-0 max-[700px]:h-dvh max-[700px]:grid-rows-[auto_minmax(0,1fr)_auto] max-[700px]:max-w-none max-[700px]:translate-x-0 max-[700px]:rounded-none max-[700px]:border-0',
           )}
         >
           <DialogTitle className='sr-only'>{copy.title}</DialogTitle>
@@ -254,10 +255,17 @@ function PaletteBody() {
         >
           Esc
         </kbd>
+        {/* a phone has no Esc key and the palette covers the screen: a visible way out */}
+        <DialogClose
+          aria-label={copy.closeLabel}
+          className='hidden size-11 flex-none cursor-pointer place-items-center rounded text-tv-mute transition-[background-color,color,scale] duration-100 hover:bg-tv-hover hover:text-tv-ink active:scale-90 active:bg-tv-hover max-[700px]:grid'
+        >
+          <X aria-hidden='true' className='size-[18px]' />
+        </DialogClose>
       </div>
       <div
         ref={list}
-        className='max-h-[min(56vh,460px)] min-h-[120px] overflow-y-auto py-1 max-[700px]:max-h-none max-[700px]:flex-1'
+        className='max-h-[min(56vh,460px)] min-h-[120px] overflow-y-auto py-1 max-[700px]:max-h-none max-[700px]:min-h-0'
       >
         {flat.length === 0 ? (
           typing &&
@@ -327,7 +335,7 @@ function PaletteBody() {
           </div>
         )}
       </div>
-      <div className='flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-tv-line px-4 py-2 text-[11px] text-tv-mute'>
+      <div className='flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-tv-line px-4 py-2 text-[11px] text-tv-mute max-[700px]:pb-[max(0.5rem,env(safe-area-inset-bottom))]'>
         <span aria-hidden='true' className='max-[700px]:hidden'>
           <kbd className='font-sans'>↑↓</kbd> {copy.hints.move}
           {'   '}

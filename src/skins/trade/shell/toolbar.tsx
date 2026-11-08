@@ -33,7 +33,10 @@ export function Toolbar() {
   const copy = useCopy(commonCopy);
   const words = useCopy(tradeShellCopy).toolbar;
   return (
-    <header className='flex h-10 min-w-0 items-center gap-1 border-b border-tv-line bg-tv-bg px-1.5 max-[1100px]:sticky max-[1100px]:top-0 max-[1100px]:z-30 max-[1100px]:h-auto max-[1100px]:min-h-12 max-[1100px]:flex-wrap'>
+    <header
+      data-tv-toolbar=''
+      className='flex h-10 min-w-0 items-center gap-1 border-b border-tv-line bg-tv-bg px-1.5 max-[1100px]:sticky max-[1100px]:top-0 max-[1100px]:z-30 max-[1100px]:h-auto max-[1100px]:min-h-12 max-[1100px]:flex-wrap'
+    >
       <Link
         href='/'
         data-slot='tv-logo'

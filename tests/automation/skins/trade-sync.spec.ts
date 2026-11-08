@@ -352,17 +352,17 @@ test.describe('pages that are hidden or coming soon', () => {
   }) => {
     await page.unroute('**/firestore.googleapis.com/**');
     await mockFirestore(page, {
-      'site/live': { pages: { services: 'soon', resume: 'hidden' } },
+      'site/live': { pages: { about: 'soon', resume: 'hidden' } },
     });
     await useSkin(page, 'trade');
     await page.setViewportSize({ width: 390, height: 844 });
     await gotoSkin(page, '/');
     const bar = page.getByRole('navigation', { name: 'Quick links' });
     await expect(bar.getByRole('link', { name: 'Home' })).toBeVisible(SLOW);
-    await expect(bar.getByRole('link', { name: 'Projects' })).toBeVisible();
+    await expect(bar.getByRole('button', { name: 'Watchlist' })).toBeVisible();
     await expect(bar.getByText('Resume')).toHaveCount(0);
-    await expect(bar.getByText('Services')).toBeVisible();
+    await expect(bar.getByText('About')).toBeVisible();
     await expect(bar.getByText('Soon')).toBeVisible();
-    await expect(bar.getByRole('link', { name: /Services/ })).toHaveCount(0);
+    await expect(bar.getByRole('link', { name: /About/ })).toHaveCount(0);
   });
 });

@@ -50,12 +50,11 @@ export function navItems(pages: Live['pages']): NavItem[] {
   }));
 }
 
-/** The four items of the bottom navigation of a phone (the chart is Home). */
+/** The pages in the bottom navigation of a phone (the chart is Home); the fourth button opens the watchlist, which has all of them. */
 export const PHONE_NAV = [
   'home',
-  'projects',
+  'about',
   'resume',
-  'services',
 ] as const satisfies readonly PageKey[];
 
 export type RangeKey = 'm3' | 'm6' | 'y1' | 'y3' | 'all';

@@ -196,7 +196,7 @@ test.describe('the phone bar', () => {
   test('marks the open page with a bar that grows in, and no other', async ({
     page,
   }) => {
-    await gotoSkin(page, '/projects');
+    await gotoSkin(page, '/about');
     const nav = page.getByRole('navigation', { name: 'Quick links' });
     const links = nav.getByRole('link');
     await expect(links.first()).toBeVisible();

@@ -38,7 +38,7 @@ export function Watchlist({
         className,
       )}
     >
-      <div className='flex h-[38px] flex-none items-center border-b border-tv-line px-3.5'>
+      <div className='flex h-[38px] flex-none items-center border-b border-tv-line px-3.5 pointer-coarse:h-11'>
         <h2 className='text-[13px] font-bold'>{title}</h2>
       </div>
       <Tabs.Root
