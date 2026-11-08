@@ -151,7 +151,7 @@ export function TickerTape({ className }: { className?: string }) {
           style={cssVars({
             '--tv-tape-s': `${Math.round(items.length * SECONDS_PER_ITEM)}s`,
           })}
-          className='flex h-[30px] w-max animate-[tv-tape_var(--tv-tape-s)_linear_infinite] items-stretch data-paused:[animation-play-state:paused] group-has-[a:focus-visible]/tape:[animation-play-state:paused] group-hover/tape:[animation-play-state:paused] motion-reduce:h-auto motion-reduce:w-auto motion-reduce:animate-none motion-reduce:py-1'
+          className='flex h-[30px] w-max pointer-coarse:h-11 animate-[tv-tape_var(--tv-tape-s)_linear_infinite] items-stretch data-paused:[animation-play-state:paused] group-has-[a:focus-visible]/tape:[animation-play-state:paused] group-hover/tape:[animation-play-state:paused] motion-reduce:h-auto motion-reduce:w-auto motion-reduce:animate-none motion-reduce:py-1'
         >
           {list(false)}
           {list(true)}

@@ -17,7 +17,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useCareerYears } from '@/lib/query/use-career-years';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
-import { useCountUp } from '@/skins/trade/shell/use-count-up';
+import { DeskCountUp } from '@/skins/trade/blocks/desk-count-up';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
 /** One number of the strip: a link to the page it counts. A number that is not known yet is a skeleton, and one that failed is left out. */
@@ -63,7 +63,6 @@ export function SymbolOverview() {
   const certificates = useContentQuery('certificates');
   const { data: profile } = useProfileQuery();
   const years = useCareerYears();
-  const shown = useCountUp(years);
   const count = <T,>(query: { data?: T[]; isError: boolean }) =>
     query.isError || !query.data ? null : query.data.length;
 
@@ -98,14 +97,14 @@ export function SymbolOverview() {
           <span className='sr-only'>
             {years} {years === 1 ? trade.yearsOne : trade.yearsMany}
           </span>
-          <span
-            aria-hidden='true'
-            className='text-[48px] leading-none font-semibold tabular-nums'
-          >
-            {shown}
-          </span>
-          <span aria-hidden='true' className='text-[13px] text-tv-mute'>
-            {years === 1 ? trade.yearsOne : trade.yearsMany}
+          <span aria-hidden='true' className='flex items-baseline gap-2'>
+            <DeskCountUp
+              value={years}
+              className='text-[48px] leading-none font-semibold text-tv-up-ink tabular-nums'
+            />
+            <span className='text-[13px] text-tv-mute'>
+              {years === 1 ? trade.yearsOne : trade.yearsMany}
+            </span>
           </span>
         </p>
       )}

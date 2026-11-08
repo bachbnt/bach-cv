@@ -86,7 +86,7 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
   selection, one update for each frame), or use the arrows (24 px, Shift 96), Home and End; Enter or a double click puts them back. The chart
   is at least 220 px and the page at least 160 px; the watchlist 240 to 480 px. The chart's size is kept as a share of the window
   (`split`) and the watchlist's as pixels (`side`) in `bach-cv-trade-layout`, validated on load, and the Layout menu has Reset layout. A phone has
-  no dividers.
+  no dividers, and of the layout it follows only the tool strip and the ticker tape.
 - **Window and new bars.** Whenever the bars change (another interval, or a series that is rebuilt) the window is moved by **time**, never by bar
   number (`retargetView`), so a zoom or a pan is kept; only the first window is the initial range.
 - **Types.** Candles, Hollow candles, Bars, Heikin Ashi (`series.ts`), Line, Area, Baseline: a change fades one picture into the next.
@@ -256,7 +256,7 @@ Words of this part are in `content/copy/trade-shell.ts` (en and vi); the rest is
 `blocks/shell-*.ts` and tested in `tests/unit/skin/trade-shell-*.test.ts`.
 
 - **Toolbar** (`shell/toolbar.tsx`): the logo (a link home), the **symbol button** (photo, name, headline; opens the search), an empty
-  strip `#tv-chart-controls` that the chart can portal its own controls into, **Layout**, **full screen** (grey and disabled where the
+  strip `#tv-chart-controls` that the chart can portal its own controls into, **Layout** (on a phone only the tool strip, the ticker tape and Reset), **full screen** (grey and disabled where the
   Fullscreen API is missing), language, theme, Skin and Download CV. Chat and Connect stay in the icon rail on the right (a row under the
   watchlist on a phone), so each control exists once.
 - **Symbol search** (`shell/search-palette.tsx`, lazy, Ctrl or Cmd with K, or `/` outside a field): a shadcn Dialog with a combobox over

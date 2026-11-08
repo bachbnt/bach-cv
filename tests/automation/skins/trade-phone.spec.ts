@@ -54,6 +54,56 @@ test.describe('on a phone', () => {
     ).toBeFocused();
   });
 
+  test('the years in software are green and count up when they come into view', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await gotoSkin(page, '/');
+    const years = page.getByTestId('desk-count').first();
+    const value = Number(await years.getAttribute('data-value'));
+    expect(value).toBeGreaterThan(0);
+    // below the fold on a phone, it counts when it is seen and ends on the real number in the green of an up value
+    const shown = () =>
+      years.evaluate((el) => el.firstElementChild!.textContent);
+    await years.scrollIntoViewIfNeeded();
+    await expect.poll(shown).toBe(String(value));
+    expect(await years.evaluate((el) => getComputedStyle(el).color)).toBe(
+      await page.evaluate(() => {
+        const probe = document.createElement('span');
+        probe.className = 'text-tv-up-ink';
+        document.body.append(probe);
+        const color = getComputedStyle(probe).color;
+        probe.remove();
+        return color;
+      }),
+    );
+  });
+
+  test('the Layout menu is in the bar with the two parts a phone has, and the tape follows it', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const tape = page.getByRole('region', { name: /ticker|technolog|tape/i });
+    await expect(tape.first()).toBeVisible();
+    await page
+      .getByRole('button', { name: 'Choose what the terminal shows' })
+      .click();
+    await expect(page.getByRole('menuitemcheckbox')).toHaveText([
+      'Tool rail',
+      'Ticker tape',
+    ]);
+    await expect(page.getByTestId('tv-reset-layout')).toBeVisible();
+    await page.getByRole('menuitemcheckbox', { name: 'Ticker tape' }).click();
+    await expect(tape).toHaveCount(0);
+    // the watchlist stays a sheet and the page stays on screen: Reset layout brings the tape back
+    await page.keyboard.press('Escape');
+    await page
+      .getByRole('button', { name: 'Choose what the terminal shows' })
+      .click();
+    await page.getByTestId('tv-reset-layout').click();
+    await expect(tape.first()).toBeVisible();
+  });
+
   test('the bar has three pages and the watchlist, which opens as a sheet with every page', async ({
     page,
   }) => {

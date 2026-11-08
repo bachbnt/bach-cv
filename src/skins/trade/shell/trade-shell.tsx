@@ -102,8 +102,10 @@ function Terminal({
   useStickyOffset();
   const reduced = useReducedMotion();
   const viewport = useViewportHeight();
-  // a phone has no rails, so what was chosen for the wide terminal does not apply there
-  const layout = wide ? saved : DEFAULT_LAYOUT;
+  // a phone has no watchlist column, panel or dividers, so only the tool strip and the ticker tape follow the Layout menu there
+  const layout = wide
+    ? saved
+    : { ...DEFAULT_LAYOUT, tools: saved.tools, tape: saved.tape };
   // the BB Bot panel takes the place of the watchlist while it is open, and the column is there for it even when the watchlist is off
   const chatOpen = useChat().isOpen;
   const chatOn = useLive().features.chat;

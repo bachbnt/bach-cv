@@ -153,6 +153,7 @@ export function ToolGroupButton({
           <DropdownMenuTrigger
             aria-label={fill(copy.more, { name: copy[shown] })}
             tabIndex={-1}
+            // 20px on touch, not more: a bigger corner would cover the middle of the 44px button, where a long press opens this same flyout
             className='absolute right-0 bottom-0 grid size-4 cursor-pointer place-items-center text-tv-mute hover:text-tv-ink pointer-coarse:size-5'
           >
             <svg aria-hidden='true' viewBox='0 0 8 8' className='size-2'>

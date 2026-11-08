@@ -116,7 +116,7 @@ export function TradeChat() {
         finalFocus={() => document.getElementById(CHAT_TRIGGER_ID)}
         aria-label={fill(copy.panelLabel, { name: chat.botName })}
         style={{ bottom: inset }}
-        className='data-[side=bottom]:h-[80dvh] max-h-[calc(100dvh-16px)] gap-0 rounded-t-lg border-t border-tv-line bg-tv-bg p-0 text-tv-ink'
+        className='data-[side=bottom]:h-[80dvh] max-h-[calc(100dvh-16px)] gap-0 overflow-hidden rounded-t-lg border-t border-tv-line bg-tv-bg p-0 text-tv-ink'
       >
         {panel(false, 'h-full')}
       </SheetContent>

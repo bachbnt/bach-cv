@@ -28,9 +28,13 @@ const PARTS = [
   'tape',
 ] as const satisfies readonly (keyof Layout)[];
 
+/** The parts a phone has no place for: the watchlist is a sheet there and the page is always shown. */
+const WIDE_ONLY: readonly (typeof PARTS)[number][] = ['watchlist', 'panel'];
+
 /**
  * The Layout menu: which parts of the terminal show (the watchlist, the page panel, the tool rail, the ticker tape), and puts the sizes and the parts back as they were at first. The choice is kept in the
- * browser. There are no rails on a phone, so the menu is for the wide terminal only.
+ * browser. A phone has no watchlist column and always shows the page, so there the menu has the tool strip and the ticker tape, and
+ * Reset layout.
  */
 export function LayoutMenu() {
   const copy = useCopy(tradeShellCopy).toolbar;
@@ -41,7 +45,7 @@ export function LayoutMenu() {
         aria-label={copy.layoutLabel}
         className={cn(
           tvButton({ variant: 'ghost' }),
-          'px-2 data-popup-open:bg-tv-hover max-[1100px]:hidden',
+          'px-2 data-popup-open:bg-tv-hover',
         )}
       >
         <PanelsTopLeft aria-hidden='true' />
@@ -63,7 +67,10 @@ export function LayoutMenu() {
             key={part}
             checked={layout[part]}
             onCheckedChange={(checked) => setLayout({ [part]: checked })}
-            className={TV_MENU_ITEM}
+            className={cn(
+              TV_MENU_ITEM,
+              WIDE_ONLY.includes(part) && 'max-[1100px]:hidden',
+            )}
           >
             {copy[part]}
           </DropdownMenuCheckboxItem>

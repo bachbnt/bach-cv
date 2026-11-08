@@ -296,7 +296,9 @@ test.describe('the watchlist', () => {
   }) => {
     await gotoSkin(page, '/about');
     const details = page.getByRole('region', { name: 'Details' });
-    await expect(details.getByText('years in software')).toBeVisible();
+    await expect(
+      details.getByText('years in software', { exact: true }),
+    ).toBeVisible();
     await expect(details.getByText('Team Lead')).toBeVisible();
     await expect(details.getByText('FPT Software')).toBeVisible();
     await expect(details.getByText('Ho Chi Minh City, Vietnam')).toBeVisible();
@@ -756,14 +758,9 @@ test.describe('windows', () => {
       0,
     );
     await expect(win.getByText('Ho Chi Minh City, Vietnam')).toBeVisible();
-    // the group of a link is its tag, in one flat list
-    await expect(
-      win.getByText('Professional', { exact: true }).first(),
-    ).toBeVisible();
-    await expect(
-      win.getByText('Messaging', { exact: true }).first(),
-    ).toBeVisible();
-    await expect(win.getByRole('heading')).toHaveCount(0);
+    // the links are under the heading of their group, as on About
+    for (const group of ['Professional', 'Messaging', 'Social'])
+      await expect(win.getByRole('heading', { name: group })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(win).toBeHidden();
   });
@@ -847,9 +844,10 @@ test.describe('on a phone', () => {
     const body = (await page.getByRole('main').boundingBox())!;
     const list = (await watchlist(page).boundingBox())!;
     expect(list.y).toBeGreaterThan(body.y);
+    // the Layout menu is in the bar on a phone too (the tool strip and the ticker tape)
     await expect(
       page.getByRole('button', { name: 'Choose what the terminal shows' }),
-    ).toBeHidden();
+    ).toBeVisible();
   });
 
   test('the menus, the CV button and the bottom bar are within reach with touch-sized targets', async ({

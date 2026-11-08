@@ -301,10 +301,10 @@ test.describe('a copied value', () => {
     const copy = links.getByRole('button', { name: 'Copy' });
     await expect(copy.locator('svg')).toHaveCount(1);
     await copy.click();
-    const copied = links.getByRole('button', { name: 'Copied' });
-    await expect(copied).toBeVisible();
-    expect(await animations(copied)).toContain('tv-check-pop');
-    await expect(links.getByRole('button', { name: 'Copy' })).toBeVisible();
+    // the button keeps its name; the status says Copied, and the icon is a check that pops in
+    await expect(links.getByRole('status')).toHaveText('Copied');
+    expect(await animations(copy.locator('svg'))).toContain('tv-check-pop');
+    await expect(links.getByRole('status')).toHaveText('');
   });
 });
 

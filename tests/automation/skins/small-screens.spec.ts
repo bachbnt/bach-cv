@@ -67,6 +67,15 @@ for (const size of SIZES) {
         expect(right).toBeLessThanOrEqual(rects.right - 15);
       if (rects.downloadTop !== null)
         expect(rects.downloadTop - rects.themeBottom).toBeGreaterThanOrEqual(8);
+      // the three skins are one row and every name is whole
+      const names = await skin.evaluate((el) =>
+        [...el.querySelectorAll('button')].map((b) => ({
+          top: Math.round(b.getBoundingClientRect().top),
+          clipped: b.scrollWidth - b.clientWidth,
+        })),
+      );
+      expect(new Set(names.map((n) => n.top)).size).toBe(1);
+      for (const n of names) expect(n.clipped).toBeLessThanOrEqual(0);
     });
 
     test('Dev keeps the buttons of its status bar in reach and its footer clear of the chat button', async ({
@@ -89,6 +98,24 @@ for (const size of SIZES) {
         const r = (await status.nth(i).boundingBox())!;
         expect(r.x + r.width).toBeLessThanOrEqual(size.width);
       }
+      // the project name is in the title bar on a phone too, whole and between the files button and the menus
+      const name = await page.evaluate(() => {
+        const bar = document.querySelector('.bg-chrome-2')!;
+        const pill = [...bar.querySelectorAll('div')].find(
+          (d) => d.textContent?.trim() === 'bachbntdev',
+        );
+        const span = pill?.querySelector('span');
+        return pill && span
+          ? {
+              left: pill.getBoundingClientRect().left,
+              right: pill.getBoundingClientRect().right,
+              clipped: span.scrollWidth - span.clientWidth,
+            }
+          : null;
+      });
+      expect(name).not.toBeNull();
+      expect(name!.clipped).toBeLessThanOrEqual(0);
+      expect(name!.right).toBeLessThanOrEqual(size.width - 100);
       // a finger needs 44 px: the small controls of the title bar and the status bar reach it with an invisible area around them
       const reach = await page.evaluate(() =>
         [...document.querySelectorAll('button')]
@@ -153,6 +180,24 @@ for (const size of SIZES) {
         ),
       ).toBe(true);
 
+      // the ticker tape: the track is as tall as its pause button, so the names sit in the middle of the row
+      const tape = await page.evaluate(() => {
+        const row = document.querySelector('section.group\\/tape')!;
+        const box = (el: Element) => el.getBoundingClientRect();
+        const name = row.querySelector('li span')!;
+        return {
+          button: box(row.querySelector('button')!),
+          name: box(name),
+        };
+      });
+      expect(
+        Math.abs(
+          tape.name.top +
+            tape.name.height / 2 -
+            (tape.button.top + tape.button.height / 2),
+        ),
+      ).toBeLessThanOrEqual(1);
+
       const header = async (open: () => Promise<void>, close: RegExp) => {
         await open();
         const dialog = page.getByRole('dialog');
@@ -165,6 +210,8 @@ for (const size of SIZES) {
           )!;
           const c = x.getBoundingClientRect();
           return {
+            // the rounded top corners clip the header: the same on both sheets
+            clips: getComputedStyle(el).overflowX !== 'visible',
             height: Math.round(h.height),
             closeSize: Math.round(c.width),
             closeRight: Math.round(h.right - c.right),
@@ -187,6 +234,8 @@ for (const size of SIZES) {
         () => page.getByRole('button', { name: 'Open chat' }).first().click(),
         /Close/,
       );
+      expect(watch.clips).toBe(true);
+      expect(chat.clips).toBe(true);
       expect(watch.height).toBe(chat.height);
       expect(watch.closeSize).toBe(chat.closeSize);
       expect(watch.closeRight).toBe(chat.closeRight);

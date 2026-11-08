@@ -111,9 +111,9 @@ export function TitleBar({
           fullscreen.active ? lights.exitFullscreen : lights.fullscreen
         }
       />
-      <div className='mx-auto flex h-[22px] w-[min(46%,440px)] items-center justify-center gap-2 overflow-hidden rounded-[6px] border border-line-2 bg-editor px-3 whitespace-nowrap text-mute max-[900px]:hidden'>
-        <DevIcon name='search' className='mr-1.5 size-[13px]' />
-        {DEV_PROJECT}
+      <div className='mx-auto flex h-[22px] w-[min(46%,440px)] min-w-0 items-center justify-center gap-2 overflow-hidden rounded-[6px] border border-line-2 bg-editor px-3 whitespace-nowrap text-mute max-[900px]:mx-0 max-[900px]:w-auto max-[900px]:flex-1 max-[900px]:px-2'>
+        <DevIcon name='search' className='mr-1.5 size-[13px] flex-none' />
+        <span className='truncate'>{DEV_PROJECT}</span>
       </div>
       <div className='flex items-center gap-1.5 text-mute max-[620px]:gap-0.5 max-[900px]:ml-auto'>
         {languages.length > 1 && (
