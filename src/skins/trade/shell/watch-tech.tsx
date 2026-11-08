@@ -5,7 +5,9 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { resumeCopy } from '@/content/copy/resume';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
+import { useNow } from '@/hooks/use-now';
 import { fill } from '@/lib/chat/fill';
 import type { Doc, Skill } from '@/lib/content/schema';
 import { formatPeriod } from '@/lib/format';
@@ -14,12 +16,14 @@ import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { formatUsed } from '@/lib/derive/duration-label';
+import { initialOf } from '@/lib/derive/initials';
 import {
   careerSpan,
   monthsUsed,
   rolesUsing,
   skillSeries,
 } from '@/lib/derive/skill-use';
+import { skillGroups } from '@/lib/derive/skill-groups';
 import { STRIP_ORDER } from '@/lib/derive/skill-strip';
 import type { Tile } from '@/skins/trade/config';
 import { rovingKeys } from '@/skins/trade/shell/roving-keys';
@@ -43,10 +47,11 @@ const TILE: Record<Skill['category'], Tile> = {
 export function WatchTech() {
   const copy = useCopy(tradeShellCopy);
   const words = copy.watch;
+  const areas = useCopy(resumeCopy).skills.groups;
   const { lang } = useLang();
   const skillsQuery = useContentQuery('skills');
   const jobsQuery = useContentQuery('experience');
-  const [now] = useState(() => new Date());
+  const now = useNow();
   const [pointed, setPointed] = useState<string | null>(null);
   const [pinned, setPinned] = useState<string | null>(null);
 
@@ -55,16 +60,14 @@ export function WatchTech() {
   const span = useMemo(() => careerSpan(jobs, now), [jobs, now]);
   const groups = useMemo(
     () =>
-      STRIP_ORDER.map((category) => ({
+      skillGroups(skills, STRIP_ORDER).map(({ category, items }) => ({
         category,
-        items: skills
-          .filter((skill) => skill.listed && skill.category === category)
-          .map((skill) => ({
-            skill,
-            months: monthsUsed(skill.id, jobs, now),
-            series: span ? skillSeries(skill.id, jobs, span, now) : [],
-          })),
-      })).filter((group) => group.items.length > 0),
+        items: items.map((skill) => ({
+          skill,
+          months: monthsUsed(skill.id, jobs, now),
+          series: span ? skillSeries(skill.id, jobs, span, now) : [],
+        })),
+      })),
     [skills, jobs, span, now],
   );
 
@@ -97,12 +100,9 @@ export function WatchTech() {
             {words.unitsHint}
           </p>
           {groups.map((group) => (
-            <section
-              key={group.category}
-              aria-label={words.areas[group.category]}
-            >
+            <section key={group.category} aria-label={areas[group.category]}>
               <h3 className='px-3.5 pt-2 pb-1 text-[11px] font-bold tracking-wide text-tv-mute uppercase'>
-                {words.areas[group.category]}
+                {areas[group.category]}
               </h3>
               <ul>
                 {group.items.map(({ skill, months, series }) => (
@@ -119,12 +119,12 @@ export function WatchTech() {
                         setPinned((id) => (id === skill.id ? null : skill.id))
                       }
                       className={cn(
-                        'grid min-h-[28px] w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 px-3.5 text-left transition-[background-color] duration-100 hover:bg-tv-hover active:bg-tv-hover aria-pressed:bg-tv-hover pointer-coarse:min-h-11',
+                        'grid min-h-[28px] w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 px-3.5 text-left transition-[background-color] duration-100 hover:bg-tv-hover active:bg-tv-hover aria-pressed:bg-tv-accent/15 hover:aria-pressed:bg-tv-accent/20 pointer-coarse:min-h-11',
                       )}
                     >
                       <span className='flex min-w-0 items-center gap-2 font-semibold'>
                         <TvTile tile={TILE[skill.category]} size='sm'>
-                          {skill.name.charAt(0).toUpperCase()}
+                          {initialOf(skill.name)}
                         </TvTile>
                         <span className='truncate'>{skill.name}</span>
                       </span>

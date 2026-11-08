@@ -48,7 +48,7 @@ export function TvServiceArt({
       <svg
         viewBox='0 0 176 128'
         focusable='false'
-        className='size-full origin-center transition-transform duration-500 ease-out group-hover/row:scale-[1.04]'
+        className='size-full origin-center transition-transform duration-300 ease-tv-out group-hover/row:scale-[1.04]'
       >
         <Drawing />
       </svg>

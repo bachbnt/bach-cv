@@ -17,7 +17,7 @@ import { tvButton } from '@/skins/trade/ui/tv-button';
 import { TV_MENU_ITEM, TV_POPUP } from '@/skins/trade/ui/tv-menu';
 import { cn } from '@/lib/utils';
 
-export interface ToolbarMenuItem {
+interface ToolbarMenuItem {
   value: string;
   label: string;
   /** a short note after the label (`Trading chart`) */

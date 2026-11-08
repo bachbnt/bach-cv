@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { Copy, ZoomIn } from 'lucide-react';
+import { ZoomIn } from 'lucide-react';
 import Image from 'next/image';
 import { paymentCopy } from '@/content/copy/payment';
 import { tradeDeskCopy } from '@/content/copy/trade-desk';
@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import { DeskPaymentFields } from '@/skins/trade/blocks/desk-payment-fields';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
+import { TvCopyIcon } from '@/skins/trade/ui/tv-copy-icon';
+import { useCopyFeedback } from '@/skins/trade/ui/use-copy-feedback';
 
 /**
  * A highlighted method as the recommended one: the QR code as a thumbnail that opens the Standard QR window, the kind, the account details and
@@ -28,6 +30,7 @@ export function DeskPaymentRecommended({
 }) {
   const copy = useCopy(paymentCopy);
   const desk = useCopy(tradeDeskCopy).payment;
+  const account = useCopyFeedback();
   return (
     <article
       data-testid='payment-method'
@@ -49,7 +52,7 @@ export function DeskPaymentRecommended({
             width={240}
             height={240}
             unoptimized
-            className='block h-auto w-full object-contain transition-transform duration-300 group-hover/qr:scale-105'
+            className='block h-auto w-full object-contain transition-transform duration-300 ease-tv-out group-hover/qr:scale-105'
           />
           <span className='absolute right-1 bottom-1 inline-flex items-center gap-1 rounded bg-tv-tip px-1.5 py-0.5 text-[10px] font-medium text-white'>
             <ZoomIn aria-hidden='true' className='size-3' />
@@ -69,8 +72,14 @@ export function DeskPaymentRecommended({
           numberClassName='text-xl'
         />
         <div className='mt-1 flex flex-wrap items-center gap-x-3 gap-y-1.5'>
-          <TvButton variant='primary' onClick={() => onCopy('account')}>
-            <Copy aria-hidden='true' />
+          <TvButton
+            variant='primary'
+            onClick={() => {
+              account.arm();
+              onCopy('account');
+            }}
+          >
+            <TvCopyIcon copied={account.copied} />
             {copy.copyNumber}
           </TvButton>
           <TvButton variant='ghost' onClick={() => onCopy('all')}>

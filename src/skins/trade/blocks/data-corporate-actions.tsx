@@ -4,7 +4,7 @@
 
 'use client';
 
-import type { CSSProperties } from 'react';
+import { GraduationCap } from 'lucide-react';
 import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
 import { tradeDataCopy } from '@/content/copy/trade-data';
@@ -18,6 +18,7 @@ import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 import { TvTile } from '@/skins/trade/ui/tv-tile';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 /**
  * Education as the corporate actions of a chart site: a row for each degree with a round mark, the school and its photo, the period, the
@@ -51,8 +52,8 @@ export function DataCorporateActions() {
           <li
             key={degree.id}
             data-testid='degree'
-            style={{ '--i': index } as CSSProperties}
-            className='flex animate-[tv-slide-in_0.35s_cubic-bezier(0.2,0.7,0.2,1)_both] flex-col gap-3 border-b border-tv-line px-3.5 py-3 transition-colors [animation-delay:calc(var(--i)*70ms)] hover:bg-tv-hover/40 min-[901px]:flex-row min-[901px]:items-start'
+            style={cssVars({ '--i': index })}
+            className='flex animate-tv-slide-in flex-col gap-3 border-b border-tv-line px-3.5 py-3 transition-colors [animation-delay:calc(var(--i)*70ms)] hover:bg-tv-hover/40 min-[901px]:flex-row min-[901px]:items-start'
           >
             {degree.logo && (
               <DataMedia
@@ -65,7 +66,9 @@ export function DataCorporateActions() {
             )}
             <div className='grid min-w-0 flex-1 gap-x-4 gap-y-2 min-[901px]:grid-cols-[150px_minmax(0,230px)_minmax(0,1fr)]'>
               <p className='flex items-start gap-2 text-xs text-tv-mute tabular-nums'>
-                <TvTile tile='violet'>{copy.title.charAt(0)}</TvTile>
+                <TvTile tile='violet'>
+                  <GraduationCap className='size-3' strokeWidth={2.2} />
+                </TvTile>
                 {formatPeriod(degree.startMonth, degree.endMonth, lang)}
               </p>
               <div className='min-w-0'>
@@ -107,7 +110,7 @@ export function DataCorporateActions() {
                                 key={label}
                                 href={href}
                                 target='_blank'
-                                rel='noopener'
+                                rel='noopener noreferrer'
                                 data-slot='tv-link'
                                 className='inline-flex font-medium text-tv-accent-ink underline-offset-[3px] hover:underline pointer-coarse:min-h-11 pointer-coarse:items-center'
                               >

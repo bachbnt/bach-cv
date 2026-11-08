@@ -4,10 +4,9 @@
 
 'use client';
 
-import { useState } from 'react';
 import type { PageKey } from '@/lib/content/schema';
+import { useCareerYears } from '@/lib/query/use-career-years';
 import { useContentQuery } from '@/lib/query/use-content';
-import { careerYears } from '@/lib/derive/career-years';
 import { useCachedContent } from '@/skins/trade/shell/use-cached-content';
 
 /**
@@ -16,18 +15,13 @@ import { useCachedContent } from '@/skins/trade/shell/use-cached-content';
  * documents it does not show). `null` where there is no number.
  */
 export function useCounts(): Partial<Record<PageKey, number | null>> {
-  const [now] = useState(() => new Date());
+  const years = useCareerYears();
   const { data: jobs } = useContentQuery('experience');
   const projects = useCachedContent('projects');
   const certificates = useCachedContent('certificates');
   const services = useCachedContent('services');
   return {
-    home: jobs
-      ? careerYears(
-          jobs.map((job) => job.startMonth),
-          now,
-        )
-      : null,
+    home: years,
     projects: projects?.length ?? null,
     resume: jobs?.length ?? null,
     certificates: certificates?.length ?? null,

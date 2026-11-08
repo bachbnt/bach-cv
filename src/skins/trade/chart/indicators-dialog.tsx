@@ -134,7 +134,7 @@ export default function IndicatorsDialog({
                         data-indicator-switch={id}
                         data-short={hint ? '' : undefined}
                         onClick={() => chartStore.toggleIndicator(id)}
-                        className='flex min-h-9 cursor-pointer flex-wrap items-center gap-x-3 rounded px-2 py-1 text-left text-[13px] hover:bg-tv-hover pointer-coarse:min-h-11'
+                        className='flex min-h-9 cursor-pointer flex-wrap items-center gap-x-3 rounded px-2 py-1 text-left text-[13px] transition-colors duration-100 hover:bg-tv-hover active:bg-tv-hover pointer-coarse:min-h-11'
                       >
                         <span className={cn('flex-1', hint && 'opacity-60')}>
                           {words[id].name}
@@ -145,14 +145,14 @@ export default function IndicatorsDialog({
                         <span
                           aria-hidden='true'
                           className={cn(
-                            'relative h-5 w-9 shrink-0 rounded-full transition-colors',
+                            'relative h-5 w-9 shrink-0 rounded-full transition-colors duration-160 ease-tv-out',
                             on ? 'bg-tv-accent' : 'bg-tv-dim/60',
                             hint && 'opacity-60',
                           )}
                         >
                           <span
                             className={cn(
-                              'absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform',
+                              'absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-[translate] duration-160 ease-tv-out',
                               on && 'translate-x-4',
                             )}
                           />

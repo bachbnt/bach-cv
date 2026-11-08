@@ -10,7 +10,7 @@ import { tradeChartCopy } from '@/content/copy/trade-chart';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import type {
   IndicatorId,
   IndicatorMode,
@@ -23,17 +23,17 @@ import { formatVolume } from '@/skins/trade/chart/volume';
 import type { Pane } from '@/skins/trade/chart/view';
 
 const TONE: Record<Tone, string> = {
-  up: 'text-tv-up',
-  down: 'text-tv-down',
-  gold: 'text-tv-gold',
-  sky: 'text-tv-sky',
-  violet: 'text-tv-violet',
+  up: 'text-tv-up-ink',
+  down: 'text-tv-down-ink',
+  gold: 'text-tv-gold-ink',
+  sky: 'text-tv-sky-ink',
+  violet: 'text-tv-violet-ink',
   accent: 'text-tv-accent-ink',
-  orange: 'text-tv-orange',
-  lime: 'text-[var(--tv-ind-lime)]',
-  pink: 'text-[var(--tv-ind-pink)]',
-  teal: 'text-[var(--tv-ind-teal)]',
-  slate: 'text-[var(--tv-ind-slate)]',
+  orange: 'text-tv-orange-ink',
+  lime: 'text-[var(--tv-ind-lime-ink)]',
+  pink: 'text-[var(--tv-ind-pink-ink)]',
+  teal: 'text-[var(--tv-ind-teal-ink)]',
+  slate: 'text-[var(--tv-ind-slate-ink)]',
 };
 
 const PANE_IDS: IndicatorId[] = ['rsi', 'macd'];
@@ -53,14 +53,14 @@ function Row({
   const hidden = row.mode === 'hidden';
   const Icon = hidden ? EyeOff : Eye;
   const button =
-    'pointer-events-auto relative grid size-5 cursor-pointer place-items-center rounded text-tv-mute opacity-0 group-focus-within/row:opacity-100 group-hover/row:opacity-100 hover:bg-tv-hover hover:text-tv-ink pointer-coarse:opacity-100 pointer-coarse:size-6 after:absolute after:-inset-1.5 after:content-[""]';
+    'pointer-events-auto relative grid size-5 cursor-pointer place-items-center rounded text-tv-mute opacity-0 transition-[opacity,background-color,color,scale] duration-100 group-focus-within/row:opacity-100 group-hover/row:opacity-100 hover:bg-tv-hover hover:text-tv-ink active:scale-90 active:bg-tv-hover pointer-coarse:opacity-100 pointer-coarse:size-6 after:absolute after:-inset-1.5 after:content-[""] pointer-coarse:after:-inset-x-1 pointer-coarse:after:-inset-y-2.5';
   return (
     <div
       role='group'
       aria-label={short}
       data-legend-row={row.id}
       data-mode={row.mode}
-      className='group/row flex items-center gap-1.5 text-xs'
+      className='tv-chart-fade-in group/row flex items-center gap-1.5 text-xs'
     >
       <span
         aria-hidden='true'
@@ -137,7 +137,8 @@ export function Legend({
   const copy = useCopy(tradeChartCopy);
   const [open, setOpen] = useState(true);
   const rows = legendRows(indicators, data, candle, index);
-  const tone = candle && candle.c >= candle.o ? 'text-tv-up' : 'text-tv-down';
+  const tone =
+    candle && candle.c >= candle.o ? 'text-tv-up-ink' : 'text-tv-down-ink';
   const overlay = rows.filter((r) => !PANE_IDS.includes(r.id));
   return (
     <>
@@ -183,7 +184,7 @@ export function Legend({
         >
           <span>{date}</span>
           {job && <span className='text-tv-ink'>{job}</span>}
-          {study && <span className='text-tv-violet'>{study}</span>}
+          {study && <span className='text-tv-violet-ink'>{study}</span>}
         </div>
         {overlay.length > 0 && (
           <button
@@ -191,12 +192,12 @@ export function Legend({
             aria-expanded={open}
             aria-label={open ? copy.legend.collapse : copy.legend.expand}
             onClick={() => setOpen((v) => !v)}
-            className='pointer-events-auto grid size-5 w-fit cursor-pointer place-items-center rounded text-tv-mute hover:bg-tv-hover hover:text-tv-ink'
+            className='pointer-events-auto relative grid size-5 w-fit cursor-pointer place-items-center rounded text-tv-mute transition-[background-color,color,scale] duration-100 hover:bg-tv-hover hover:text-tv-ink active:scale-90 active:bg-tv-hover pointer-coarse:size-6 pointer-coarse:after:absolute pointer-coarse:after:-inset-2.5 pointer-coarse:after:content-[""]'
           >
             <ChevronDown
               aria-hidden='true'
               className={cn(
-                'size-3.5 transition-transform',
+                'size-3.5 transition-transform duration-160',
                 !open && '-rotate-90',
               )}
             />

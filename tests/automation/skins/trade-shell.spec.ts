@@ -225,7 +225,13 @@ test.describe('the watchlist', () => {
     const aside = watchlist(page);
     await aside.getByRole('tab', { name: 'Skills' }).click();
     const panel = aside.getByRole('tabpanel');
-    for (const area of ['Mobile', 'Web', 'AI', 'Tools'])
+    // the names of the areas are the ones of the Resume skills (one change reaches every skin)
+    for (const area of [
+      'Mobile',
+      'Frontend and backend',
+      'AI and automation',
+      'Tools and process',
+    ])
       await expect(panel.getByRole('region', { name: area })).toBeVisible();
     // MoMo and FPT list Kotlin; Git is listed by no role, so it has no number
     const kotlin = panel.getByRole('button', { name: /Kotlin/ });

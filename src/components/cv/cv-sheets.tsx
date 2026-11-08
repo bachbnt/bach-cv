@@ -11,12 +11,7 @@ import { cvCopy, pageLabel } from '@/content/copy/cv';
 import type { CvModel } from '@/lib/cv/build-cv';
 import { useCopy } from '@/lib/i18n/copy';
 import { paginate } from '@/lib/cv/paginate';
-
-/** A4 at 96dpi, and the padding of a sheet (40px above and below, 46px each side). */
-const SHEET_WIDTH = 794;
-const SHEET_HEIGHT = 1123;
-const CONTENT_WIDTH = SHEET_WIDTH - 92;
-const CONTENT_HEIGHT = SHEET_HEIGHT - 80;
+import { CONTENT_HEIGHT, CONTENT_WIDTH, SHEET_WIDTH } from '@/lib/cv/sheet';
 
 /**
  * The CV as A4 sheets on a grey desk. The blocks are measured once off screen (after the fonts load),

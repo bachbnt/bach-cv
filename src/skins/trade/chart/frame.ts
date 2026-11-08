@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import {
   OVERLAYS,
   extent,
@@ -40,7 +40,7 @@ export interface Frame {
   macd: PriceScale | null;
 }
 
-export interface FrameInput {
+interface FrameInput {
   width: number;
   height: number;
   view: View;

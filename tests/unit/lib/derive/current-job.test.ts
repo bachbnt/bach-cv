@@ -7,6 +7,7 @@ import {
   currentJob,
   firstJob,
   isCurrent,
+  jobAt,
   latestJob,
 } from '@/lib/derive/current-job';
 
@@ -65,5 +66,30 @@ describe('latestJob', () => {
     expect(latestJob(jobs)?.id).toBe('b');
     expect(latestJob([jobs[2], jobs[1]])?.id).toBe('a');
     expect(latestJob([])).toBeUndefined();
+  });
+});
+
+describe('jobAt', () => {
+  const career = [
+    job('a', '2020-03', '2022-04'),
+    job('b', '2022-05', '2026-01'),
+    job('c', '2026-01', null),
+  ];
+
+  it('names the role of a time, the newest when two overlap, and none before the first', () => {
+    expect(jobAt(career, new Date(2021, 5, 7).getTime())?.id).toBe('a');
+    expect(jobAt(career, new Date(2022, 4, 2).getTime())?.id).toBe('b');
+    // January 2026 is the last month of B and the first of C
+    expect(jobAt(career, new Date(2026, 0, 12).getTime())?.id).toBe('c');
+    expect(jobAt(career, new Date(2019, 0, 7).getTime())).toBeNull();
+  });
+
+  it('counts the end month whole: the role lasts until the first day of the next month', () => {
+    expect(jobAt(career, new Date(2022, 3, 30, 23).getTime())?.id).toBe('a');
+    expect(jobAt(career, new Date(2022, 4, 1).getTime())?.id).toBe('b');
+  });
+
+  it('never matches a month that is not one', () => {
+    expect(jobAt([job('x', 'soon', null)], Date.now())).toBeNull();
   });
 });

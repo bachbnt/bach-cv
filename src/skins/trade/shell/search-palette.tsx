@@ -14,13 +14,16 @@ import {
   useState,
   type KeyboardEvent,
 } from 'react';
+import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
+  DialogOverlay,
+  DialogPortal,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { commonCopy } from '@/content/copy/common';
+import { resumeCopy } from '@/content/copy/resume';
 import { statesCopy } from '@/content/copy/states';
 import { tradeCopy } from '@/content/copy/trade';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
@@ -38,6 +41,10 @@ import {
   type SearchItem,
 } from '@/skins/trade/blocks/shell-search';
 import { navItems, WATCH } from '@/skins/trade/config';
+import {
+  TV_DIALOG_MOTION,
+  TV_DIALOG_OVERLAY,
+} from '@/skins/trade/shell/overlay-dialog-motion';
 import { useTrade } from '@/skins/trade/shell/trade-context';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
@@ -65,17 +72,24 @@ export function SearchPalette() {
         if (!open) closeSearch();
       }}
     >
-      <DialogContent
-        showCloseButton={false}
-        finalFocus={searchReturnFocus}
-        className='top-[10vh] translate-y-0 gap-0 overflow-hidden rounded-md border border-tv-line bg-tv-panel p-0 text-tv-ink shadow-tv-dialog ring-0 sm:max-w-[640px] max-[700px]:inset-0 max-[700px]:top-0 max-[700px]:left-0 max-[700px]:h-dvh max-[700px]:max-w-none max-[700px]:translate-x-0 max-[700px]:translate-y-0 max-[700px]:rounded-none max-[700px]:border-0'
-      >
-        <DialogTitle className='sr-only'>{copy.title}</DialogTitle>
-        <DialogDescription className='sr-only'>
-          {copy.description}
-        </DialogDescription>
-        <PaletteBody />
-      </DialogContent>
+      <DialogPortal>
+        <DialogOverlay className={TV_DIALOG_OVERLAY} />
+        <DialogPrimitive.Popup
+          data-slot='dialog-content'
+          finalFocus={searchReturnFocus}
+          // the same backdrop and the same opening as the windows of the skin (a fade and a scale from .96), not the zoom of the shadcn dialog
+          className={cn(
+            TV_DIALOG_MOTION,
+            'fixed top-[10vh] left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 gap-0 overflow-hidden rounded-md border border-tv-line bg-tv-panel p-0 text-sm text-tv-ink shadow-tv-dialog outline-none sm:max-w-[640px] max-[700px]:inset-0 max-[700px]:top-0 max-[700px]:left-0 max-[700px]:h-dvh max-[700px]:max-w-none max-[700px]:translate-x-0 max-[700px]:rounded-none max-[700px]:border-0',
+          )}
+        >
+          <DialogTitle className='sr-only'>{copy.title}</DialogTitle>
+          <DialogDescription className='sr-only'>
+            {copy.description}
+          </DialogDescription>
+          <PaletteBody />
+        </DialogPrimitive.Popup>
+      </DialogPortal>
     </Dialog>
   );
 }
@@ -87,6 +101,7 @@ function PaletteBody() {
   const common = useCopy(commonCopy);
   const trade = useCopy(tradeCopy);
   const states = useCopy(statesCopy);
+  const resume = useCopy(resumeCopy);
   const { lang } = useLang();
   const { pages } = useLive();
   const projects = useContentQuery('projects');
@@ -136,12 +151,26 @@ function PaletteBody() {
     ],
   );
 
+  // the names of the groups are the words of Standard (the pages and the sections of Resume); only Pages and Roles are the skin's
+  const groupLabels = useMemo(
+    () => ({
+      page: copy.groups.page,
+      project: common.nav.projects,
+      role: copy.groups.role,
+      skill: resume.skills.title,
+      certificate: common.nav.certificates,
+      service: common.nav.services,
+      education: resume.education.title,
+    }),
+    [copy.groups, common.nav, resume],
+  );
+
   const typing = query.trim().length > 0;
   const sections: Section[] = useMemo(() => {
     if (typing)
       return groupResults(rankItems(index, query)).map((group) => ({
         key: group.kind,
-        label: copy.groups[group.kind],
+        label: groupLabels[group.kind],
         items: group.items,
       }));
     const recent = recents
@@ -151,11 +180,11 @@ function PaletteBody() {
       { key: 'recent', label: copy.recent, items: recent },
       {
         key: 'page',
-        label: copy.groups.page,
+        label: groupLabels.page,
         items: index.filter((item) => item.kind === 'page'),
       },
     ].filter((section) => section.items.length > 0);
-  }, [typing, index, query, recents, copy.recent, copy.groups]);
+  }, [typing, index, query, recents, copy.recent, groupLabels]);
   const flat = sections.flatMap((section) => section.items);
   const at = Math.min(active, Math.max(0, flat.length - 1));
 
@@ -261,9 +290,11 @@ function PaletteBody() {
                         role='option'
                         aria-selected={selected}
                         onPointerMove={() => setActive(flat.indexOf(item))}
+                        onPointerDown={() => setActive(flat.indexOf(item))}
                         onClick={() => pick(item)}
                         className={cn(
-                          'flex min-h-10 cursor-pointer items-center gap-3 px-4 py-1.5 transition-[background-color] duration-75 pointer-coarse:min-h-12',
+                          // the bar on the left grows in on the selected row (a pseudo-element, so no layout moves)
+                          'relative flex min-h-10 cursor-pointer items-center gap-3 px-4 py-1.5 transition-[background-color] duration-100 before:absolute before:inset-y-1.5 before:left-0 before:w-0.5 before:origin-center before:scale-y-0 before:rounded-r before:bg-tv-accent before:transition-[scale] before:duration-100 before:content-[""] active:bg-tv-hover aria-selected:before:scale-y-100 pointer-coarse:min-h-12',
                           selected && 'bg-tv-hover',
                         )}
                       >
@@ -308,7 +339,7 @@ function PaletteBody() {
           {loading ? states.loading : status}
         </span>
         {failed.length > 0 && (
-          <span className='flex items-center gap-2 text-tv-down'>
+          <span className='flex items-center gap-2 text-tv-down-ink'>
             {copy.partial}
             <TvButton
               variant='outline'

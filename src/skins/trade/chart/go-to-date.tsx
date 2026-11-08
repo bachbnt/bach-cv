@@ -7,6 +7,7 @@
 import { ChevronDown } from 'lucide-react';
 import { useId, useMemo, useState, type ComponentProps } from 'react';
 import { tradeChartCopy } from '@/content/copy/trade-chart';
+import { longMonthName } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { chartStore, useChartStore } from '@/skins/trade/chart/chart-store';
@@ -45,12 +46,10 @@ export default function GoToDate({ onDone }: { onDone: () => void }) {
   const [month, setMonth] = useState(0);
   const monthId = useId();
   const yearId = useId();
-  const months = useMemo(() => {
-    const format = new Intl.DateTimeFormat(lang, { month: 'long' });
-    return Array.from({ length: 12 }, (_, m) =>
-      format.format(new Date(2000, m, 1)),
-    );
-  }, [lang]);
+  const months = useMemo(
+    () => Array.from({ length: 12 }, (_, m) => longMonthName(m, lang)),
+    [lang],
+  );
   return (
     <form
       className='flex flex-col gap-3'

@@ -18,10 +18,10 @@ const chipVariants = cva(
       },
       tone: {
         neutral: 'bg-tv-hover text-tv-mute',
-        up: 'bg-tv-up-bg text-tv-up',
-        down: 'bg-tv-down-bg text-tv-down',
+        up: 'bg-tv-up-bg text-tv-up-ink',
+        down: 'bg-tv-down-bg text-tv-down-ink',
         accent: 'bg-tv-accent/15 text-tv-accent-ink',
-        gold: 'bg-tv-gold/15 text-tv-gold',
+        gold: 'bg-tv-gold/15 text-tv-gold-ink',
         // the colour of a skill's area (the shadcn tokens the skin maps in trade.css)
         mobile: 'bg-mobile text-mobile-foreground',
         web: 'bg-web text-web-foreground',

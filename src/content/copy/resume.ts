@@ -5,11 +5,12 @@
 import { defineCopy } from '@/lib/i18n/define-copy';
 
 // Interface copy for the Resume page and its Skills section, in both languages.
-// `{year}` in `firstUsed` is replaced by the year.
+// `{year}` in `firstUsed` is replaced by the year. `{years}` in `intro` is the years in software, spelled ("Seven years"); `introUndated` is the same line while the roles load.
 export const resumeCopy = defineCopy(
   {
     title: 'Resume',
-    intro: 'Seven years in software, now leading a team of 10.',
+    intro: '{years} in software, now leading a team of 10.',
+    introUndated: 'Now leading a team of 10.',
     downloadCv: 'Download CV',
     experience: {
       title: 'Experience',
@@ -58,7 +59,8 @@ export const resumeCopy = defineCopy(
   {
     title: 'Hồ sơ',
     intro:
-      'Bảy năm làm việc trong ngành phần mềm, hiện đang dẫn dắt một nhóm 10 người.',
+      '{years} làm việc trong ngành phần mềm, hiện đang dẫn dắt một nhóm 10 người.',
+    introUndated: 'Hiện đang dẫn dắt một nhóm 10 người.',
     downloadCv: 'Tải CV',
     experience: {
       title: 'Kinh nghiệm',

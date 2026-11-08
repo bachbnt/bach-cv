@@ -103,7 +103,7 @@ function Note({
           <ChevronDown
             aria-hidden='true'
             className={cn(
-              'size-3.5 transition-transform duration-300',
+              'size-3.5 transition-transform duration-160',
               open && 'rotate-180',
             )}
           />
@@ -113,7 +113,7 @@ function Note({
         id={bodyId}
         data-open={open}
         inert={!open}
-        className='grid grid-rows-[0fr] transition-[grid-template-rows,visibility] duration-300 ease-out data-[open=false]:invisible data-[open=true]:grid-rows-[1fr]'
+        className='grid grid-rows-[0fr] transition-[grid-template-rows,visibility] duration-240 ease-tv-out data-[open=false]:invisible data-[open=true]:grid-rows-[1fr]'
       >
         <div className='overflow-hidden'>
           <div className='grid gap-x-5 gap-y-3 px-3.5 pb-4 min-[901px]:grid-cols-[minmax(0,1fr)_240px] min-[901px]:pl-[182px]'>

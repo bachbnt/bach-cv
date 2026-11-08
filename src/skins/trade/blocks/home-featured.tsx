@@ -6,7 +6,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { fillCopy } from '@/components/projects/project-helpers';
+import { fillCopy, skillsOf } from '@/components/projects/project-helpers';
 import { initialsOf } from '@/lib/derive/initials';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { projectsCopy } from '@/content/copy/projects';
@@ -14,7 +14,11 @@ import type { Doc, Skill } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
-import { highlighted } from '@/lib/derive/highlighted';
+import {
+  HOME_PROJECTS,
+  featuredProjects,
+  projectHref,
+} from '@/lib/derive/home-lists';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
 import { useSkillMap } from '@/skins/trade/blocks/use-skill-map';
 import { ShellWidget } from '@/skins/trade/ui/shell-widget';
@@ -22,22 +26,20 @@ import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
-/** How many featured projects Home shows. */
-const LIMIT = 3;
 /** How many technologies an idea card names before it says how many more there are. */
 const TECH_SHOWN = 5;
 
 const TILE: Record<Skill['category'], string> = {
-  mobile: 'bg-tv-up-bg text-tv-up',
-  web: 'bg-tv-sky/15 text-tv-sky',
-  ai: 'bg-tv-violet/20 text-tv-violet',
-  tools: 'bg-tv-gold/15 text-tv-gold',
+  mobile: 'bg-tv-up-bg text-tv-up-ink',
+  web: 'bg-tv-sky/15 text-tv-sky-ink',
+  ai: 'bg-tv-violet/20 text-tv-violet-ink',
+  tools: 'bg-tv-gold/15 text-tv-gold-ink',
 };
 
 /** The featured projects of Home (those with a rank, at most three) and the link to all of them. */
 export function useFeaturedProjects() {
   const query = useContentQuery('projects');
-  const featured = highlighted(query.data ?? []).slice(0, LIMIT);
+  const featured = featuredProjects(query.data ?? []);
   return { query, featured };
 }
 
@@ -46,13 +48,11 @@ function IdeaCard({
   skills,
 }: {
   project: Doc<'projects'>;
-  skills: Map<string, Skill>;
+  skills: Map<string, Doc<'skills'>>;
 }) {
   const copy = useCopy(projectsCopy);
-  const techs = project.technologies
-    .map((id) => skills.get(id))
-    .filter((skill): skill is Skill => Boolean(skill));
-  const href = project.links[0]?.url ?? '/projects';
+  const techs = skillsOf(project.technologies, skills);
+  const href = projectHref(project);
   const title = href.startsWith('/') ? (
     <Link
       href={href}
@@ -73,7 +73,7 @@ function IdeaCard({
   return (
     <li
       data-testid='idea'
-      className='tv-rise group/idea relative flex flex-col overflow-hidden rounded-md border border-tv-line bg-tv-bg transition-[transform,border-color] duration-200 hover:-translate-y-0.5 hover:border-tv-accent/60 active:translate-y-0'
+      className='tv-rise group/idea relative flex flex-col overflow-hidden rounded-md border border-tv-line bg-tv-bg transition-[translate,border-color] duration-160 hover:-translate-y-0.5 hover:border-tv-accent/60 active:translate-y-0'
     >
       <div className='relative aspect-[16/9] overflow-hidden bg-tv-hover'>
         {project.cover ? (
@@ -82,7 +82,7 @@ function IdeaCard({
             alt={fillCopy(copy.coverAlt, { name: project.name })}
             fill
             sizes='(min-width: 1100px) 320px, 100vw'
-            className='object-cover object-top transition-transform duration-500 ease-out group-hover/idea:scale-105'
+            className='object-cover object-top transition-transform duration-300 ease-tv-out group-hover/idea:scale-105'
           />
         ) : (
           <span
@@ -168,7 +168,7 @@ export function HomeFeatured() {
         className='m-3'
         skeleton={
           <div className='grid gap-3 p-3 @2xl:grid-cols-3'>
-            {Array.from({ length: LIMIT }, (_, i) => (
+            {Array.from({ length: HOME_PROJECTS }, (_, i) => (
               <TvSkeleton key={i} className='h-64' />
             ))}
           </div>

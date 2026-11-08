@@ -17,8 +17,7 @@ export type EntryId =
   | 'text'
   | 'measure';
 
-export type GroupId =
-  'cursors' | 'lines' | 'fib' | 'shapes' | 'text' | 'measure';
+type GroupId = 'cursors' | 'lines' | 'fib' | 'shapes' | 'text' | 'measure';
 
 export interface ToolGroup {
   id: GroupId;
@@ -49,6 +48,12 @@ export const SHORTCUT: Partial<Record<EntryId, string>> = {
 export const isCursorMode = (id: EntryId): id is CursorMode =>
   id === 'cross' || id === 'dot' || id === 'arrow';
 
+/** A tool that draws on the chart (the cursors and the eraser do not). */
+export const isDrawingTool = (
+  id: EntryId,
+): id is Exclude<EntryId, CursorMode | 'eraser'> =>
+  !isCursorMode(id) && id !== 'eraser';
+
 /** The entry that is in use now: the cursor mode while the cursor tool is on, else the tool. */
 export function entryOf(tool: ToolId, cursor: CursorMode): EntryId {
   return tool === 'cursor' ? cursor : tool;
@@ -59,7 +64,7 @@ export function groupOf(id: EntryId): ToolGroup {
 }
 
 /** What each button shows: the tool used last in its group, or the first one. */
-export type LastUsed = Record<GroupId, EntryId>;
+type LastUsed = Record<GroupId, EntryId>;
 
 export const FIRST_USED: LastUsed = Object.fromEntries(
   GROUPS.map((g) => [g.id, g.entries[0]]),

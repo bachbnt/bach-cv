@@ -4,7 +4,14 @@
 
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type RefObject,
+} from 'react';
 import {
   clampView,
   easeOut,
@@ -15,15 +22,25 @@ import {
 
 const TWEEN_MS = 300;
 
+/** The way to move the window: the same object for the whole life of the chart, so an effect that lists it is not torn down by a zoom. */
+export type ChartView = {
+  /** the newest window, for code that runs outside a render */
+  ref: RefObject<View | null>;
+  set: (next: View) => void;
+  animate: (target: View) => void;
+};
+
 /**
  * The window of the chart (zoom and pan). `set` jumps there (a drag, the wheel); `animate` slides there with an ease, unless the
- * visitor asked for less motion. `current` is the newest window for code that runs outside a render.
+ * visitor asked for less motion. `view` is the window to draw (it changes on every frame of a zoom); `controls` moves it and is stable
+ * (`set` and `animate` only change with the reduced-motion choice), so the effects that steer the window do not re-register on every
+ * wheel or pan frame. `controls.ref` is the newest window for code that runs outside a render.
  */
 export function useChartView(
   limits: Limits,
   initial: (limits: Limits) => View,
   reduced: boolean,
-) {
+): { view: View | null; controls: ChartView } {
   const [view, setView] = useState<View | null>(null);
   const current = useRef<View | null>(null);
   const frame = useRef(0);
@@ -73,5 +90,9 @@ export function useChartView(
 
   useEffect(() => stop, [stop]);
 
-  return { view, ref: current, set, animate };
+  const controls = useMemo(
+    () => ({ ref: current, set, animate }),
+    [set, animate],
+  );
+  return { view, controls };
 }

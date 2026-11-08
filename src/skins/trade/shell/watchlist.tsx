@@ -12,7 +12,6 @@ import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { WatchDetails } from '@/skins/trade/shell/watch-details';
 import { WatchPages } from '@/skins/trade/shell/watch-pages';
-import { WatchPipeline } from '@/skins/trade/shell/watch-pipeline';
 import { WatchRoles } from '@/skins/trade/shell/watch-roles';
 import { WatchTech } from '@/skins/trade/shell/watch-tech';
 
@@ -20,7 +19,7 @@ const TABS = ['pages', 'skills', 'roles'] as const;
 
 /**
  * The right widget: a watchlist with three lists as tabs (the pages, which are the navigation, the skills with their
- * sparklines, and the roles as a timeline), and under them the Details widget and, on Home, the idea behind the pipeline.
+ * sparklines, and the roles as a timeline), and under them the Details widget.
  */
 export function Watchlist({
   page,
@@ -49,17 +48,19 @@ export function Watchlist({
         <Tabs.List
           aria-label={words.tabs}
           activateOnFocus
-          className='flex flex-none border-b border-tv-line'
+          className='relative flex flex-none border-b border-tv-line'
         >
           {TABS.map((tab) => (
             <Tabs.Tab
               key={tab}
               value={tab}
-              className='h-8 flex-1 cursor-pointer border-b-2 border-transparent px-2 text-xs font-semibold text-tv-mute transition-[background-color,color] duration-100 hover:bg-tv-hover hover:text-tv-ink active:bg-tv-hover aria-selected:border-tv-accent aria-selected:text-tv-ink pointer-coarse:h-11'
+              className='h-8 flex-1 cursor-pointer px-2 text-xs font-semibold text-tv-mute transition-[background-color,color] duration-100 hover:bg-tv-hover hover:text-tv-ink active:bg-tv-hover aria-selected:text-tv-ink pointer-coarse:h-11'
             >
               {words[tab]}
             </Tabs.Tab>
           ))}
+          {/* the accent line slides to the tab that is selected (Base UI measures the tab and sets the variables) */}
+          <Tabs.Indicator className='pointer-events-none absolute bottom-0 left-0 h-0.5 w-(--active-tab-width) translate-x-(--active-tab-left) bg-tv-accent transition-[translate,width] duration-240 ease-tv-out motion-reduce:transition-none' />
         </Tabs.List>
         <Tabs.Panel
           value='pages'
@@ -82,7 +83,6 @@ export function Watchlist({
       </Tabs.Root>
       <div className='min-h-0 flex-[0_1_42%] overflow-y-auto border-t border-tv-line max-[1100px]:flex-none'>
         <WatchDetails />
-        {page === 'home' && <WatchPipeline />}
       </div>
     </aside>
   );

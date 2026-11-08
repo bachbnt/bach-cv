@@ -4,7 +4,7 @@
 
 'use client';
 
-import { Copy, CopyCheck, Download } from 'lucide-react';
+import { CopyCheck, Download } from 'lucide-react';
 import { useState, type KeyboardEvent } from 'react';
 import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
 import { qrFileName, summaryOf } from '@/components/payment/payment-details';
@@ -21,6 +21,8 @@ import { PICTURE_ZOOMS, zoomFromKey } from '@/skins/trade/shell/overlay-tools';
 import { TvZoomStage } from '@/skins/trade/shell/overlay-zoom-stage';
 import { TvZoomTools } from '@/skins/trade/shell/overlay-zoom-tools';
 import { TvButton } from '@/skins/trade/ui/tv-button';
+import { TvCopyIcon } from '@/skins/trade/ui/tv-copy-icon';
+import { useCopyFeedback } from '@/skins/trade/ui/use-copy-feedback';
 
 /** Saves the QR image, or opens it in a new tab when the browser blocks the download (for example no CORS). */
 async function saveQr(
@@ -82,6 +84,8 @@ export function TvQrDialog({
   }
   const zoom = PICTURE_ZOOMS[step];
   const last = PICTURE_ZOOMS.length - 1;
+  const number = useCopyFeedback();
+  const details = useCopyFeedback();
   const copyAll = async () => {
     const done = await copyToClipboard(
       summaryOf(method, {
@@ -125,12 +129,28 @@ export function TvQrDialog({
         }
         actions={
           <>
-            <TvButton variant='primary' onClick={onCopy}>
-              <Copy aria-hidden='true' />
+            <TvButton
+              variant='primary'
+              onClick={() => {
+                number.arm();
+                onCopy();
+              }}
+            >
+              <TvCopyIcon copied={number.copied} />
               {copy.copyNumber}
             </TvButton>
-            <TvToolButton label={copy.copyAll} onClick={() => void copyAll()}>
-              <CopyCheck aria-hidden='true' className='size-4' />
+            <TvToolButton
+              label={copy.copyAll}
+              onClick={() => {
+                details.arm();
+                void copyAll();
+              }}
+            >
+              <TvCopyIcon
+                copied={details.copied}
+                icon={CopyCheck}
+                className='size-4'
+              />
             </TvToolButton>
             <TvToolButton
               label={copy.saveQr}

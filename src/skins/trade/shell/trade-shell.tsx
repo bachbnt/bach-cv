@@ -7,6 +7,7 @@
 import { PanelBottomOpen } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -45,6 +46,7 @@ import { Toolbar } from '@/skins/trade/shell/toolbar';
 import { ToolRail } from '@/skins/trade/shell/tool-rail';
 import { TradeProvider, useTrade } from '@/skins/trade/shell/trade-context';
 import { TradeOverlays } from '@/skins/trade/shell/trade-overlays';
+import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
 import { useSearchHotkey } from '@/skins/trade/shell/use-search-hotkey';
 import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
 import { useViewportHeight } from '@/skins/trade/shell/use-viewport-height';
@@ -58,7 +60,7 @@ const TOOL_RAIL = 52;
 const ICON_RAIL = 46;
 const TOOLBAR = 40;
 /** How long a move by a key or a reset takes (a splitter dragged by hand does not animate). */
-const EASE_MS = 220;
+const EASE_MS = 240;
 
 /**
  * The frame of the Trade skin: a chart terminal. One toolbar on top, a column of tools on the left, the career chart with its range
@@ -103,6 +105,7 @@ function Terminal({
   const chatDocked = chatOpen && chatOn && wide;
   const sideOn = layout.watchlist || chatDocked;
   const tall = page === 'home';
+  const hidden = useDocumentHidden();
   useSearchHotkey(openSearch);
 
   // a page picked while the panel is hidden brings the panel back: the visitor asked for that page
@@ -120,11 +123,20 @@ function Terminal({
   const [dragHeight, setDragHeight] = useState<number | null>(null);
   const [dragSide, setDragSide] = useState<number | null>(null);
   const [easing, setEasing] = useState(false);
+  const easeTimer = useRef<number | undefined>(undefined);
+  // The grid tracks animate (layout, not transform) only for a move by a key or a reset, never while dragging, and not for reduced
+  // motion. The timer is kept so a second move restarts it and leaving the page cancels it.
+  const openDegree = useCallback(() => {
+    router.push('/resume#tv-education');
+    revealById('tv-education');
+  }, [router]);
   const ease = () => {
     if (reduced) return;
+    window.clearTimeout(easeTimer.current);
     setEasing(true);
-    window.setTimeout(() => setEasing(false), EASE_MS + 40);
+    easeTimer.current = window.setTimeout(() => setEasing(false), EASE_MS + 40);
   };
+  useEffect(() => () => window.clearTimeout(easeTimer.current), []);
   const usual = defaultChartHeight(viewport, area, tall, layout.tape);
   const chartPx =
     dragHeight ??
@@ -146,9 +158,10 @@ function Terminal({
         'flex min-h-dvh flex-col pb-12 min-[1101px]:grid min-[1101px]:h-dvh min-[1101px]:overflow-hidden min-[1101px]:pb-0',
         'relative',
         easing &&
-          'transition-[grid-template-columns,grid-template-rows] duration-200 ease-out',
+          'transition-[grid-template-columns,grid-template-rows] duration-240 ease-tv-out',
       )}
       style={grid}
+      data-hidden={hidden ? '' : undefined}
     >
       <div className='contents min-[1101px]:col-[1/4] min-[1101px]:row-1 min-[1101px]:block min-[1101px]:min-w-0'>
         <Toolbar />
@@ -164,10 +177,7 @@ function Terminal({
           <ChartSlot
             range={range}
             onOpenJob={showJob}
-            onOpenDegree={() => {
-              router.push('/resume#tv-education');
-              revealById('tv-education');
-            }}
+            onOpenDegree={openDegree}
           />
         </div>
       </div>
@@ -238,7 +248,7 @@ function Terminal({
         layout.watchlist && (
           <Watchlist
             page={page}
-            className='min-[1101px]:col-3 min-[1101px]:row-[2/6] min-[1101px]:animate-[tv-slide-r_.28s_cubic-bezier(.2,.7,.2,1)_both]'
+            className='min-[1101px]:col-3 min-[1101px]:row-[2/6] min-[1101px]:animate-tv-slide-r'
           />
         )
       )}

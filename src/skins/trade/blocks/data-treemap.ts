@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-export interface TreemapItem {
+interface TreemapItem {
   id: string;
   /** the area is proportional to this; it must be above 0 */
   value: number;

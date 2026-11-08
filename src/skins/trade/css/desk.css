@@ -3,8 +3,8 @@
  * Tailwind utilities in the TSX, and `animate-[name_...]` names the keyframes here. Every one moves only transform or opacity; they stand still for reduced motion
  * (the rule at the end of trade.css).
  */
-/* the check of a sent message pops in */
-@keyframes tv-pop {
+/* the check of a sent message, or of a copied value, pops in */
+@keyframes tv-check-pop {
   from {
     opacity: 0;
     scale: 0.5;
@@ -13,13 +13,6 @@
 @keyframes tv-fade-in {
   from {
     opacity: 0;
-  }
-}
-/* a row of the timeline slides in from the left */
-@keyframes tv-slide-in {
-  from {
-    opacity: 0;
-    translate: -14px 0;
   }
 }
 /* the bars of the loading chart breathe */

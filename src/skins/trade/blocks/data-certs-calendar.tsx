@@ -5,7 +5,7 @@
 'use client';
 
 import { Award, ExternalLink } from 'lucide-react';
-import type { CSSProperties, RefObject } from 'react';
+import type { RefObject } from 'react';
 import { formatIssued } from '@/components/certificates/format-issued';
 import { certificatesCopy } from '@/content/copy/certificates';
 import { tradeDataCopy } from '@/content/copy/trade-data';
@@ -20,6 +20,7 @@ import { CertThumb } from '@/skins/trade/blocks/data-cert-thumb';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import { tvButton } from '@/skins/trade/ui/tv-button';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 export type CertDensity = 'compact' | 'comfortable';
 
@@ -86,8 +87,8 @@ export function DataCertsCalendar({
                     key={item.id}
                     data-flip={item.id}
                     data-testid='certificate'
-                    style={{ '--i': Math.min(row++, 10) } as CSSProperties}
-                    className='group/row relative grid animate-[tv-slide-in_0.35s_cubic-bezier(0.2,0.7,0.2,1)_both] pb-3 [animation-delay:calc(var(--i)*45ms)] last:pb-0 @[720px]:grid-cols-[76px_minmax(0,1fr)] @[720px]:gap-x-8'
+                    style={cssVars({ '--i': Math.min(row++, 10) })}
+                    className='group/row relative grid animate-tv-slide-in pb-3 [animation-delay:calc(var(--i)*45ms)] last:pb-0 @[720px]:grid-cols-[76px_minmax(0,1fr)] @[720px]:gap-x-8'
                   >
                     <div
                       aria-hidden='true'

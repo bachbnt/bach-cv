@@ -2,13 +2,10 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import type { Interval } from '@/skins/trade/chart/chart-types';
-import {
-  calendarDay,
-  periodStart,
-  rangeBars,
-} from '@/skins/trade/chart/intervals';
+import { calendarDay, periodStart } from '@/lib/derive/career-series';
+import { rangeBars } from '@/skins/trade/chart/intervals';
 import type { TimeAxis } from '@/skins/trade/chart/time-axis';
 import type { RangeKey } from '@/skins/trade/config';
 import { RANGES } from '@/skins/trade/config';

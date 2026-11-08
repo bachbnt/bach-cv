@@ -5,7 +5,7 @@
 // What a skill was used in: the roles, the months (overlaps once), the series and the Used at evidence.
 
 import type { Doc, Project } from '@/lib/content/schema';
-import { monthSpan } from '@/lib/derive/career-months';
+import { monthSpan, tenureOf } from '@/lib/derive/career-months';
 
 /** What the career numbers read from a role: the dates and the skills the role lists. */
 export type CareerJob = Pick<
@@ -59,17 +59,31 @@ export function monthsUsed(
   return total;
 }
 
-/** The calendar years of the career, from the first role to this year, or `null` with no role. */
+/**
+ * The calendar years of the career, from the first role to `until`: `'now'` is this year (the years a skill could have been used in),
+ * `'last end'` the year the last role ended (the years a statement of the roles needs; this year while a role goes on). `null` with no role.
+ */
 export function careerSpan(
-  jobs: CareerJob[],
+  jobs: Pick<CareerJob, 'startMonth' | 'endMonth'>[],
   now: Date,
+  until: 'now' | 'last end' = 'now',
 ): { from: number; to: number } | null {
   if (jobs.length === 0) return null;
-  const first = Math.min(
+  const from = Math.min(
     ...jobs.map((job) => Number(job.startMonth.slice(0, 4))),
   );
-  return Number.isFinite(first) ? { from: first, to: now.getFullYear() } : null;
+  if (!Number.isFinite(from)) return null;
+  if (until === 'now') return { from, to: now.getFullYear() };
+  const last = Math.max(...jobs.map((job) => tenureOf(job, now).end));
+  return { from, to: Math.floor(last / 12) };
 }
+
+/** The years of a span, oldest first: 2020 to 2022 is `[2020, 2021, 2022]`. */
+export const spanYears = (span: { from: number; to: number }): number[] =>
+  Array.from(
+    { length: Math.max(0, span.to - span.from + 1) },
+    (_, i) => span.from + i,
+  );
 
 /**
  * The use of a skill across the career: for each year of the span, how many roles that list it were active in it.

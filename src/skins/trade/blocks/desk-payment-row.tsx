@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { Copy, QrCode } from 'lucide-react';
+import { QrCode } from 'lucide-react';
 import Image from 'next/image';
 import { methodInitials } from '@/lib/derive/initials';
 import { paymentCopy } from '@/content/copy/payment';
@@ -11,6 +11,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
+import { TvCopyIcon } from '@/skins/trade/ui/tv-copy-icon';
+import { useCopyFeedback } from '@/skins/trade/ui/use-copy-feedback';
 
 /** The columns of the deposit table; the header row and every row share it. */
 export const PAYMENT_COLUMNS =
@@ -28,6 +30,7 @@ export function DeskPaymentRow({
 }) {
   const copy = useCopy(paymentCopy);
   const label = '@[760px]:sr-only text-[11px] text-tv-mute';
+  const { copied, arm } = useCopyFeedback();
   return (
     <li
       data-testid='payment-method'
@@ -76,8 +79,14 @@ export function DeskPaymentRow({
         </dd>
       </dl>
       <div className='flex flex-wrap items-center gap-1.5'>
-        <TvButton variant='outline' onClick={onCopy}>
-          <Copy aria-hidden='true' />
+        <TvButton
+          variant='outline'
+          onClick={() => {
+            arm();
+            onCopy();
+          }}
+        >
+          <TvCopyIcon copied={copied} />
           {copy.copyNumber}
         </TvButton>
         {method.qr && (

@@ -2,7 +2,13 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+// The series of the career chart: an illustrative seeded index with one candle per week from the first job, and its months, quarters and years.
+//
+// What is real: the weeks, the flags and the dates of the jobs and degrees. What is not: the open, high, low, close, volume and the live
+// tick. They are a seeded decoration that behaves like a market, never a price, so nothing here may be shown as a quote or a return.
+
 import { isCurrent } from '@/lib/derive/current-job';
+import { monthStart } from '@/lib/derive/career-months';
 
 /** One weekly candle of the career chart. The prices are index points of a decoration: they are not a quote and mean nothing. */
 export interface Candle {
@@ -52,7 +58,7 @@ export interface CareerCandles {
   markers: CareerMarker[];
 }
 
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+export const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 const FLOOR = 12;
 /** how many closing candles the final rally may use to reach the top */
 const RALLY = 6;
@@ -66,13 +72,6 @@ export function seeded(seed: number): () => number {
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-}
-
-/** The first day of a `YYYY-MM` month, or `NaN` when it is not one. */
-export function monthStart(month: string): number {
-  const [year, m] = month.split('-').map(Number);
-  if (!Number.isFinite(year) || !Number.isFinite(m)) return Number.NaN;
-  return new Date(year, m - 1, 1).getTime();
 }
 
 /**
@@ -172,35 +171,6 @@ function rally(candles: Candle[], random: () => number): void {
   }
 }
 
-/**
- * The job I had in a week, for the line of the legend: the entry that had started and not ended, the newest one when two overlap.
- * `null` before the first job.
- */
-export function careerAt(
-  entries: CareerEntry[],
-  t: number,
-): CareerEntry | null {
-  let found: CareerEntry | null = null;
-  let foundStart = Number.NEGATIVE_INFINITY;
-  for (const e of entries) {
-    const start = monthStart(e.startMonth);
-    const end = e.endMonth ? monthStart(e.endMonth) : Number.POSITIVE_INFINITY;
-    // the end month is a whole month: the job lasts until the first day of the next one
-    const endExclusive = Number.isFinite(end)
-      ? new Date(
-          new Date(end).getFullYear(),
-          new Date(end).getMonth() + 1,
-          1,
-        ).getTime()
-      : end;
-    if (t >= start && t < endExclusive && start > foundStart) {
-      found = e;
-      foundStart = start;
-    }
-  }
-  return found;
-}
-
 /** The last candle with a small wobble, as if the market were still moving: a pure function of the step, so it can be tested. */
 export function tickCandle(last: Candle, step: number): Candle {
   const wobble = (seeded(step * 7919 + 13)() - 0.5) * 1.4;
@@ -249,4 +219,121 @@ function volume(
     k.v =
       BASE_VOLUME * drift * regime * activity * events * (0.8 + random() * 0.4);
   });
+}
+
+// ---------------------------------------------------------------- the intervals: weeks aggregated into months, quarters and years
+
+export const INTERVALS = ['week', 'month', 'quarter', 'year'] as const;
+export type Interval = (typeof INTERVALS)[number];
+
+const HALF_DAY_MS = 12 * 60 * 60 * 1000;
+
+/**
+ * The candles of one interval, built from the weekly ones. `starts[k]` is the index of the first week of bar `k` (and the last entry
+ * the number of weeks), `ends[k]` the start of its last week, so a bar knows which weeks it holds.
+ */
+export interface Bars {
+  interval: Interval;
+  candles: Candle[];
+  starts: number[];
+  ends: number[];
+}
+
+/**
+ * The calendar day a bar starts on, for reading its month and year: the middle of the day, so the hour a week gains or loses at a
+ * change of daylight saving time (the weeks are a fixed number of milliseconds apart) never moves it into the day before or after.
+ */
+export const calendarDay = (t: number): Date => new Date(t + HALF_DAY_MS);
+
+/** The start of the calendar period (week, month, quarter or year) a time is in, in the visitor's time zone like the weeks themselves. */
+export function periodStart(t: number, interval: Interval): number {
+  if (interval === 'week') return t;
+  const day = calendarDay(t);
+  const year = day.getFullYear();
+  const month = day.getMonth();
+  if (interval === 'month') return new Date(year, month, 1).getTime();
+  if (interval === 'quarter')
+    return new Date(year, month - (month % 3), 1).getTime();
+  return new Date(year, 0, 1).getTime();
+}
+
+/** The start of the period after the one `t` is in. */
+export function periodEnd(t: number, interval: Interval): number {
+  const start = periodStart(t, interval);
+  if (interval === 'week') return start + WEEK_MS;
+  const day = calendarDay(start);
+  const year = day.getFullYear();
+  const month = day.getMonth();
+  if (interval === 'month') return new Date(year, month + 1, 1).getTime();
+  if (interval === 'quarter') return new Date(year, month + 3, 1).getTime();
+  return new Date(year + 1, 0, 1).getTime();
+}
+
+/**
+ * Candles of a larger interval from the weekly ones: the first week of the period gives the time and the open, the last one the close,
+ * the highest high and the lowest low and the sum of the volumes. The period the last week is in is included as it is so far (it is
+ * the candle that is still moving). A week belongs to the period its first day is in. The weekly candles themselves are returned as
+ * they are.
+ */
+export function aggregate(weekly: Candle[], interval: Interval): Bars {
+  if (interval === 'week')
+    return {
+      interval,
+      candles: weekly,
+      starts: [...weekly.keys(), weekly.length],
+      ends: weekly.map((k) => k.t),
+    };
+  const candles: Candle[] = [];
+  const starts: number[] = [];
+  const ends: number[] = [];
+  let key = Number.NaN;
+  weekly.forEach((k, index) => {
+    const period = periodStart(k.t, interval);
+    const open = candles.at(-1);
+    if (period !== key || !open) {
+      key = period;
+      starts.push(index);
+      ends.push(k.t);
+      candles.push({ ...k });
+      return;
+    }
+    open.h = Math.max(open.h, k.h);
+    open.l = Math.min(open.l, k.l);
+    open.c = k.c;
+    open.v += k.v;
+    ends[ends.length - 1] = k.t;
+  });
+  starts.push(weekly.length);
+  return { interval, candles, starts, ends };
+}
+
+/** The bar that holds week number `week` (kept inside the bars). */
+export function barOfWeek(bars: Bars, week: number): number {
+  const last = bars.candles.length - 1;
+  let low = 0;
+  let high = last;
+  while (low < high) {
+    const mid = Math.ceil((low + high) / 2);
+    if (bars.starts[mid] <= week) low = mid;
+    else high = mid - 1;
+  }
+  return Math.max(0, low);
+}
+
+/**
+ * The flags on the bars of an interval. A job sits on the bar of the period it started in (the month, the quarter or the year of its
+ * first day, so a job that began on 1 January is on the new year, not on the week of December that held that day). Two jobs can share
+ * a bar. Weekly flags are the ones the candles were built with.
+ */
+export function markersOn(markers: CareerMarker[], bars: Bars): CareerMarker[] {
+  if (bars.interval === 'week') return markers;
+  const byPeriod = new Map(
+    bars.candles.map((k, index) => [periodStart(k.t, bars.interval), index]),
+  );
+  return markers.map((marker) => ({
+    ...marker,
+    index:
+      byPeriod.get(periodStart(marker.start, bars.interval)) ??
+      barOfWeek(bars, marker.index),
+  }));
 }

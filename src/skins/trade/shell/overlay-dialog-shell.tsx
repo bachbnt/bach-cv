@@ -16,6 +16,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import {
+  TV_DIALOG_MOTION,
+  TV_DIALOG_OVERLAY,
+} from '@/skins/trade/shell/overlay-dialog-motion';
 
 const SIZES = {
   sm: 'w-[min(460px,calc(100vw-24px))]',
@@ -68,13 +72,13 @@ export function TvDialogShell({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
-        <DialogOverlay className='bg-black/55 duration-150 supports-backdrop-filter:backdrop-blur-none' />
+        <DialogOverlay className={TV_DIALOG_OVERLAY} />
         <DialogPrimitive.Popup
           data-slot='tv-dialog'
           onKeyDown={onKeyDown}
           className={cn(
             'fixed top-1/2 left-1/2 z-50 flex max-h-[92dvh] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-md border border-tv-line bg-tv-panel text-[13px] text-tv-ink shadow-tv-dialog outline-none',
-            'transition-[opacity,scale] duration-150 ease-out data-ending-style:scale-[.96] data-ending-style:opacity-0 data-starting-style:scale-[.96] data-starting-style:opacity-0 motion-reduce:transition-none',
+            TV_DIALOG_MOTION,
             SIZES[size],
             phone === 'sheet'
               ? 'max-[700px]:top-auto max-[700px]:bottom-0 max-[700px]:left-0 max-[700px]:max-h-[calc(100dvh-12px)] max-[700px]:w-full max-[700px]:translate-x-0 max-[700px]:translate-y-0 max-[700px]:rounded-b-none'

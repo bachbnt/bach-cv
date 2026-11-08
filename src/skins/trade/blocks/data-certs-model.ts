@@ -3,28 +3,20 @@
  */
 
 import type { Doc } from '@/lib/content/schema';
+import { issuedNewestFirst, issuedOldestFirst } from '@/lib/derive/recency';
 
 type Certificate = Doc<'certificates'>;
 
 export type CertOrder = 'newest' | 'oldest';
 
-/** A copy sorted by issue date (a tie keeps the order it came in). */
+/** The certificates in the order the visitor chose, by issue date (`lib/derive/recency`). */
 export const sortCertificates = (
   items: Certificate[],
   order: CertOrder,
-): Certificate[] => {
-  const sign = order === 'newest' ? -1 : 1;
-  return items
-    .map((item, index) => ({ item, index }))
-    .sort(
-      (a, b) =>
-        sign * a.item.issuedAt.localeCompare(b.item.issuedAt) ||
-        a.index - b.index,
-    )
-    .map(({ item }) => item);
-};
+): Certificate[] =>
+  order === 'newest' ? issuedNewestFirst(items) : issuedOldestFirst(items);
 
-export interface IssuerOption {
+interface IssuerOption {
   issuer: string;
   count: number;
 }

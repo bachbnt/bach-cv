@@ -9,7 +9,7 @@ import { tradeShellCopy } from '@/content/copy/trade-shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { HintTip } from '@/skins/trade/chart/hint-tip';
-import { useFullscreen } from '@/skins/trade/shell/use-fullscreen';
+import { useFullscreen } from '@/hooks/use-fullscreen';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 
 /** Full screen on and off. Where the browser does not allow it (an iPhone) the button is grey and says why in its name. */

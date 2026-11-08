@@ -4,9 +4,9 @@
 
 'use client';
 
-import { useState } from 'react';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
 import { homeCopy } from '@/content/copy/home';
+import { useNow } from '@/hooks/use-now';
 import { formatPeriod } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -28,7 +28,7 @@ export function WatchRoles() {
   const { lang } = useLang();
   const { showJob, jobId } = useTrade();
   const query = useContentQuery('experience');
-  const [now] = useState(() => new Date());
+  const now = useNow();
   const jobs = query.data ?? [];
   return (
     <div className='min-h-0 flex-1 overflow-y-auto'>

@@ -28,10 +28,10 @@ export function DeskTicketSent({
     <div className='flex flex-col items-start gap-2.5 py-2'>
       <span
         aria-hidden='true'
-        className='grid size-11 animate-[tv-pop_0.5s_cubic-bezier(0.2,1.4,0.4,1)_both] place-items-center rounded-full bg-tv-up-bg text-tv-up'
+        className='grid size-11 animate-tv-check-pop place-items-center rounded-full bg-tv-up-bg text-tv-up-ink'
       >
         <Check
-          className='size-6 animate-[tv-fade-in_0.3s_ease-out_0.25s_both]'
+          className='size-6 animate-tv-fade-in [animation-delay:160ms]'
           strokeWidth={2.5}
         />
       </span>

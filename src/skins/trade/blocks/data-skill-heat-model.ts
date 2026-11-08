@@ -11,13 +11,13 @@ import {
 } from '@/skins/trade/blocks/data-treemap';
 
 type Skill = Doc<'skills'>;
-type Category = Skill['category'];
+export type Category = Skill['category'];
 
 /** A tile is never smaller than this many months of area, so a skill of two months, or none, can still be read and pressed. */
 export const MIN_TILE_MONTHS = 6;
 
 /** Pixels of area for one month on the map: the smallest tile is about 56 by 56. */
-export const PX2_PER_MONTH = 520;
+const PX2_PER_MONTH = 520;
 
 export interface HeatTile {
   skill: Skill;
@@ -37,7 +37,7 @@ export interface HeatGroup {
 
 /**
  * One tile for each listed skill, grouped by area. The months and the roles are not derived again here: they come from `monthsUsed`
- * and `rolesUsing` of `shell-career.ts`, the functions behind the years used in the watchlist and the ticker, so the three always agree.
+ * and `rolesUsing` of `lib/derive/skill-use.ts`, the functions behind the years used in the watchlist and the ticker, so the three always agree.
  */
 export function skillHeat(
   skills: Skill[],
@@ -89,7 +89,7 @@ export const layoutGroup = (
 const TILE_GAP = 2;
 
 /** The least width or height of a tile: the size of a touch target. */
-export const MIN_TILE_SIDE = 44;
+const MIN_TILE_SIDE = 44;
 
 /**
  * The area of a month, in pixels, for all the maps at once so that area means the same in every area: the base scale, made larger
@@ -113,8 +113,18 @@ export function fitScale(
   return scale;
 }
 
-export type TileKey =
-  'ArrowLeft' | 'ArrowRight' | 'ArrowUp' | 'ArrowDown' | 'Home' | 'End';
+const TILE_KEYS = [
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowUp',
+  'ArrowDown',
+  'Home',
+  'End',
+] as const;
+type TileKey = (typeof TILE_KEYS)[number];
+
+export const isTileKey = (key: string): key is TileKey =>
+  (TILE_KEYS as readonly string[]).includes(key);
 
 /**
  * Which tile the arrow keys move to, from the boxes of all the tiles in reading order: left and right step along that order, up and

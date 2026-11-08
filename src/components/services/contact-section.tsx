@@ -4,7 +4,6 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useChat } from '@/components/chat/chat-provider';
 import { ContactForm } from '@/components/services/contact-form';
 import { ContactSent } from '@/components/services/contact-sent';
@@ -12,13 +11,9 @@ import { TopicChips } from '@/components/services/topic-chips';
 import { useContactForm } from '@/components/services/use-contact-form';
 import { servicesCopy } from '@/content/copy/services';
 import { useCopy } from '@/lib/i18n/copy';
+import { useContactLimits } from '@/hooks/use-contact-limits';
 import { useLive } from '@/hooks/use-live';
-import { settingsSchema } from '@/lib/content/schema';
-import { settingsQueryOptions } from '@/lib/query/options';
 import { useContentQuery } from '@/lib/query/use-content';
-
-/** Until the settings arrive the form uses the schema defaults. */
-const DEFAULT_LIMITS = settingsSchema.parse({}).contactForm;
 
 /** "What do you want to build?": topic chips on the left, the message form on the right. */
 export function ContactSection() {
@@ -26,8 +21,7 @@ export function ContactSection() {
   const { features } = useLive();
   const { openChat } = useChat();
   const { data: services = [] } = useContentQuery('services');
-  const { data: settings } = useQuery(settingsQueryOptions());
-  const limits = settings?.contactForm ?? DEFAULT_LIMITS;
+  const limits = useContactLimits();
   const form = useContactForm(limits);
 
   return (

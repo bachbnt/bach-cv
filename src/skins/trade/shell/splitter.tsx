@@ -131,8 +131,12 @@ export function Splitter({
       onDoubleClick={onReset}
       onKeyDown={key}
       className={cn(
-        'group/split z-20 touch-none outline-none select-none max-[1100px]:hidden',
-        vertical ? 'w-[7px] cursor-col-resize' : 'h-[7px] cursor-row-resize',
+        // 7px is easy for a mouse; a finger gets a 44px target through the pseudo-element (the handle stays where it is, the target is
+        // centred on it), which takes the pointer for the handle
+        'group/split z-20 touch-none outline-none select-none after:absolute after:content-[""] max-[1100px]:hidden',
+        vertical
+          ? 'w-[7px] cursor-col-resize pointer-coarse:after:inset-y-0 pointer-coarse:after:-inset-x-[19px]'
+          : 'h-[7px] cursor-row-resize pointer-coarse:after:inset-x-0 pointer-coarse:after:-inset-y-[19px]',
         className,
       )}
     >

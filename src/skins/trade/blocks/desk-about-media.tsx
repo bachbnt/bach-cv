@@ -16,7 +16,7 @@ import { DeskSection } from '@/skins/trade/blocks/desk-section';
 const FRAME =
   'group/photo relative aspect-[3/4] overflow-hidden rounded border border-tv-line bg-tv-bg';
 const PHOTO =
-  'object-cover transition-transform duration-500 ease-out group-hover/photo:scale-105';
+  'object-cover transition-transform duration-300 ease-tv-out group-hover/photo:scale-105';
 
 /** The three photos (my portrait and the two covers) as a strip of thumbnails, like the media of a symbol page. */
 export function DeskAboutMedia() {

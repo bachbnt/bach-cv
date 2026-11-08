@@ -44,12 +44,7 @@ export const tradeShellCopy = defineCopy(
       recent: 'Recent',
       groups: {
         page: 'Pages',
-        project: 'Projects',
         role: 'Roles',
-        skill: 'Skills',
-        certificate: 'Certificates',
-        service: 'Services',
-        education: 'Education',
       },
       noResults: 'Nothing found for "{query}"',
       noResultsHint:
@@ -82,20 +77,12 @@ export const tradeShellCopy = defineCopy(
       roles: 'Roles',
       unitsHint:
         'Years used, and a sparkline of how many of my roles listed the skill in each year of my career.',
-      sparkline: 'Roles each year',
-      areas: {
-        ai: 'AI',
-        mobile: 'Mobile',
-        web: 'Web',
-        tools: 'Tools',
-      },
       legendEmpty:
         'Point at a skill, or move to it with the arrow keys, to see the roles that list it.',
       legendNoRoles: 'No role lists it yet.',
       legendUsed: '{name}: {used} in {count} roles',
       legendUsedOne: '{name}: {used} in 1 role',
       rolesHint: 'Open a role to see it on the Resume page.',
-      current: 'Current',
     },
     details: {
       idea: 'Idea',
@@ -104,8 +91,6 @@ export const tradeShellCopy = defineCopy(
       symbol: 'Symbol overview',
       stats: {
         label: 'The site in numbers',
-        projects: 'Projects',
-        certificates: 'Certificates',
         roles: 'Roles',
       },
       length: '{years} y {months} mo',
@@ -148,12 +133,7 @@ export const tradeShellCopy = defineCopy(
       recent: 'Gần đây',
       groups: {
         page: 'Trang',
-        project: 'Dự án',
         role: 'Vai trò',
-        skill: 'Kỹ năng',
-        certificate: 'Chứng chỉ',
-        service: 'Dịch vụ',
-        education: 'Học vấn',
       },
       noResults: 'Không tìm thấy gì cho "{query}"',
       noResultsHint:
@@ -186,20 +166,12 @@ export const tradeShellCopy = defineCopy(
       roles: 'Vai trò',
       unitsHint:
         'Số năm đã dùng, và một biểu đồ nhỏ cho biết mỗi năm của sự nghiệp có bao nhiêu vai trò của mình dùng kỹ năng đó.',
-      sparkline: 'Số vai trò mỗi năm',
-      areas: {
-        ai: 'AI',
-        mobile: 'Mobile',
-        web: 'Web',
-        tools: 'Công cụ',
-      },
       legendEmpty:
         'Trỏ vào một kỹ năng, hoặc dùng phím mũi tên để chọn, để xem các vai trò có dùng nó.',
       legendNoRoles: 'Chưa có vai trò nào dùng nó.',
       legendUsed: '{name}: {used} trong {count} vai trò',
       legendUsedOne: '{name}: {used} trong 1 vai trò',
       rolesHint: 'Mở một vai trò để xem nó trong trang Hồ sơ.',
-      current: 'Hiện tại',
     },
     details: {
       idea: 'Ý tưởng',
@@ -208,8 +180,6 @@ export const tradeShellCopy = defineCopy(
       symbol: 'Tổng quan',
       stats: {
         label: 'Trang này qua các con số',
-        projects: 'Dự án',
-        certificates: 'Chứng chỉ',
         roles: 'Vai trò',
       },
       length: '{years} năm {months} tháng',

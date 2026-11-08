@@ -10,6 +10,7 @@ import { certificatesCopy } from '@/content/copy/certificates';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import type { Doc } from '@/lib/content/schema';
 import { fill } from '@/lib/chat/fill';
+import { latestCertificate } from '@/lib/derive/recency';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { DataCertsCalendar } from '@/skins/trade/blocks/data-certs-calendar';
@@ -48,6 +49,7 @@ export function DataCertsView() {
   const capture = useFlip(listRef, !reduced);
 
   const all: Doc<'certificates'>[] = query.data ?? [];
+  const latest = latestCertificate(all);
   const issuers = issuersOf(all);
   const shown = sortCertificates(filterByIssuer(all, issuer), order);
   const [openPreview, dialog] = useCertPreview(shown);
@@ -146,7 +148,7 @@ export function DataCertsView() {
           <DataCertsCalendar
             items={shown}
             skills={skills}
-            latestId={all[0]?.id}
+            latestId={latest?.id}
             density={density}
             onPreview={openPreview}
             listRef={listRef}
@@ -155,7 +157,7 @@ export function DataCertsView() {
           <DataCertsFeed
             items={shown}
             skills={skills}
-            latestId={all[0]?.id}
+            latestId={latest?.id}
             density={density}
             onPreview={openPreview}
             listRef={listRef}

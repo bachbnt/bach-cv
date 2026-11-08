@@ -2,12 +2,14 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+// The key facts of the profile: years in software, the first and the current role, the areas that have skills.
+
 import type { Doc } from '@/lib/content/schema';
 import { careerYears } from '@/lib/derive/career-years';
 import { currentJob, firstJob } from '@/lib/derive/current-job';
 import { areasWithSkills, type Area } from '@/lib/derive/skill-groups';
 
-export interface DeskFacts {
+export interface CareerFacts {
   /** whole years in software (the number Standard states), or `null` with no job */
   years: number | null;
   /** the job that started first */
@@ -18,15 +20,15 @@ export interface DeskFacts {
   areas: Area[];
 }
 
-/** The real facts of the symbol page, derived from the jobs and the skills; a fact with no data is `null` or empty, never invented. */
-export function deskFacts(
+/** The real facts of a profile (the key facts of About), derived from the jobs and the skills; a fact with no data is `null` or empty, never invented. */
+export function careerFacts(
   jobs: Pick<
     Doc<'experience'>,
     'startMonth' | 'endMonth' | 'role' | 'company'
   >[],
   skills: Pick<Doc<'skills'>, 'category' | 'listed'>[],
   now: Date,
-): DeskFacts {
+): CareerFacts {
   const first = firstJob(jobs);
   const current = currentJob(jobs);
   return {
@@ -44,10 +46,4 @@ export function deskFacts(
     current: current ? { role: current.role, company: current.company } : null,
     areas: areasWithSkills(skills),
   };
-}
-
-/** The number shown while it counts up: eased out, whole, and never past the target. `progress` runs from 0 to 1. */
-export function countAt(value: number, progress: number): number {
-  const t = Math.min(1, Math.max(0, progress));
-  return Math.round(value * (1 - (1 - t) ** 3));
 }

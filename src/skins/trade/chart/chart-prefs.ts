@@ -3,7 +3,7 @@
  */
 
 import {
-  CHART_TYPES,
+  isChartType,
   INDICATOR_IDS,
   INTERVALS,
   type ChartType,
@@ -67,9 +67,7 @@ export function parsePrefs(raw: string | null): ChartPrefs {
       indicators[id] = mode as IndicatorMode;
   }
   return {
-    type: CHART_TYPES.includes(record.type as ChartType)
-      ? (record.type as ChartType)
-      : DEFAULT_PREFS.type,
+    type: isChartType(record.type) ? record.type : DEFAULT_PREFS.type,
     interval: INTERVALS.includes(record.interval as Interval)
       ? (record.interval as Interval)
       : DEFAULT_PREFS.interval,

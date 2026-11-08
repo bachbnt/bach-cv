@@ -12,7 +12,7 @@ import type { Doc } from '@/lib/content/schema';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { DataChecklistPopover } from '@/skins/trade/blocks/data-checklist-popover';
-import type { Density } from '@/skins/trade/blocks/data-projects-grid';
+import type { Density } from '@/skins/trade/blocks/data-projects-model';
 import {
   isFiltering,
   NO_FILTERS,
@@ -86,7 +86,8 @@ export function DataScreenerBar({
           onChange={(e) => set({ text: e.target.value })}
           className={cn(
             TV_FIELD,
-            'w-[180px] pr-7 pl-7 transition-[border-color,width] focus:w-[230px] max-[480px]:w-full max-[480px]:focus:w-full',
+            // a fixed width: a width that grows on focus moves the chips beside it and animates layout
+            'w-[200px] pr-7 pl-7 max-[480px]:w-full',
           )}
         />
         <kbd
@@ -177,9 +178,7 @@ export function DataScreenerBar({
               checked: column === 'name' || columns.has(column),
               locked: column === 'name',
             }))}
-            onToggle={(id) =>
-              onColumns(new Set(toggleId([...columns], id) as ProjectColumn[]))
-            }
+            onToggle={(id) => onColumns(new Set(toggleId([...columns], id)))}
           />
         )}
       </div>

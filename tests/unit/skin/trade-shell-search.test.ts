@@ -6,7 +6,6 @@ import { describe, expect, it } from 'vitest';
 import {
   buildSearchIndex,
   groupResults,
-  normalize,
   rankItems,
   type SearchSource,
 } from '@/skins/trade/blocks/shell-search';
@@ -16,6 +15,8 @@ const source: SearchSource = {
     { page: 'home', label: 'Home', href: '/' },
     { page: 'projects', label: 'Projects', href: '/projects' },
     { page: 'resume', label: 'Hồ sơ', href: '/resume' },
+    { page: 'certificates', label: 'Certificates', href: '/certificates' },
+    { page: 'services', label: 'Services', href: '/services' },
   ],
   projects: [
     {
@@ -72,13 +73,6 @@ const source: SearchSource = {
 
 const index = buildSearchIndex(source);
 
-describe('normalize', () => {
-  it('drops case and accents, Vietnamese included', () => {
-    expect(normalize('Hồ Sơ')).toBe('ho so');
-    expect(normalize('Đại học')).toBe('dai hoc');
-  });
-});
-
 describe('buildSearchIndex', () => {
   it('has an entry for every kind of content and sends each to the right place', () => {
     const byId = new Map(index.map((item) => [item.id, item]));
@@ -115,6 +109,35 @@ describe('buildSearchIndex', () => {
       title: 'Team Lead, FPT Software',
       detail: '2022-05 to now',
     });
+  });
+});
+
+describe('results of a page that is hidden or coming soon', () => {
+  const without = (...hidden: string[]) =>
+    buildSearchIndex({
+      ...source,
+      pages: source.pages.filter((p) => !hidden.includes(p.page)),
+    }).map((item) => item.id);
+
+  it('are not offered: the page they would open is not a way in', () => {
+    const ids = without('projects');
+    expect(ids).not.toContain('project-venus');
+    expect(ids).not.toContain('page-projects');
+    expect(ids).toContain('service-s1');
+    expect(without('certificates')).not.toContain('certificate-c1');
+    expect(without('services')).not.toContain('service-s1');
+  });
+
+  it('take roles, skills and degrees with the Resume page, which is where they open', () => {
+    const ids = without('resume');
+    for (const gone of ['role-fpt', 'skill-kotlin', 'education-e1'])
+      expect(ids).not.toContain(gone);
+    expect(ids).toContain('project-venus');
+  });
+
+  it('leave only the open pages when every page is closed', () => {
+    const ids = buildSearchIndex({ ...source, pages: [] });
+    expect(ids).toEqual([]);
   });
 });
 

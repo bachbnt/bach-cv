@@ -2,11 +2,11 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import type { Series } from '@/skins/trade/chart/indicators';
 
 /** The two functions every path needs: a bar index to x and a price to y, and the width of a candle body. */
-export interface Projector {
+interface Projector {
   x: (index: number) => number;
   y: (price: number) => number;
   body: number;
@@ -15,7 +15,7 @@ export interface Projector {
 /** Pixel coordinates are written with one decimal: a path of 350 candles stays short. */
 const n = (value: number): string => String(Math.round(value * 10) / 10);
 
-export interface CandlePaths {
+interface CandlePaths {
   upWick: string;
   downWick: string;
   upBody: string;
@@ -50,7 +50,7 @@ export function candlePaths(
   return out;
 }
 
-export interface BarPaths {
+interface BarPaths {
   up: string;
   down: string;
 }

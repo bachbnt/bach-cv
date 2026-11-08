@@ -69,6 +69,10 @@ export const RANGES: { key: RangeKey; weeks: number | null }[] = [
   { key: 'all', weeks: null },
 ];
 
+/** How many weeks a range covers (`null` for all of them). */
+export const weeksOf = (range: RangeKey) =>
+  RANGES.find((r) => r.key === range)?.weeks ?? null;
+
 export const DEFAULT_RANGE: RangeKey = 'all';
 
 /** The seed of the pseudo-random candles: the same chart on every visit. */

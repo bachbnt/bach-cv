@@ -6,6 +6,7 @@
 
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 
+/** The same curve and time as `--ease-tv-out` and the 240 ms of a list entrance (the Web Animations API cannot read the CSS variable). */
 const EASING = 'cubic-bezier(0.2, 0.7, 0.2, 1)';
 
 type Spots = Map<string, { x: number; y: number }>;
@@ -55,7 +56,7 @@ export function useFlip(
       if (Math.abs(dx) < 1 && Math.abs(dy) < 1) continue;
       el.animate(
         [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }],
-        { duration: 280, easing: EASING },
+        { duration: 240, easing: EASING },
       );
     }
   });

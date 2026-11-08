@@ -76,7 +76,7 @@ export function TvCandleArt({
               '[transform-box:fill-box] origin-bottom',
               variant === 'ghost'
                 ? 'animate-[tv-pulse_2.4s_ease-in-out_infinite]'
-                : 'animate-[tv-candle-draw_0.5s_cubic-bezier(0.2,0.7,0.2,1)_both]',
+                : 'animate-[tv-candle-draw_0.5s_var(--ease-tv-out)_both]',
               tone,
             )}
           >

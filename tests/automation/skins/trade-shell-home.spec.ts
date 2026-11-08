@@ -122,9 +122,7 @@ test.describe('Home keeps the information of Standard', () => {
     ).toBeVisible();
   });
 
-  test('the pipeline is the idea card of the details widget', async ({
-    page,
-  }) => {
+  test('the pipeline is an idea card of the dashboard', async ({ page }) => {
     await gotoSkin(page, '/');
     const idea = page.getByRole('region', {
       name: 'How a bug becomes a merge request',

@@ -3,41 +3,12 @@
  */
 
 import type { Doc } from '@/lib/content/schema';
-import { monthSpan, spanMonths } from '@/lib/derive/career-months';
+import type { Tenure } from '@/lib/derive/career-months';
 import { groupByYear } from '@/lib/derive/group-by-year';
 
 type Job = Doc<'experience'>;
 type Degree = Doc<'education'>;
 type Certificate = Doc<'certificates'>;
-
-export interface Tenure {
-  /** first month of the role, as `monthIndex` */
-  start: number;
-  /** last month of the role (the current one ends this month) */
-  end: number;
-  /** months from the first to the last, both counted */
-  months: number;
-}
-
-export const tenureOf = (
-  job: Pick<Job, 'startMonth' | 'endMonth'>,
-  now: Date,
-): Tenure => {
-  const [start, last] = monthSpan(job, now);
-  return { start, end: Math.max(start, last), months: spanMonths(job, now) };
-};
-
-/** The calendar years the jobs cover, from the first start to the last end, oldest first. Empty with no job. */
-export const careerYearsOf = (
-  jobs: Pick<Job, 'startMonth' | 'endMonth'>[],
-  now: Date,
-): number[] => {
-  if (jobs.length === 0) return [];
-  const spans = jobs.map((job) => tenureOf(job, now));
-  const first = Math.floor(Math.min(...spans.map((s) => s.start)) / 12);
-  const last = Math.floor(Math.max(...spans.map((s) => s.end)) / 12);
-  return Array.from({ length: last - first + 1 }, (_, i) => first + i);
-};
 
 /** How many months of `tenure` fall in `year`. */
 export const monthsInYear = (tenure: Tenure, year: number): number =>

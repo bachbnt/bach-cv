@@ -4,109 +4,172 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { tradeChartCopy } from '@/content/copy/trade-chart';
-import { fill } from '@/lib/chat/fill';
+import type { Candle, CareerEntry } from '@/lib/derive/career-series';
+import { shell } from '@/lib/content/shell';
+import { jobAt } from '@/lib/derive/current-job';
 import { useCopy } from '@/lib/i18n/copy';
-import { cn } from '@/lib/utils';
-import type { Measure } from '@/skins/trade/chart/drawings';
-import { TV_FIELD } from '@/skins/trade/ui/tv-field';
+import { chartStore } from '@/skins/trade/chart/chart-store';
+import type { Interval } from '@/skins/trade/chart/chart-types';
+import { measure, type Point } from '@/skins/trade/chart/drawings';
+import type { Frame } from '@/skins/trade/chart/frame';
+import { FlagsLayer, type FlagView } from '@/skins/trade/chart/flags';
+import type { NoteAt } from '@/skins/trade/chart/gesture-types';
+import { HintPill } from '@/skins/trade/chart/hint-pill';
+import {
+  CHART_HINT_ID,
+  type Indicators,
+} from '@/skins/trade/chart/chart-types';
+import type { IndicatorData } from '@/skins/trade/chart/indicators';
+import { Legend } from '@/skins/trade/chart/legend';
+import { MeasureLabel } from '@/skins/trade/chart/measure-label';
+import { NoteInput } from '@/skins/trade/chart/note-input';
+import { ReplayBar } from '@/skins/trade/chart/replay-bar';
+import type { ReplayState } from '@/skins/trade/chart/replay';
 
-/** A one-line hint of what the active tool wants next. It is polite live text, so a screen reader hears it too. */
-export function HintPill({ text, top }: { text: string; top: number }) {
-  return (
-    <p
-      role='status'
-      data-testid='tv-hint'
-      style={{ top: top + 8 }}
-      className='tv-chart-rise pointer-events-none absolute left-1/2 z-[4] max-w-[calc(100%-24px)] -translate-x-1/2 rounded-md bg-tv-tip px-2.5 py-1 text-center text-xs text-white shadow-tv-menu'
-    >
-      {text}
-    </p>
-  );
-}
-
-/** What the measure tool found between two points: the weeks and years, the two jobs at the ends and the change in index points. */
-export function MeasureLabel({
-  x,
-  y,
-  below,
-  measure,
-  from,
-  to,
-  up,
+/**
+ * What sits on top of the picture as HTML: the flags, the legend, the measure label, the box for a note, the hint line, the replay
+ * bar and the live regions that say what the crosshair is on and which flag the replay passed.
+ */
+export function ChartOverlays({
+  frame,
+  interval,
+  toolbar,
+  entries,
+  flags,
+  intro,
+  onOpenFlag,
+  company,
+  candle,
+  dateText,
+  jobText,
+  studyText,
+  indicators,
+  data,
+  index,
+  measureBox,
+  note,
+  onNoteDone,
+  hint,
+  replay,
+  reduced,
+  said,
+  status,
 }: {
-  x: number;
-  y: number;
-  /** the box is under the point when there is no room above it */
-  below: boolean;
-  measure: Measure;
-  from: string;
-  to: string;
-  up: boolean;
+  frame: Frame;
+  interval: Interval;
+  /** the height of the strip with the chart's own buttons (0 when they are in the toolbar of the terminal) */
+  toolbar: number;
+  entries: CareerEntry[];
+  flags: FlagView[];
+  intro: boolean;
+  onOpenFlag: (flag: FlagView) => void;
+  /** the company of the latest job, for the legend */
+  company: string;
+  candle: Candle | null;
+  dateText: string;
+  jobText: string;
+  studyText: string;
+  indicators: Indicators;
+  data: IndicatorData;
+  /** the bar the legend reads */
+  index: number;
+  measureBox: { a: Point; b: Point } | null;
+  note: NoteAt | null;
+  onNoteDone: (text: string | null) => void;
+  hint: string;
+  replay: ReplayState;
+  reduced: boolean;
+  /** what the replay announced last */
+  said: string;
+  /** what a polite live region says about the bar under the crosshair */
+  status: string;
 }) {
-  const copy = useCopy(tradeChartCopy).measure;
-  return (
-    <div
-      role='status'
-      data-testid='tv-measure'
-      style={{ left: x, top: y }}
-      className={`pointer-events-none absolute z-[4] w-max max-w-[min(260px,calc(100%-16px))] -translate-x-1/2 rounded-md px-2.5 py-1.5 text-xs leading-snug text-white shadow-tv-menu ${below ? '' : '-translate-y-full'} ${up ? 'bg-tv-accent' : 'bg-tv-down'}`}
-    >
-      <b className='block font-semibold tabular-nums'>
-        {fill(copy.span, { weeks: measure.weeks, years: measure.years })}
-      </b>
-      <span className='block tabular-nums'>
-        {fill(copy.change, {
-          delta: `${measure.delta > 0 ? '+' : ''}${measure.delta}`,
-        })}
-      </span>
-      <span className='block opacity-90'>{fill(copy.from, { job: from })}</span>
-      <span className='block opacity-90'>{fill(copy.to, { job: to })}</span>
-    </div>
-  );
-}
-
-/** The box for a text note, where the visitor clicked. Enter keeps the note, Escape drops it, and leaving the box keeps what was written. */
-export function NoteInput({
-  x,
-  y,
-  onDone,
-}: {
-  x: number;
-  y: number;
-  onDone: (text: string | null) => void;
-}) {
-  const copy = useCopy(tradeChartCopy).tools;
-  const input = useRef<HTMLInputElement>(null);
-  const settled = useRef(false);
-  useEffect(() => {
-    input.current?.focus();
-  }, []);
-  const finish = (text: string | null) => {
-    if (settled.current) return;
-    settled.current = true;
-    onDone(text);
+  const copy = useCopy(tradeChartCopy);
+  const { layout, price } = frame;
+  const jobOf = (t: number) => {
+    const found = jobAt(entries, t);
+    return found ? `${found.role} · ${found.company}` : copy.measure.before;
   };
+  const stats = measureBox ? measure(measureBox.a, measureBox.b) : null;
   return (
-    <input
-      ref={input}
-      type='text'
-      maxLength={80}
-      aria-label={copy.noteLabel}
-      placeholder={copy.notePlaceholder}
-      style={{ left: x, top: y - 28 }}
-      className={cn(
-        TV_FIELD,
-        'absolute z-[6] h-7 w-44 border-tv-accent px-2 text-xs shadow-tv-menu pointer-coarse:h-9',
+    <>
+      <FlagsLayer
+        flags={flags}
+        intro={intro}
+        width={layout.plotWidth}
+        onOpen={onOpenFlag}
+      />
+      <Legend
+        name={shell.name}
+        company={company}
+        candle={candle}
+        date={dateText}
+        job={jobText}
+        study={studyText}
+        indicators={indicators}
+        data={data}
+        index={index}
+        interval={copy.intervals[interval].short}
+        top={toolbar}
+        panes={{ rsi: layout.rsi, macd: layout.macd }}
+        onMode={chartStore.setIndicator}
+      />
+      {measureBox && stats && (
+        <MeasureLabel
+          x={Math.min(
+            layout.plotWidth - 110,
+            Math.max(
+              110,
+              (frame.xAt(measureBox.a.t) + frame.xAt(measureBox.b.t)) / 2,
+            ),
+          )}
+          y={Math.min(price.y(measureBox.a.p), price.y(measureBox.b.p)) - 8}
+          below={
+            Math.min(price.y(measureBox.a.p), price.y(measureBox.b.p)) <
+            toolbar + 96
+          }
+          measure={stats}
+          from={jobOf(measureBox.a.t)}
+          to={jobOf(measureBox.b.t)}
+          up={measureBox.b.p >= measureBox.a.p}
+        />
       )}
-      onKeyDown={(event) => {
-        event.stopPropagation();
-        if (event.key === 'Enter')
-          finish(event.currentTarget.value.trim() || null);
-        if (event.key === 'Escape') finish(null);
-      }}
-      onBlur={(event) => finish(event.currentTarget.value.trim() || null)}
-    />
+      {note && (
+        <NoteInput
+          x={Math.min(layout.plotWidth - 180, note.x)}
+          y={note.y}
+          onDone={onNoteDone}
+        />
+      )}
+      {hint && <HintPill text={hint} top={toolbar} />}
+      {replay.phase !== 'off' && (
+        <ReplayBar
+          state={replay}
+          reduced={reduced}
+          bottom={layout.height - layout.axisY + 8}
+          onSelect={chartStore.startReplay}
+          onPlay={chartStore.setPlaying}
+          onStep={() => chartStore.stepReplay(1)}
+          onSpeed={chartStore.setSpeed}
+          onRealtime={chartStore.exitReplay}
+          onExit={chartStore.exitReplay}
+        />
+      )}
+      <p id={CHART_HINT_ID} className='sr-only'>
+        {copy.chart.hint}
+      </p>
+      <p role='status' className='sr-only'>
+        {status}
+      </p>
+      <p
+        role='status'
+        aria-live='polite'
+        data-testid='tv-replay-live'
+        className='sr-only'
+      >
+        {said}
+      </p>
+    </>
   );
 }

@@ -4,10 +4,11 @@
 
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { commonCopy } from '@/content/copy/common';
 import { tradeDeskCopy } from '@/content/copy/trade-desk';
+import { useGoBack } from '@/hooks/use-go-back';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { TvButton, TvLink } from '@/skins/trade/ui/tv-button';
@@ -75,7 +76,7 @@ export function TvStatusBody({
 export function TvStatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
   const copy = useCopy(commonCopy);
   const states = useCopy(tradeDeskCopy).states;
-  const router = useRouter();
+  const goBack = useGoBack();
   const pathname = usePathname();
   const text = copy.status[variant];
   return (
@@ -98,7 +99,7 @@ export function TvStatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
         <TvLink variant='primary' href='/'>
           {copy.status.home}
         </TvLink>
-        <TvButton variant='outline' onClick={() => router.back()}>
+        <TvButton variant='outline' onClick={goBack}>
           {copy.status.back}
         </TvButton>
       </div>

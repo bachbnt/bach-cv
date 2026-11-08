@@ -14,14 +14,22 @@ export const GROUP_ORDER = [
   'tools',
 ] as const satisfies readonly Doc<'skills'>['category'][];
 
-/** The listed skills grouped by area in `GROUP_ORDER`; an area with no listed skill is left out. */
+/**
+ * The listed skills grouped by area, in `GROUP_ORDER` unless another `order` is given (the watchlist and the strip go mobile first,
+ * `STRIP_ORDER`); an area with no listed skill is left out. The filter is the same whatever the order, so every list shows the same skills.
+ */
 export function skillGroups<
   S extends Pick<Doc<'skills'>, 'category' | 'listed'>,
->(skills: S[]): { category: S['category']; items: S[] }[] {
-  return GROUP_ORDER.map((category) => ({
-    category,
-    items: skills.filter((s) => s.listed && s.category === category),
-  })).filter((group) => group.items.length);
+>(
+  skills: S[],
+  order: readonly S['category'][] = GROUP_ORDER,
+): { category: S['category']; items: S[] }[] {
+  return order
+    .map((category) => ({
+      category,
+      items: skills.filter((s) => s.listed && s.category === category),
+    }))
+    .filter((group) => group.items.length);
 }
 
 /** The areas the key facts and the profile name, in the order of the page. `tools` is a way of working, not an area, so it is left out. */

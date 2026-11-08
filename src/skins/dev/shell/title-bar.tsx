@@ -19,7 +19,7 @@ import { DEV_PROJECT } from '@/skins/dev/config';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { emit } from '@/skins/dev/shell/devlog/store';
 import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
-import { useFullscreen } from '@/skins/dev/shell/use-fullscreen';
+import { useFullscreen } from '@/hooks/use-fullscreen';
 import { DevMenu } from '@/skins/dev/ui/dev-menu';
 import { WindowDots } from '@/skins/dev/ui/window-dots';
 

@@ -6,7 +6,7 @@
 
 import { Award, ExternalLink, ZoomIn } from 'lucide-react';
 import Image from 'next/image';
-import type { CSSProperties, RefObject } from 'react';
+import type { RefObject } from 'react';
 import { formatIssued } from '@/components/certificates/format-issued';
 import { certificatesCopy } from '@/content/copy/certificates';
 import type { Doc } from '@/lib/content/schema';
@@ -17,6 +17,7 @@ import type { CertDensity } from '@/skins/trade/blocks/data-certs-calendar';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import { tvButton } from '@/skins/trade/ui/tv-button';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 /** The certificates as a feed of ideas: a card each with the picture (it opens the Standard preview), the title, the issuer, the date, the skills and Open PDF. */
 export function DataCertsFeed({
@@ -52,8 +53,8 @@ export function DataCertsFeed({
           key={item.id}
           data-flip={item.id}
           data-testid='certificate'
-          style={{ '--i': Math.min(index, 8) } as CSSProperties}
-          className='group/card flex animate-[tv-fade-up_0.32s_cubic-bezier(0.2,0.7,0.2,1)_both] flex-col overflow-hidden rounded-md border border-tv-line bg-tv-panel transition-[translate,border-color,box-shadow] duration-200 [animation-delay:calc(var(--i)*40ms)] hover:-translate-y-0.5 hover:border-tv-accent hover:shadow-[0_6px_18px_rgba(0,0,0,0.25)] active:translate-y-0'
+          style={cssVars({ '--i': Math.min(index, 8) })}
+          className='group/card flex animate-tv-fade-up flex-col overflow-hidden rounded-md border border-tv-line bg-tv-panel transition-[translate,border-color,box-shadow] duration-160 [animation-delay:calc(var(--i)*40ms)] hover:-translate-y-0.5 hover:border-tv-accent hover:shadow-tv-card active:translate-y-0'
         >
           {item.image && (
             <button
@@ -61,7 +62,7 @@ export function DataCertsFeed({
               onClick={() => onPreview(index)}
               aria-label={copy.viewLabel(item.name)}
               className={cn(
-                'relative flex w-full cursor-zoom-in items-center justify-center overflow-hidden bg-tv-hover p-3 outline-offset-[-3px]',
+                'relative flex w-full cursor-zoom-in items-center justify-center overflow-hidden bg-tv-hover p-3',
                 comfy ? 'h-[220px]' : 'h-[150px]',
               )}
             >
@@ -71,7 +72,7 @@ export function DataCertsFeed({
                 width={400}
                 height={300}
                 unoptimized
-                className='block h-auto max-h-full w-auto max-w-full object-contain shadow-[0_4px_14px_rgba(0,0,0,0.3)] transition-transform duration-500 ease-out group-hover/card:scale-[1.04]'
+                className='block h-auto max-h-full w-auto max-w-full object-contain shadow-tv-card transition-transform duration-300 ease-tv-out group-hover/card:scale-[1.04]'
               />
               <span
                 aria-hidden='true'
@@ -85,7 +86,7 @@ export function DataCertsFeed({
           <div className='flex flex-1 flex-col gap-2 p-3'>
             <div className='flex flex-wrap items-center gap-2'>
               {item.issuer && (
-                <span className='inline-flex items-center gap-1.5 text-xs font-medium text-tv-up'>
+                <span className='inline-flex items-center gap-1.5 text-xs font-medium text-tv-up-ink'>
                   <Award className='size-3.5' aria-hidden='true' />
                   {item.issuer}
                 </span>

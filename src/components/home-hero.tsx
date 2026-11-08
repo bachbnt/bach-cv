@@ -10,7 +10,9 @@ import { AskBotButton } from '@/components/chat/ask-bot-button';
 import { DownloadCv } from '@/components/download-cv';
 import { Tag } from '@/components/tag';
 import { homeCopy } from '@/content/copy/home';
+import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
+import { useYearsText } from '@/lib/query/use-career-years';
 import { shell } from '@/lib/content/shell';
 
 const wrap = 'mx-auto w-full max-w-[1200px] px-5 min-[721px]:px-12';
@@ -19,6 +21,7 @@ const wrap = 'mx-auto w-full max-w-[1200px] px-5 min-[721px]:px-12';
 export function HomeHero() {
   const copy = useCopy(homeCopy);
   const { pipeline } = copy;
+  const intro = useYearsText(copy.intro, copy.introUndated);
   return (
     <div className='band-glow rounded-b-[40px] bg-page-tint'>
       <section
@@ -35,7 +38,7 @@ export function HomeHero() {
             style={{ '--i': 1 } as CSSProperties}
             className='hi max-w-[560px] text-xl leading-[1.55] text-body'
           >
-            {copy.intro}
+            {intro}
           </p>
           <div
             style={{ '--i': 2 } as CSSProperties}
@@ -55,7 +58,7 @@ export function HomeHero() {
             <div className='photo-in group/photo lift relative h-[420px] w-full overflow-hidden rounded-[20px] bg-border min-[901px]:h-[560px]'>
               <Image
                 src={shell.avatar}
-                alt={`${shell.name} reading a book`}
+                alt={fill(copy.avatarAlt, { name: shell.name })}
                 fill
                 sizes='(min-width: 901px) 560px, 100vw'
                 priority

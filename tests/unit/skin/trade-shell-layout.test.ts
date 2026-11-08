@@ -134,4 +134,10 @@ describe('countAt', () => {
     expect(countAt(7, -1)).toBe(0);
     expect(countAt(100, 0.5)).toBeGreaterThan(50);
   });
+
+  it('only goes up on the way, and eases out (most of it is done by half time)', () => {
+    const steps = Array.from({ length: 11 }, (_, i) => countAt(100, i / 10));
+    expect(steps).toEqual([...steps].sort((a, b) => a - b));
+    expect(countAt(100, 0.5)).toBeGreaterThan(80);
+  });
 });

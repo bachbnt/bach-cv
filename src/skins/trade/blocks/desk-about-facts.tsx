@@ -4,16 +4,17 @@
 
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { commonCopy } from '@/content/copy/common';
 import { resumeCopy } from '@/content/copy/resume';
 import { tradeDeskCopy } from '@/content/copy/trade-desk';
+import { useNow } from '@/hooks/use-now';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { DeskCountUp } from '@/skins/trade/blocks/desk-count-up';
-import { deskFacts } from '@/skins/trade/blocks/desk-facts';
+import { careerFacts } from '@/lib/derive/career-facts';
 import { DeskSection } from '@/skins/trade/blocks/desk-section';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
@@ -51,12 +52,12 @@ export function DeskAboutFacts() {
   const facts = copy.facts;
   const common = useCopy(commonCopy);
   const groups = useCopy(resumeCopy).skills.groups;
-  const [now] = useState(() => new Date());
+  const now = useNow();
   const experience = useContentQuery('experience');
   const skills = useContentQuery('skills');
   const { data: profile } = useProfileQuery();
 
-  const found = deskFacts(experience.data ?? [], skills.data ?? [], now);
+  const found = careerFacts(experience.data ?? [], skills.data ?? [], now);
   const languages = shell.languages.map((lang) =>
     lang === 'vi' ? common.language.vietnamese : common.language.english,
   );
@@ -83,7 +84,7 @@ export function DeskAboutFacts() {
           )}
           {found.years !== null && (
             <Fact label={facts.years}>
-              <span className='text-[26px]/none text-tv-up tabular-nums'>
+              <span className='text-[26px]/none text-tv-up-ink tabular-nums'>
                 <DeskCountUp value={found.years} />
               </span>{' '}
               <small className='text-xs font-normal text-tv-mute'>

@@ -32,7 +32,7 @@ export function DataSegmented<T extends string>({
           aria-pressed={value === option.value}
           onClick={() => onChange(option.value)}
           className={cn(
-            'inline-flex h-[26px] cursor-pointer items-center gap-1.5 rounded-sm px-2.5 text-[13px] whitespace-nowrap text-tv-mute transition-colors hover:text-tv-ink active:text-tv-ink aria-pressed:bg-tv-hover aria-pressed:font-semibold aria-pressed:text-tv-ink pointer-coarse:min-h-11 pointer-coarse:px-3.5 [&_svg]:size-3.5',
+            'inline-flex h-[26px] cursor-pointer items-center gap-1.5 rounded-sm px-2.5 text-[13px] whitespace-nowrap text-tv-mute transition-colors duration-100 hover:text-tv-ink active:text-tv-ink aria-pressed:bg-tv-accent/15 aria-pressed:text-tv-accent-ink pointer-coarse:min-h-11 pointer-coarse:px-3.5 [&_svg]:size-3.5',
           )}
         >
           {option.icon}

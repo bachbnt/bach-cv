@@ -4,8 +4,10 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  paymentView,
   qrFileName,
   splitMethods,
+  stepMethodId,
   summaryOf,
 } from '@/components/payment/payment-details';
 
@@ -63,5 +65,55 @@ describe('splitMethods', () => {
     const { featured, rest } = splitMethods([m('a', null), m('b', null)]);
     expect(featured).toHaveLength(0);
     expect(rest).toHaveLength(2);
+  });
+});
+
+describe('paymentView', () => {
+  const m = (
+    id: string,
+    highlight: number | null,
+    kind: 'bank' | 'wallet',
+    qr = '',
+  ) => ({ id, highlight, kind, qr });
+  const methods = [
+    m('a', 1, 'bank', 'qr-a'),
+    m('b', null, 'bank'),
+    m('c', null, 'wallet', 'qr-c'),
+    m('d', null, 'bank', 'qr-d'),
+  ];
+
+  it('lists the ones with a QR in page order, featured first', () => {
+    expect(paymentView(methods, 'all').withQr.map((x) => x.id)).toEqual([
+      'a',
+      'c',
+      'd',
+    ]);
+  });
+
+  it('names the kinds the other methods have, bank before wallet, and filters them', () => {
+    const view = paymentView(methods, 'all');
+    expect(view.kinds).toEqual(['bank', 'wallet']);
+    expect(view.shownRows.map((x) => x.id)).toEqual(['b', 'c', 'd']);
+    expect(paymentView(methods, 'wallet').shownRows.map((x) => x.id)).toEqual([
+      'c',
+    ]);
+    // a kind only the featured methods have is not a filter
+    expect(
+      paymentView([m('a', 1, 'wallet'), m('b', null, 'bank')], 'all').kinds,
+    ).toEqual(['bank']);
+  });
+});
+
+describe('stepMethodId', () => {
+  const ids = ['a', 'b', 'c'];
+
+  it('goes round at both ends', () => {
+    expect(stepMethodId(ids, 'a', 1)).toBe('b');
+    expect(stepMethodId(ids, 'c', 1)).toBe('a');
+    expect(stepMethodId(ids, 'a', -1)).toBe('c');
+  });
+
+  it('is null for an empty list', () => {
+    expect(stepMethodId([], 'a', 1)).toBeNull();
   });
 });

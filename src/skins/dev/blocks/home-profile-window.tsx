@@ -6,11 +6,11 @@
 
 import type { ReactNode } from 'react';
 import { shell } from '@/lib/content/shell';
-import { careerYears } from '@/lib/derive/career-years';
 import { latestDegree } from '@/lib/derive/latest-degree';
 import { currentJob, latestJob } from '@/lib/derive/current-job';
 import { areasWithSkills, type Area } from '@/lib/derive/skill-groups';
 import { shortDegree } from '@/lib/derive/short-degree';
+import { useCareerYears } from '@/lib/query/use-career-years';
 import { useContentQuery } from '@/lib/query/use-content';
 import { CodeWindow } from '@/skins/dev/blocks/code-window';
 import { FileIcon } from '@/skins/dev/icons/file-icon';
@@ -49,11 +49,8 @@ export function HomeProfileWindow() {
   const { data: education = [] } = useContentQuery('education');
   const current = currentJob(experience);
   const job = latestJob(experience);
-  // the first role on the site to now (the roles the owner keeps hidden do not count); `now` only has to be right to the year
-  const years = careerYears(
-    experience.map((j) => j.startMonth),
-    new Date(),
-  );
+  // the same number every page and skin states (the roles the owner keeps hidden do not count)
+  const years = useCareerYears();
   // the latest degree (the same one the photo card shows)
   const degree = latestDegree(education);
   const stack = areasWithSkills(skills).map((area) => AREA_NAMES[area]);

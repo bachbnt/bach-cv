@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 
 /** One technology as a small label, in the colour of its area. */
-export function DataTag({
+function DataTag({
   skill,
   className,
 }: {

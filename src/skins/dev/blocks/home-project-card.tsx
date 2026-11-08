@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { fillCopy, skillsOf } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import type { Doc } from '@/lib/content/schema';
+import { projectHref } from '@/lib/derive/home-lists';
 import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
@@ -37,7 +38,7 @@ export function HomeProjectCard({
 }) {
   const projectsText = useCopy(projectsCopy);
   const tags = skillsOf(project.technologies, skills);
-  const href = project.links[0]?.url ?? '/projects';
+  const href = projectHref(project);
   const card = (
     <>
       <div className='relative block aspect-[16/10] w-full cursor-pointer overflow-hidden border-b border-line-2 bg-chrome-2'>

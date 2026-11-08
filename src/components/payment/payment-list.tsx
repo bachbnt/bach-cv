@@ -13,23 +13,19 @@ import {
   useState,
   ViewTransition,
 } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
-import { summaryOf, splitMethods } from '@/components/payment/payment-details';
 import { DataState } from '@/components/data-state';
 import { PaymentEmpty } from '@/components/payment/payment-empty';
 import { PaymentFeature } from '@/components/payment/payment-feature';
 import { PaymentQrDialog } from '@/components/payment/payment-qr-dialog';
 import { PaymentRow } from '@/components/payment/payment-row';
 import { PaymentToast } from '@/components/payment/payment-toast';
+import { usePaymentMethods } from '@/components/payment/use-payment-methods';
 import { Skeleton } from '@/components/ui/skeleton';
 import { paymentCopy } from '@/content/copy/payment';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
-
-type Kind = Doc<'payments'>['kind'];
-type Filter = 'all' | Kind;
 
 const TOAST_MS = 2000;
 
@@ -58,8 +54,6 @@ export function PaymentList() {
 /** Highlighted methods first, then "More ways to pay" with a bank/wallet filter. */
 function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
   const copy = useCopy(paymentCopy);
-  const [filter, setFilter] = useState<Filter>('all');
-  const [qrId, setQrId] = useState<string | null>(null);
   const [toast, setToast] = useState({ message: '', visible: false });
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const nudge = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -86,30 +80,21 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
     }, 20);
   }, []);
 
-  const copyAccount = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(m.account))
-        ? copy.toast.accountCopied(m.name)
-        : copy.toast.copyFailed,
-    );
-  const copyAll = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(summaryOf(m, copy)))
-        ? copy.toast.allCopied(m.name)
-        : copy.toast.copyFailed,
-    );
-
-  const { featured, rest } = splitMethods(methods);
-  const withQr = [...featured, ...rest].filter((m) => m.qr);
-  const qrIndex = withQr.findIndex((m) => m.id === qrId);
-  const qrMethod = qrIndex < 0 ? null : withQr[qrIndex];
-  const stepQr = (by: number) =>
-    setQrId(withQr[(qrIndex + by + withQr.length) % withQr.length]?.id ?? null);
-
-  const kinds = (['bank', 'wallet'] as const).filter((k) =>
-    rest.some((m) => m.kind === k),
-  );
-  const shownRows = rest.filter((m) => filter === 'all' || m.kind === filter);
+  const {
+    featured,
+    rest,
+    kinds,
+    shownRows,
+    withQr,
+    filter,
+    setFilter,
+    setQrId,
+    qrIndex,
+    qrMethod,
+    stepQr,
+    copyAccount,
+    copyAll,
+  } = usePaymentMethods(methods, say);
 
   return (
     <>

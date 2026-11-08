@@ -13,7 +13,7 @@ that is the navigation, and a rail with the chat and Connect. It is one of the *
    (About), a **catalogue with an order ticket** (Services) and a **deposit page** (Payment). Do not copy a Standard block component into
    it: reuse its hooks and its copy (`content/copy/*`), and read the Standard component of a page first to list what it shows. Words only
    this skin has are in `content/copy/trade*.ts` (en and vi).
-2. **Nothing may read as a quote.** The chart is an **illustrative index** derived from the real jobs (`blocks/build-candles.ts`): its
+2. **Nothing may read as a quote.** The chart is an **illustrative index** derived from the real jobs (`lib/derive/career-series.ts`): its
    accessible name says it is not financial data, the legend says "Career index", values are "index points", and there is no currency,
    no Buy / Sell, no rating and no percentage that reads as a return. The tools on it are real (chart types, indicators, drawings, a
    measure tool, a bar replay of the career), and so are the numbers elsewhere: counts, dates and durations from the data, never
@@ -21,14 +21,20 @@ that is the navigation, and a rail with the chat and Connect. It is one of the *
 3. **Accessible names are the Standard ones**: `Language: English`, `Theme`, `Skin: Trade`, `Download CV`, `Connect`, `Open chat`, the
    navigation `Main` (a page that is coming soon is marked and is not a link; a hidden page is absent).
 4. **Phone** (below 1101px): no rails; toolbar, chart, range buttons, the page, then the watchlist and a row with the chat and
-   Connect, and a bar of the four main pages. The language, theme and Skin menus and the CV button stay in the toolbar.
+   Connect, and a bar of the four main pages (a page that is coming soon stays in it with the Soon mark and is not a link; a hidden one is absent, as in the Standard
+   menu). The language, theme and Skin menus and the CV button stay in the toolbar.
 5. **Reduced motion** stops the live tick of the last candle (a timer, so `useReducedMotion` guards it) and, in `trade.css`, every animation.
 
-## The chart (`chart/`, `blocks/build-candles.ts`, `shell/range-bar.tsx`, `shell/tool-rail.tsx`, `content/copy/trade-chart.ts`)
+## The chart (`chart/`, `lib/derive/career-series.ts`, `shell/range-bar.tsx`, `shell/tool-rail.tsx`, `content/copy/trade-chart.ts`)
 
 A working chart terminal, drawn by hand in SVG: no library, no CDN, its own `next/dynamic` chunk (`shell/chart-slot.tsx`), so the terminal
-paints first. **The values are an illustrative index derived from the real jobs** (`buildCandles`: one seeded candle per week from the
-first job, about 53 % green weeks, the last near the top; the chart shows them as weeks, months, quarters or years, **months by default**). The accessible name of the chart says so, the legend says "Career index", and
+paints first. **The values are an illustrative index derived from the real jobs** (`buildCandles` of `lib/derive/career-series.ts`: one seeded candle per week from the
+first job, about 53 % green weeks, the last near the top; the chart shows them as weeks, months, quarters or years, **months by default**).
+**Only the weeks, the flags and the dates of the jobs and degrees are real; the open, high, low, close, the volume and the live tick are seeded decoration**
+(one pure function of a seed, the jobs and the degrees, so the same career always draws the same chart). That data is made once, in `lib/derive`,
+with the month, quarter and year aggregation (`aggregate`, `periodStart`, `markersOn`); the skin keeps only the geometry (frames, scales,
+paths, the window of the chart, hit tests). Which job or degree was active at a bar is `jobAt` / `degreeAt` of `lib/derive`, the same
+function Resume uses, so the legend line and the flags can never disagree with the data. The accessible name of the chart says so, the legend says "Career index", and
 nothing is a price, a currency, a percentage, a return or an order button. Tools, indicators and replay are real and interactive; the
 wording is in `content/copy/trade-chart.ts` (en and vi).
 
@@ -37,7 +43,8 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
   log and auto scale, the range the window is on, the replay. The pointer work (zoom, pan, crosshair) stays in the chart. The only
   things kept in the browser are the type, the interval, the indicators and the magnet, under `bach-cv-trade-chart` (`chart-prefs.ts`, in try/catch; a stored interval that is not one of the four is ignored and the default, 1M, is used).
   Drawings live in memory. The chart hands the buttons outside it a controller (`setRange`, `goTo`, `fit`, `zoom`).
-- **Window.** `chart/view.ts`: a window is `{from, span}` in bars. The wheel zooms around the pointer (`wheel-zoom.ts`: an event only queues a zoom, about 15 % for a notch of 100 px, each event clamped to 120 px and the queue capped; one animation frame applies a share of it with an 80 ms time constant, so a spin glides, and reduced motion applies it at once; the listener is on the box around the chart so a flag under the pointer cannot swallow it), a drag pans, a pinch zooms, a double
+- **Window.** `chart/view.ts`: a window is `{from, span}` in bars. **Zooming never slides the chart at its limits** (`zoomView`, `spanWithin`): at the widest
+  window zooming out, or at the closest zooming in, the window stays exactly where it is, whatever the pointer or the key (`+` and `-` included). The wheel zooms around the pointer (`wheel-zoom.ts`: an event only queues a zoom, about 15 % for a notch of 100 px, each event clamped to 120 px and the queue capped; one animation frame applies a share of it with an 80 ms time constant, so a spin glides, and reduced motion applies it at once; the listener is on the box around the chart so a flag under the pointer cannot swallow it), a drag pans, a pinch zooms, a double
   click resets, dragging the price scale takes "auto" off, dragging the time axis zooms. `useChartView` slides there (300 ms) unless
   reduced motion. The range bar (3M ... All) slides the window, shows the one the window is on, and has Go to date, log, auto and reset.
 - **Interval** (`intervals.ts`, `time-axis.ts`, `bar-label.ts`, pure and unit-tested): the toolbar has 1W 1M 3M 1Y (Alt+1 to Alt+4); **1M is the
@@ -55,8 +62,8 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
   The chart still starts at the first job (March 2020): a degree whose mark falls before the first candle or after the last is not drawn
   (`onChart`; it is not moved to the nearest bar) and stays reachable from Resume, the search and the watchlist. A mark is a button with a tip
   (degree, major, school, period) that opens `#tv-education` on Resume (`shell/reveal.ts` scrolls there once the page has loaded); flags on
-  one bar sit side by side. The legend adds the degree in progress (`MSc · University of Science`, `shortDegree` is a local copy of Dev's
-  helper) beside the job, and the replay shows and announces the marks as the playhead passes them. The years in software are counted from the
+  one bar sit side by side. The legend adds the degree in progress (`MSc · University of Science`, `shortDegree` is imported from
+  `lib/derive/short-degree`, the one Standard and Dev use) beside the job, and the replay shows and announces the marks as the playhead passes them. The years in software are counted from the
   jobs only (`lib/derive/career-years.ts`).
 - **Volume** (`volume.ts`, `series-layer.tsx`, `buildCandles`): a decoration that behaves like a volume: larger for long candles and big
   bodies, a spike in the weeks a job began, a small rise where a degree began or ended, a slow drift and quiet and busy stretches (a separate seeded
@@ -103,7 +110,10 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
 - **Speed.** Candles, wicks, volume and bars are a few `<path>`s per colour (about 4 for candles), only the bars on screen are drawn,
   pointer work runs once per animation frame, the box is measured by a `ResizeObserver`, `memo` keeps layers that did not change out of the
   frame. Animation uses transform, opacity and stroke only (`css/chart.css`, classes `tv-chart-*`), and every one stops for reduced motion.
-- Tested in `tests/unit/skin/trade-chart-*.test.ts`, `trade-candles.test.ts` and `tests/automation/skins/trade-chart*.spec.ts`.
+- **States.** The chart cell uses the same three states as every block that reads data (`TvDataState`): a skeleton while `experience` and `education` load, a
+  card with Try again (it refetches `experience`) when the roles cannot be read, and "No experience to show yet" with a link to the projects when there is no role. An error is
+  never drawn as an empty chart.
+- Tested in `tests/unit/skin/trade-chart-*.test.ts`, `tests/unit/lib/derive/career-series.test.ts` and `tests/automation/skins/trade-chart*.spec.ts`, `trade-sync.spec.ts`.
 
 ## Where things are
 
@@ -112,8 +122,12 @@ skin.tsx            SkinDefinition: Frame (TradeShell) + one component for each 
 config.ts           the watchlist (tickers, routes, order, hidden/soon), the ranges, the phone bar, the chart seed
 trade.css           the palette (--tv-*, dark and light), the shadcn tokens mapped to it, focus ring, keyframes, view transitions
 shell/              toolbar and its menus, tool rail (the drawing tools), icon rail (chat, Connect), range bar, watchlist, hero note,
-                    bottom bar, overlays (the Standard CV window, the chat), context
-chart/              the SVG chart and its layers
+                    bottom bar, overlays (`TvDialogShell` and the family built on it: viewer, screenshots, QR, CV, `overlay-chat-panel`), context
+chart/              the SVG chart and its layers. `career-chart` loads the data and measures the box, `chart-body` holds the window, the replay
+                    clock and the link to the buttons outside (`use-chart-controller`, `use-replay-clock`), `chart-scene` the state of one
+                    window and interval, drawn by `chart-svg` (layers) and `chart-overlays` (flags, legend, hint, replay bar); the pointer is
+                    `use-pointer-gestures` with `gesture-math` (pure: `zoneAt`, `scaleRange`, `timeZoom`, `pinchView`, unit-tested),
+                    `use-wheel-zoom` and `use-drawing-session`/`start-tool-gesture` (the drawing tools). One component for each file.
 pages/<page>.tsx    one file for each page: TvPage + TvPanel + the blocks
 blocks/             the blocks of the pages
 ui/                 tv-root, tv-button, tv-chip, tv-toggle-chip, tv-field, tv-menu, tv-ask-button, tv-tile, tv-panel, tv-page,
@@ -127,6 +141,21 @@ ui/                 tv-root, tv-button, tv-chip, tv-toggle-chip, tv-field, tv-me
   windows read (`--night`, `--brand`, `--mobile`...) are mapped there too, so the dialogs, menus and chat follow the skin.
 - CSS is only for tokens, the focus ring, keyframes and view transitions; its classes have the prefix `tv-` (a unit test enforces it,
   and that every `:hover` is inside `@media (hover: hover)`). Fonts: the system sans stack, so nothing is downloaded.
+- **Contrast.** A colour used as TEXT is its `-ink` token (`text-tv-up-ink`, `-down-`, `-gold-`, `-sky-`, `-orange-`, `-violet-`: on the light
+  theme the bright colour is too pale on white); a fill that carries white text or a price tag is `bg-tv-up-solid` / `-down-solid`; `--tv-dim`
+  and `--tv-mute` are readable text. `tests/unit/skin/trade-contrast.test.ts` reads the palette from the CSS and checks AA (4.5:1 text, 3:1 for the
+  focus ring and glyphs) in both themes, and `trade-theme-tokens.test.ts` that every `tv-` utility in the TSX has a theme token (a class
+  with none is silently dropped by Tailwind).
+- **Focus ring.** One rule in `@layer base` on `html[data-skin='trade']` (so portals get it too, and a utility such as `outline-none` still wins):
+  2px, inset (`outline-offset: -2px`, which an `overflow-hidden` panel cannot clip), in `--tv-accent-ink`. It sets no radius, so a round control stays
+  round. Do not add `outline-offset-*` or ring utilities to a control; a field draws its own line (`TV_FIELD`).
+- **Motion scale**, defined once (`app/tailwind-theme-trade.css`): 100 ms press and hover colour or scale, 160 ms toggles, menus, tips and dialogs
+  (`TV_DIALOG_MOTION`), 240 ms panels, lists, expand and collapse, FLIP and the grid easing, 400 ms hero and staggered reveals and the sparkline,
+  300 ms for an image zoom. Curves: `ease-tv-out` (everything that arrives), `ease-tv-state` (a fade or a state), ease-in-out only for loops,
+  linear only for the tape, the overshoot only for the flag drop. Entrances are named utilities (`animate-tv-pop`, `-fade-up`, `-slide-in`, `-grow`...);
+  keyframes are in `css/*.css` and a test checks that no name repeats. `active:scale-*` and `translate-*` set the `scale` and `translate`
+  properties, so the transition lists `scale` or `translate`, never `transform`. The endless loops pause in a background tab (`data-hidden`
+  on the root); the chart's tick also waits while the chart is off screen or one of its windows is open.
 - **One look for each kind of control, defined once in `ui/`**: `tvButton` (primary, ghost, outline; sizes sm, default, lg, icon; 44px on
   touch and a press that scales), `TvChip` (a label; tones for state and for a skill's area; `sm` in dense rows), `TvToggleChip` and
   `TV_PILL` (a round chip that is pressed or not), `DataSegmented` (a few views side by side), `TV_FIELD` (every field and select: a line that
@@ -139,7 +168,9 @@ ui/                 tv-root, tv-button, tv-chip, tv-toggle-chip, tv-field, tv-me
 ## Data and windows
 
 - Components never import Firebase; they read `useContentQuery`, `useProfileQuery`, `useLive`, `useSkills`, `useContactForm`,
-  `useChatSession` and the helpers of `components/*`.
+  `useChatSession` and the helpers of `components/*`. Nothing is derived in the skin (see `.ai/skins.md`): numbers, orders and "which one is current" come
+  from `lib/derive`; the clock is `useNow` (`hooks/use-now.ts`, one `Date` for the whole month, so every block agrees and a test can fake it); dates are written by
+  `lib/format` (the same Vietnamese months as the rest of the site, also on the chart axis); accent-free text matching is `lib/fold-text.ts`; "Go back" of the 404 is `useGoBack`.
 - The **watchlist is on every page and reads nothing itself**: its counts and its Skills tab come from queries a page has
   already made (`shell/use-cached-content.ts`, `enabled: false`), so no page pays for documents it does not show. The chart reads `experience`.
 - Windows are the skin's own, built on the shadcn primitives and the `tv-*` tokens, with Standard's logic and hooks, and loaded with
@@ -154,8 +185,10 @@ ui/                 tv-root, tv-button, tv-chip, tv-toggle-chip, tv-field, tv-me
   the right end, over the same grey stage (`overlay-zoom-stage.tsx` for a picture, which keeps the ratio it has and is as large as the window
   leaves room for) and the same keys (arrows, `+`, `-`, `0`, Esc; `zoomFromKey` in `overlay-tools.ts`). The QR window keeps the account
   name and number under the picture.
-  `blocks/lazy-dialogs.ts` points the blocks at them with the props of the Standard windows. Connect is a popover built on the shadcn one.
-- **BB Bot** (`shell/trade-chat.tsx`, `overlay-chat-panel.tsx`): the Standard session (`useChatSession`: same limits, errors, Try again,
+  `blocks/lazy-dialogs.ts` points the blocks at them with the props of the Standard windows. **Connect** is a popover built on the shadcn one; its email is one **joined row**: a blue block as high as a button with the word Email (`connect.email`
+  of Standard), the address as a link and the copy control (`TvButton` variant `joined`, size `join`, defined once in `ui/tv-button.tsx`) after a divider. The copy control has the
+  accessible name `Copy`, a `HintTip` (no native `title`) that says `Copied` for a moment, and a status that announces it; Tab goes link, copy, then the list.
+- **BB Bot** (`shell/trade-chat.tsx`, `overlay-chat-panel.tsx`): the Standard session (`useChatSession` with `useChatSettings`, `errorText` and `remainingSuggestions` of `lib/chat`, the helpers Standard and Dev use: same limits, errors, Try again,
   counter) drawn as a docked widget panel that takes the watchlist's column while it is open (the shell makes a `dock` element for it
   and `TradeChat` portals into it), or as a bottom sheet of 80% on a phone. Rows with an avatar and a name instead of bubbles, the
   questions not asked yet as chips, a composer that grows with the text. Esc closes it and gives the focus back to the rail button
@@ -214,7 +247,7 @@ Words of this part are in `content/copy/trade-shell.ts` (en and vi); the rest is
   watchlist on a phone), so each control exists once.
 - **Symbol search** (`shell/search-palette.tsx`, lazy, Ctrl or Cmd with K, or `/` outside a field): a shadcn Dialog with a combobox over
   the pages, projects, roles, skills, certificates, services and education (`blocks/shell-search.ts`: accent-free matching, every word must
-  match, title matches first). Arrows, Enter, Esc. A page goes to its route, a role calls `TradeProvider.showJob`, a skill goes to
+  match, title matches first; **a kind whose page is hidden or coming soon gives no result**, as the page would not open: `KIND_PAGE`). Arrows, Enter, Esc. A page goes to its route, a role calls `TradeProvider.showJob`, a skill goes to
   `/resume#skills`, the rest to their page. Recent picks live in the provider (memory only). Full screen below 700px.
 - **Layout** (`blocks/shell-layout.ts`, `shell/use-layout.ts`): watchlist, page panel and tool rail, saved as `bach-cv-trade-layout`. A
   hidden panel leaves a bar with a button that brings it back, and opening a page brings it back too. Not applied on a phone.
@@ -223,13 +256,16 @@ Words of this part are in `content/copy/trade-shell.ts` (en and vi); the rest is
 - **Years used** (`lib/derive/skill-use.ts`, worked out once for every skin): the months of the roles that list a skill (on the role or on one of its projects, the rule
   of the "Used at" line), overlaps counted once. The **sparkline** is, for each year of the career, the number of roles that listed it. A
   skill no role lists has no number and no line.
-- **Watchlist** (`shell/watchlist.tsx`): tabs Pages (the `Main` navigation, flag and flash on the open page), Technologies (rows with the
-  sparkline, a legend of the roles under the list) and Roles (a timeline; a press opens the job on Resume), then the Details widget and, on
-  Home, the pipeline as an idea card. Arrow keys move between rows (`shell/roving-keys.ts`), every row stays a Tab stop.
-- The frame now reads `skills` and `experience` itself (the tape and the Technologies list need them; the chart already read the roles).
+- **Watchlist** (`shell/watchlist.tsx`): tabs Pages (the `Main` navigation, flag and flash on the open page), Skills (rows grouped by area with the
+  sparkline, a legend of the roles under the list; `skillGroups` with `STRIP_ORDER`, so the same skills as Resume are listed, mobile first) and Roles (a timeline;
+  a press opens the job on Resume), then the Details widget. The pipeline is not here: it is a block of Home (`blocks/home-pipeline.tsx`), so it stays when the Layout
+  menu turns the watchlist off. Arrow keys move between rows (`shell/roving-keys.ts`), every row stays a Tab stop.
+- The frame now reads `skills` and `experience` itself (the tape and the Skills list need them; the chart already read the roles).
   The counts of projects, certificates and services still come from the query cache only.
 - **Home** (`pages/home.tsx`): the symbol overview (a number that counts up once, the real counts of projects, certificates and roles),
-  the hero note, featured projects as idea cards, the latest roles as a timeline, what I built as a numbered timeline and the contact band.
+  the hero note (its years in software are the number every skin states: `{years}` of the Standard copy, from `lib/derive/career-years`), featured projects as
+  idea cards, the latest roles as a timeline (`latestRoles`, `featuredProjects` of `lib/derive/home-lists`, the lists Standard and Dev use), what I built as a numbered timeline,
+  the pipeline card of the Standard hero and the contact band (`blocks/contact-card.tsx`, which only Home uses; About has its own links list).
   A bar of sections scrolls to each. Motion: page change fade, count-up, tape, flash, panels sliding in, sparkline growth, skeleton shimmer.
 
 ## About, Services, Payment and the system screens (`blocks/desk-*`, `css/desk.css`, `content/copy/trade-desk.ts`)
@@ -239,7 +275,7 @@ layout is the skin's. Words only these screens have (the kickers, "Trade", "Reco
 
 - **About = symbol page** (`pages/about.tsx`). Left: the name and headline as the symbol with the specialty tags, the Description (the
   profile summary), Key facts (place, the languages the site offers, years in software that count up once, the areas Mobile / Web / AI that
-  have listed skills, the first role's year, the current role and company; `desk-facts.ts` derives them and is unit-tested), Education as
+  have listed skills, the first role's year, the current role and company; the numbers come from `lib/derive`), Education as
   a dated timeline whose rows slide in when first seen, and the Core stack as tiles with "Used at". Right: the links list (email with Copy,
   phone, the place, the Professional / Messaging / Social groups, the `#contact` anchor), the three photos and the Ask BB Bot card.
 - **Services = broker catalogue + order ticket** (`desk-services.tsx`). One `useContactForm` serves both: a **Trade** button on a row
@@ -253,7 +289,7 @@ layout is the skin's. Words only these screens have (the kickers, "Trade", "Reco
   (`aria-hidden`), an 11:8 frame, a little motion that reduced motion switches off (the skin-wide rule) and a hover zoom only where hover exists.
 - **Payment = deposit methods** (`desk-payment.tsx`). The highlighted methods are the Recommended ones with a QR thumbnail that opens the
   QR window of the skin (the family toolbar: zoom, Copy number, Copy all details, Save QR, previous / next); the rest are the rows of a table (a stack of labelled values on a phone) with a
-  bank / wallet filter when there are both. Copy number / Copy all details use the Standard helpers and show a snackbar for 2 seconds
+  bank / wallet filter when there are both. The filter, the QR step and Copy number / Copy all details are `usePaymentMethods` (`components/payment`, with `paymentView`), the same hook Standard and Dev use, and show a snackbar for 2 seconds
   (`desk-snackbar.tsx`, placed in the terminal root with a portal, because the page's rise animation would otherwise be the box
   `fixed` is measured from). Paused and error states keep the Standard link and Try again.
 - **System screens** (`ui/tv-*`): 404 is "Symbol not found" (with the path), Coming soon is "Pre-market" (no date), maintenance is "Market
@@ -262,4 +298,4 @@ layout is the skin's. Words only these screens have (the kickers, "Trade", "Reco
   is the widget error with Try again.
 - Motion is transform and opacity only (the count-up is the one script), all of it off for reduced motion (the rule at the end of
   `trade.css`; the count-up and the timeline check `useReducedMotion`).
-- Tests: `tests/automation/skins/trade-desk-about|services|payment.spec.ts`, `trade-states.spec.ts`, `tests/unit/skin/trade-desk-facts.test.ts`.
+- Tests: `tests/automation/skins/trade-desk-about|services|payment.spec.ts`, `trade-states.spec.ts`.

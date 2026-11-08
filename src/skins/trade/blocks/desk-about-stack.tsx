@@ -5,7 +5,6 @@
 'use client';
 
 import Link from 'next/link';
-import type { CSSProperties } from 'react';
 import { SkillIcon } from '@/components/skills/skill-icon';
 import { SKILL_COLORS } from '@/components/skills/skill-icons';
 import { evidenceLine } from '@/components/skills/skill-text';
@@ -17,6 +16,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { DeskSection } from '@/skins/trade/blocks/desk-section';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 /**
  * The core stack as the composition of a symbol: one tile for each skill I use every day, with where I used it, and the link to the full list.
@@ -68,11 +68,7 @@ export function DeskAboutStack() {
           {core.map((skill) => (
             <span
               key={skill.id}
-              style={
-                {
-                  '--c': SKILL_COLORS[skill.icon],
-                } as CSSProperties
-              }
+              style={cssVars({ '--c': SKILL_COLORS[skill.icon] })}
               className='h-full flex-1 bg-(--c,var(--tv-accent))'
             />
           ))}
@@ -87,8 +83,8 @@ export function DeskAboutStack() {
             return (
               <li
                 key={skill.id}
-                style={color ? ({ '--c': color } as CSSProperties) : undefined}
-                className='flex gap-2.5 rounded border border-tv-line border-t-2 border-t-(--c,var(--tv-accent)) bg-tv-bg p-2.5 transition-[translate,border-color] duration-200 hover:-translate-y-0.5 hover:border-(--c,var(--tv-accent))'
+                style={cssVars({ '--c': color })}
+                className='flex gap-2.5 rounded border border-tv-line border-t-2 border-t-(--c,var(--tv-accent)) bg-tv-bg p-2.5'
               >
                 <span className='grid size-8 flex-none place-items-center rounded bg-[color-mix(in_srgb,var(--c,var(--tv-accent))_15%,transparent)] text-[color-mix(in_srgb,var(--c,var(--tv-accent))_70%,var(--tv-ink))]'>
                   <SkillIcon

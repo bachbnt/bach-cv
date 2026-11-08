@@ -25,7 +25,7 @@ the URL does not change.
    **The three lights of the editor window itself (the title bar) work too:** red closes the editor (back to the Standard look, like the
    Skin menu), yellow is **Zen mode** (the tabs, breadcrumb, activity bar, Explorer, minimap, bottom panel and status bar are hidden with
    CSS, so the terminal keeps its scrollback; the title bar and the page stay; Esc or the light leaves it, and an open window takes Esc
-   first; not on a phone), green is the **full screen** of the page (`shell/use-fullscreen.ts`; a browser that cannot do it, such as an iPhone,
+   first; not on a phone), green is the **full screen** of the page (`hooks/use-fullscreen.ts`; a browser that cannot do it, such as an iPhone,
    leaves it grey).
 5. Dev-only strings (command lines like `whoami`) are decoration: `aria-hidden`. Anything a visitor reads or operates uses the Standard
    copy (`content/copy/*`), so both languages work. A new string needs `en` and `vi` (`defineCopy`).

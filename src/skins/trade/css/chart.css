@@ -8,7 +8,7 @@
 /* the clip of the series is a rectangle that grows from the left edge of the plot */
 .tv-chart-reveal {
   transform-origin: 0 0;
-  animation: tv-chart-reveal 1.15s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+  animation: tv-chart-reveal 1.15s var(--ease-tv-out) both;
 }
 @keyframes tv-chart-reveal {
   from {
@@ -32,11 +32,11 @@
 }
 
 .tv-chart-fade-in {
-  animation: tv-chart-fade 0.24s ease-out both;
+  animation: tv-chart-fade 240ms var(--ease-tv-state) both;
 }
 .tv-chart-fade-out {
   pointer-events: none;
-  animation: tv-chart-fade 0.24s ease-in reverse both;
+  animation: tv-chart-fade 240ms ease-in reverse both;
 }
 @keyframes tv-chart-fade {
   from {
@@ -54,17 +54,30 @@
   }
 }
 .tv-chart-flash {
-  animation: tv-chart-flash 0.7s ease-out;
+  animation: tv-chart-flash 0.7s var(--ease-tv-state);
 }
 @keyframes tv-chart-flash {
   from {
     opacity: 0.3;
   }
 }
+/* a glow behind the tag in the colour of the tick: up or down. Opacity only. */
+.tv-chart-halo {
+  pointer-events: none;
+  animation: tv-chart-halo 0.7s var(--ease-tv-state) both;
+}
+@keyframes tv-chart-halo {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 0;
+  }
+}
 
 /* a new drawing arrives a little heavy and settles to its own width */
 .tv-chart-pop {
-  animation: tv-chart-pop 0.45s ease-out;
+  animation: tv-chart-pop 240ms var(--ease-tv-state);
 }
 @keyframes tv-chart-pop {
   from {
@@ -85,25 +98,22 @@
 }
 
 .tv-chart-glow {
+  opacity: 0.4;
   animation: tv-chart-glow 1.6s ease-in-out infinite;
 }
 @keyframes tv-chart-glow {
-  0%,
-  100% {
-    filter: drop-shadow(0 0 2px var(--tv-accent));
-  }
   50% {
-    filter: drop-shadow(0 0 7px var(--tv-accent));
+    opacity: 0.12;
   }
 }
 
 /* the crosshair slides to the next bar instead of jumping */
 .tv-chart-ease {
-  transition: transform 90ms ease-out;
+  transition: transform 90ms var(--ease-tv-state);
 }
 
 .tv-chart-rise {
-  animation: tv-chart-rise 0.25s ease-out both;
+  animation: tv-chart-rise 240ms var(--ease-tv-out) both;
 }
 @keyframes tv-chart-rise {
   from {
@@ -119,4 +129,25 @@ html[data-skin='trade'] {
   --tv-ind-pink: color-mix(in srgb, var(--tv-violet) 40%, var(--tv-down));
   --tv-ind-teal: color-mix(in srgb, var(--tv-up) 45%, var(--tv-sky));
   --tv-ind-slate: color-mix(in srgb, var(--tv-mute) 70%, var(--tv-accent));
+  /* the same mixes of the text colours, for the numbers of the legend (the lines above stay in the bright colours) */
+  --tv-ind-lime-ink: color-mix(
+    in srgb,
+    var(--tv-up-ink) 60%,
+    var(--tv-gold-ink)
+  );
+  --tv-ind-pink-ink: color-mix(
+    in srgb,
+    var(--tv-violet-ink) 40%,
+    var(--tv-down-ink)
+  );
+  --tv-ind-teal-ink: color-mix(
+    in srgb,
+    var(--tv-up-ink) 45%,
+    var(--tv-sky-ink)
+  );
+  --tv-ind-slate-ink: color-mix(
+    in srgb,
+    var(--tv-mute) 70%,
+    var(--tv-accent-ink)
+  );
 }

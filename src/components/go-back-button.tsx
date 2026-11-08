@@ -4,20 +4,14 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { useGoBack } from '@/hooks/use-go-back';
 
 /** "Go back": the previous page if there is one, otherwise the home page. */
 export function GoBackButton({ children }: { children: string }) {
-  const router = useRouter();
+  const goBack = useGoBack();
   return (
-    <Button
-      variant='outline'
-      size='lg'
-      onClick={() =>
-        window.history.length > 1 ? router.back() : router.push('/')
-      }
-    >
+    <Button variant='outline' size='lg' onClick={goBack}>
       {children}
     </Button>
   );

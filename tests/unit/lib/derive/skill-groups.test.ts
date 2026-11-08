@@ -9,6 +9,7 @@ import {
   GROUP_ORDER,
   skillGroups,
 } from '@/lib/derive/skill-groups';
+import { STRIP_ORDER } from '@/lib/derive/skill-strip';
 
 type Category = 'mobile' | 'web' | 'ai' | 'tools';
 const skill = (category: Category, listed = true) => ({ category, listed });
@@ -28,6 +29,26 @@ describe('skillGroups', () => {
       ['tools', 1],
     ]);
     expect(GROUP_ORDER).toEqual(['ai', 'mobile', 'web', 'tools']);
+  });
+
+  it('can take another order (the watchlist goes mobile first) with the same skills in the same groups', () => {
+    const skills = [
+      skill('tools'),
+      skill('mobile'),
+      skill('ai'),
+      skill('web', false),
+    ];
+    const strip = skillGroups(skills, STRIP_ORDER);
+    expect(strip.map((g) => g.category)).toEqual(['mobile', 'ai', 'tools']);
+    expect(
+      strip
+        .flatMap((g) => g.items)
+        .sort((a, b) => a.category.localeCompare(b.category)),
+    ).toEqual(
+      skillGroups(skills)
+        .flatMap((g) => g.items)
+        .sort((a, b) => a.category.localeCompare(b.category)),
+    );
   });
 });
 

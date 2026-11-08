@@ -5,7 +5,7 @@
 'use client';
 
 import { ImageIcon } from 'lucide-react';
-import type { CSSProperties, RefObject } from 'react';
+import type { RefObject } from 'react';
 import { ProjectCover } from '@/components/projects/project-cover';
 import { skillsOf } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
@@ -16,10 +16,11 @@ import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { DataKind } from '@/skins/trade/blocks/data-kind';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
-import type { Density } from '@/skins/trade/blocks/data-projects-grid';
+import type { Density } from '@/skins/trade/blocks/data-projects-model';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
 import { screenshotsLabel } from '@/skins/trade/blocks/screenshots-label';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 /** The projects as ideas of a chart site: a card each, with the cover on top (it opens the screenshots), the name, the summary, the tags and the links. */
 export function DataProjectsCards({
@@ -81,15 +82,15 @@ function ProjectCard({
     <article
       data-flip={project.id}
       data-testid='project'
-      style={{ '--i': Math.min(index, 8) } as CSSProperties}
-      className='group/card flex animate-[tv-fade-up_0.32s_cubic-bezier(0.2,0.7,0.2,1)_both] flex-col overflow-hidden rounded-md border border-tv-line bg-tv-panel transition-[translate,border-color,box-shadow] duration-200 [animation-delay:calc(var(--i)*35ms)] hover:-translate-y-0.5 hover:border-tv-accent hover:shadow-[0_6px_18px_rgba(0,0,0,0.25)] active:translate-y-0'
+      style={cssVars({ '--i': Math.min(index, 8) })}
+      className='group/card flex animate-tv-fade-up flex-col overflow-hidden rounded-md border border-tv-line bg-tv-panel transition-[translate,border-color,box-shadow] duration-160 [animation-delay:calc(var(--i)*35ms)] hover:-translate-y-0.5 hover:border-tv-accent hover:shadow-tv-card active:translate-y-0'
     >
       <div className='relative overflow-hidden'>
         <ProjectCover
           project={project}
           firstSkill={tags[0]}
           className={cn(
-            'rounded-none text-4xl transition-transform duration-500 ease-out group-hover/card:scale-105',
+            'rounded-none text-4xl transition-transform duration-300 ease-tv-out group-hover/card:scale-105',
             comfy ? 'h-[150px]' : 'h-[96px]',
           )}
         />
@@ -98,7 +99,7 @@ function ProjectCard({
             type='button'
             aria-label={label}
             onClick={() => onOpenScreenshots(project)}
-            className='absolute inset-0 flex cursor-zoom-in items-end justify-end bg-black/0 p-2 transition-colors outline-offset-[-3px] hover:bg-black/15 active:bg-black/15'
+            className='absolute inset-0 flex cursor-zoom-in items-end justify-end bg-black/0 p-2 transition-colors duration-100 hover:bg-black/15 active:bg-black/15'
           >
             <span
               aria-hidden='true'

@@ -4,6 +4,7 @@
 
 import { KIND_ORDER, skillsOf } from '@/components/projects/project-helpers';
 import type { Doc } from '@/lib/content/schema';
+import { foldText } from '@/lib/fold-text';
 
 type Project = Doc<'projects'>;
 type Skills = Map<string, Doc<'skills'>>;
@@ -18,6 +19,9 @@ export const PROJECT_COLUMNS = [
   'links',
 ] as const;
 export type ProjectColumn = (typeof PROJECT_COLUMNS)[number];
+
+/** How tight the rows and cards of the Projects page are. */
+export type Density = 'compact' | 'comfortable';
 
 export type SortState = { column: ProjectColumn; dir: 'asc' | 'desc' } | null;
 
@@ -61,27 +65,19 @@ export const ariaSort = (
       ? 'ascending'
       : 'descending';
 
-/** Lower case without accents, so "du an" finds "Dự án". */
-const fold = (value: string) =>
-  value
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
-    .replace(/đ/g, 'd')
-    .toLowerCase();
-
 export const filterProjects = (
   projects: Project[],
   filters: ProjectFilters,
   skills: Skills,
 ): Project[] => {
-  const words = fold(filters.text).split(/\s+/).filter(Boolean);
+  const words = foldText(filters.text).split(/\s+/).filter(Boolean);
   return projects.filter((project) => {
     if (filters.kind !== 'all' && project.kind !== filters.kind) return false;
     if (filters.featuredOnly && project.highlight === null) return false;
     if (!filters.technologies.every((id) => project.technologies.includes(id)))
       return false;
     if (words.length === 0) return true;
-    const haystack = fold(
+    const haystack = foldText(
       [
         project.name,
         project.summary,
@@ -160,7 +156,7 @@ export const techOptions = (
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 };
 
-export const toggleId = (ids: string[], id: string): string[] =>
+export const toggleId = <T extends string>(ids: T[], id: T): T[] =>
   ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id];
 
 /** The number the area of a heatmap tile stands for: how many technologies the project lists. */

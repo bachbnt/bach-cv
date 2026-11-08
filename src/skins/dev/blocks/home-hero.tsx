@@ -8,6 +8,7 @@ import type { CSSProperties } from 'react';
 import { devHomeAboutCopy } from '@/content/copy/dev-home-about';
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
+import { useYearsText } from '@/lib/query/use-career-years';
 import { HomePipeline } from '@/skins/dev/blocks/home-pipeline';
 import { HomePortrait } from '@/skins/dev/blocks/home-portrait';
 import { HomeProfileWindow } from '@/skins/dev/blocks/home-profile-window';
@@ -22,6 +23,7 @@ const COMMAND = 'whoami';
 /** The opening of Home: a terminal card with the title and the two buttons, the profile window and photo beside it, then the pipeline. */
 export function HomeHero() {
   const copy = useCopy(homeCopy);
+  const intro = useYearsText(copy.intro, copy.introUndated);
   const { titleHighlight } = useCopy(devHomeAboutCopy);
   const at = copy.title.indexOf(titleHighlight);
 
@@ -54,7 +56,7 @@ export function HomeHero() {
               <span className='dv-caret' aria-hidden='true' />
             </h1>
             <p className='mb-[18px] max-w-[640px] font-sans text-[17px] leading-[1.65] font-normal text-ink'>
-              {copy.intro}
+              {intro}
             </p>
             <div className='text-cmt italic' aria-hidden='true'>
               # what next?

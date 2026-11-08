@@ -103,7 +103,7 @@ export function TvArtTeaching() {
         width='54'
         height='6'
         rx='3'
-        className='origin-left animate-[tv-art-grow_1.2s_cubic-bezier(0.2,0.7,0.2,1)_both] fill-tv-accent [transform-box:fill-box]'
+        className='origin-left animate-[tv-art-grow_1.2s_var(--ease-tv-out)_both] fill-tv-accent [transform-box:fill-box]'
       />
     </>
   );

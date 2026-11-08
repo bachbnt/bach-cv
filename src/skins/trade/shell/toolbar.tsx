@@ -38,7 +38,7 @@ export function Toolbar() {
         href='/'
         data-slot='tv-logo'
         aria-label={fill(copy.homeLink, { name: shell.name })}
-        className='flex h-8 flex-none items-center gap-2 rounded px-1.5 text-sm font-bold whitespace-nowrap transition-[background-color,transform] duration-100 hover:bg-tv-hover active:scale-[.97] pointer-coarse:min-h-11 pointer-coarse:min-w-11 pointer-coarse:justify-center'
+        className='flex h-8 flex-none items-center gap-2 rounded px-1.5 text-sm font-bold whitespace-nowrap transition-[background-color,scale] duration-100 hover:bg-tv-hover active:scale-[.97] pointer-coarse:min-h-11 pointer-coarse:min-w-11 pointer-coarse:justify-center'
       >
         <Image
           src='/logo.png'

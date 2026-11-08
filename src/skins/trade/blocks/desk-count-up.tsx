@@ -4,12 +4,9 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
-import { countAt } from '@/skins/trade/blocks/desk-facts';
 import { useInViewOnce } from '@/skins/trade/blocks/desk-use-in-view';
+import { useCountUp } from '@/skins/trade/shell/use-count-up';
 import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
-
-const DURATION_MS = 900;
 
 /**
  * A real number that counts up from 0 the first time it is seen (once). With reduced motion it is shown at once. The animated digits are
@@ -22,21 +19,10 @@ export function DeskCountUp({
   value: number;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
   const [ref, seen] = useInViewOnce<HTMLSpanElement>();
-  const [shown, setShown] = useState(0);
-
-  useEffect(() => {
-    if (!seen || reduced) return;
-    let frame = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      setShown(countAt(value, (now - start) / DURATION_MS));
-      if (now - start < DURATION_MS) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [seen, reduced, value]);
+  // with reduced motion there is nothing to wait for: the number is there before it is seen
+  const reduced = useReducedMotion();
+  const shown = useCountUp(seen || reduced ? value : null, 900);
 
   return (
     <span
@@ -45,7 +31,7 @@ export function DeskCountUp({
       data-value={value}
       className={className}
     >
-      <span aria-hidden='true'>{reduced ? value : shown}</span>
+      <span aria-hidden='true'>{shown}</span>
       <span className='sr-only'>{value}</span>
     </span>
   );

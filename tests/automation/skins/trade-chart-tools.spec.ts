@@ -113,8 +113,9 @@ test.describe('chart types', () => {
     await page.getByTestId('tv-type-menu').click();
     await page.getByRole('menuitemradio', { name: 'Area' }).click();
     const fading = await page.evaluate(() =>
+      // the pictures only: a legend row that has just appeared fades in with the same keyframes
       document
-        .querySelector('.tv-root')!
+        .querySelector('[data-testid="tv-chart"]')!
         .getAnimations({ subtree: true })
         .map((a) => (a as CSSAnimation).animationName)
         .filter((n) => n === 'tv-chart-fade'),

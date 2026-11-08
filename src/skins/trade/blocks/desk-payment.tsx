@@ -5,9 +5,8 @@
 'use client';
 
 import { Info, Wallet } from 'lucide-react';
-import { startTransition, useState, ViewTransition } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
-import { splitMethods, summaryOf } from '@/components/payment/payment-details';
+import { startTransition, ViewTransition } from 'react';
+import { usePaymentMethods } from '@/components/payment/use-payment-methods';
 import { paymentCopy } from '@/content/copy/payment';
 import { tradeDeskCopy } from '@/content/copy/trade-desk';
 import type { Doc } from '@/lib/content/schema';
@@ -28,8 +27,6 @@ import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvLink } from '@/skins/trade/ui/tv-button';
 import { TvStateNotice } from '@/skins/trade/ui/tv-state-notice';
 import { TvToggleChip } from '@/skins/trade/ui/tv-toggle-chip';
-
-type Filter = 'all' | Doc<'payments'>['kind'];
 
 /**
  * The payment methods, read at run time only (the Firestore rules return the visible ones), so nothing here is in the built files. With none
@@ -70,34 +67,23 @@ export function DeskPayment() {
 function DeskMethods({ methods }: { methods: Doc<'payments'>[] }) {
   const copy = useCopy(paymentCopy);
   const desk = useCopy(tradeDeskCopy).payment;
-  const [filter, setFilter] = useState<Filter>('all');
-  const [qrId, setQrId] = useState<string | null>(null);
   const { snack, say } = useDeskSnackbar();
 
-  const copyAccount = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(m.account))
-        ? copy.toast.accountCopied(m.name)
-        : copy.toast.copyFailed,
-    );
-  const copyAll = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(summaryOf(m, copy)))
-        ? copy.toast.allCopied(m.name)
-        : copy.toast.copyFailed,
-    );
-
-  const { featured, rest } = splitMethods(methods);
-  const withQr = [...featured, ...rest].filter((m) => m.qr);
-  const qrIndex = withQr.findIndex((m) => m.id === qrId);
-  const qrMethod = qrIndex < 0 ? null : withQr[qrIndex];
-  const stepQr = (by: number) =>
-    setQrId(withQr[(qrIndex + by + withQr.length) % withQr.length]?.id ?? null);
-
-  const kinds = (['bank', 'wallet'] as const).filter((k) =>
-    rest.some((m) => m.kind === k),
-  );
-  const shownRows = rest.filter((m) => filter === 'all' || m.kind === filter);
+  const {
+    featured,
+    rest,
+    kinds,
+    shownRows,
+    withQr,
+    filter,
+    setFilter,
+    setQrId,
+    qrIndex,
+    qrMethod,
+    stepQr,
+    copyAccount,
+    copyAll,
+  } = usePaymentMethods(methods, say);
 
   return (
     <>

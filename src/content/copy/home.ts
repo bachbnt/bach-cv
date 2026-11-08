@@ -8,9 +8,13 @@ import { defineCopy } from '@/lib/i18n/define-copy';
 export const homeCopy = defineCopy(
   {
     title: 'I lead mobile teams and build the AI tooling they ship with.',
+    // `{years}` is the years in software worked out from the roles; `introUndated` is the same text while they load
     intro:
-      'Team Lead at FPT Software with 7 years in software, from mobile apps (Kotlin, KMM, React Native) to AI tooling. Today I lead 10 developers on a 13-module Android app and run the Claude Code workflows that fix, review and sync its code.',
+      'Team Lead at FPT Software with {years} in software, from mobile apps (Kotlin, KMM, React Native) to AI tooling. Today I lead 10 developers on a 13-module Android app and run the Claude Code workflows that fix, review and sync its code.',
+    introUndated:
+      'Team Lead at FPT Software, from mobile apps (Kotlin, KMM, React Native) to AI tooling. Today I lead 10 developers on a 13-module Android app and run the Claude Code workflows that fix, review and sync its code.',
     downloadCv: 'Download CV',
+    avatarAlt: '{name} reading a book',
     pipeline: {
       title: 'How a bug becomes a merge request',
       subtitle:
@@ -47,8 +51,11 @@ export const homeCopy = defineCopy(
     title:
       'Mình dẫn dắt các nhóm mobile và xây dựng công cụ AI để họ giao sản phẩm.',
     intro:
-      'Team Lead tại FPT Software với 7 năm làm việc trong ngành phần mềm, từ ứng dụng mobile (Kotlin, KMM, React Native) đến công cụ AI. Hiện mình dẫn dắt 10 lập trình viên trên một ứng dụng Android 13 module và vận hành các quy trình Claude Code để sửa lỗi, review và đồng bộ code.',
+      'Team Lead tại FPT Software với {years} làm việc trong ngành phần mềm, từ ứng dụng mobile (Kotlin, KMM, React Native) đến công cụ AI. Hiện mình dẫn dắt 10 lập trình viên trên một ứng dụng Android 13 module và vận hành các quy trình Claude Code để sửa lỗi, review và đồng bộ code.',
+    introUndated:
+      'Team Lead tại FPT Software, từ ứng dụng mobile (Kotlin, KMM, React Native) đến công cụ AI. Hiện mình dẫn dắt 10 lập trình viên trên một ứng dụng Android 13 module và vận hành các quy trình Claude Code để sửa lỗi, review và đồng bộ code.',
     downloadCv: 'Tải CV',
+    avatarAlt: '{name} đang đọc sách',
     pipeline: {
       title: 'Một lỗi trở thành merge request như thế nào',
       subtitle:

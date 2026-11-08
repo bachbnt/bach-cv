@@ -127,10 +127,12 @@ test.describe('one toolbar', () => {
     await page.keyboard.press('Shift+Tab');
     await page.keyboard.press('Tab');
     await expect(page.getByText('Shift+R').first()).toBeVisible();
-    const ring = await replay.evaluate(
-      (el) => getComputedStyle(el).boxShadow !== 'none',
-    );
-    expect(ring).toBe(true);
+    // the one ring of the skin: 2px, solid, inset (see trade.css)
+    const ring = await replay.evaluate((el) => {
+      const s = getComputedStyle(el);
+      return [s.outlineWidth, s.outlineStyle, s.outlineOffset].join(' ');
+    });
+    expect(ring).toBe('2px solid -2px');
   });
 });
 

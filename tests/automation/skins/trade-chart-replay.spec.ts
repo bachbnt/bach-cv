@@ -74,7 +74,7 @@ test('choose a start bar: the weeks after it are hidden, and so are the jobs tha
   // the crosshair cannot go past the playhead
   await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.2);
   await expect(page.getByTestId('tv-legend-date')).not.toContainText(
-    'Nov 1, 26',
+    'Sun 1 Nov 26',
   );
 });
 

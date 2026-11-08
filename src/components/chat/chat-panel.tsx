@@ -7,34 +7,16 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { chatCopy } from '@/content/copy/chat';
+import { errorText } from '@/lib/chat/error-text';
 import { fill } from '@/lib/chat/fill';
+import { hasFinePointer } from '@/lib/chat/fine-pointer';
 import { useCopy } from '@/lib/i18n/copy';
 import type { ChatEntry } from '@/lib/chat/messages';
-import type { Suggestion } from '@/lib/chat/suggestions';
+import { remainingSuggestions, type Suggestion } from '@/lib/chat/suggestions';
 import { ChatBubble } from './chat-bubble';
 import { ChatComposer } from './chat-composer';
 import { ChatSuggestions } from './chat-suggestions';
 import { ChatTyping } from './chat-typing';
-
-type ChatCopy = typeof chatCopy.en;
-
-/** The note for an error kind (`ChatErrorKind`), in the language shown now. */
-const errorText = (copy: ChatCopy, kind: string): string => {
-  switch (kind) {
-    case 'network':
-      return copy.errors.network;
-    case 'rate-limit':
-      return copy.errors.rateLimit;
-    case 'daily-limit':
-      return copy.errors.dailyLimit;
-    case 'unavailable':
-      return copy.unavailable;
-    default:
-      return copy.errors.generic;
-  }
-};
-
-const FINE_POINTER = '(hover: hover) and (pointer: fine)';
 
 /** The open chat: header, messages, suggested questions, input and the counter. */
 export function ChatPanel({
@@ -77,7 +59,7 @@ export function ChatPanel({
 
   // a mouse user can type at once; on a phone focusing the input would raise the keyboard over the answer
   useEffect(() => {
-    if (available && window.matchMedia(FINE_POINTER).matches) {
+    if (available && hasFinePointer()) {
       textareaRef.current?.focus();
     } else {
       panelRef.current?.focus({ preventScroll: true });
@@ -91,10 +73,7 @@ export function ChatPanel({
 
   const lastIndex = entries.length - 1;
   // the design offers the questions not asked yet, after each answer (and not while one is being answered)
-  const asked = new Set(
-    entries.filter((e) => e.role === 'user').map((e) => e.content),
-  );
-  const remaining = suggestions.filter((s) => !asked.has(s.text));
+  const remaining = remainingSuggestions(entries, suggestions);
   const showSuggestions =
     available && !isLimitReached && !isSending && remaining.length > 0;
 

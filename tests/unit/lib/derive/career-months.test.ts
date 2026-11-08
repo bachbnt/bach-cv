@@ -4,12 +4,15 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  endExclusive,
   jobLength,
   lengthOfMonths,
   monthIndex,
   monthSpan,
+  monthStart,
   nowMonthIndex,
   spanMonths,
+  tenureOf,
 } from '@/lib/derive/career-months';
 
 const now = new Date(2026, 10, 6);
@@ -49,5 +52,39 @@ describe('length of a role', () => {
       years: 0,
       months: 6,
     });
+  });
+});
+
+describe('months as times', () => {
+  it('starts a month on its first day, and ends it on the first day of the next', () => {
+    expect(monthStart('2022-05')).toBe(new Date(2022, 4, 1).getTime());
+    expect(endExclusive('2022-05')).toBe(new Date(2022, 5, 1).getTime());
+    expect(endExclusive('2022-12')).toBe(new Date(2023, 0, 1).getTime());
+  });
+
+  it('is NaN for a month that is not one', () => {
+    expect(monthStart('soon')).toBeNaN();
+    expect(endExclusive('')).toBeNaN();
+  });
+});
+
+describe('tenureOf', () => {
+  it('is the first and last month and the months between, both counted', () => {
+    expect(
+      tenureOf({ startMonth: '2022-05', endMonth: '2026-01' }, now),
+    ).toEqual({
+      start: monthIndex('2022-05'),
+      end: monthIndex('2026-01'),
+      months: 45,
+    });
+  });
+
+  it('runs the current role to this month and never ends before it starts', () => {
+    expect(tenureOf({ startMonth: '2026-01', endMonth: null }, now).end).toBe(
+      monthIndex('2026-11'),
+    );
+    const odd = tenureOf({ startMonth: '2024-05', endMonth: '2024-01' }, now);
+    expect(odd.end).toBe(odd.start);
+    expect(odd.months).toBe(1);
   });
 });

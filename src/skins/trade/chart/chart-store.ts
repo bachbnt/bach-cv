@@ -35,7 +35,7 @@ import {
   type ReplayState,
 } from '@/skins/trade/chart/replay';
 
-export interface ChartState extends ChartPrefs {
+interface ChartState extends ChartPrefs {
   tool: ToolId;
   /** the tool stays after a drawing (the visitor double-clicked its button) instead of going back to the cursor */
   sticky: boolean;
@@ -58,7 +58,7 @@ export interface ChartState extends ChartPrefs {
 }
 
 /** What the buttons outside the chart (range bar, tool rail) ask the chart to do with its window. */
-export interface ChartController {
+interface ChartController {
   setRange: (key: RangeKey) => void;
   goTo: (year: number, month: number) => void;
   fit: () => void;
@@ -66,7 +66,7 @@ export interface ChartController {
   zoom: (factor: number) => void;
 }
 
-export interface ChartStore {
+interface ChartStore {
   get: () => ChartState;
   subscribe: (listener: () => void) => () => void;
   controller: () => ChartController | null;
@@ -263,11 +263,14 @@ export const chartStore = createChartStore(
   typeof window === 'undefined' ? DEFAULT_PREFS : loadPrefs(),
 );
 
+/** What the server (and the first render of a client) sees: built once, so a selector gets the same object every time. */
+const SERVER_STATE = initial(DEFAULT_PREFS);
+
 /** Reads a part of the shared state; `select` must give a value that is the same until that part changes (a number, a string, an object kept in the state). */
 export function useChartStore<T>(select: (state: ChartState) => T): T {
   return useSyncExternalStore(
     chartStore.subscribe,
     () => select(chartStore.get()),
-    () => select(initial(DEFAULT_PREFS)),
+    () => select(SERVER_STATE),
   );
 }

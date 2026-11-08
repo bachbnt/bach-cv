@@ -8,6 +8,7 @@ import type { ReactNode } from 'react';
 import { tradeChartCopy } from '@/content/copy/trade-chart';
 import { useCopy } from '@/lib/i18n/copy';
 import { TvDialogShell } from '@/skins/trade/shell/overlay-dialog-shell';
+import { useModKey } from '@/skins/trade/shell/use-mod-key';
 
 type Copy = (typeof tradeChartCopy)['en']['shortcuts'];
 
@@ -33,6 +34,7 @@ const Row = ({ keys, children }: { keys: string[]; children: ReactNode }) => (
 
 const groups = (
   copy: Copy,
+  mod: string,
 ): { title: string; rows: [string[], string][] }[] => [
   {
     title: copy.chart,
@@ -59,8 +61,8 @@ const groups = (
   {
     title: copy.more,
     rows: [
-      [['Ctrl', 'Z'], copy.undo],
-      [['Shift', 'Ctrl', 'Z'], copy.redo],
+      [[mod, 'Z'], copy.undo],
+      [['Shift', mod, 'Z'], copy.redo],
       [['Shift', 'R'], copy.replay],
       [['?'], copy.help],
     ],
@@ -77,6 +79,7 @@ export default function ShortcutsDialog({
 }) {
   const all = useCopy(tradeChartCopy);
   const copy = all.shortcuts;
+  const mod = useModKey();
   return (
     <TvDialogShell
       open={open}
@@ -92,7 +95,7 @@ export default function ShortcutsDialog({
         className='flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto'
       >
         <p className='text-xs text-tv-mute'>{copy.description}</p>
-        {groups(copy).map((group) => (
+        {groups(copy, mod).map((group) => (
           <section key={group.title} className='flex flex-col gap-1.5'>
             <h3 className='text-[11px] font-bold tracking-wide text-tv-mute uppercase'>
               {group.title}

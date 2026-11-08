@@ -30,7 +30,7 @@ export function useFullscreen() {
     const done = document.fullscreenElement
       ? document.exitFullscreen()
       : document.documentElement.requestFullscreen();
-    // the browser can refuse (no user gesture, a policy): the lights then stay as they were
+    // the browser can refuse (no user gesture, a policy): the control then stays as it was
     done.catch(() => undefined);
   }, []);
   return { supported, active, toggle };

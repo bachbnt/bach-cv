@@ -56,9 +56,7 @@ export function DeskAboutTimeline() {
               style={{ animationDelay: `${i * 110}ms` }}
               className={cn(
                 'relative pb-4 pl-4 last:pb-0',
-                shown
-                  ? 'animate-[tv-slide-in_0.5s_cubic-bezier(0.2,0.7,0.2,1)_both]'
-                  : 'opacity-0',
+                shown ? 'animate-tv-slide-in-slow' : 'opacity-0',
               )}
             >
               <span

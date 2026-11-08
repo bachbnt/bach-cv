@@ -1,7 +1,8 @@
 /*
  * The look of the Trade skin: a candlestick chart terminal. Every class has the prefix tv- and every rule is scoped to .tv-root (or to
  * html[data-skin='trade'] for the palette, so portals see it). Dark values are the base; the light theme is `html:not(.dark)`.
- * Names of the palette all start with --tv-, so they cannot clash with the shadcn tokens or with another skin.
+ * Names of the palette all start with --tv- (`--tv-ind-*` in css/chart.css and `--tv-data-*` in css/data.css are palette tokens too), so
+ * they cannot clash with the shadcn tokens or with another skin.
  */
 html[data-skin='trade'] {
   --tv-bg: #131722;
@@ -9,9 +10,10 @@ html[data-skin='trade'] {
   --tv-hover: #2a2e39;
   --tv-line: #2a2e39;
   --tv-ink: #d1d4dc;
-  /* a little lighter than the original grey (#787b86) so small text keeps its contrast on the dark background */
-  --tv-mute: #8b8e99;
-  --tv-dim: #5d606b;
+  /* text greys: mute is secondary text, dim is the quietest text (placeholder, kicker); both are at least 4.5:1 on the background, the
+     panel and (mute) a hovered row, which tests/unit/skin/trade-contrast.test.ts checks */
+  --tv-mute: #9598a3;
+  --tv-dim: #868995;
   --tv-grid: #1f2430;
   --tv-up: #26a69a;
   --tv-down: #ef5350;
@@ -24,6 +26,16 @@ html[data-skin='trade'] {
   --tv-violet: #7c3aed;
   --tv-sky: #0ea5e9;
   --tv-orange: #f97316;
+  /* the colours as TEXT (`text-tv-*-ink`): on the light theme the bright ones are too pale on white, so those are darker there */
+  --tv-up-ink: #3cb8ac;
+  --tv-down-ink: #f26b69;
+  --tv-gold-ink: var(--tv-gold);
+  --tv-sky-ink: var(--tv-sky);
+  --tv-orange-ink: var(--tv-orange);
+  --tv-violet-ink: #a78bfa;
+  /* fills that carry white text or an axis tag (`bg-tv-up-solid`) */
+  --tv-up-solid: #1a8479;
+  --tv-down-solid: #d32f2f;
   --tv-tip: #363a45;
   --tv-night: #0b0e14;
   --tv-font:
@@ -37,13 +49,21 @@ html[data-skin='trade']:not(.dark) {
   --tv-line: #e0e3eb;
   --tv-ink: #131722;
   --tv-mute: #6a6d78;
-  --tv-dim: #9598a1;
+  --tv-dim: #70737d;
   --tv-grid: #f0f3fa;
   --tv-up: #089981;
   --tv-down: #f23645;
   --tv-up-bg: #08998120;
   --tv-down-bg: #f2364520;
-  --tv-accent-ink: #2962ff;
+  --tv-accent-ink: #1f50e8;
+  --tv-up-ink: #067a67;
+  --tv-down-ink: #c8222f;
+  --tv-gold-ink: #8f5a00;
+  --tv-sky-ink: #0369a1;
+  --tv-orange-ink: #c2410c;
+  --tv-violet-ink: #6d28d9;
+  --tv-up-solid: #067a67;
+  --tv-down-solid: #c8222f;
   --tv-tip: #131722;
   --tv-night: #131722;
 }
@@ -81,20 +101,15 @@ html[data-skin='trade'] {
   --danger-border: var(--tv-down);
   --live: var(--tv-up);
   --mobile: var(--tv-up-bg);
-  --mobile-foreground: var(--tv-up);
+  --mobile-foreground: var(--tv-up-ink);
   --web: color-mix(in srgb, var(--tv-sky) 16%, transparent);
-  --web-foreground: var(--tv-sky);
+  --web-foreground: var(--tv-sky-ink);
   --ai: color-mix(in srgb, var(--tv-violet) 18%, transparent);
   --ai-foreground: color-mix(in srgb, var(--tv-violet) 60%, var(--tv-ink));
   --tools: color-mix(in srgb, var(--tv-gold) 18%, transparent);
-  --tools-foreground: var(--tv-gold);
+  --tools-foreground: var(--tv-gold-ink);
   --tile: var(--tv-accent);
   font-family: var(--tv-font);
-}
-html[data-skin='trade']:not(.dark) {
-  --web-foreground: #0369a1;
-  --tools-foreground: #8f5a00;
-  --mobile-foreground: #067a67;
 }
 
 /* headings of the skin are the same sans as the rest; Standard's own are Bricolage */
@@ -105,11 +120,14 @@ html[data-skin='trade']:not(.dark) {
   }
 }
 
-/* every control shows a ring when it is reached with the keyboard */
-.tv-root :focus-visible:not(input, textarea, select) {
-  outline: 2px solid var(--tv-accent);
-  outline-offset: -2px;
-  border-radius: 4px;
+/* every control shows a ring when it is reached with the keyboard. In the base layer, so a utility (`outline-none`, a rounded class)
+   still wins; the selector starts at <html> so the dialogs, menus and popovers that render in <body> get it too; inset, so an
+   overflow-hidden panel never clips it. Fields draw their own focus line (TV_FIELD). */
+@layer base {
+  html[data-skin='trade'] :focus-visible:not(input, textarea, select) {
+    outline: 2px solid var(--tv-accent-ink);
+    outline-offset: -2px;
+  }
 }
 .tv-root a:where(:not([data-slot^='tv-'])) {
   color: inherit;
@@ -137,7 +155,7 @@ html[data-skin='trade']:not(.dark) {
     transform: translateX(100%);
   }
 }
-/* a block rises a little when it arrives (a page change, a tab) */
+/* a block rises a little when it arrives (a tab, a widget); a whole page does not, its view transition below is its entrance */
 @keyframes tv-rise {
   from {
     opacity: 0;
@@ -145,16 +163,25 @@ html[data-skin='trade']:not(.dark) {
   }
 }
 .tv-rise {
-  animation: tv-rise 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: tv-rise 240ms var(--ease-tv-out) both;
 }
 /* page change: the terminal stays, the panel fades out and the next one comes in (React view transitions; keyframes of globals.css) */
 @media (prefers-reduced-motion: no-preference) {
   html[data-skin='trade']::view-transition-old(.tv-vt-out) {
-    animation: vt-out 0.12s ease-in both;
+    animation: vt-out 100ms ease-in both;
   }
   html[data-skin='trade']::view-transition-new(.tv-vt-in) {
-    animation: vt-in 0.25s cubic-bezier(0.2, 0.7, 0.2, 1) 0.06s both;
+    animation: vt-in 240ms var(--ease-tv-out) 60ms both;
   }
+}
+
+/* a tab in the background: the endless loops (live ring, pulse, skeleton, the drawings of the services) wait instead of running for
+   nobody. The shell sets data-hidden on the root (shell/trade-shell.tsx); the ticker tape and the chart tick stop by their own hooks. */
+.tv-root[data-hidden],
+.tv-root[data-hidden] *,
+.tv-root[data-hidden] *::before,
+.tv-root[data-hidden] *::after {
+  animation-play-state: paused !important;
 }
 
 /* reduced motion: the live dot, the shimmer, the rise and the windows of the skin stand still */

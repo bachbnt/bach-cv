@@ -3,7 +3,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { CareerMarker } from '@/skins/trade/blocks/build-candles';
+import type { CareerMarker } from '@/lib/derive/career-series';
 import {
   DEFAULT_PREFS,
   PREFS_KEY,

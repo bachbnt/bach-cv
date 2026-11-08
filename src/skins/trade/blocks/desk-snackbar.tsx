@@ -24,7 +24,7 @@ export function DeskSnackbar({
       aria-live='polite'
       data-testid='payment-toast'
       className={cn(
-        'pointer-events-none fixed bottom-20 left-1/2 z-[60] max-w-[calc(100vw-32px)] -translate-x-1/2 rounded border border-tv-line border-l-2 border-l-tv-up bg-tv-tip px-4 py-2.5 text-[13px] font-medium text-white shadow-tv-menu transition-[opacity,translate] duration-200 min-[1101px]:bottom-6',
+        'pointer-events-none fixed bottom-20 left-1/2 z-[60] max-w-[calc(100vw-32px)] -translate-x-1/2 rounded border border-tv-line border-l-2 border-l-tv-up bg-tv-tip px-4 py-2.5 text-[13px] font-medium text-white shadow-tv-menu transition-[opacity,translate] duration-160 min-[1101px]:bottom-6',
         visible ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0',
       )}
     >

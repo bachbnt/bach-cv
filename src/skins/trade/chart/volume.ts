@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 
 /**
  * A volume as a short plain number, the same in every language: `812`, `46.3K`, `1.2M`. These are index units of a decoration (no
@@ -35,7 +35,7 @@ export const volumeBarWidth = (slot: number): number =>
   Math.max(1, slot - Math.max(1, slot * 0.2));
 
 /** The scale of the volume histogram: the biggest volume on screen reaches `height` pixels above `base`. */
-export interface VolumeScale {
+interface VolumeScale {
   max: number;
   /** the height of a bar, in pixels */
   h: (volume: number) => number;

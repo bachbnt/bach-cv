@@ -10,6 +10,7 @@ import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import { useState } from 'react';
+import { useNow } from '@/hooks/use-now';
 import type { Doc, Skill } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { skillGroups } from '@/lib/derive/skill-groups';
@@ -42,7 +43,7 @@ export function DataSkills({
   const { skills: copy } = useCopy(resumeCopy);
   const { resume } = useCopy(tradeDataCopy);
   const [view, setView] = useState<'list' | 'heatmap'>('list');
-  const [now] = useState(() => new Date());
+  const now = useNow();
   const { skills, evidence, isPending, isError, refetch } = useSkills();
   const { tip, setTip, hide } = useSkillTip();
   const query = { isPending, isError, refetch };

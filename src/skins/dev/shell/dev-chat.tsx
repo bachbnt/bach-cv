@@ -4,7 +4,6 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
@@ -13,12 +12,11 @@ import { useChatSession } from '@/components/chat/use-chat-session';
 import { useKeyboardInset } from '@/components/chat/use-keyboard-inset';
 import { chatCopy } from '@/content/copy/chat';
 import { devOverlaysCopy } from '@/content/copy/dev-overlays';
+import { useChatSettings } from '@/hooks/use-chat-settings';
 import { useLive } from '@/hooks/use-live';
 import { fill } from '@/lib/chat/fill';
 import { resolveSuggestions } from '@/lib/chat/suggestions';
-import { settingsSchema } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
-import { settingsQueryOptions } from '@/lib/query/options';
 import { useModKey } from '@/skins/dev/shell/chat/use-mod-key';
 import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
 import { DevKbd } from '@/skins/dev/ui/dev-kbd';
@@ -28,9 +26,6 @@ const DevChatPanel = dynamic(
     import('@/skins/dev/shell/chat/dev-chat-panel').then((m) => m.DevChatPanel),
   { ssr: false },
 );
-
-/** Until `site/settings` arrives (or if it cannot be read) the defaults of the schema apply. */
-const DEFAULT_CHAT = settingsSchema.parse({}).chat;
 
 /**
  * The BB Bot launcher (a terminal prompt) and its window. It holds the conversation, so closing the window keeps the chat; the
@@ -50,11 +45,7 @@ export function DevChat() {
   const modalOpen = viewer !== null || cvOpen;
   const enabled = live.features.chat;
 
-  const { data: settings } = useQuery({
-    ...settingsQueryOptions(),
-    enabled: isOpen,
-  });
-  const chat = settings?.chat ?? DEFAULT_CHAT;
+  const chat = useChatSettings(isOpen);
 
   const session = useChatSession({
     maxUserMessages: chat.maxUserMessages,

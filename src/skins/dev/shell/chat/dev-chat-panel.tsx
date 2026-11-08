@@ -10,8 +10,9 @@ import { Marker, MarkerContent } from '@/components/ui/marker';
 import { chatCopy } from '@/content/copy/chat';
 import { devOverlaysCopy } from '@/content/copy/dev-overlays';
 import { fill } from '@/lib/chat/fill';
+import { hasFinePointer } from '@/lib/chat/fine-pointer';
 import type { ChatEntry } from '@/lib/chat/messages';
-import type { Suggestion } from '@/lib/chat/suggestions';
+import { remainingSuggestions, type Suggestion } from '@/lib/chat/suggestions';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { ChatPrompt, SPEAKER } from '@/skins/dev/shell/chat/chat-line';
@@ -29,8 +30,6 @@ import { touchDots } from '@/skins/dev/shell/window-chrome';
 import { WindowDots } from '@/skins/dev/ui/window-dots';
 
 type Size = 'normal' | 'folded' | 'big';
-
-const FINE_POINTER = '(hover: hover) and (pointer: fine)';
 
 /**
  * The open chat as a small window: lights (red closes, yellow folds it to the last message and a one-line field, green makes it
@@ -78,7 +77,7 @@ export function DevChatPanel({
   const big = size === 'big';
 
   useEffect(() => {
-    if (available && window.matchMedia(FINE_POINTER).matches) {
+    if (available && hasFinePointer()) {
       textareaRef.current?.focus();
     } else {
       panelRef.current?.focus({ preventScroll: true });
@@ -90,10 +89,7 @@ export function DevChatPanel({
     if (!folded) textareaRef.current?.focus();
   };
 
-  const asked = new Set(
-    entries.filter((e) => e.role === 'user').map((e) => e.content),
-  );
-  const remaining = suggestions.filter((s) => !asked.has(s.text));
+  const remaining = remainingSuggestions(entries, suggestions);
   const showSuggestions =
     available && !isLimitReached && !isSending && remaining.length > 0;
 

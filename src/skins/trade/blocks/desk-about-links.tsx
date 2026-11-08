@@ -4,7 +4,7 @@
 
 'use client';
 
-import { ArrowUpRight, Check, Copy, MapPin } from 'lucide-react';
+import { ArrowUpRight, MapPin } from 'lucide-react';
 import { BrandIcon, brandColor, brandName } from '@/components/brand-icon';
 import { commonCopy } from '@/content/copy/common';
 import { homeCopy } from '@/content/copy/home';
@@ -14,11 +14,12 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 import { DeskSection } from '@/skins/trade/blocks/desk-section';
 import { TvButton } from '@/skins/trade/ui/tv-button';
+import { TvCopyIcon } from '@/skins/trade/ui/tv-copy-icon';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
 const ROW =
-  'group/row flex min-h-10 items-center gap-2.5 rounded px-2 py-1.5 hover:bg-tv-hover focus-visible:bg-tv-hover pointer-coarse:min-h-11';
+  'group/row flex min-h-10 items-center gap-2.5 rounded px-2 py-1.5 transition-colors duration-100 hover:bg-tv-hover focus-visible:bg-tv-hover active:bg-tv-hover pointer-coarse:min-h-11';
 
 /**
  * The links of the symbol page: the email with a Copy action, the phone and the place, then the Professional, Messaging and Social links, the
@@ -65,11 +66,10 @@ export function DeskAboutLinks() {
               </a>
             </div>
             <TvButton variant='outline' onClick={() => void copy(email.label)}>
-              {copied ? (
-                <Check aria-hidden='true' className='text-tv-up' />
-              ) : (
-                <Copy aria-hidden='true' />
-              )}
+              <TvCopyIcon
+                copied={copied}
+                className={copied ? 'text-tv-up-ink' : undefined}
+              />
               {copied ? connect.copied : connect.copy}
             </TvButton>
           </div>
@@ -102,7 +102,7 @@ export function DeskAboutLinks() {
                     <a
                       href={c.url}
                       target='_blank'
-                      rel='noopener'
+                      rel='noopener noreferrer'
                       style={{ color: brandColor(c.platform) }}
                       className={ROW}
                     >

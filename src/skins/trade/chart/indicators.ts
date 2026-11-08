@@ -43,7 +43,7 @@ export function ema(values: number[], period: number): Series {
   return out;
 }
 
-export interface BollingerBands {
+interface BollingerBands {
   mid: Series;
   upper: Series;
   lower: Series;
@@ -98,7 +98,7 @@ export function rsi(values: number[], period = 14): Series {
   return out;
 }
 
-export interface Macd {
+interface Macd {
   macd: Series;
   signal: Series;
   histogram: Series;
@@ -152,7 +152,7 @@ export function extent(
 }
 
 /** The moving averages drawn over the candles: one line for each, all made from this list (no code of its own for a period). */
-export interface OverlaySpec {
+interface OverlaySpec {
   id: IndicatorId;
   kind: 'ma' | 'ema';
   period: number;
@@ -170,12 +170,12 @@ export const OVERLAYS = [
   { id: 'ema200', kind: 'ema', period: 200, tone: 'slate' },
 ] as const satisfies readonly OverlaySpec[];
 
-export type OverlayId = (typeof OVERLAYS)[number]['id'];
+type OverlayId = (typeof OVERLAYS)[number]['id'];
 
 /** How the Indicators window groups them, and how many bars each needs before it has a value. */
 export type IndicatorGroup = 'moving' | 'volatility' | 'oscillators' | 'volume';
 
-export interface IndicatorInfo {
+interface IndicatorInfo {
   group: IndicatorGroup;
   /** the bars it needs before its first value */
   needs: number;

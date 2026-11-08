@@ -4,9 +4,7 @@
 
 'use client';
 
-import { useState } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
-import { splitMethods, summaryOf } from '@/components/payment/payment-details';
+import { usePaymentMethods } from '@/components/payment/use-payment-methods';
 import { devCopy } from '@/content/copy/dev';
 import { paymentCopy } from '@/content/copy/payment';
 import { useCopy } from '@/lib/i18n/copy';
@@ -19,34 +17,24 @@ import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
 import { countHint } from '@/skins/dev/ui/count-hint';
 import { DevSection } from '@/skins/dev/ui/dev-section';
 
-type Filter = 'all' | Doc<'payments'>['kind'];
-
 /** The note, the highlighted methods, then "More ways to pay" with its bank/wallet filter. */
 export function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
   const copy = useCopy(paymentCopy);
   const { hints } = useCopy(devCopy);
   const { openViewer, say } = useDevOverlays();
-  const [filter, setFilter] = useState<Filter>('all');
 
-  const { featured, rest } = splitMethods(methods);
-  const withQr = [...featured, ...rest].filter((m) => m.qr);
-  const kinds = (['bank', 'wallet'] as const).filter((k) =>
-    rest.some((m) => m.kind === k),
-  );
-  const shownRows = rest.filter((m) => filter === 'all' || m.kind === filter);
+  const {
+    featured,
+    rest,
+    kinds,
+    shownRows,
+    withQr,
+    filter,
+    setFilter,
+    copyAccount,
+    copyAll,
+  } = usePaymentMethods(methods, say);
 
-  const copyAccount = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(m.account))
-        ? copy.toast.accountCopied(m.name)
-        : copy.toast.copyFailed,
-    );
-  const copyAll = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(summaryOf(m, copy)))
-        ? copy.toast.allCopied(m.name)
-        : copy.toast.copyFailed,
-    );
   const openQr = (m: Doc<'payments'>) =>
     openViewer(
       withQr.map((x) => ({

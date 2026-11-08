@@ -4,13 +4,13 @@
 
 'use client';
 
-import type { CSSProperties } from 'react';
 import { SkillIcon } from '@/components/skills/skill-icon';
 import { SKILL_COLORS } from '@/components/skills/skill-icons';
 import { SKILL_TIP_ID } from '@/components/skills/skill-tip';
 import type { Skill } from '@/lib/content/schema';
 import { cn } from '@/lib/utils';
 import { useTipEvents } from '@/skins/trade/blocks/data-use-tip-taps';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 /**
  * A skill as a tile with the behaviour of the Standard chip: hover and keyboard focus show its tip; on touch the first tap shows it and
@@ -44,15 +44,10 @@ export function DataSkillTile({
       type='button'
       data-skill-chip=''
       aria-describedby={active ? SKILL_TIP_ID : undefined}
-      style={
-        {
-          '--i': Math.min(index, 14),
-          ...(color ? { '--c': color } : {}),
-        } as CSSProperties
-      }
+      style={cssVars({ '--i': Math.min(index, 14), '--c': color })}
       {...events}
       className={cn(
-        'flex animate-[tv-pop_0.35s_cubic-bezier(0.2,0.7,0.2,1)_both] cursor-help items-center gap-2 rounded border border-tv-line border-l-2 border-l-(--c,var(--tv-accent)) bg-tv-panel text-left transition-[background-color,translate] duration-150 [animation-delay:calc(var(--i)*30ms)] hover:-translate-y-px hover:bg-tv-hover active:translate-y-0 active:bg-tv-hover data-[active=true]:bg-tv-hover pointer-coarse:min-h-11',
+        'flex animate-tv-pop cursor-help items-center gap-2 rounded border border-tv-line border-l-2 border-l-(--c,var(--tv-accent)) bg-tv-panel text-left transition-[background-color,translate] duration-100 [animation-delay:calc(var(--i)*30ms)] hover:-translate-y-px hover:bg-tv-hover active:translate-y-0 active:bg-tv-hover data-[active=true]:bg-tv-hover pointer-coarse:min-h-11',
         large ? 'items-start p-2.5' : 'h-8 px-2.5',
         core ? 'font-bold' : 'font-medium',
       )}

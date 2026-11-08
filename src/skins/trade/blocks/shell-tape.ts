@@ -7,7 +7,7 @@ import { stripSkills } from '@/lib/derive/skill-strip';
 import { monthsUsed, type CareerJob } from '@/lib/derive/skill-use';
 import type { NavItem } from '@/skins/trade/config';
 
-export interface TechItem {
+interface TechItem {
   key: string;
   kind: 'tech';
   label: string;
@@ -16,7 +16,7 @@ export interface TechItem {
   months: number | null;
 }
 
-export interface PageItem {
+interface PageItem {
   key: string;
   kind: 'page';
   page: PageKey;

@@ -31,7 +31,7 @@ export function TvPanel({
           </div>
         )}
       </div>
-      <div className='tv-rise min-h-0 flex-1 overflow-auto max-[1100px]:overflow-visible'>
+      <div className='min-h-0 flex-1 overflow-auto max-[1100px]:overflow-visible'>
         {intro && (
           <p className='max-w-[720px] px-3.5 pt-3 text-[13px]/[1.5] text-tv-mute'>
             {intro}

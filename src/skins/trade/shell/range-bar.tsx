@@ -31,8 +31,10 @@ const GoToDate = dynamic(() => import('@/skins/trade/chart/go-to-date'), {
 });
 
 const button =
-  'inline-flex h-6 shrink-0 cursor-pointer items-center justify-center gap-1 rounded px-2 hover:bg-tv-hover pointer-coarse:h-11 pointer-coarse:min-w-11 [&_svg]:size-3.5';
-const pressed = 'bg-tv-hover text-tv-accent-ink';
+  'inline-flex h-6 shrink-0 cursor-pointer items-center justify-center gap-1 rounded px-2 transition-[background-color,color,scale] duration-100 hover:bg-tv-hover active:scale-95 active:bg-tv-hover pointer-coarse:h-11 pointer-coarse:min-w-11 [&_svg]:size-3.5';
+/** On, and not just pointed at: a tint of the accent, so it is not the grey of a hover */
+const pressed =
+  'bg-tv-accent/15 text-tv-accent-ink hover:bg-tv-accent/25 active:bg-tv-accent/25';
 
 /**
  * The bar under the chart: the range buttons (3M ... All) that slide the window, Go to date, zoom, the list of keyboard shortcuts, and the

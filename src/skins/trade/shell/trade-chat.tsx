@@ -4,27 +4,22 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useChat } from '@/components/chat/chat-provider';
 import { useChatSession } from '@/components/chat/use-chat-session';
 import { useKeyboardInset } from '@/components/chat/use-keyboard-inset';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { chatCopy } from '@/content/copy/chat';
+import { useChatSettings } from '@/hooks/use-chat-settings';
 import { useLive } from '@/hooks/use-live';
 import { fill } from '@/lib/chat/fill';
 import { resolveSuggestions } from '@/lib/chat/suggestions';
-import { settingsSchema } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
-import { settingsQueryOptions } from '@/lib/query/options';
 import { CHAT_TRIGGER_ID } from '@/skins/trade/shell/icon-rail';
 import { ChatPanel } from '@/skins/trade/shell/overlay-chat-panel';
 import { useTrade } from '@/skins/trade/shell/trade-context';
 import { useWide } from '@/skins/trade/shell/use-wide';
-
-/** Until `site/settings` arrives (or if it cannot be read) the defaults of the schema apply. */
-const DEFAULT_CHAT = settingsSchema.parse({}).chat;
 
 /**
  * The BB Bot of the Trade skin: the Standard conversation (`useChatSession`: the same limits, errors and Try again), shown as a
@@ -41,12 +36,7 @@ export function TradeChat() {
   const [draft, setDraft] = useState('');
   const inset = useKeyboardInset(isOpen && !wide);
 
-  // the settings are read when the chat first opens, not on page load
-  const { data: settings } = useQuery({
-    ...settingsQueryOptions(),
-    enabled: isOpen,
-  });
-  const chat = settings?.chat ?? DEFAULT_CHAT;
+  const chat = useChatSettings(isOpen);
   const session = useChatSession({
     maxUserMessages: chat.maxUserMessages,
     maxInputLength: chat.maxInputLength,
@@ -57,10 +47,10 @@ export function TradeChat() {
     if (isOpen) warmUp();
   }, [isOpen, warmUp]);
 
-  const close = () => {
+  const close = useCallback(() => {
     closeChat();
     document.getElementById(CHAT_TRIGGER_ID)?.focus();
-  };
+  }, [closeChat]);
 
   // Esc closes the panel wherever the focus is (after a send the focus can be on nothing), unless a window or a menu is open on top
   const docked = isOpen && wide;
@@ -70,23 +60,17 @@ export function TradeChat() {
       if (event.key !== 'Escape' || event.defaultPrevented) return;
       if (document.querySelector('[role="dialog"][data-open], [role="menu"]'))
         return;
-      closeChat();
-      document.getElementById(CHAT_TRIGGER_ID)?.focus();
+      close();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [docked, closeChat]);
+  }, [docked, close]);
 
   if (!features.chat) return null;
-  const panel = (
-    docked: boolean,
-    extra?: {
-      className?: string;
-    },
-  ) => (
+  const panel = (inDock: boolean, className: string) => (
     <ChatPanel
-      {...extra}
-      docked={docked}
+      className={className}
+      docked={inDock}
       botName={chat.botName}
       entries={session.entries}
       isSending={session.isSending}
@@ -113,10 +97,8 @@ export function TradeChat() {
   if (wide)
     return isOpen && dock
       ? createPortal(
-          panel(true, {
-            className:
-              'h-full tv-rise border-l border-tv-line min-[1101px]:animate-[tv-slide-r_.28s_cubic-bezier(.2,.7,.2,1)_both]',
-          }),
+          // no `tv-rise` here: an unlayered animation would beat the slide-in
+          panel(true, 'h-full animate-tv-slide-r border-l border-tv-line'),
           dock,
         )
       : null;
@@ -133,10 +115,10 @@ export function TradeChat() {
         showCloseButton={false}
         finalFocus={() => document.getElementById(CHAT_TRIGGER_ID)}
         aria-label={fill(copy.panelLabel, { name: chat.botName })}
-        style={{ bottom: inset } as CSSProperties}
+        style={{ bottom: inset }}
         className='data-[side=bottom]:h-[80dvh] max-h-[calc(100dvh-16px)] gap-0 rounded-t-lg border-t border-tv-line bg-tv-bg p-0 text-tv-ink'
       >
-        {panel(false, { className: 'h-full' })}
+        {panel(false, 'h-full')}
       </SheetContent>
     </Sheet>
   );

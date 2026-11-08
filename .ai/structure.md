@@ -22,8 +22,10 @@ months a skill was used, a degree abbreviation, counts and orderings). Standard 
 (see "One change, every skin" in `.ai/skins.md`).
 Each module starts with a one-line comment saying what it works out; read `ls src/lib/derive` before writing a helper:
 `career-months` / `career-years` (dates, years in software), `current-job` (current, first, latest role; "is current"), `latest-degree`,
-`short-degree`, `recency` (newest-first orders), `skill-use` (roles, months, series and the "Used at" evidence of a skill), `skill-groups`
-and `skill-strip` (groups, areas, the strip), `highlighted` (ranked items), `duration-label`, `group-by-year`, `initials`, `job-badge`.
+`short-degree`, `recency` (newest-first orders, the latest certificate), `skill-use` (roles, months, series, `careerSpan` and the "Used at" evidence of a skill), `skill-groups`
+and `skill-strip` (groups, areas, the strip), `highlighted` (ranked items), `home-lists` (what Home lists), `years-phrase`, `career-facts`, `duration-label`, `group-by-year`, `initials`, `job-badge`,
+`career-series` (the illustrative seeded series of the Trade chart and its intervals: the one place that data is made). `career-months` also says which role or degree was active at a date (`jobAt` in `current-job`, `degreeAt` in `latest-degree`).
+Shared hooks live in `src/hooks` (`useNow` is the one month-stable clock, `useGoBack`, `useChatSettings`, `useContactLimits`, and the generic ones: `useMediaQuery`, `useLatest`, `useBox`, `useFullscreen`) and `lib/query/use-career-years` (the years in software and the sentences that say them).
 
 ## Data rules
 

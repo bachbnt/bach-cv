@@ -4,7 +4,7 @@
 
 'use client';
 
-import { ArrowUpRight, Copy, Check, MapPin, Share2 } from 'lucide-react';
+import { ArrowUpRight, MapPin, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import { BrandIcon, brandColor, brandName } from '@/components/brand-icon';
 import {
@@ -20,10 +20,12 @@ import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
+import { HintTip } from '@/skins/trade/chart/hint-tip';
 import { useWide } from '@/skins/trade/shell/use-wide';
 import { TV_POPUP } from '@/skins/trade/ui/tv-menu';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
+import { TvCopyIcon } from '@/skins/trade/ui/tv-copy-icon';
 
 /**
  * Connect, in the rail: the same email, the same links (each with its group) and the same place as the Standard Connect menu, laid out
@@ -101,24 +103,24 @@ export function ConnectMenu() {
             <div className='mt-3 flex h-9 overflow-hidden rounded bg-tv-accent pointer-coarse:h-11'>
               <a
                 href={email.url}
-                className='flex min-w-0 flex-1 items-center gap-2 px-3 text-[13px] font-semibold text-white transition-colors hover:bg-tv-accent-hover focus-visible:bg-tv-accent-hover focus-visible:-outline-offset-2'
+                className='flex min-w-0 flex-1 items-center gap-2 px-3 text-[13px] font-semibold text-white transition-colors duration-100 hover:bg-tv-accent-hover focus-visible:bg-tv-accent-hover focus-visible:outline-white active:bg-tv-accent-hover'
               >
                 <BrandIcon platform='email' className='size-4 flex-none' />
+                <span className='flex-none text-[11px] font-bold tracking-wide uppercase opacity-80'>
+                  {text.email}
+                </span>
                 <span className='truncate'>{email.label}</span>
               </a>
-              <button
-                type='button'
-                aria-label={text.copy}
-                title={copied ? text.copied : text.copy}
-                onClick={() => copy(email.label)}
-                className='grid w-9 flex-none cursor-pointer place-items-center border-l border-white/25 text-white transition-colors hover:bg-tv-accent-hover focus-visible:bg-tv-accent-hover focus-visible:-outline-offset-2 pointer-coarse:w-11 [&_svg]:size-4'
-              >
-                {copied ? (
-                  <Check aria-hidden='true' />
-                ) : (
-                  <Copy aria-hidden='true' />
-                )}
-              </button>
+              <HintTip label={copied ? text.copied : text.copy} side='top'>
+                <TvButton
+                  variant='joined'
+                  size='join'
+                  aria-label={text.copy}
+                  onClick={() => copy(email.label)}
+                >
+                  <TvCopyIcon copied={copied} />
+                </TvButton>
+              </HintTip>
               <span role='status' className='sr-only'>
                 {copied ? text.copied : ''}
               </span>
@@ -131,8 +133,8 @@ export function ConnectMenu() {
               <a
                 href={c.url}
                 target='_blank'
-                rel='noopener'
-                className='group/item flex min-h-10 items-center gap-2.5 rounded px-1.5 py-1 hover:bg-tv-hover focus-visible:bg-tv-hover pointer-coarse:min-h-11'
+                rel='noopener noreferrer'
+                className='group/item flex min-h-10 items-center gap-2.5 rounded px-1.5 py-1 transition-colors duration-100 hover:bg-tv-hover focus-visible:bg-tv-hover active:bg-tv-hover pointer-coarse:min-h-11'
               >
                 <span
                   aria-hidden='true'
