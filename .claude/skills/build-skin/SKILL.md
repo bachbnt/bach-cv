@@ -1,110 +1,173 @@
 ---
 name: build-skin
-description: Build a new skin of the site in src/skins/<id>/ from its HTML mock in design/skins/. Covers the two planned skins, `stream` (YouTube, Shorts, live stream) and `trade` (a TradingView-style candlestick terminal). Use when asked to "make / implement / build the stream or trade skin", or to turn a design/skins/*.html mock into a real skin.
+description: Build, extend or finish a skin of the site in src/skins/<id>/ (the ids so far are standard, dev, trade, stream, moba, travel), from a design/skins/*.html mock or from a brief. Use when asked to "make / implement / build / finish a skin", to turn a mock into a real skin, to add a feature to every skin, or to review a skin against the project's skin rules.
 ---
 
-# Build a skin from its mock
+# Build a skin
 
-A skin changes how the content is presented, never the content. The mock in `design/skins/<id>.html` is a **look**, not a spec of
-content: its titles, numbers and names are placeholders. The real content, copy and behaviour always come from Standard.
+A skin changes how the content is presented, never the content. **Same information, its own interface.** The mock (if there is one) is a
+**look**, not a spec of content: its titles, numbers and names are placeholders. Content, copy and behaviour come from Standard; layout,
+components and interaction are the skin's own. Reply in Vietnamese.
 
-| Arg      | Mock                       | What it is                                       | Details                |
-| -------- | -------------------------- | ------------------------------------------------ | ---------------------- |
-| `stream` | `design/skins/stream.html` | YouTube watch page, Shorts, live chat, Live page | `references/stream.md` |
-| `trade`  | `design/skins/trade.html`  | TradingView-style chart, watchlist, bottom panel | `references/trade.md`  |
+| Id         | State                                                   | What it is                                               | Details                |
+| ---------- | ------------------------------------------------------- | -------------------------------------------------------- | ---------------------- |
+| `standard` | the site itself (`app/**`, `components/**`)             | the default look                                         | -                      |
+| `dev`      | on `dev`, the model of a window-like skin               | code editor (`src/skins/dev/README.md`)                  | -                      |
+| `trade`    | on `dev`, the model of a skin with a real engine inside | chart terminal                                           | `references/trade.md`  |
+| `stream`   | branch `feat/stream-skin` (based on an older `dev`)     | video platform: watch page, Shorts, live chat, Live page | `references/stream.md` |
+| `moba`     | branch `feat/moba-skin`                                 | arena map you walk, pages are stations of the map        | `references/moba.md`   |
+| `travel`   | branch `feat/travel-skin`                               | 2.5D trip map of Nha Trang from OpenStreetMap            | `references/travel.md` |
 
-No arg: ask which one. Do one skin per run. Reply in Vietnamese. **Never commit, push or deploy** unless the user asks in that turn.
+No id: ask which one. One skin per run.
+
+## Ground rules of the run
+
+- **Never commit, push or deploy** unless the owner asks in that turn. Never commit `design/`, `backup/`, `.env*`, service-account files
+  or real payment numbers: the repo is public. No online Artifacts: mock-ups are local HTML.
+- Work in **its own git worktree** when the owner is using the main checkout (`git worktree add ../bach-cv-<id> -b feat/<id>-skin dev`,
+  then `cp -Rc node_modules` and copy `.env*`); never touch the main checkout or the other worktrees from there.
+- Several skins are built on different branches, so the shared files you must touch stay **one added line each** (section 2): merging
+  the skins later is then trivial. If you rebase onto a newer `dev`, resolve those lines by hand and regenerate the docs.
+- `design/skins/*.html` is local and untracked and may be absent: then work from `references/<id>.md`, the skin's README and the
+  screenshots the owner gives.
 
 ## 0. Read first (do not skip)
 
-1. `.ai/skins.md`, `.ai/project.md`, `.ai/coding.md`, `.ai/structure.md`, `.ai/testing.md`, then `src/skins/types.ts` and `src/skins/dev/README.md`
-   (the Dev skin is the model of how a skin is built, tested and documented).
-2. The mock: open it with Playwright (`channel: 'chrome'` works when the bundled browsers are missing) and take screenshots at 1440 and
-   390 px, in both themes. Read the HTML for the exact colours, spacing and motion.
-3. For every block, the **Standard component** that owns it (`src/components/<feature>/`) and its hook (`lib/query/use-content.ts`,
-   `useProfileQuery`): the data, copy (`content/copy/*`), states and behaviour are reused, not re-invented.
-4. `src/skins/dev/pages/*.tsx`, `src/skins/dev/ui/dev-page.tsx` and `shell/dev-shell.tsx`: copy the _structure_ (page wrapper, head,
-   data states, view transition), not the look.
+1. `CLAUDE.md`, then `.ai/skins.md`, `.ai/project.md`, `.ai/coding.md`, `.ai/structure.md`, `.ai/testing.md`, `.ai/performance.md`,
+   `src/skins/types.ts`.
+2. The two finished skins as models: `src/skins/dev/README.md` (window, tokens, tests) and `src/skins/trade/README.md` (an engine
+   inside, shared overlay toolbar, motion scale, contrast tokens); `references/<id>.md` for the skin at hand.
+3. The mock, if any: open it with Playwright (`channel: 'chrome'` works when the bundled browsers are missing), screenshot it at 1440
+   and 390 px in both themes, read the HTML for colours, spacing, motion.
+4. For every block, the **Standard component** that owns it (`src/components/<feature>/`) and its hook (`lib/query/use-content.ts`,
+   `useProfileQuery`): learn what it tells and offers before designing yours.
+5. What already exists to reuse, **before writing any helper**: `ls src/lib/derive src/hooks src/lib/chat`
+   (career years, current job, skill use, skill groups, group by year, home lists, years phrase, `usePaymentMethods`, `useChatSettings`,
+   `useContactLimits`, `useGoBack`, `useNow`, `useMediaQuery`, `useBox`, `useFullscreen`, `useClipboard`, ...), plus the pure windows
+   (`CvDialogContent`, the chat session hook and sub-components).
 
-## 1. Rules that never bend (from `.ai/skins.md` and the owner's decisions)
+## 1. Rules that never bend (`.ai/skins.md` and the owner's decisions)
 
-- **Same content, same features as Standard.** A mock element with no Standard counterpart (view counts, likes, "Buy" ratings, price
-  changes, a fake chat transcript, canned replies) is **not built**. If it is pure decoration, make it `aria-hidden` and derive it from
-  real data only; otherwise drop it and say so in the final report.
-- **One change, every skin; no derived data in a skin (the owner's rule, `.ai/skins.md`).** (1) The UI of a skin shows the data it is given: any
-  number, label, ordering, grouping or "current/first/latest" that more than one place needs comes from ONE pure function in
-  `src/lib/derive/` (unit-tested in `tests/unit/lib/derive/`), imported by Standard and by every skin. Look there before writing any
-  derivation; if it is missing, create it there first. Never copy a helper from another skin; replace copies you find. If the data lacks
-  what the design needs, add a field to the schema and the documents, do not infer it in a component. Layout, geometry and animation maths
-  stay in the skin. (2) A feature, a behaviour change or a data fix is applied to Standard and to EVERY skin in the same change, with copy
-  keys, tests and docs; grep the other skins for the same concept before finishing.
-- Data only through `lib/query` hooks, never Firebase. Interface copy in `content/copy/*` with `defineCopy` (en **and** vi). Words only
-  this skin has go in `content/copy/<id>.ts`. The UI word is "Skin"; a skin name must not contain "Giao diện".
-- Both languages, both themes (`html.dark` / `html:not(.dark)`), `site/live` switches, loading skeleton, empty, error with Try again,
-  404, Coming soon and maintenance screens in the skin's own look.
-- A control that looks different keeps the Standard accessible name (`aria-label`).
-- Everything that opens (viewer, chat, CV, Connect, dialogs) is built on `components/ui` (shadcn: dialog, sheet, field, toggle-group,
-  spinner, alert, message-scroller, bubble…) and loaded with `next/dynamic`. Skin CSS reaches portals through tokens defined on
-  `html[data-skin='<id>']`, including the shadcn tokens.
-- CSP in `firebase.json`: no `fetch`/XHR/WebSocket to another origin, no CDN script, no chart library from a URL. `<img>` from https is fine.
-  Fonts through `next/font` in `skins/<id>/fonts.ts` with `preload: false` (like `skins/dev/fonts.ts`).
-- Browser storage only for small UI preferences under a `bach-cv-*` key.
-- **One Tailwind build.** Utilities in the TSX with `cn()`/`cva`; palette as theme colours in `app/tailwind-theme.css`, values defined once
-  on `html[data-skin='<id>']` (dark and light), names that do not clash with shadcn or with Dev's tokens. A skin never has its own Tailwind
-  stylesheet. CSS only for keyframes, view transitions and token colours, with the class prefix **`sm-`** (stream) or **`tv-`** (trade),
-  scoped to the skin root. Unlayered CSS beats utilities: leave no rule on an element that carries utilities.
-- Hover only inside `@media (hover: hover)` (the Tailwind `hover:` variant already is). Every motion off for `prefers-reduced-motion`.
-- Phone: the layout works at 390 px with no horizontal page scroll; controls the phone cannot use move into a drawer or bottom nav.
-- Sparse comments (why, not what), the copyright header on every file, no `any`, no dead code, no leftover mock text.
+- **Same information as Standard.** Every datum, link, action and state Standard shows or offers stays reachable: all seven pages
+  (Home, Projects, Resume, About, Certificates, Services, Payment), the header actions (Language, Skin, Theme, BB Bot chat, Connect,
+  Download CV and the CV window, picture viewers, the QR payment dialog, the contact form), `site/live` switches that turn a feature
+  off, the data states (loading, empty, error with Try again, 404, Coming soon, maintenance), keyboard, both languages, both themes.
+  The menus are in the order **Language, Skin, Theme** in every skin, and the Skin menu must always be reachable to leave the skin.
+- **Its own interface, never a clone.** Do not re-colour Standard's blocks. Reuse hooks, query options, copy and overlays that are
+  pure behaviour; write your own components. The test is that nothing Standard tells is missing, not that blocks look alike.
+- **Nothing invented.** A mock element with no Standard counterpart (view counts, likes, ratings, price changes, fake chat, canned
+  replies, kills and gold) is not built. Pure decoration is `aria-hidden` and derived from real data only; a number on screen is a
+  count of the owner's data with a visible name. An illustrative series (the Trade candles) is labelled as such and lives in
+  `lib/derive`. Say what was dropped in the final report.
+- **One change, every skin; no derived data in a skin.** (1) Any number, label, ordering, grouping or "current / first / latest" that
+  more than one place needs comes from ONE pure function in `src/lib/derive/` (no React, copyright header, unit test in
+  `tests/unit/lib/derive/`), imported by Standard and by every skin. Look there first; if it is missing, create it there first; never
+  copy a helper from another skin, replace copies you find. If the data lacks a field, add it to the schema and the documents, do not
+  infer it in a component. Layout, geometry and animation maths stay in the skin. (2) A feature, a behaviour change or a data fix is
+  applied to Standard and to EVERY skin in the same change, with copy keys, tests and docs; grep the other skins for the same concept.
+- Data only through `lib/query` hooks, never Firebase. Interface copy in `content/copy/*` with `defineCopy` (en **and** vi); words only
+  this skin has go in `content/copy/<id>*.ts`. No visible literal in JSX, `aria-label`, `title`, `alt`. The UI word is "Skin"; a skin
+  name never contains "Giao diện". A control that looks different keeps the Standard accessible name.
+- **A map, scene or chart is decoration plus a real control set.** The art is `aria-hidden` (or honestly named), and every page and
+  item is reachable by Tab and Enter without the pointer; hotkeys are shortcuts, never the only way, and never take Tab or Enter.
+  Focus returns to the trigger after a dialog or menu. Touch targets are 44 px under `pointer-coarse`; the phone layout (390 px) has
+  no horizontal page scroll and moves what a phone cannot use into a drawer or bottom bar.
+- **Original art only.** No trademark art, logos, names or assets of games, map apps or brands: inline SVG/CSS made for the skin,
+  "inspired by", never a copy. Use the owner's own logo and photo that Standard uses. Map data from OpenStreetMap needs its credit.
+- **Everything that opens** (viewer, chat, CV, Connect, QR, dialogs) is built on `components/ui` (shadcn on Base UI: focus trap, Esc,
+  titles), loaded with `next/dynamic`, and reaches the skin through tokens defined on `html[data-skin='<id>']` (including the shadcn
+  tokens). Viewer, QR and CV dialogs of a skin share one toolbar family (see Trade's `overlay-*`), not three.
+- CSP in `firebase.json`: no `fetch`/XHR/WebSocket to another origin, no CDN script or chart library. Fonts through `next/font` in
+  `skins/<id>/fonts.ts` with `preload: false`. Browser storage only for small UI preferences under a `bach-cv-*` key.
+- **One Tailwind build.** Look = utilities in the TSX with `cn()`/`cva`. Theme colours in `app/tailwind-theme-<id>.css` (imported by
+  `globals.css`, which scans `src/skins`), every colour used as a utility has a `--color-<prefix>-<name>` there (a name that is only
+  defined as a variable silently produces no class: a unit test checks it), values defined once on `html[data-skin='<id>']`
+  (dark, and light as `:not(.dark)`), names that never clash with shadcn tokens. Never a second Tailwind stylesheet. No raw colour or
+  shadow in TSX: tokens (`--shadow-<prefix>-card`...).
+- **CSS only for what utilities cannot say**: keyframes, view transitions, token colours, base rules, in `<id>.css` and `css/<area>.css`,
+  classes with the skin prefix (`dv-` dev, `tv-` trade, `sm-` stream, `mb-` moba, `tl-` travel). **Unlayered CSS beats utilities**: put
+  base rules (focus ring, links) in `@layer base`, never leave a rule on an element that carries utilities, and never repeat a
+  `@keyframes` name across files.
+- **Motion.** Hover only under `hover:` / `@media (hover: hover)`, plus an `active:` pressed state for touch. One motion scale and
+  easing set in the theme (Trade: 100 / 160 / 240 / 400 ms), a transition lists the property that moves (`active:scale-*` and `translate-*`
+  set the `scale` / `translate` properties, not `transform`), only transform, opacity and stroke move (no layout), everything is off
+  for `prefers-reduced-motion`, and every loop and rAF pauses when the tab is hidden or the scene is off screen. Hover and focus never
+  change layout.
+- **Contrast** AA (4.5 text, 3 large and UI) in both themes: check the token pairs with a unit test like `trade-contrast.test.ts`;
+  text colours get an `-ink` variant where the fill colour is too light.
+- **Performance.** The skin is a lazy chunk loaded only when chosen; the Standard bundle and its CSS must not grow noticeably; big art
+  is inline SVG/CSS (no big raster); images are `next/image` with a reserved ratio; no layout thrash.
+- Sparse comments (why, not what), the copyright header on every file, no `any`, no casts to dodge types, no barrels, no dead code or
+  exports, one component per file, no leftover mock text. English in code, Vietnamese only in `vi` copy and in your report.
 
-## 2. Register the skin
+## 2. Register the skin (one added line each)
 
-1. `lib/skin/skins.ts`: add the id to `SKIN_IDS`.
-2. `content/copy/skins.ts`: names + hint in `en` and `vi` (`stream`: "Stream" / "Video & live"; `trade`: "Trade" / "Trading chart"; vi hints in Vietnamese).
-3. `skins/registry.ts`: add the lazy loader (`() => import('@/skins/<id>/skin')`).
-4. `tests/automation/support/skin.ts`: widen the `useSkin` id type to the new ids.
-5. Check `tests/unit/skin/skins.test.ts` still passes (it checks loaders and names for every id).
-6. `grep -rn "data-skin\|'dev'" src scripts tests` for anything else that lists skins (for example `scripts/docs/detail-design.mjs`); update only where a list of skins is meant to be complete.
+1. `lib/skin/skins.ts`: id appended to `SKIN_IDS`.
+2. `content/copy/skins.ts`: name and a hint of 2 to 3 words in `en` and `vi` (like "Code editor", "Trading chart", "Rainbow palette").
+3. `skins/registry.ts`: the lazy loader `() => import('@/skins/<id>/skin')`.
+4. `app/globals.css`: `@import './tailwind-theme-<id>.css';`.
+5. Docs: `src/skins/<id>/README.md` (metaphor table, rules, files, tests, what was not built on purpose), a paragraph "## The <Name> skin"
+   in `.ai/skins.md`, the Skins bullet of `README.md`, section 5.5 of `scripts/docs/detail-design.mjs`, then `npm run docs`
+   (`docs/*.html` are GENERATED: never hand-edit, never run prettier on `docs/`).
+6. `grep -rn "'dev'\|data-skin" src scripts tests` for any other list of skins that is meant to be complete.
+   `tests/automation/support/skin.ts` and `tests/unit/skin/skins.test.ts` follow `SKIN_IDS` by themselves.
 
 ## 3. Build
 
-Layout of `src/skins/<id>/` (mirror Dev):
-
 ```
-skin.tsx            default-exports the SkinDefinition (Frame, pages, NotFound, Maintenance); imports the skin CSS
-config.ts           nav items, page-key → label/icon/route mapping (pure, unit-testable)
-fonts.ts            next/font declarations
-<id>.css            palette on html[data-skin='<id>'], base rules, keyframes (tokens only)
-shell/              the frame: header/toolbar, side navigation, bottom nav, overlays host
-pages/              one file per PageKey: home about resume projects certificates services payment
-blocks/             the blocks of the pages (same data as Standard, own look)
-ui/                 small skin primitives (button, chip, card, data-state, skeleton, not-found, maintenance)
-README.md           rules of the skin, in the style of skins/dev/README.md
+skin.tsx          default-exports the SkinDefinition (Frame, pages, NotFound, Maintenance); imports the skin CSS
+config.ts         nav items, page-key -> label / icon / route (pure, unit-testable)
+fonts.ts          next/font declarations
+<id>.css          palette (dark base, light :not(.dark)), shadcn tokens mapped to it, base rules in @layer base
+css/<area>.css    keyframes and what utilities cannot say, one file per area
+shell/            the frame: header or toolbar, navigation, bottom nav or drawer, context, overlays host, menus
+pages/            one file per PageKey
+blocks/           the blocks of the pages (Standard's data, the skin's own look)
+ui/               skin primitives (button, chip, card, data state, state notice, skeleton, status screen, not found, maintenance)
+README.md         the rules of the skin, in the style of skins/dev/README.md
 ```
 
 Order of work (validate between steps, keep the app compiling after each):
 
-1. Palette + fonts + root + `Frame` with the real navigation (links to the real routes, `aria-current`, keyboard) and the header controls
-   Standard has (language, theme, **skin switch**, CV download, Connect). The skin switch must always be reachable to leave the skin.
-2. `Maintenance`, `NotFound`, state screens, skeletons.
-3. Home → Projects → Resume → About → Services → Payment → Certificates, each one reading the Standard component first.
-4. Overlays: lightbox/viewer, chat, CV window, Connect, built on `components/ui`, `next/dynamic`.
-5. Mobile, reduced motion, light theme.
+1. Palette, fonts, root, theme tokens, `Frame` with the real navigation (`aria-current`, Soon marker, hidden pages absent, keyboard) and
+   the header controls Standard has. Write the plan in the skin's README first (page <-> metaphor mapping, shell, tokens).
+2. `Maintenance`, `NotFound`, the state screens (loading skeleton, empty, error with Try again), the shared data-state primitive.
+3. The pages one by one, each after reading its Standard component; then the overlays (viewer, chat docked or sheet, CV, Connect, QR).
+4. Phone, reduced motion, light theme, both languages, then the polish pass: hover / press / focus on every control, one motion scale.
+5. Big engines (chart, map) in their own lazy chunk, geometry in pure unit-tested modules, scene art in its own files.
 
 ## 4. Verify
 
-- `npm run typecheck && npm run lint && npm run test:unit:run`.
-- Unit tests for the skin's own pure logic in `tests/unit/skin/` (for example the candle generator, chapter timestamps, `config.ts`).
-- Playwright spec(s) in `tests/automation/skins/<id>-*.spec.ts` using `useSkin(page, '<id>')`, `mockFirestore` and `gotoSkin`: navigation of
-  all 7 pages, data states (loading / error + retry / empty / soon / maintenance), both languages, the overlays, the phone width, the
-  Skin switch back to Standard. Then `npm run test:automation` (known flaky under load: chat "failed answer", services "failed send",
-  one CV focus test, title-bar menu: re-run before calling it a regression).
-- Visual check: run the app (`run` skill), screenshot each page of the skin at 1440 and 390 px in dark and light, put them beside the
-  mock, and fix differences in spacing, colour, type and motion. Real data will be longer or shorter than the mock: check overflow.
-- Check the Standard pages did not change (the home CSS size in particular: one Tailwind build means every new class costs Standard too;
-  keep the skin to existing tokens/utilities where possible).
+- `npx next typegen` if `LayoutProps` is missing, then `npm run typecheck`, `npx eslint src tests` (not `eslint .`: it scans build
+  folders), `npx prettier --check` on the files you changed (never on `docs/`), `npx vitest run`.
+- Unit tests in `tests/unit/skin/<id>-*.test.ts`: the skin's pure logic; **CSS rules** (prefix, hover only inside `@media (hover: hover)`,
+  palette in both themes, no duplicate `@keyframes`, every utility colour has a theme token); **contrast**; copy keys in en and vi.
+  Playwright in `tests/automation/skins/<id>-*.spec.ts` with `useSkin`, `mockFirestore`, `mockImages`, `mockWorker`, `gotoSkin`: all seven
+  pages with the real seed, every Standard datum, link and action, the states (loading, error + retry, empty, soon, maintenance, 404),
+  vi, reduced motion, phone width, keyboard, the overlays, the `site/live` switches, and the Skin switch back to Standard.
+- Run Playwright with its own server: `PW_PORT=<port> NEXT_DIST_DIR=.next-<id> NEXT_PUBLIC_CHAT_PROXY_URL=http://localhost:9999/chat
+PW_CHANNEL=chrome npx playwright test <specs> --workers=2 --timeout=90000` (a server started with the real chat proxy URL breaks the
+  chat tests). The machine is loaded: re-run a failing spec alone, and against the previous commit, before calling it a regression.
+  Next rewrites `tsconfig.json`: `git checkout tsconfig.json` afterwards. Then the shared edits' neighbours: `dev-shell*` specs, the
+  skin-switch spec, one Standard spec.
+- **Look at it.** Screenshot every page and overlay at 1440, 1024, 800 and 390 px, dark and light (hover, selected and focus states too),
+  READ the PNGs, and fix what is ugly, misaligned, clipped or inconsistent: the owner reviews the visuals closely and has already
+  reported ugly graphics, misaligned maps, broken image ratios, inconsistent toolbars, duplicate sections, ugly selected states and a
+  button made of two mismatched parts. Real data is longer or shorter than the mock: check overflow, and Vietnamese strings.
+- Sizes: `NEXT_DIST_DIR=.next-build npm run build` and compare the main stylesheet and the JS of `/services` against `dev`
+  (Standard must not grow); report the skin chunk.
 
 ## 5. Finish
 
-Add `src/skins/<id>/README.md` and one line for the skin in `.ai/skins.md`. Report in Vietnamese, with a **cross-skin check** (for each other skin: what you did for the same concept, or why it does not apply; and any derivation you needed, with the file in `src/lib/derive/` where it now lives): what was built, which mock elements were
-**dropped or made decoration** because Standard has no such content, what was verified, and anything not done. Do not commit.
+Remove `.next-*`, `test-results*`, `zz-*` scratch specs, stop the servers; `git status` shows only intended files. Report in Vietnamese:
+what was built per page (the metaphor and what each datum became), what was changed in shared files, the **derivations** created or
+used in `src/lib/derive/`, a **cross-skin check** (for each other skin: what you did for the same concept, or why it does not apply),
+the mock elements **dropped or made decoration**, test results (counts, flakes named), sizes, anything rough or undecided, and where
+the screenshots are. Do not commit.
+
+## 6. Ship (only when the owner asks)
+
+`next build` writes the export to `NEXT_DIST_DIR`, but Firebase serves `out/`: a deploy without copying uploads a stale site (it has
+happened). So: `NEXT_DIST_DIR=.next-build npm run build`, check the build holds a string of the new work, `rm -rf out && cp -R
+.next-build out`, `npx firebase-tools deploy --only hosting` (site `bachbntdev`), then open the live site with Playwright and read
+the Skin menu and the page, never trust "complete". Commit subjects are lowercase (commitlint), body lines at most 100 characters.
