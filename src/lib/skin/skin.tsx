@@ -31,6 +31,11 @@ const listeners = new Set<() => void>();
 // where the choice lives only while the browser's storage is blocked, so a change made in another tab is not shadowed
 let memory: SkinId | null = null;
 
+/** The skin the visitor chose, read from the browser now (not the first render, which is always the default to match the static HTML). */
+export function savedSkin(): SkinId {
+  return read();
+}
+
 function read(): SkinId {
   if (memory) return memory;
   try {

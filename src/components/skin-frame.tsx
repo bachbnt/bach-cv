@@ -12,7 +12,7 @@ import { useMaintenance } from '@/components/use-maintenance';
 import { skinsCopy } from '@/content/copy/skins';
 import { useCopy } from '@/lib/i18n/copy';
 import { pageOfPath } from '@/lib/pages';
-import { useSkin } from '@/lib/skin/skin';
+import { savedSkin, useSkin } from '@/lib/skin/skin';
 import { DEFAULT_SKIN, type SkinId } from '@/lib/skin/skins';
 import { hasLoader, SKIN_LOADERS } from '@/skins/registry';
 import type { SkinDefinition } from '@/skins/types';
@@ -67,7 +67,9 @@ export function SkinFrame({ children }: { children: ReactNode }) {
     if (active) {
       html.setAttribute('data-skin', active.id);
       html.setAttribute('data-skin-ready', '');
-    } else if (skin === DEFAULT_SKIN) {
+    } else if (skin === DEFAULT_SKIN && savedSkin() === DEFAULT_SKIN) {
+      // the first render is always the default (it matches the static HTML), so `skin` alone cannot say that the visitor chose it: with
+      // a saved choice the head script's `data-skin` stays, and the body stays hidden until that skin is ready
       html.removeAttribute('data-skin');
       html.removeAttribute('data-skin-ready');
     }
