@@ -155,7 +155,11 @@ ui/                 tv-root, tv-button, tv-chip, tv-toggle-chip, tv-field, tv-me
   linear only for the tape, the overshoot only for the flag drop. Entrances are named utilities (`animate-tv-pop`, `-fade-up`, `-slide-in`, `-grow`...);
   keyframes are in `css/*.css` and a test checks that no name repeats. `active:scale-*` and `translate-*` set the `scale` and `translate`
   properties, so the transition lists `scale` or `translate`, never `transform`. The endless loops pause in a background tab (`data-hidden`
-  on the root); the chart's tick also waits while the chart is off screen or one of its windows is open.
+  on the root) and while they are scrolled out of view (`useLoopGate` puts `data-off` on the root of a loop: a skeleton, the drawing of a service,
+  the chart, the "Current" dot; one shared observer, and `trade.css` pauses every animation inside); the chart's tick also waits while the chart
+  is off screen or one of its windows is open. The content of a block that showed a skeleton fades in over it (`TvFadeIn`, 240 ms, opacity only,
+  a `display: contents` wrapper so the layout is the content's own, children that already arrive with an animation are left alone, off for
+  reduced motion); a block that had its data from the cache just appears.
 - **One look for each kind of control, defined once in `ui/`**: `tvButton` (primary, ghost, outline; sizes sm, default, lg, icon; 44px on
   touch and a press that scales), `TvChip` (a label; tones for state and for a skill's area; `sm` in dense rows), `TvToggleChip` and
   `TV_PILL` (a round chip that is pressed or not), `DataSegmented` (a few views side by side), `TV_FIELD` (every field and select: a line that

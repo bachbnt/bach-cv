@@ -12,6 +12,7 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { CANDLE_SEED, type RangeKey } from '@/skins/trade/config';
 import { ChartBody } from '@/skins/trade/chart/chart-body';
 import { studiesOf } from '@/skins/trade/chart/education';
+import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
@@ -41,6 +42,7 @@ export function CareerChart({
   const now = useNow();
   const box = useRef<HTMLDivElement>(null);
   const size = useBox(box);
+  const gate = useLoopGate();
 
   const entries = query.data ?? NONE;
   const degrees = schooling.data ?? NONE;
@@ -55,33 +57,36 @@ export function CareerChart({
 
   return (
     <div ref={box} className='absolute inset-0 overflow-hidden'>
-      <TvDataState
-        query={{
-          isPending: pending,
-          isError: query.isError,
-          refetch: () => query.refetch(),
-        }}
-        count={candles.length}
-        empty='experience'
-        subject='experience'
-        skeleton={<TvSkeleton className='absolute inset-0 border-0' />}
-        // the skeleton fills the cell; a notice is a card at its corner
-        className='absolute inset-0 data-[state]:inset-auto data-[state]:top-3 data-[state]:left-3'
-      >
-        {size.width > 0 && size.height > 0 && (
-          <ChartBody
-            candles={candles}
-            markers={markers}
-            entries={entries}
-            studies={studies}
-            width={size.width}
-            height={size.height}
-            initialRange={range}
-            onOpenJob={onOpenJob}
-            onOpenDegree={onOpenDegree}
-          />
-        )}
-      </TvDataState>
+      {/* the live dot, the pulse of the last price and the glow of the playhead wait while the chart is scrolled out of view */}
+      <div ref={gate} className='absolute inset-0'>
+        <TvDataState
+          query={{
+            isPending: pending,
+            isError: query.isError,
+            refetch: () => query.refetch(),
+          }}
+          count={candles.length}
+          empty='experience'
+          subject='experience'
+          skeleton={<TvSkeleton className='absolute inset-0 border-0' />}
+          // the skeleton fills the cell; a notice is a card at its corner
+          className='absolute inset-0 data-[state]:inset-auto data-[state]:top-3 data-[state]:left-3'
+        >
+          {size.width > 0 && size.height > 0 && (
+            <ChartBody
+              candles={candles}
+              markers={markers}
+              entries={entries}
+              studies={studies}
+              width={size.width}
+              height={size.height}
+              initialRange={range}
+              onOpenJob={onOpenJob}
+              onOpenDegree={onOpenDegree}
+            />
+          )}
+        </TvDataState>
+      </div>
     </div>
   );
 }

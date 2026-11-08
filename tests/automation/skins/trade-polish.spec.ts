@@ -362,3 +362,114 @@ test.describe('the Indicators switches', () => {
     ).toContain('translate');
   });
 });
+
+test.describe('a loop scrolled out of view', () => {
+  test('waits, and goes on when it is scrolled back', async ({ page }) => {
+    await gotoSkin(page, '/services');
+    const arts = page.getByTestId('tv-service-art');
+    await expect(arts.first()).toBeVisible();
+    const last = arts.last();
+    const states = (art: Locator) =>
+      art.evaluate((el) =>
+        el.getAnimations({ subtree: true }).map((a) => a.playState),
+      );
+    // the first drawing is in view and moves; the last is below the fold and waits
+    await expect.poll(() => states(arts.first())).toContain('running');
+    await expect(last).toHaveAttribute('data-off', '');
+    const waiting = await states(last);
+    expect(waiting.length).toBeGreaterThan(0);
+    expect(waiting.every((state) => state === 'paused')).toBe(true);
+    await last.scrollIntoViewIfNeeded();
+    await expect(last).not.toHaveAttribute('data-off', '');
+    await expect.poll(() => states(last)).toContain('running');
+  });
+});
+
+test.describe('content that replaces a skeleton', () => {
+  /** Records the fades the skin starts with a script (the content of a block arriving where its skeleton was). */
+  const recordFades = (page: Page) =>
+    page.addInitScript(() => {
+      const fades: string[] = [];
+      Object.assign(window, { fades });
+      const animate = Element.prototype.animate;
+      Element.prototype.animate = function (keyframes, options) {
+        const first = Array.isArray(keyframes) ? keyframes[0] : null;
+        if (
+          first &&
+          'opacity' in first &&
+          typeof options === 'object' &&
+          options.duration === 240
+        )
+          fades.push(this.tagName);
+        return animate.call(this, keyframes, options);
+      };
+    });
+  const slow = (page: Page) =>
+    page.route('**/firestore.googleapis.com/**', async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      return route.fallback();
+    });
+  const fades = (page: Page) =>
+    page.evaluate(() => Reflect.get(window, 'fades') as string[]);
+
+  test('fades in over the skeleton, with no change of layout', async ({
+    page,
+  }) => {
+    await recordFades(page);
+    await slow(page);
+    await gotoSkin(page, '/about');
+    await expect(page.getByRole('status', { name: 'Loading' })).toHaveCount(0, {
+      timeout: 15_000,
+    });
+    await expect.poll(() => fades(page)).not.toEqual([]);
+    // the wrapper has no box of its own: it never takes the place of the content in a flex or grid parent
+    const display = await page
+      .locator('main .contents')
+      .first()
+      .evaluate((el) => getComputedStyle(el).display);
+    expect(display).toBe('contents');
+  });
+
+  test('does not fade a block that had its data from the start', async ({
+    page,
+  }) => {
+    await recordFades(page);
+    const open = async (name: string, text: string) => {
+      await page
+        .getByRole('navigation', { name: 'Main' })
+        .getByRole('link', { name: new RegExp(name) })
+        .first()
+        .click();
+      await expect(page.getByRole('main').getByText(text).first()).toBeVisible({
+        timeout: 15_000,
+      });
+      await page.waitForTimeout(500);
+    };
+    await gotoSkin(page, '/about');
+    await expect(
+      page.getByRole('main').getByText('Master of Science').first(),
+    ).toBeVisible({ timeout: 15_000 });
+    await open('Services', 'App Development');
+    await open('About', 'Master of Science');
+    // both pages have been read once: the data is in the cache, so there is no skeleton to fade over any more
+    const settled = (await fades(page)).length;
+    expect(settled).toBeGreaterThan(0);
+    await open('Services', 'App Development');
+    await open('About', 'Master of Science');
+    expect((await fades(page)).length).toBe(settled);
+  });
+
+  test.describe('with reduced motion', () => {
+    test.use({ reducedMotion: 'reduce' });
+    test('appears without a fade', async ({ page }) => {
+      await recordFades(page);
+      await slow(page);
+      await gotoSkin(page, '/about');
+      await expect(page.getByRole('status', { name: 'Loading' })).toHaveCount(
+        0,
+        { timeout: 15_000 },
+      );
+      expect(await fades(page)).toEqual([]);
+    });
+  });
+});
