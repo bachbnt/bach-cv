@@ -56,7 +56,7 @@ export function WatchRoles() {
             return (
               <li
                 key={job.id}
-                className='tv-rise relative pl-9 before:absolute before:top-0 before:bottom-0 before:left-[21px] before:w-px before:bg-tv-line first:before:top-3.5 last:before:bottom-auto last:before:h-3.5'
+                className='tv-rise relative before:absolute before:top-0 before:bottom-0 before:left-[21px] before:w-px before:bg-tv-line first:before:top-3.5 last:before:bottom-auto last:before:h-3.5'
                 style={{ animationDelay: `${i * 40}ms` }}
               >
                 <span
@@ -71,7 +71,7 @@ export function WatchRoles() {
                   data-roving=''
                   aria-current={jobId === job.id ? 'true' : undefined}
                   onClick={() => showJob(job.id)}
-                  className='block min-h-[44px] w-full cursor-pointer py-1.5 pr-3.5 text-left transition-[background-color] duration-100 hover:bg-tv-hover active:bg-tv-hover aria-[current=true]:bg-tv-hover'
+                  className='block min-h-[44px] w-full cursor-pointer border-l-2 border-transparent py-1.5 pr-3.5 pl-9 text-left transition-[background-color,border-color] duration-100 hover:bg-tv-hover active:bg-tv-hover aria-[current=true]:border-tv-accent aria-[current=true]:bg-tv-hover'
                 >
                   <span className='flex flex-wrap items-center gap-x-2 text-[13px] font-semibold'>
                     {job.company}

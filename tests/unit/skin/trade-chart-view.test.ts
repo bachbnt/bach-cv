@@ -96,6 +96,23 @@ describe('the window of the chart', () => {
     expect(zoomView(view, 100, 0.5, limits).span).toBe(404);
   });
 
+  it('does not slide the chart when a zoom reaches its limit', () => {
+    const limits = week(400);
+    const widest = { from: 50, span: 404 };
+    // zooming out at the most bars changes nothing, wherever the pointer is
+    for (const anchor of [0, 0.3, 1]) {
+      expect(zoomView(widest, 1.15, anchor, limits)).toEqual(widest);
+    }
+    const closest = { from: 120, span: 8 };
+    for (const anchor of [0, 0.7, 1]) {
+      expect(zoomView(closest, 0.87, anchor, limits)).toEqual(closest);
+    }
+    // a zoom that only goes part of the way still keeps the bar under the pointer
+    const nearly = zoomView({ from: 50, span: 380 }, 1.5, 0.25, limits);
+    expect(nearly.span).toBe(404);
+    expect(nearly.from + nearly.span * 0.25).toBeCloseTo(50 + 380 * 0.25, 10);
+  });
+
   it('has its own limits for each interval: a yearly chart may show fewer bars', () => {
     const year = limitsOf(7, 'year');
     expect(zoomView({ from: 0, span: 8 }, 0.001, 0.5, year).span).toBe(

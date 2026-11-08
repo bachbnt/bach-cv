@@ -98,27 +98,27 @@ export function ConnectMenu() {
             </div>
           </div>
           {email && (
-            <div className='mt-3 flex items-center gap-1.5'>
+            <div className='mt-3 flex h-9 overflow-hidden rounded bg-tv-accent pointer-coarse:h-11'>
               <a
                 href={email.url}
-                className='flex h-9 min-w-0 flex-1 items-center gap-2 rounded bg-tv-accent px-3 text-[13px] font-semibold text-white hover:bg-tv-accent-hover pointer-coarse:min-h-11'
+                className='flex min-w-0 flex-1 items-center gap-2 px-3 text-[13px] font-semibold text-white transition-colors hover:bg-tv-accent-hover focus-visible:bg-tv-accent-hover focus-visible:-outline-offset-2'
               >
                 <BrandIcon platform='email' className='size-4 flex-none' />
                 <span className='truncate'>{email.label}</span>
               </a>
-              <TvButton
-                variant='outline'
-                size='icon'
+              <button
+                type='button'
                 aria-label={text.copy}
                 title={copied ? text.copied : text.copy}
                 onClick={() => copy(email.label)}
+                className='grid w-9 flex-none cursor-pointer place-items-center border-l border-white/25 text-white transition-colors hover:bg-tv-accent-hover focus-visible:bg-tv-accent-hover focus-visible:-outline-offset-2 pointer-coarse:w-11 [&_svg]:size-4'
               >
                 {copied ? (
                   <Check aria-hidden='true' />
                 ) : (
                   <Copy aria-hidden='true' />
                 )}
-              </TvButton>
+              </button>
               <span role='status' className='sr-only'>
                 {copied ? text.copied : ''}
               </span>
