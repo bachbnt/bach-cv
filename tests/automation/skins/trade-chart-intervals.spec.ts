@@ -323,9 +323,9 @@ test('drawings keep their date when the interval changes', async ({ page }) => {
   await page.mouse.click(box.x + box.width * 0.5, box.y + box.height * 0.3);
   const line = page.locator('[data-drawing="vline"] line').first();
   await expect(line).toBeAttached();
-  // "Wed, Jun 16, 21": the month and the year of the week the line was put on
+  // "Wed 16 Jun 21": the month and the year of the week the line was put on
   const [, month, year] =
-    (await dateAt(page, 0.5)).match(/([A-Z][a-z]{2}) \d{1,2}, (\d{2})/) ?? [];
+    (await dateAt(page, 0.5)).match(/\d{1,2} ([A-Z][a-z]{2}) (\d{2})$/) ?? [];
   expect(year).toBeDefined();
   const under = async () => {
     const x = Number(await line.getAttribute('x1'));
@@ -360,7 +360,7 @@ test('drawings keep their date when the interval changes', async ({ page }) => {
     await expect.poll(under).toBe(text);
   }
   await pick(page, 'week').click();
-  await expect.poll(under).toContain(`, ${year}`);
+  await expect.poll(under).toMatch(new RegExp(` ${year}$`));
   await expect(page.locator('[data-drawing="vline"]')).toHaveCount(1);
 });
 

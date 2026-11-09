@@ -2,7 +2,10 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+'use client';
+
 import { cn } from '@/lib/utils';
+import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
 
 /** The heights, in percent, of the bars of the loading chart: a fixed pattern, so the placeholder never jumps between renders. */
 const BARS = [38, 52, 44, 61, 55, 70, 48, 66, 58, 76, 62, 50, 68, 80, 57, 72];
@@ -12,8 +15,10 @@ const BARS = [38, 52, 44, 61, 55, 70, 48, 66, 58, 76, 62, 50, 68, 80, 57, 72];
  * the block around it announces "Loading". The motion stops for reduced motion.
  */
 export function TvChartSkeleton({ className }: { className?: string }) {
+  const gate = useLoopGate();
   return (
     <div
+      ref={gate}
       aria-hidden='true'
       className={cn(
         'relative overflow-hidden rounded-md border border-tv-line bg-tv-panel bg-[linear-gradient(var(--tv-grid)_1px,transparent_1px),linear-gradient(90deg,var(--tv-grid)_1px,transparent_1px)] bg-[size:100%_25%,12.5%_100%]',

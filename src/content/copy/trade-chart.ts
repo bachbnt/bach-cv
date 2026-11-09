@@ -14,10 +14,8 @@ export const tradeChartCopy = defineCopy(
       label:
         'Illustrative chart of my career, derived from my real jobs: {each}, from {from} to {to} ({count} candles). The flags are my jobs and my degrees. The values are index points of a decoration. They are not a quote and not financial data.',
       hint: 'Left and right arrows move along the candles, plus and minus zoom, and the question mark lists every shortcut.',
-      empty: 'There is no career to draw yet.',
+      role: 'Interactive chart',
       name: 'Career index',
-      latest: 'Latest',
-      unit: 'index points',
       openJob: '{role} at {company}. Show it on the Resume page.',
       openDegree: '{degree}, {school}. Show it on the Resume page.',
     },
@@ -216,10 +214,8 @@ export const tradeChartCopy = defineCopy(
       label:
         'Biểu đồ minh họa về sự nghiệp của mình, tính từ những công việc thật: {each}, từ {from} đến {to} ({count} nến). Các lá cờ là những công việc và những tấm bằng của mình. Các giá trị là điểm chỉ số của một hình trang trí, không phải báo giá và không phải dữ liệu tài chính.',
       hint: 'Mũi tên trái và phải đi dọc theo các nến, dấu cộng và dấu trừ phóng to thu nhỏ, dấu hỏi chấm liệt kê mọi phím tắt.',
-      empty: 'Chưa có sự nghiệp nào để vẽ.',
+      role: 'Biểu đồ tương tác',
       name: 'Chỉ số sự nghiệp',
-      latest: 'Mới nhất',
-      unit: 'điểm chỉ số',
       openJob: '{role} tại {company}. Xem trong trang Hồ sơ.',
       openDegree: '{degree}, {school}. Xem trong trang Hồ sơ.',
     },

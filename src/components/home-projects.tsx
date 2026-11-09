@@ -13,10 +13,11 @@ import { skillsOf } from '@/components/projects/project-helpers';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
-import { highlighted } from '@/lib/derive/highlighted';
-
-/** How many featured projects the Home page shows. */
-const LIMIT = 3;
+import {
+  HOME_PROJECTS,
+  featuredProjects,
+  projectHref,
+} from '@/lib/derive/home-lists';
 
 /** The Featured projects block at the bottom of Home: up to three highlighted projects as cards, and a link to all of them. */
 export function HomeProjects() {
@@ -28,7 +29,7 @@ export function HomeProjects() {
     () => new Map(skillList.map((s) => [s.id, s])),
     [skillList],
   );
-  const featured = highlighted(projects).slice(0, LIMIT);
+  const featured = featuredProjects(projects);
   // featured projects are an extra, so with none (or if they fail to load) the section is simply left out
   if (projectsQuery.isError || (!projectsQuery.isPending && !featured.length))
     return null;
@@ -51,13 +52,13 @@ export function HomeProjects() {
       </div>
       {projectsQuery.isPending ? (
         <LoadingBlock>
-          <CardsSkeleton count={LIMIT} min={280} height={440} />
+          <CardsSkeleton count={HOME_PROJECTS} min={280} height={440} />
         </LoadingBlock>
       ) : (
         <div className='grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6'>
           {featured.map((project) => {
             const tags = skillsOf(project.technologies, skills);
-            const href = project.links[0]?.url ?? '/projects';
+            const href = projectHref(project);
             const card = (
               <>
                 <ProjectCover

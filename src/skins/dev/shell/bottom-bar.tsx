@@ -29,9 +29,11 @@ const PANEL_TAB =
 
 /** A button (or a plain item) of the status bar: white on the red bar, lighter when pointed at or on. */
 const STATUS_BUTTON =
-  'inline-flex h-full cursor-pointer items-center gap-[5px] bg-transparent px-[9px] text-white hover:bg-[rgba(255,255,255,0.14)] aria-pressed:bg-[rgba(255,255,255,0.2)] focus-visible:-outline-offset-2!';
+  "relative inline-flex h-full cursor-pointer items-center gap-[5px] bg-transparent px-[9px] pointer-coarse:after:absolute pointer-coarse:after:inset-x-0 pointer-coarse:after:-top-6 pointer-coarse:after:bottom-0 pointer-coarse:after:content-[''] text-white hover:bg-[rgba(255,255,255,0.14)] aria-pressed:bg-[rgba(255,255,255,0.2)] focus-visible:-outline-offset-2!";
 const STATUS_ITEM =
   'inline-flex h-full cursor-pointer items-center gap-[5px] px-[9px]';
+/** What the status bar only decorates (project, branch, sync, language, formatter, bell): it gives way on a phone, so the buttons stay in reach. */
+const DECOR = 'max-[640px]:hidden';
 
 /** The bottom of the editor: the panel (Problems, Output, Terminal) when a tool is open, and the status bar. */
 export function BottomBar({
@@ -129,13 +131,13 @@ export function BottomBar({
         />
       </div>
       <div className='flex h-[22px] items-center overflow-hidden bg-status font-sans text-[12px] leading-[normal] whitespace-nowrap text-white'>
-        <span className={STATUS_ITEM} aria-hidden='true'>
+        <span className={cn(STATUS_ITEM, DECOR)} aria-hidden='true'>
           <DevIcon name='remote' className='size-3.5' />
           {DEV_PROJECT}
         </span>
         <button
           type='button'
-          className={STATUS_BUTTON}
+          className={cn(STATUS_BUTTON, DECOR)}
           tabIndex={-1}
           aria-hidden='true'
         >
@@ -144,7 +146,7 @@ export function BottomBar({
         </button>
         <button
           type='button'
-          className={STATUS_BUTTON}
+          className={cn(STATUS_BUTTON, DECOR)}
           tabIndex={-1}
           aria-hidden='true'
           data-fetching={fetching || undefined}
@@ -213,14 +215,14 @@ export function BottomBar({
         >
           LF
         </span>
-        <span className={STATUS_ITEM} aria-hidden='true'>
+        <span className={cn(STATUS_ITEM, DECOR)} aria-hidden='true'>
           {`{ } ${file.language}`}
         </span>
-        <span className={STATUS_ITEM} aria-hidden='true'>
+        <span className={cn(STATUS_ITEM, DECOR)} aria-hidden='true'>
           <DevIcon name='check' className='size-3.5' />
           Prettier
         </span>
-        <span className={STATUS_ITEM} aria-hidden='true'>
+        <span className={cn(STATUS_ITEM, DECOR)} aria-hidden='true'>
           <DevIcon name='bell' className='size-3.5' />
         </span>
       </div>

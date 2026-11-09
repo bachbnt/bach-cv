@@ -9,7 +9,8 @@ html[data-skin='trade'] {
   --tv-data-academic: var(--tv-violet);
 }
 
-/* a heatmap tile pops in, a card or a row rises, a calendar row slides in from the left (the individual transform properties, so they never fight a hover) */
+/* a heatmap tile pops in, a card or a row rises, a calendar row (and a row of the About timeline) slides in from the left (the individual transform properties,
+   so they never fight a hover) */
 @keyframes tv-pop {
   from {
     opacity: 0;
@@ -32,11 +33,5 @@ html[data-skin='trade'] {
 @keyframes tv-grow {
   from {
     scale: 0 1;
-  }
-}
-@keyframes tv-tip-in {
-  from {
-    opacity: 0;
-    translate: 0 4px;
   }
 }

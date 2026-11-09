@@ -8,14 +8,13 @@ import { LayoutDashboard, LayoutGrid, Table2 } from 'lucide-react';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { kindsPresent } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
+import { isTyping } from '@/lib/is-typing';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { DataProjectsCards } from '@/skins/trade/blocks/data-projects-cards';
-import {
-  DataProjectsGrid,
-  type Density,
-} from '@/skins/trade/blocks/data-projects-grid';
+import { DataProjectsGrid } from '@/skins/trade/blocks/data-projects-grid';
+import { type Density } from '@/skins/trade/blocks/data-projects-model';
 import { DataProjectsHeatmap } from '@/skins/trade/blocks/data-projects-heatmap';
 import { DataProjectsSkeleton } from '@/skins/trade/blocks/data-projects-skeleton';
 import {
@@ -43,11 +42,6 @@ import { TvPanel } from '@/skins/trade/ui/tv-panel';
 import { TvStateNotice } from '@/skins/trade/ui/tv-state-notice';
 
 type View = 'table' | 'cards' | 'heatmap';
-
-const isTyping = (target: EventTarget | null) =>
-  target instanceof HTMLElement &&
-  (target.isContentEditable ||
-    /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
 
 /**
  * The Projects page as a screener: a bar of filters over the projects shown as a table, as cards or as a heatmap. Sorting and filtering

@@ -3,6 +3,7 @@
  */
 
 import { cva, type VariantProps } from 'class-variance-authority';
+import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 /** The round tile with a letter in it, in the colour of a page or a skill category (decoration). */
@@ -32,7 +33,7 @@ export function TvTile({
   children,
 }: VariantProps<typeof tileVariants> & {
   className?: string;
-  children: string;
+  children: ReactNode;
 }) {
   return (
     <span

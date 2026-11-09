@@ -12,17 +12,17 @@ import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { cn } from '@/lib/utils';
+import { tenureOf, type Tenure } from '@/lib/derive/career-months';
 import { isCurrent } from '@/lib/derive/current-job';
 import { formatDuration } from '@/lib/derive/duration-label';
+import { careerSpan, spanYears } from '@/lib/derive/skill-use';
 import { DataCurrentMark } from '@/skins/trade/blocks/data-current-mark';
 import { DataSegmented } from '@/skins/trade/blocks/data-segmented';
 import {
   barPlacement,
-  careerYearsOf,
   monthsInYear,
-  tenureOf,
-  type Tenure,
 } from '@/skins/trade/blocks/data-resume-model';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 type Period = 'annual' | 'role';
 type Job = Doc<'experience'>;
@@ -36,7 +36,7 @@ const ROW =
   'grid h-12 items-stretch border-b border-tv-line bg-tv-bg transition-colors data-[hot=true]:bg-tv-hover';
 const STICKY = 'sticky left-0 z-[2] min-w-0 border-r border-tv-line bg-inherit';
 const GROW =
-  'origin-left animate-[tv-grow_0.7s_cubic-bezier(0.2,0.7,0.2,1)_both] [animation-delay:calc(var(--i)*90ms)]';
+  'origin-left animate-tv-grow [animation-delay:calc(var(--i)*90ms)]';
 
 /**
  * The jobs as a statement: a row for each role and a column for each year of the career, with a bar over the years the role ran.
@@ -60,7 +60,8 @@ export function DataFinancials({
   const { lang } = useLang();
   const [period, setPeriod] = useState<Period>('annual');
   const [hot, setHot] = useState<string | null>(null);
-  const years = careerYearsOf(jobs, now);
+  const span = careerSpan(jobs, now, 'last end');
+  const years = span ? spanYears(span) : [];
   const tenures = new Map(jobs.map((job) => [job.id, tenureOf(job, now)]));
   const longest = Math.max(...[...tenures.values()].map((t) => t.months));
   const current = jobs.find((job) => job.id === hot);
@@ -71,13 +72,15 @@ export function DataFinancials({
       : fill(words.units.monthMany, { count: months });
   const periodOf = (job: Job) =>
     formatPeriod(job.startMonth, job.endMonth, lang);
-  const readout = current
-    ? `${current.company} · ${current.role} · ${periodOf(current)} · ${duration(tenures.get(current.id)!.months)}`
-    : fill(words.statement.summary, {
-        roles: jobs.length,
-        from: years[0],
-        to: years[years.length - 1],
-      });
+  const currentMonths = current ? tenures.get(current.id)?.months : undefined;
+  const readout =
+    current && currentMonths !== undefined
+      ? `${current.company} · ${current.role} · ${periodOf(current)} · ${duration(currentMonths)}`
+      : fill(words.statement.summary, {
+          roles: jobs.length,
+          from: span?.from ?? '',
+          to: span?.to ?? '',
+        });
 
   const bar = (
     job: Job,
@@ -94,16 +97,16 @@ export function DataFinancials({
         duration: duration(tenure.months),
       })}
       data-bar={job.id}
-      style={{ ...style, '--i': index } as CSSProperties}
+      style={cssVars({ '--i': index }, style)}
       onClick={() => onOpen(job.id)}
       onMouseEnter={() => setHot(job.id)}
       onMouseLeave={() => setHot(null)}
       onFocus={() => setHot(job.id)}
       onBlur={() => setHot(null)}
       className={cn(
-        'absolute top-1.5 flex h-5 min-w-2 cursor-pointer items-center overflow-hidden rounded-sm px-1.5 text-left text-[11px] font-semibold text-white outline-offset-[-2px] transition-[filter] hover:brightness-125 focus-visible:brightness-125 focus-visible:outline-2 focus-visible:outline-white active:brightness-90 pointer-coarse:h-7',
+        'absolute top-1.5 flex h-5 min-w-2 cursor-pointer items-center overflow-hidden rounded-sm px-1.5 text-left text-[11px] font-semibold text-white transition-[filter] duration-100 hover:brightness-125 focus-visible:brightness-125 focus-visible:outline-white active:brightness-90 pointer-coarse:h-7',
         GROW,
-        isCurrent(job) ? 'bg-tv-up' : 'bg-tv-accent',
+        isCurrent(job) ? 'bg-tv-up-solid' : 'bg-tv-accent',
         job.id === activeId && 'shadow-[inset_0_0_0_2px_var(--tv-ink)]',
       )}
     >
@@ -179,13 +182,13 @@ export function DataFinancials({
           <div
             role='table'
             aria-label={words.statement.label}
-            style={
+            style={cssVars(
               {
                 '--tv-years': years.length,
                 '--tv-cols': `${LABEL}px repeat(${years.length}, minmax(${YEAR_MIN}px, 1fr))`,
-                minWidth: LABEL + years.length * YEAR_MIN,
-              } as CSSProperties
-            }
+              },
+              { minWidth: LABEL + years.length * YEAR_MIN },
+            )}
           >
             <div
               role='row'
@@ -255,12 +258,10 @@ export function DataFinancials({
           <div
             role='table'
             aria-label={words.statement.label}
-            style={
-              {
-                '--tv-cols': BY_ROLE_COLUMNS,
-                minWidth: LABEL + 150 + 120 + 140,
-              } as CSSProperties
-            }
+            style={cssVars(
+              { '--tv-cols': BY_ROLE_COLUMNS },
+              { minWidth: LABEL + 150 + 120 + 140 },
+            )}
           >
             <div
               role='row'

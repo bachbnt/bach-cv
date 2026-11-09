@@ -44,7 +44,7 @@ export function CertThumb({
       aria-label={copy.viewLabel(item.name)}
       className={cn(
         frame,
-        'group/thumb cursor-zoom-in transition-[border-color,box-shadow] duration-200 outline-offset-2 hover:border-tv-accent hover:shadow-[0_4px_14px_rgba(0,0,0,0.3)] active:scale-[0.98] pointer-coarse:min-h-11',
+        'group/thumb cursor-zoom-in transition-[border-color,box-shadow,scale] duration-160 hover:border-tv-accent hover:shadow-tv-card active:scale-[0.98] pointer-coarse:min-h-11',
         className,
       )}
     >
@@ -54,11 +54,11 @@ export function CertThumb({
         fill
         sizes='(min-width: 560px) 240px, 120px'
         unoptimized
-        className='object-contain transition-transform duration-500 ease-out group-hover/thumb:scale-[1.05]'
+        className='object-contain transition-transform duration-300 ease-tv-out group-hover/thumb:scale-[1.05]'
       />
       <span
         aria-hidden='true'
-        className='absolute inset-0 grid place-items-center bg-tv-night/45 text-white opacity-0 transition-opacity duration-200 group-hover/thumb:opacity-100'
+        className='absolute inset-0 grid place-items-center bg-tv-night/45 text-white opacity-0 transition-opacity duration-160 group-hover/thumb:opacity-100'
       >
         <ZoomIn className='size-5' />
       </span>

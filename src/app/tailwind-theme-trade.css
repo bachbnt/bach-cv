@@ -20,7 +20,17 @@
   --color-tv-violet: var(--tv-violet);
   --color-tv-sky: var(--tv-sky);
   --color-tv-orange: var(--tv-orange);
+  --color-tv-up-ink: var(--tv-up-ink);
+  --color-tv-down-ink: var(--tv-down-ink);
+  --color-tv-gold-ink: var(--tv-gold-ink);
+  --color-tv-sky-ink: var(--tv-sky-ink);
+  --color-tv-orange-ink: var(--tv-orange-ink);
+  --color-tv-violet-ink: var(--tv-violet-ink);
+  --color-tv-up-solid: var(--tv-up-solid);
+  --color-tv-down-solid: var(--tv-down-solid);
   --color-tv-tip: var(--tv-tip);
+  --color-tv-night: var(--tv-night);
+
   --color-tv-data-personal: var(--tv-data-personal);
   --color-tv-data-freelance: var(--tv-data-freelance);
   --color-tv-data-company: var(--tv-data-company);
@@ -28,4 +38,28 @@
   /* one shadow for what floats over the page (menu, popover, tip) and one for what covers it (dialog, palette) */
   --shadow-tv-menu: 0 8px 30px rgb(0 0 0 / 0.35);
   --shadow-tv-dialog: 0 20px 60px rgb(0 0 0 / 0.5);
+  /* a card that lifts on hover, and a picture or a sheet of paper lying on the (dark) desk: a 1px ring keeps its edge where a black shadow is lost */
+  --shadow-tv-card: 0 4px 14px rgb(0 0 0 / 0.3);
+  --shadow-tv-paper:
+    0 0 0 1px rgb(255 255 255 / 0.1), 0 8px 24px rgb(0 0 0 / 0.5);
+
+  /* Named entrances. The time scale of the skin: 100 ms press and hover, 160 ms toggles, menus, dialogs and tips, 240 ms panels, lists,
+     expand and collapse, 400 ms hero and staggered reveals; the image zoom is 300 ms. The keyframes are in css/*.css. */
+  --animate-tv-pop: tv-pop 240ms var(--ease-tv-out) both;
+  --animate-tv-check-pop: tv-check-pop 240ms var(--ease-tv-out) both;
+  --animate-tv-fade-up: tv-fade-up 240ms var(--ease-tv-out) both;
+  --animate-tv-fade-in: tv-fade-in 240ms var(--ease-tv-state) both;
+  --animate-tv-slide-in: tv-slide-in 240ms var(--ease-tv-out) both;
+  --animate-tv-slide-in-slow: tv-slide-in 400ms var(--ease-tv-out) both;
+  --animate-tv-slide-r: tv-slide-r 240ms var(--ease-tv-out) both;
+  --animate-tv-grow: tv-grow 400ms var(--ease-tv-out) both;
+  --animate-tv-spark: tv-spark 400ms var(--ease-tv-out) both;
+}
+
+/* The curves: `ease-out` for a state change and for fades, the custom one for everything that arrives. ease-in-out is only for loops,
+   linear only for the ticker tape, the overshoot only for the flag drop (css/chart.css). static: the variable is always on :root, so
+   keyframes, view transitions and arbitrary values can read it. */
+@theme static {
+  --ease-tv-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-tv-state: ease-out;
 }

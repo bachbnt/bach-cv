@@ -11,11 +11,16 @@ export const CHART_TYPES = [
   'area',
   'baseline',
 ] as const;
+/** The id of the hint line that describes the chart to assistive technology. */
+export const CHART_HINT_ID = 'tv-chart-hint';
+
 export type ChartType = (typeof CHART_TYPES)[number];
 
-/** The size of a candle: a week (what the career is built from), a calendar month, quarter or year. */
-export const INTERVALS = ['week', 'month', 'quarter', 'year'] as const;
-export type Interval = (typeof INTERVALS)[number];
+export const isChartType = (value: unknown): value is ChartType =>
+  CHART_TYPES.some((type) => type === value);
+
+// The size of a candle: a week (what the career is built from), a calendar month, quarter or year. Defined with the series.
+export { INTERVALS, type Interval } from '@/lib/derive/career-series';
 
 export const INDICATOR_IDS = [
   'volume',
@@ -50,21 +55,18 @@ export type Tone =
 /** `shown` is on the chart, `hidden` is kept in the legend but not drawn, `off` is not there. */
 export type IndicatorMode = 'off' | 'shown' | 'hidden';
 
-export const TOOL_IDS = [
-  'cursor',
-  'trend',
-  'ray',
-  'hline',
-  'vline',
-  'rect',
-  'fib',
-  'text',
-  'measure',
-  'eraser',
-] as const;
-export type ToolId = (typeof TOOL_IDS)[number];
+export type ToolId =
+  | 'cursor'
+  | 'trend'
+  | 'ray'
+  | 'hline'
+  | 'vline'
+  | 'rect'
+  | 'fib'
+  | 'text'
+  | 'measure'
+  | 'eraser';
 
-export const CURSOR_MODES = ['cross', 'dot', 'arrow'] as const;
-export type CursorMode = (typeof CURSOR_MODES)[number];
+export type CursorMode = 'cross' | 'dot' | 'arrow';
 
 export type Indicators = Record<IndicatorId, IndicatorMode>;

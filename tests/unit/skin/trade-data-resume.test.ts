@@ -6,12 +6,11 @@ import { describe, expect, it } from 'vitest';
 import {
   barPlacement,
   buildEvents,
-  careerYearsOf,
   eventsByYear,
   monthsInYear,
-  tenureOf,
 } from '@/skins/trade/blocks/data-resume-model';
-import { monthIndex } from '@/lib/derive/career-months';
+import { tenureOf } from '@/lib/derive/career-months';
+import { careerSpan, spanYears } from '@/lib/derive/skill-use';
 import { certificate, degree, job } from './trade-data-fixtures';
 
 const now = new Date(2026, 10, 6);
@@ -25,21 +24,6 @@ const jobs = [
 ];
 
 describe('tenure', () => {
-  it('counts both the first and the last month, and the current role runs to this month', () => {
-    expect(tenureOf(jobs[1], now).months).toBe(45);
-    expect(tenureOf(jobs[0], now)).toEqual({
-      start: monthIndex('2026-01'),
-      end: monthIndex('2026-11'),
-      months: 11,
-    });
-  });
-
-  it('never ends before it starts', () => {
-    expect(
-      tenureOf({ startMonth: '2024-05', endMonth: '2024-01' }, now).months,
-    ).toBe(1);
-  });
-
   it('splits the months by calendar year', () => {
     const tenure = tenureOf(jobs[1], now);
     expect(monthsInYear(tenure, 2021)).toBe(0);
@@ -53,15 +37,17 @@ describe('tenure', () => {
   });
 
   it('lists the years from the first job to the last month, and none with no job', () => {
-    expect(careerYearsOf(jobs, now)).toEqual([
-      2020, 2021, 2022, 2023, 2024, 2025, 2026,
-    ]);
-    expect(careerYearsOf([], now)).toEqual([]);
-    expect(careerYearsOf([jobs[2]], now)).toEqual([2020, 2021, 2022]);
+    const years = (list: typeof jobs) => {
+      const span = careerSpan(list, now, 'last end');
+      return span ? spanYears(span) : [];
+    };
+    expect(years(jobs)).toEqual([2020, 2021, 2022, 2023, 2024, 2025, 2026]);
+    expect(years([])).toEqual([]);
+    expect(years([jobs[2]])).toEqual([2020, 2021, 2022]);
   });
 
   it('places a bar as fractions of the year columns', () => {
-    const years = careerYearsOf(jobs, now);
+    const years = spanYears(careerSpan(jobs, now, 'last end')!);
     const first = barPlacement(tenureOf(jobs[2], now), years);
     expect(first.left).toBeCloseTo(2 / (7 * 12));
     expect(first.width).toBeCloseTo(26 / (7 * 12));

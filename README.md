@@ -6,6 +6,29 @@ A static Next.js site whose content lives in Firestore. Editing a document in th
 minutes: no build, no deploy. It speaks English and Vietnamese, has an AI assistant (BB Bot), and builds the CV as a PDF from the
 same data.
 
+## Screenshots
+
+The Home page of each skin, in the dark and in the light theme.
+
+<table>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/01.webp" alt="Home in the Standard skin, dark theme"><br><sub><b>Standard</b>, dark: the portfolio itself, with a rainbow palette.</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/02.webp" alt="Home in the Standard skin, light theme"><br><sub><b>Standard</b>, light.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/03.webp" alt="Home in the Dev skin, dark theme"><br><sub><b>Dev</b>, dark: the same content as a code editor, with a working terminal.</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/04.webp" alt="Home in the Dev skin, light theme"><br><sub><b>Dev</b>, light.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/05.webp" alt="Home in the Trade skin, dark theme"><br><sub><b>Trade</b>, dark: the same content as a trading terminal, with the career as a chart.</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/06.webp" alt="Home in the Trade skin, light theme"><br><sub><b>Trade</b>, light.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.webp" alt="The Home page of the first version of the site"><br><sub><b>v1</b>: the first version of the site (2022).</sub></td>
+    <td width="50%"></td>
+  </tr>
+</table>
+
 ## Highlights
 
 - **Remote config.** `site/live` switches pages (`on` / `soon` / `hidden`), features (chat, CV download, contact form, Connect

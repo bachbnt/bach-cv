@@ -143,6 +143,8 @@ test.describe('Services as a broker catalogue', () => {
     const received = await mockNotify(page);
     await gotoSkin(page, '/services');
     await page.getByRole('button', { name: 'Trade: App Development' }).click();
+    // choosing a topic moves the focus to the message on the next frame: wait for it, or the typing of the next field can land there
+    await expect(page.getByLabel('Message', { exact: true })).toBeFocused();
     await page.getByLabel('Name').fill('Ada Lovelace');
     await page.getByLabel('Email').fill('ada@example.com');
     await page

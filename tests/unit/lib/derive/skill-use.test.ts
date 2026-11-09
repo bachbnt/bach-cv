@@ -13,6 +13,7 @@ import {
   SIDE_PROJECTS,
   skillEvidence,
   skillSeries,
+  spanYears,
   type CareerJob,
 } from '@/lib/derive/skill-use';
 
@@ -88,6 +89,24 @@ describe('careerSpan and skillSeries', () => {
   it('runs from the year of the first role to this year', () => {
     expect(careerSpan(jobs, now)).toEqual({ from: 2020, to: 2026 });
     expect(careerSpan([], now)).toBeNull();
+  });
+
+  it('can end at the last role instead of this year: the years a statement of the roles needs', () => {
+    const ended = [
+      job('a', '2020-03', '2022-04', ['x']),
+      job('b', '2022-05', '2023-01', ['x']),
+    ];
+    expect(careerSpan(ended, now)).toEqual({ from: 2020, to: 2026 });
+    expect(careerSpan(ended, now, 'last end')).toEqual({
+      from: 2020,
+      to: 2023,
+    });
+    // a role that goes on ends this month
+    expect(careerSpan(jobs, now, 'last end')).toEqual({ from: 2020, to: 2026 });
+    expect(careerSpan([], now, 'last end')).toBeNull();
+    expect(spanYears({ from: 2020, to: 2023 })).toEqual([
+      2020, 2021, 2022, 2023,
+    ]);
   });
 
   it('counts, for each year, the roles that list the skill and were active in it', () => {

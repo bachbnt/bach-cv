@@ -134,6 +134,8 @@ test('a message is written to Firestore and the success state shows', async ({
   });
   await gotoSkin(page, '/services');
   await page.getByRole('button', { name: 'Web Development' }).click();
+  // choosing a topic moves the focus to the message on the next frame: wait for it, or the typing of the next field can land there
+  await expect(page.getByLabel('Message', { exact: true })).toBeFocused();
   await fill(page);
   await page.getByRole('button', { name: 'Send' }).click();
 
@@ -158,6 +160,8 @@ test('after the message is saved the Worker is asked to email it to the owner', 
   const received = await mockNotify(page);
   await gotoSkin(page, '/services');
   await page.getByRole('button', { name: 'Web Development' }).click();
+  // choosing a topic moves the focus to the message on the next frame: wait for it, or the typing of the next field can land there
+  await expect(page.getByLabel('Message', { exact: true })).toBeFocused();
   await fill(page);
   await page.getByRole('button', { name: 'Send' }).click();
   await expect(

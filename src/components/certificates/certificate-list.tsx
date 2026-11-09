@@ -20,12 +20,14 @@ import { certificatesCopy } from '@/content/copy/certificates';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
+import { issuedNewestFirst } from '@/lib/derive/recency';
 import { useContentQuery } from '@/lib/query/use-content';
 
 /** The certificates, with the loading, empty and error states of every data block. */
 export function CertificateList() {
   const certificates = useContentQuery('certificates');
-  const items = certificates.data ?? [];
+  // newest first, so the one shown large is the latest issued whatever the order the documents came in
+  const items = issuedNewestFirst(certificates.data ?? []);
   return (
     <DataState
       query={certificates}

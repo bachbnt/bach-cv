@@ -25,7 +25,7 @@ export function DeskField({
       </label>
       {children}
       <div className='flex justify-between gap-3 text-xs'>
-        <span id={`${id}-error`} className='min-h-4 text-tv-down'>
+        <span id={`${id}-error`} className='min-h-4 text-tv-down-ink'>
           {error}
         </span>
         {aside}

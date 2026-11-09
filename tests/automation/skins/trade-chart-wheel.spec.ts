@@ -78,6 +78,37 @@ const spin = (
 const steps = (counts: number[]) =>
   counts.slice(1).map((n, i) => n - counts[i]);
 
+test('zooming out at the widest window, or in at the closest one, does not slide the chart', async ({
+  page,
+}) => {
+  await ready(page);
+  // where the years of the time axis are: the window moves if and only if these do
+  const years = () =>
+    chart(page).evaluate((svg) =>
+      Array.from(svg.querySelectorAll('text'))
+        .filter((t) => /^\d{4}$/.test(t.textContent ?? ''))
+        .map(
+          (t) => `${t.textContent}@${Math.round(t.getBoundingClientRect().x)}`,
+        )
+        .join(' '),
+    );
+  // out to the widest window with the pointer on the right, then on pushing the wheel with the pointer on the left
+  await spin(page, { deltas: Array(40).fill(120), gap: 8, share: 0.8 });
+  const widest = await bars(page);
+  const before = await years();
+  expect(before).not.toBe('');
+  await spin(page, { deltas: Array(10).fill(120), gap: 8, share: 0.1 });
+  expect(await bars(page)).toBe(widest);
+  expect(await years()).toBe(before);
+  // in to the closest window, then on pushing it
+  await spin(page, { deltas: Array(60).fill(-120), gap: 8, share: 0.5 });
+  const closest = await bars(page);
+  const near = await years();
+  await spin(page, { deltas: Array(10).fill(-120), gap: 8, share: 0.9 });
+  expect(await bars(page)).toBe(closest);
+  expect(await years()).toBe(near);
+});
+
 test('one notch of the wheel glides: a gentle change over many frames, never a jump', async ({
   page,
 }) => {

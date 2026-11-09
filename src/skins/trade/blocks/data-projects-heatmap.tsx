@@ -5,19 +5,20 @@
 'use client';
 
 import { KIND_ORDER } from '@/components/projects/project-helpers';
-import type { CSSProperties, RefObject } from 'react';
+import type { RefObject } from 'react';
 import { projectsCopy } from '@/content/copy/projects';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import type { Doc } from '@/lib/content/schema';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import { useBox } from '@/skins/trade/blocks/data-use-box';
+import { useBox } from '@/hooks/use-box';
 import { DataKind } from '@/skins/trade/blocks/data-kind';
 import { KIND_TILE } from '@/skins/trade/blocks/data-kind-style';
 import { DataProjectDetail } from '@/skins/trade/blocks/data-project-detail';
 import { heatValue } from '@/skins/trade/blocks/data-projects-model';
 import { layoutTreemap } from '@/skins/trade/blocks/data-treemap';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 /**
  * The projects as a heatmap (a treemap): one tile for each, its area the number of technologies the project lists, its colour its kind.
@@ -86,16 +87,16 @@ export function DataProjectsHeatmap({
               key={rect.id}
               data-flip={rect.id}
               data-testid='project'
-              style={
+              style={cssVars(
+                { '--i': Math.min(index, 10) },
                 {
                   left: `${(rect.x / width) * 100}%`,
                   top: `${(rect.y / height) * 100}%`,
                   width: `${(rect.w / width) * 100}%`,
                   height: `${(rect.h / height) * 100}%`,
-                  '--i': Math.min(index, 10),
-                } as CSSProperties
-              }
-              className='absolute animate-[tv-pop_0.38s_cubic-bezier(0.2,0.7,0.2,1)_both] p-px [animation-delay:calc(var(--i)*45ms)]'
+                },
+              )}
+              className='absolute animate-tv-pop p-px [animation-delay:calc(var(--i)*45ms)]'
             >
               <button
                 type='button'
@@ -109,7 +110,7 @@ export function DataProjectsHeatmap({
                   onSelect(project.id === selectedId ? null : project.id)
                 }
                 className={cn(
-                  'flex size-full cursor-pointer flex-col items-start justify-between gap-1 overflow-hidden rounded-sm border border-l-[3px] p-2 text-left transition-[filter,scale,box-shadow] duration-200 hover:z-10 hover:scale-[1.015] hover:brightness-125 active:scale-[0.99] aria-pressed:shadow-[inset_0_0_0_2px_var(--tv-ink)]',
+                  'flex size-full cursor-pointer flex-col items-start justify-between gap-1 overflow-hidden rounded-sm border border-l-[3px] p-2 text-left transition-[filter,scale,box-shadow] duration-160 hover:z-10 hover:scale-[1.015] hover:brightness-125 active:scale-[0.99] aria-pressed:shadow-[inset_0_0_0_2px_var(--tv-ink)]',
                   KIND_TILE[project.kind],
                 )}
               >
@@ -141,10 +142,7 @@ export function DataProjectsHeatmap({
         className='mt-3 min-h-10 rounded-md border border-dashed border-tv-line'
       >
         {selected ? (
-          <div
-            key={selected.id}
-            className='animate-[tv-fade-up_0.3s_cubic-bezier(0.2,0.7,0.2,1)_both]'
-          >
+          <div key={selected.id} className='animate-tv-fade-up'>
             <h3 className='px-3.5 pt-3 text-[13px] font-semibold'>
               {selected.name}
             </h3>

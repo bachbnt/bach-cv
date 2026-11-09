@@ -5,7 +5,6 @@
 'use client';
 
 import { PanelBottomOpen } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import {
   useEffect,
   useRef,
@@ -38,15 +37,17 @@ import { BottomNav } from '@/skins/trade/shell/bottom-nav';
 import { ChartSlot } from '@/skins/trade/shell/chart-slot';
 import { IconRail } from '@/skins/trade/shell/icon-rail';
 import { RangeBar } from '@/skins/trade/shell/range-bar';
-import { revealById } from '@/skins/trade/shell/reveal';
 import { Splitter } from '@/skins/trade/shell/splitter';
 import { TickerTape } from '@/skins/trade/shell/ticker-tape';
 import { Toolbar } from '@/skins/trade/shell/toolbar';
 import { ToolRail } from '@/skins/trade/shell/tool-rail';
 import { TradeProvider, useTrade } from '@/skins/trade/shell/trade-context';
 import { TradeOverlays } from '@/skins/trade/shell/trade-overlays';
+import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
 import { useSearchHotkey } from '@/skins/trade/shell/use-search-hotkey';
 import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useScrollToPage } from '@/skins/trade/shell/use-scroll-to-page';
+import { useStickyOffset } from '@/skins/trade/shell/use-sticky-offset';
 import { useViewportHeight } from '@/skins/trade/shell/use-viewport-height';
 import { useWide } from '@/skins/trade/shell/use-wide';
 import { Watchlist } from '@/skins/trade/shell/watchlist';
@@ -58,7 +59,7 @@ const TOOL_RAIL = 52;
 const ICON_RAIL = 46;
 const TOOLBAR = 40;
 /** How long a move by a key or a reset takes (a splitter dragged by hand does not animate). */
-const EASE_MS = 220;
+const EASE_MS = 240;
 
 /**
  * The frame of the Trade skin: a chart terminal. One toolbar on top, a column of tools on the left, the career chart with its range
@@ -88,21 +89,33 @@ function Terminal({
   children: ReactNode;
 }) {
   const [range, setRange] = useState<RangeKey>(DEFAULT_RANGE);
-  const router = useRouter();
-  const { showJob, openSearch, layout: saved, setLayout, setDock } = useTrade();
+  const {
+    showJob,
+    showDegree,
+    openSearch,
+    layout: saved,
+    setLayout,
+    setDock,
+  } = useTrade();
   const words = useCopy(tradeShellCopy).panelBar;
   const resize = useCopy(tradeShellCopy).resize;
   const wide = useWide();
+  const panel = useRef<HTMLElement>(null);
+  useScrollToPage(panel, page, !wide);
+  useStickyOffset();
   const reduced = useReducedMotion();
   const viewport = useViewportHeight();
-  // a phone has no rails, so what was chosen for the wide terminal does not apply there
-  const layout = wide ? saved : DEFAULT_LAYOUT;
+  // a phone has no watchlist column, panel or dividers, so only the tool strip and the ticker tape follow the Layout menu there
+  const layout = wide
+    ? saved
+    : { ...DEFAULT_LAYOUT, tools: saved.tools, tape: saved.tape };
   // the BB Bot panel takes the place of the watchlist while it is open, and the column is there for it even when the watchlist is off
   const chatOpen = useChat().isOpen;
   const chatOn = useLive().features.chat;
   const chatDocked = chatOpen && chatOn && wide;
   const sideOn = layout.watchlist || chatDocked;
   const tall = page === 'home';
+  const hidden = useDocumentHidden();
   useSearchHotkey(openSearch);
 
   // a page picked while the panel is hidden brings the panel back: the visitor asked for that page
@@ -120,11 +133,16 @@ function Terminal({
   const [dragHeight, setDragHeight] = useState<number | null>(null);
   const [dragSide, setDragSide] = useState<number | null>(null);
   const [easing, setEasing] = useState(false);
+  const easeTimer = useRef<number | undefined>(undefined);
+  // The grid tracks animate (layout, not transform) only for a move by a key or a reset, never while dragging, and not for reduced
+  // motion. The timer is kept so a second move restarts it and leaving the page cancels it.
   const ease = () => {
     if (reduced) return;
+    window.clearTimeout(easeTimer.current);
     setEasing(true);
-    window.setTimeout(() => setEasing(false), EASE_MS + 40);
+    easeTimer.current = window.setTimeout(() => setEasing(false), EASE_MS + 40);
   };
+  useEffect(() => () => window.clearTimeout(easeTimer.current), []);
   const usual = defaultChartHeight(viewport, area, tall, layout.tape);
   const chartPx =
     dragHeight ??
@@ -146,9 +164,10 @@ function Terminal({
         'flex min-h-dvh flex-col pb-12 min-[1101px]:grid min-[1101px]:h-dvh min-[1101px]:overflow-hidden min-[1101px]:pb-0',
         'relative',
         easing &&
-          'transition-[grid-template-columns,grid-template-rows] duration-200 ease-out',
+          'transition-[grid-template-columns,grid-template-rows] duration-240 ease-tv-out',
       )}
       style={grid}
+      data-hidden={hidden ? '' : undefined}
     >
       <div className='contents min-[1101px]:col-[1/4] min-[1101px]:row-1 min-[1101px]:block min-[1101px]:min-w-0'>
         <Toolbar />
@@ -164,10 +183,7 @@ function Terminal({
           <ChartSlot
             range={range}
             onOpenJob={showJob}
-            onOpenDegree={() => {
-              router.push('/resume#tv-education');
-              revealById('tv-education');
-            }}
+            onOpenDegree={showDegree}
           />
         </div>
       </div>
@@ -175,7 +191,10 @@ function Terminal({
       {layout.tape && (
         <TickerTape className='border-t border-b-0 border-tv-line min-[1101px]:col-2 min-[1101px]:row-4' />
       )}
-      <main className='relative flex min-h-0 min-w-0 flex-col border-t border-tv-line min-[1101px]:col-2 min-[1101px]:row-5'>
+      <main
+        ref={panel}
+        className='relative flex min-h-0 min-w-0 flex-col border-t border-tv-line min-[1101px]:col-2 min-[1101px]:row-5'
+      >
         {wide && layout.panel && (
           <Splitter
             orientation='horizontal'
@@ -238,7 +257,7 @@ function Terminal({
         layout.watchlist && (
           <Watchlist
             page={page}
-            className='min-[1101px]:col-3 min-[1101px]:row-[2/6] min-[1101px]:animate-[tv-slide-r_.28s_cubic-bezier(.2,.7,.2,1)_both]'
+            className='min-[1101px]:col-3 min-[1101px]:row-[2/6] min-[1101px]:animate-tv-slide-r'
           />
         )
       )}

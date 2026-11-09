@@ -8,7 +8,7 @@ const WIDTH = 64;
 const HEIGHT = 18;
 
 /** The path of a line through `values` (and the same line closed along the bottom, for the soft area under it). */
-export function sparkPaths(values: number[]): { line: string; area: string } {
+function sparkPaths(values: number[]): { line: string; area: string } {
   const max = Math.max(1, ...values);
   const step = values.length > 1 ? WIDTH / (values.length - 1) : WIDTH;
   const points = values.map(
@@ -39,7 +39,7 @@ export function Sparkline({
       aria-hidden='true'
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       className={cn(
-        'h-[18px] w-16 flex-none origin-bottom animate-[tv-spark_.6s_cubic-bezier(.2,.7,.2,1)_both] overflow-visible',
+        'h-[18px] w-16 flex-none origin-bottom animate-tv-spark overflow-visible',
         className,
       )}
     >

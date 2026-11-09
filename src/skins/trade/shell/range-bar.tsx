@@ -31,8 +31,10 @@ const GoToDate = dynamic(() => import('@/skins/trade/chart/go-to-date'), {
 });
 
 const button =
-  'inline-flex h-6 shrink-0 cursor-pointer items-center justify-center gap-1 rounded px-2 hover:bg-tv-hover pointer-coarse:h-11 pointer-coarse:min-w-11 [&_svg]:size-3.5';
-const pressed = 'bg-tv-hover text-tv-accent-ink';
+  'inline-flex h-6 shrink-0 cursor-pointer items-center justify-center gap-1 rounded px-2 transition-[background-color,color,scale] duration-100 hover:bg-tv-hover active:scale-95 active:bg-tv-hover pointer-coarse:h-11 pointer-coarse:min-w-11 [&_svg]:size-3.5';
+/** On, and not just pointed at: a tint of the accent, so it is not the grey of a hover */
+const pressed =
+  'bg-tv-accent/15 text-tv-accent-ink hover:bg-tv-accent/25 active:bg-tv-accent/25';
 
 /**
  * The bar under the chart: the range buttons (3M ... All) that slide the window, Go to date, zoom, the list of keyboard shortcuts, and the
@@ -56,7 +58,7 @@ export function RangeBar({
     <div
       role='toolbar'
       aria-label={copy.ranges.label}
-      className='relative flex h-8 items-center gap-0.5 overflow-x-auto border-t border-tv-line bg-tv-bg px-2 text-xs max-[1100px]:h-11 min-[1101px]:col-2 min-[1101px]:row-3'
+      className='relative flex min-h-8 flex-wrap items-center gap-0.5 border-t border-tv-line bg-tv-bg px-2 text-xs max-[1100px]:min-h-11 min-[1101px]:col-2 min-[1101px]:row-3 min-[1101px]:h-8 min-[1101px]:flex-nowrap min-[1101px]:overflow-x-auto min-[1101px]:[scrollbar-width:none]'
     >
       <div
         role='group'
@@ -128,7 +130,7 @@ export function RangeBar({
           aria-label={copy.toolbar.shortcuts}
           disabled={!ready}
           onClick={() => chartStore.setShortcutsOpen(true)}
-          className={cn(button, 'disabled:opacity-50')}
+          className={cn(button, 'disabled:opacity-50 pointer-coarse:hidden')}
         >
           <Keyboard aria-hidden='true' />
         </button>

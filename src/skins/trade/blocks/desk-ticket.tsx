@@ -62,7 +62,7 @@ export function DeskTicket({
     >
       <span
         aria-hidden='true'
-        className='pointer-events-none absolute -inset-px rounded opacity-0 shadow-[0_0_0_1px_var(--tv-accent),0_0_22px_color-mix(in_srgb,var(--tv-accent)_35%,transparent)] transition-opacity duration-300 group-focus-within/ticket:opacity-100'
+        className='pointer-events-none absolute -inset-px rounded opacity-0 shadow-[0_0_0_1px_var(--tv-accent),0_0_22px_color-mix(in_srgb,var(--tv-accent)_35%,transparent)] transition-opacity duration-160 group-focus-within/ticket:opacity-100'
       />
       <header
         aria-hidden='true'
@@ -145,7 +145,7 @@ export function DeskTicket({
                       className={cn(
                         'text-tv-mute tabular-nums',
                         used >= warnAt(limits.messageMax) &&
-                          'font-semibold text-tv-down',
+                          'font-semibold text-tv-down-ink',
                       )}
                     >
                       {counterText(used, limits.messageMax, f.count)}
@@ -187,7 +187,7 @@ export function DeskTicket({
                 {status === 'failed' && (
                   <div
                     role='alert'
-                    className='rounded border border-tv-down bg-tv-down-bg px-3 py-2 text-[13px]/[1.45] text-tv-down'
+                    className='rounded border border-tv-down bg-tv-down-bg px-3 py-2 text-[13px]/[1.45] text-tv-down-ink'
                   >
                     {f.failed}
                   </div>

@@ -37,7 +37,7 @@ export function TvZoomStage({
           data-testid={testId}
           style={zoom === 1 ? undefined : { width: `${zoom * 100}%` }}
           className={cn(
-            'block h-auto animate-in bg-white shadow-[0_6px_24px_rgba(0,0,0,.35)] duration-150 fade-in-0 motion-reduce:animate-none',
+            'block h-auto animate-in bg-white shadow-tv-paper duration-160 fade-in-0 motion-reduce:animate-none',
             zoom === 1
               ? cn(
                   'max-h-[calc(min(60dvh,620px)-32px)] w-auto max-w-full',

@@ -45,7 +45,7 @@ export function advance(
 }
 
 /** A flag on a bar: a job or a degree. */
-export interface Flagged {
+interface Flagged {
   index: number;
 }
 

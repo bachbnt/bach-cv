@@ -25,13 +25,16 @@ the URL does not change.
    **The three lights of the editor window itself (the title bar) work too:** red closes the editor (back to the Standard look, like the
    Skin menu), yellow is **Zen mode** (the tabs, breadcrumb, activity bar, Explorer, minimap, bottom panel and status bar are hidden with
    CSS, so the terminal keeps its scrollback; the title bar and the page stay; Esc or the light leaves it, and an open window takes Esc
-   first; not on a phone), green is the **full screen** of the page (`shell/use-fullscreen.ts`; a browser that cannot do it, such as an iPhone,
+   first; not on a phone), green is the **full screen** of the page (`hooks/use-fullscreen.ts`; a browser that cannot do it, such as an iPhone,
    leaves it grey).
 5. Dev-only strings (command lines like `whoami`) are decoration: `aria-hidden`. Anything a visitor reads or operates uses the Standard
    copy (`content/copy/*`), so both languages work. A new string needs `en` and `vi` (`defineCopy`).
 6. Buttons that look like commands (`./download-cv.sh`) keep the Standard accessible name (`aria-label`), so tests and screen readers find
    the same control in every skin (`ui/dev-download-cv.tsx`).
-7. Phone: `max-[900px]:` utilities (the root, `ui/dev-root.tsx`, carries the state of the drawer); the Explorer is a drawer, and Connect and the CV button live in it
+7. Phone: `max-[900px]:` utilities (the root, `ui/dev-root.tsx`, carries the state of the drawer); below 640 px the status bar keeps only its buttons
+   (Problems, Output, Terminal) and the items that only decorate it (project, branch, sync, language, Prettier, bell) give way, so no real control
+   is cut off; the footer leaves room for the chat button; on touch the small controls (title bar menus, Files, status bar) reach 44 px with an
+   invisible area around them; the Explorer is a drawer, and Connect and the CV button live in it
    (the account menu opens as a bottom sheet).
 
 ## Motion

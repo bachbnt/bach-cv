@@ -60,7 +60,7 @@ export function TvStateNotice({
         className={cn(
           'grid size-10 flex-none place-items-center rounded-full',
           kind === 'error'
-            ? 'bg-tv-down-bg text-tv-down'
+            ? 'bg-tv-down-bg text-tv-down-ink'
             : 'bg-tv-hover text-tv-mute',
         )}
       >

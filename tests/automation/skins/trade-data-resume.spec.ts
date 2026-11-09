@@ -557,6 +557,8 @@ test.describe('education and skills', () => {
 
   test('the jump links go to the sections', async ({ page }) => {
     await gotoSkin(page, '/resume');
+    // the link scrolls to a section that exists once the jobs have arrived
+    await expect(statement(page)).toBeVisible();
     await page
       .getByRole('navigation', { name: 'Sections of the resume' })
       .getByRole('link', { name: 'Events' })

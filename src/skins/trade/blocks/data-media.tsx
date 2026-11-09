@@ -30,7 +30,7 @@ interface MediaValue {
 
 const MediaContext = createContext<MediaValue>({ items: [], open: () => {} });
 
-export const useMedia = () => useContext(MediaContext);
+const useMedia = () => useContext(MediaContext);
 
 /**
  * Holds the pictures of the Resume page (roles first, then degrees) and the Standard preview window that steps through all of them
@@ -138,7 +138,7 @@ export function DataMedia({
       onClick={() => open(id)}
       className={cn(
         frame,
-        'group/media block cursor-zoom-in outline-offset-2 transition-[border-color] hover:border-tv-accent active:scale-[0.99]',
+        'group/media block cursor-zoom-in transition-[border-color,scale] duration-100 hover:border-tv-accent active:scale-[0.99]',
       )}
     >
       <Image
@@ -147,7 +147,7 @@ export function DataMedia({
         fill
         sizes={sizes}
         loading='lazy'
-        className='object-cover object-[50%_22%] transition-transform duration-500 ease-out group-hover/media:scale-[1.05]'
+        className='object-cover object-[50%_22%] transition-transform duration-300 ease-tv-out group-hover/media:scale-[1.05]'
       />
       <span
         aria-hidden='true'

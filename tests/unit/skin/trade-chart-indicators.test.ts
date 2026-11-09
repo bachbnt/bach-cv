@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import { DEFAULT_PREFS } from '@/skins/trade/chart/chart-prefs';
 import { INDICATOR_IDS } from '@/skins/trade/chart/chart-types';
 import {

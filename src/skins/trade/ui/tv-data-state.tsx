@@ -4,7 +4,7 @@
 
 'use client';
 
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { QueryLike } from '@/components/data-state';
 import {
   statesCopy,
@@ -13,10 +13,12 @@ import {
 } from '@/content/copy/states';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
+import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
 import { TvButton, TvLink } from '@/skins/trade/ui/tv-button';
+import { TvFadeIn } from '@/skins/trade/ui/tv-fade-in';
 import { TvStateNotice } from '@/skins/trade/ui/tv-state-notice';
 
-/** Skeleton while loading (announced once, with a thin line sweeping along its top), the error card with Try again, the empty card, or the content. Same words as Standard. */
+/** Skeleton while loading (announced once, with a thin line sweeping along its top), the error card with Try again, the empty card, or the content (which fades in over a skeleton). Same words as Standard. */
 export function TvDataState({
   query,
   count,
@@ -41,10 +43,15 @@ export function TvDataState({
   children: ReactNode;
 }) {
   const copy = useCopy(statesCopy);
+  const gate = useLoopGate();
+  // a block that showed its skeleton fades in over it; one that had its data from the start (the cache) just appears
+  const [waited, setWaited] = useState(query.isPending);
+  if (query.isPending && !waited) setWaited(true);
 
   if (query.isPending) {
     return (
       <div
+        ref={gate}
         role='status'
         aria-busy='true'
         aria-label={copy.loading}
@@ -97,5 +104,5 @@ export function TvDataState({
     );
   }
 
-  return <>{children}</>;
+  return waited ? <TvFadeIn>{children}</TvFadeIn> : <>{children}</>;
 }

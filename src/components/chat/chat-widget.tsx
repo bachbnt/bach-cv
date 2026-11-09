@@ -4,14 +4,12 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { MessageCircle, X } from 'lucide-react';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { chatCopy } from '@/content/copy/chat';
 import { useCopy } from '@/lib/i18n/copy';
 import { resolveSuggestions } from '@/lib/chat/suggestions';
-import { settingsSchema } from '@/lib/content/schema';
-import { settingsQueryOptions } from '@/lib/query/options';
+import { useChatSettings } from '@/hooks/use-chat-settings';
 import { useLive } from '@/hooks/use-live';
 import { ChatPanel } from './chat-panel';
 import { useChat } from './chat-provider';
@@ -20,9 +18,6 @@ import { useKeyboardInset } from './use-keyboard-inset';
 
 /** How long a visitor can leave the button alone before it calls attention to itself, once. */
 const NUDGE_AFTER_MS = 20_000;
-
-/** Until `site/settings` arrives (or if it cannot be read) the defaults of the schema apply. */
-const DEFAULT_CHAT = settingsSchema.parse({}).chat;
 
 /**
  * The floating BB Bot button and its panel. Nothing is rendered when the `chat` feature is off.
@@ -39,12 +34,7 @@ export function ChatWidget() {
   const [nudged, setNudged] = useState(false);
   const everOpened = useRef(false);
 
-  // the settings are read when the chat first opens, not on page load
-  const { data: settings } = useQuery({
-    ...settingsQueryOptions(),
-    enabled: isOpen,
-  });
-  const chat = settings?.chat ?? DEFAULT_CHAT;
+  const chat = useChatSettings(isOpen);
 
   const session = useChatSession({
     maxUserMessages: chat.maxUserMessages,

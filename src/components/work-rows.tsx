@@ -15,16 +15,15 @@ import { useLang } from '@/lib/i18n/language';
 import { formatPeriod } from '@/lib/format';
 import { useContentQuery } from '@/lib/query/use-content';
 import { isCurrent } from '@/lib/derive/current-job';
+import { HOME_ROLES, latestRoles } from '@/lib/derive/home-lists';
 import { jobBadge } from '@/lib/derive/job-badge';
-
-const LIMIT = 4;
 
 /** The newest roles that appear in the CV, as the Home page lists them. */
 export function WorkRows() {
   const copy = useCopy(homeCopy);
   const { lang } = useLang();
   const query = useContentQuery('experience');
-  const rows = (query.data ?? []).slice(0, LIMIT);
+  const rows = latestRoles(query.data ?? []);
 
   return (
     <DataState
@@ -35,7 +34,7 @@ export function WorkRows() {
       level={3}
       skeleton={
         <RowsSkeleton
-          count={LIMIT - 1}
+          count={HOME_ROLES - 1}
           className='-mx-3 border-t min-[721px]:-mx-6'
         />
       }

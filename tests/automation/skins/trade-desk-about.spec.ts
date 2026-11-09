@@ -142,7 +142,7 @@ test.describe('About as the page of a symbol', () => {
       'https://github.com/bachbnt/',
     );
     await links.getByRole('button', { name: 'Copy' }).click();
-    await expect(links.getByRole('button', { name: 'Copied' })).toBeVisible();
+    await expect(links.getByRole('status')).toHaveText('Copied');
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
       'bachbnt@gmail.com',
     );

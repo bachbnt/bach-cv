@@ -180,14 +180,15 @@ export function MobileMenu({
           )}
 
           {SKIN_IDS.length > 1 && (
-            <div className='mt-3.5 flex items-center justify-between gap-3 border-t pt-3.5'>
-              <p className='text-[13px] font-semibold text-muted-foreground'>
+            // the label sits above a grid of three columns: three names fit a narrow phone in one row, six make two even rows
+            <div className='mt-3.5 border-t pt-3.5'>
+              <p className='mb-2 text-[13px] font-semibold text-muted-foreground'>
                 {skins.label}
               </p>
               <div
                 role='group'
                 aria-label={skins.label}
-                className='inline-flex rounded-xl bg-background p-[3px]'
+                className='grid grid-cols-3 gap-1 rounded-xl bg-background p-[3px]'
               >
                 {SKIN_IDS.map((id) => (
                   <button
@@ -198,7 +199,7 @@ export function MobileMenu({
                       setSkin(id);
                       setMenuOpen(false);
                     }}
-                    className='min-h-10 min-w-14 cursor-pointer rounded-[10px] px-3.5 text-[15px] font-semibold text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
+                    className='min-h-10 min-w-0 cursor-pointer truncate rounded-[10px] px-0.5 text-[13px] font-semibold min-[360px]:text-sm text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
                   >
                     {skins.names[id].name}
                   </button>
@@ -207,7 +208,7 @@ export function MobileMenu({
             </div>
           )}
 
-          <div className='mt-3.5 flex items-center justify-between gap-3 border-t pt-3.5'>
+          <div className='mt-3.5 mb-4 flex items-center justify-between gap-3 border-t pt-3.5'>
             <p className='text-[13px] font-semibold text-muted-foreground'>
               {copy.theme.label}
             </p>

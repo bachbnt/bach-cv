@@ -3,7 +3,7 @@
  */
 
 import { shortDegree } from '@/lib/derive/short-degree';
-import { monthStart } from '@/skins/trade/blocks/build-candles';
+import { endExclusive, monthStart } from '@/lib/derive/career-months';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -42,14 +42,8 @@ export function studiesOf(degrees: Degree[]): Study[] {
     .flatMap((d) => {
       const start = monthStart(d.startMonth);
       if (!Number.isFinite(start)) return [];
-      const last = d.endMonth ? monthStart(d.endMonth) : Number.NaN;
-      const end = Number.isFinite(last)
-        ? new Date(
-            new Date(last).getFullYear(),
-            new Date(last).getMonth() + 1,
-            1,
-          ).getTime()
-        : null;
+      const after = d.endMonth ? endExclusive(d.endMonth) : Number.NaN;
+      const end = Number.isFinite(after) ? after : null;
       return [
         {
           ...d,
@@ -61,19 +55,6 @@ export function studiesOf(degrees: Degree[]): Study[] {
       ];
     })
     .sort((a, b) => a.start - b.start);
-}
-
-/** The degree being studied for at a time (the newest when two overlap), or `null`. */
-export function studyAt(studies: Study[], t: number): Study | null {
-  let found: Study | null = null;
-  for (const s of studies)
-    if (
-      t >= s.start &&
-      (s.end === null || t < s.end) &&
-      (!found || s.start > found.start)
-    )
-      found = s;
-  return found;
 }
 
 /** The legend's words for a degree in progress: `MSc · University of Science`. */

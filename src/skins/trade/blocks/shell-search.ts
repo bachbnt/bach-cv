@@ -3,8 +3,9 @@
  */
 
 import type { Doc, PageKey } from '@/lib/content/schema';
+import { foldText } from '@/lib/fold-text';
 
-export type SearchKind =
+type SearchKind =
   | 'page'
   | 'project'
   | 'role'
@@ -24,8 +25,21 @@ export const KIND_ORDER: readonly SearchKind[] = [
   'education',
 ];
 
+/**
+ * The page each kind of result leads to. A result is offered only while its page is open: a hidden page is absent and a page that is
+ * coming soon is not a link, so what lives there must not be a way in. (A job goes to Resume, as a skill and a degree do.)
+ */
+const KIND_PAGE = {
+  project: 'projects',
+  role: 'resume',
+  skill: 'resume',
+  certificate: 'certificates',
+  service: 'services',
+  education: 'resume',
+} as const satisfies Record<Exclude<SearchKind, 'page'>, PageKey>;
+
 /** Where a result goes: a route, or a job that Resume opens (`TradeProvider.showJob`). */
-export type SearchTarget =
+type SearchTarget =
   { type: 'route'; href: string } | { type: 'job'; id: string };
 
 export interface SearchItem {
@@ -41,6 +55,7 @@ export interface SearchItem {
 
 /** What the index is built from: the content as the hooks give it, and two functions of the visitor's language. */
 export interface SearchSource {
+  /** the pages that are open (not hidden, not coming soon); the kinds of content whose page is not here give no result */
   pages: { page: PageKey; label: string; href: string }[];
   projects: Pick<Doc<'projects'>, 'id' | 'name' | 'summary' | 'technologies'>[];
   jobs: Pick<
@@ -67,16 +82,8 @@ export interface SearchSource {
   period: (start: string, end: string | null) => string;
 }
 
-/** Lower case, without accents (Vietnamese included), so "ho so" finds "Hồ sơ". */
-export const normalize = (text: string): string =>
-  text
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .replace(/[đĐ]/g, 'd')
-    .toLowerCase();
-
 const haystackOf = (...parts: (string | undefined)[]): string =>
-  normalize(parts.filter(Boolean).join(' '));
+  foldText(parts.filter(Boolean).join(' '));
 
 /** One entry for everything a visitor could look for. A skill and a role go to Resume, a project to Projects, and so on. */
 export function buildSearchIndex(source: SearchSource): SearchItem[] {
@@ -84,6 +91,9 @@ export function buildSearchIndex(source: SearchSource): SearchItem[] {
   const namesOf = (ids: string[]) =>
     ids.map((id) => skillName.get(id)).filter((n): n is string => Boolean(n));
   const route = (href: string): SearchTarget => ({ type: 'route', href });
+  const open = new Set(source.pages.map((p) => p.page));
+  const on = <K extends keyof typeof KIND_PAGE>(kind: K) =>
+    open.has(KIND_PAGE[kind]);
   return [
     ...source.pages.map((p): SearchItem => ({
       id: `page-${p.page}`,
@@ -93,7 +103,7 @@ export function buildSearchIndex(source: SearchSource): SearchItem[] {
       target: route(p.href),
       haystack: haystackOf(p.label, p.href),
     })),
-    ...source.projects.map((p): SearchItem => ({
+    ...(on('project') ? source.projects : []).map((p): SearchItem => ({
       id: `project-${p.id}`,
       kind: 'project',
       title: p.name,
@@ -101,7 +111,7 @@ export function buildSearchIndex(source: SearchSource): SearchItem[] {
       target: route('/projects'),
       haystack: haystackOf(p.name, p.summary, ...namesOf(p.technologies)),
     })),
-    ...source.jobs.map((j): SearchItem => ({
+    ...(on('role') ? source.jobs : []).map((j): SearchItem => ({
       id: `role-${j.id}`,
       kind: 'role',
       title: `${j.role}, ${j.company}`,
@@ -115,7 +125,7 @@ export function buildSearchIndex(source: SearchSource): SearchItem[] {
         ...namesOf(j.technologies),
       ),
     })),
-    ...source.skills
+    ...(on('skill') ? source.skills : [])
       .filter((s) => s.listed)
       .map((s): SearchItem => ({
         id: `skill-${s.id}`,
@@ -125,7 +135,7 @@ export function buildSearchIndex(source: SearchSource): SearchItem[] {
         target: route('/resume#skills'),
         haystack: haystackOf(s.name, s.category),
       })),
-    ...source.certificates.map((c): SearchItem => ({
+    ...(on('certificate') ? source.certificates : []).map((c): SearchItem => ({
       id: `certificate-${c.id}`,
       kind: 'certificate',
       title: c.name,
@@ -133,7 +143,7 @@ export function buildSearchIndex(source: SearchSource): SearchItem[] {
       target: route('/certificates'),
       haystack: haystackOf(c.name, c.issuer, c.issuedAt.slice(0, 4)),
     })),
-    ...source.services.map((s): SearchItem => ({
+    ...(on('service') ? source.services : []).map((s): SearchItem => ({
       id: `service-${s.id}`,
       kind: 'service',
       title: s.name,
@@ -141,7 +151,7 @@ export function buildSearchIndex(source: SearchSource): SearchItem[] {
       target: route('/services'),
       haystack: haystackOf(s.name, s.description),
     })),
-    ...source.education.map((e): SearchItem => ({
+    ...(on('education') ? source.education : []).map((e): SearchItem => ({
       id: `education-${e.id}`,
       kind: 'education',
       title: `${e.degree}, ${e.school}`,
@@ -167,11 +177,11 @@ export function rankItems(
   query: string,
   limit = Infinity,
 ): SearchItem[] {
-  const words = normalize(query).split(/\s+/).filter(Boolean);
+  const words = foldText(query).split(/\s+/).filter(Boolean);
   if (words.length === 0) return [];
   return items
     .map((item, index) => {
-      const title = normalize(item.title);
+      const title = foldText(item.title);
       const scores = words.map((word) => wordScore(title, item, word));
       return {
         item,
@@ -185,7 +195,7 @@ export function rankItems(
     .map(({ item }) => item);
 }
 
-export interface SearchGroup {
+interface SearchGroup {
   kind: SearchKind;
   items: SearchItem[];
 }

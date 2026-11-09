@@ -4,6 +4,7 @@
 
 import type { CvCopy } from '@/content/copy/cv';
 import type { Doc, Lang, Profile, Shell } from '@/lib/content/schema';
+import { foldText } from '@/lib/fold-text';
 import { formatMonth, formatPeriod } from '@/lib/format';
 import { issuedNewestFirst, newestFirst } from '@/lib/derive/recency';
 import { STRIP_ORDER } from '@/lib/derive/skill-strip';
@@ -210,13 +211,9 @@ export const cvFileName = (
   const given = configured.trim();
   const base =
     given ||
-    name
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/đ/gi, 'd')
-      .replace(/[^a-zA-Z0-9]+/g, '-')
-      .replace(/(^-+|-+$)/g, '')
-      .toLowerCase();
+    foldText(name)
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-+|-+$)/g, '');
   if (!base) return fallback;
   const named = given ? base : `${base}-cv`;
   return named.toLowerCase().endsWith('.pdf') ? named : `${named}.pdf`;

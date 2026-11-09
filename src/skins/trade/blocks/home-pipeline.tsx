@@ -8,30 +8,28 @@ import { Lightbulb } from 'lucide-react';
 import { homeCopy } from '@/content/copy/home';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
 import { useCopy } from '@/lib/i18n/copy';
+import { ShellWidget } from '@/skins/trade/ui/shell-widget';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 
 /**
- * The "idea" card of the Details widget on Home: how a bug becomes a merge request (the pipeline block of the Standard hero), with
- * its three steps. A summary of work I did, not a prediction.
+ * The pipeline card of the Standard hero (how a bug becomes a merge request, with its three steps) as an idea of the Home dashboard. It
+ * is a block of Home, not of the watchlist, so it stays whatever the Layout menu turns off. A summary of work I did, not a prediction.
  */
-export function WatchPipeline() {
+export function HomePipeline() {
   const { pipeline } = useCopy(homeCopy);
   const words = useCopy(tradeShellCopy).details;
   return (
-    <section aria-labelledby='tv-pipeline-h' className='p-3.5'>
-      <p className='mb-1.5 flex items-center gap-1.5 text-[11px] font-bold tracking-wide text-tv-gold uppercase'>
+    <ShellWidget
+      id='tv-home-pipeline'
+      titleId='tv-pipeline-h'
+      title={pipeline.title}
+      bodyClassName='p-3.5'
+    >
+      <p className='mb-1.5 flex items-center gap-1.5 text-[11px] font-bold tracking-wide text-tv-gold-ink uppercase'>
         <Lightbulb aria-hidden='true' className='size-3.5' />
         {words.idea}
       </p>
-      <h2
-        id='tv-pipeline-h'
-        className='text-[13px] leading-snug font-bold text-tv-ink'
-      >
-        {pipeline.title}
-      </h2>
-      <p className='mt-1 mb-3 text-xs/[1.5] text-tv-mute'>
-        {pipeline.subtitle}
-      </p>
+      <p className='mb-3 text-xs/[1.5] text-tv-mute'>{pipeline.subtitle}</p>
       <ol className='grid gap-3'>
         {pipeline.steps.map((step, i) => (
           <li
@@ -61,6 +59,6 @@ export function WatchPipeline() {
           </li>
         ))}
       </ol>
-    </section>
+    </ShellWidget>
   );
 }

@@ -5,11 +5,13 @@
 'use client';
 
 import { Flag } from 'lucide-react';
+import { initialOf } from '@/lib/derive/initials';
 import Link from 'next/link';
 import { commonCopy } from '@/content/copy/common';
 import { tradeCopy } from '@/content/copy/trade';
 import { useCopy } from '@/lib/i18n/copy';
 import type { PageKey } from '@/lib/content/schema';
+import { cn } from '@/lib/utils';
 import { WATCH } from '@/skins/trade/config';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvTile } from '@/skins/trade/ui/tv-tile';
@@ -44,12 +46,12 @@ export function WatchRow({
         // mounts when the page becomes the open one, so the flash plays on every page change
         <span
           aria-hidden='true'
-          className='pointer-events-none absolute inset-0 animate-[tv-flash_1s_ease-out_both] bg-tv-accent/25'
+          className='pointer-events-none absolute inset-0 animate-[tv-flash_1s_var(--ease-tv-state)_both] bg-tv-accent/25'
         />
       )}
       <span className='relative flex min-w-0 items-center gap-2'>
         <TvTile tile={tile} size='sm'>
-          {ticker.charAt(0)}
+          {initialOf(ticker)}
         </TvTile>
         <span aria-hidden='true' className='font-semibold'>
           {ticker}
@@ -66,12 +68,14 @@ export function WatchRow({
             </span>
           )
         )}
-        {current && (
-          <Flag
-            aria-hidden='true'
-            className='size-3.5 fill-tv-accent text-tv-accent'
-          />
-        )}
+        {/* always there, so the marker crossfades between rows and the counts keep their column */}
+        <Flag
+          aria-hidden='true'
+          className={cn(
+            'size-3.5 fill-tv-accent text-tv-accent transition-opacity duration-160 ease-tv-state',
+            !current && 'opacity-0',
+          )}
+        />
       </span>
     </>
   );
@@ -86,7 +90,7 @@ export function WatchRow({
         data-slot='tv-watch-row'
         data-roving=''
         aria-current={current ? 'page' : undefined}
-        className={`${ROW} transition-[background-color] duration-100 hover:bg-tv-hover active:bg-tv-hover aria-[current=page]:border-tv-accent aria-[current=page]:bg-tv-hover`}
+        className={`${ROW} transition-[background-color,border-color] duration-100 hover:bg-tv-hover active:bg-tv-hover aria-[current=page]:border-tv-accent aria-[current=page]:bg-tv-hover`}
       >
         {body}
       </Link>

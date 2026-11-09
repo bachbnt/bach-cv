@@ -4,113 +4,24 @@
 
 'use client';
 
-import { ArrowUp, User, X } from 'lucide-react';
+import { ArrowUp, X } from 'lucide-react';
 import Image from 'next/image';
-import {
-  useEffect,
-  useRef,
-  type FormEvent,
-  type KeyboardEvent,
-  type ReactNode,
-} from 'react';
+import { useEffect, useRef, type FormEvent, type KeyboardEvent } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { chatCopy } from '@/content/copy/chat';
 import { tradeOverlayCopy } from '@/content/copy/trade-overlay';
 import { fill } from '@/lib/chat/fill';
+import { errorText } from '@/lib/chat/error-text';
+import { hasFinePointer } from '@/lib/chat/fine-pointer';
 import type { ChatEntry } from '@/lib/chat/messages';
-import type { Suggestion } from '@/lib/chat/suggestions';
+import { remainingSuggestions, type Suggestion } from '@/lib/chat/suggestions';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvToggleChip } from '@/skins/trade/ui/tv-toggle-chip';
 import { TV_FIELD } from '@/skins/trade/ui/tv-field';
-
-type ChatCopy = typeof chatCopy.en;
-
-/** The note for an error kind (`ChatErrorKind`), in the language shown now. */
-const errorText = (copy: ChatCopy, kind: string): string => {
-  switch (kind) {
-    case 'network':
-      return copy.errors.network;
-    case 'rate-limit':
-      return copy.errors.rateLimit;
-    case 'daily-limit':
-      return copy.errors.dailyLimit;
-    case 'unavailable':
-      return copy.unavailable;
-    default:
-      return copy.errors.generic;
-  }
-};
-
-const FINE_POINTER = '(hover: hover) and (pointer: fine)';
-
-/** One line of the conversation: an avatar and a name over the text, left-aligned, no bubble. The text can be selected. */
-function Row({
-  who,
-  name,
-  tone = 'plain',
-  children,
-}: {
-  who: 'bot' | 'visitor';
-  name: string;
-  tone?: 'plain' | 'error';
-  children: ReactNode;
-}) {
-  return (
-    <div
-      className={cn(
-        'tv-rise grid grid-cols-[24px_minmax(0,1fr)] gap-x-2.5 px-3.5 py-2 transition-[background-color] duration-100 hover:bg-tv-hover/60',
-        tone === 'error' && 'border-l-2 border-l-tv-down bg-tv-down-bg pl-3',
-      )}
-    >
-      <span
-        aria-hidden='true'
-        className='grid size-6 place-items-center overflow-hidden rounded-full bg-tv-hover text-tv-mute'
-      >
-        {who === 'bot' ? (
-          <Image
-            src='/logo.png'
-            alt=''
-            width={16}
-            height={15}
-            className='h-auto w-4'
-          />
-        ) : (
-          <User className='size-3.5' />
-        )}
-      </span>
-      <div className='min-w-0 select-text'>
-        <p className='text-xs leading-6 font-bold'>{name}</p>
-        <div className='text-[13px]/[1.55] wrap-break-word whitespace-pre-wrap'>
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/** The three dots shown while the answer is on its way. */
-function Typing({ name }: { name: string }) {
-  const copy = useCopy(chatCopy);
-  return (
-    <Row who='bot' name={name}>
-      <span
-        aria-hidden='true'
-        className='inline-flex h-[22px] items-center gap-1'
-      >
-        {[0, 1, 2].map((i) => (
-          <i
-            key={i}
-            style={{ animationDelay: `${i * 160}ms` }}
-            className='block size-1.5 animate-[tv-dot_1.1s_ease-in-out_infinite] rounded-full bg-tv-mute'
-          />
-        ))}
-      </span>
-      <span className='sr-only'>{fill(copy.typing, { name })}</span>
-    </Row>
-  );
-}
+import { ChatRow } from '@/skins/trade/shell/overlay-chat-row';
+import { ChatTyping } from '@/skins/trade/shell/overlay-chat-typing';
 
 /**
  * The BB Bot as a widget panel of the terminal: a header (the bot, Online and the role, a close button), the conversation as compact
@@ -163,7 +74,7 @@ export function ChatPanel({
 
   // a mouse user can type at once; on a phone focusing the input would raise the keyboard over the answer
   useEffect(() => {
-    if (available && window.matchMedia(FINE_POINTER).matches) {
+    if (available && hasFinePointer()) {
       textareaRef.current?.focus();
     } else {
       panelRef.current?.focus({ preventScroll: true });
@@ -177,10 +88,7 @@ export function ChatPanel({
 
   const lastIndex = entries.length - 1;
   // the questions not asked yet are offered after each answer (and not while one is being answered)
-  const asked = new Set(
-    entries.filter((e) => e.role === 'user').map((e) => e.content),
-  );
-  const remaining = suggestions.filter((s) => !asked.has(s.text));
+  const remaining = remainingSuggestions(entries, suggestions);
   const showSuggestions =
     available && !isLimitReached && !isSending && remaining.length > 0;
   const canSend = !isSending;
@@ -211,7 +119,7 @@ export function ChatPanel({
         className,
       )}
     >
-      <header className='flex h-[38px] flex-none items-center gap-2.5 border-b border-tv-line pr-1.5 pl-3.5'>
+      <header className='flex h-[38px] flex-none items-center gap-2.5 border-b border-tv-line pr-1.5 pl-3.5 pointer-coarse:h-11'>
         <Image
           src='/logo.png'
           alt=''
@@ -231,7 +139,9 @@ export function ChatPanel({
                 aria-hidden='true'
                 className='size-1.5 rounded-full bg-tv-up shadow-[0_0_0_3px_var(--tv-up-bg)]'
               />
-              <span className='font-semibold text-tv-up'>{copy.online}</span>
+              <span className='font-semibold text-tv-up-ink'>
+                {copy.online}
+              </span>
               <span aria-hidden='true'>·</span>
             </>
           )}
@@ -249,13 +159,13 @@ export function ChatPanel({
         aria-label={fill(words.messages, { name: botName })}
         className='min-h-0 flex-1 overflow-y-auto overscroll-contain py-2'
       >
-        <Row who='bot' name={botName} tone={available ? 'plain' : 'error'}>
+        <ChatRow who='bot' name={botName} tone={available ? 'plain' : 'error'}>
           {available
             ? fill(copy.greeting, { name: botName })
             : copy.unavailable}
-        </Row>
+        </ChatRow>
         {entries.map((entry, i) => (
-          <Row
+          <ChatRow
             key={entry.id}
             who={entry.role === 'user' ? 'visitor' : 'bot'}
             name={entry.role === 'user' ? words.you : botName}
@@ -273,9 +183,9 @@ export function ChatPanel({
                 {copy.errors.tryAgain}
               </button>
             )}
-          </Row>
+          </ChatRow>
         ))}
-        {isSending && <Typing name={botName} />}
+        {isSending && <ChatTyping name={botName} />}
         {showSuggestions && (
           <div
             role='group'

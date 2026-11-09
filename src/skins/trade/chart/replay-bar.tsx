@@ -123,8 +123,9 @@ export function ReplayBar({
                 aria-pressed={state.speed === speed}
                 onClick={() => onSpeed(speed)}
                 className={cn(
-                  'h-7 min-w-9 cursor-pointer rounded px-1.5 text-xs tabular-nums hover:bg-tv-hover pointer-coarse:h-9 pointer-coarse:min-w-11',
-                  state.speed === speed && 'bg-tv-hover text-tv-accent-ink',
+                  'h-7 min-w-9 cursor-pointer rounded px-1.5 text-xs tabular-nums transition-[background-color,color,scale] duration-100 hover:bg-tv-hover active:scale-95 active:bg-tv-hover pointer-coarse:h-9 pointer-coarse:min-w-11',
+                  state.speed === speed &&
+                    'bg-tv-accent/15 text-tv-accent-ink hover:bg-tv-accent/25 active:bg-tv-accent/25',
                 )}
               >
                 {speed}x

@@ -5,15 +5,16 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
 import { commonCopy } from '@/content/copy/common';
 import { tradeCopy } from '@/content/copy/trade';
+import { useNow } from '@/hooks/use-now';
 import { localize } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
+import { DeskCountUp } from '@/skins/trade/blocks/desk-count-up';
+import { useCareerYears } from '@/lib/query/use-career-years';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
-import { careerYears } from '@/lib/derive/career-years';
 import { currentJob } from '@/lib/derive/current-job';
 
 /**
@@ -24,13 +25,10 @@ export function WatchDetails() {
   const copy = useCopy(tradeCopy).details;
   const common = useCopy(commonCopy);
   const { lang } = useLang();
-  const [now] = useState(() => new Date());
+  const now = useNow();
   const { data: jobs = [] } = useContentQuery('experience');
   const { data: profile } = useProfileQuery();
-  const years = careerYears(
-    jobs.map((job) => job.startMonth),
-    now,
-  );
+  const years = useCareerYears();
   const current = currentJob(jobs);
   const facts = [
     [copy.role, current?.role],
@@ -60,10 +58,15 @@ export function WatchDetails() {
       </div>
       {years !== null && (
         <p className='mt-2.5 text-[26px] leading-tight font-semibold tabular-nums'>
-          {years}
-          <small className='ml-1.5 text-xs font-normal text-tv-mute'>
-            {years === 1 ? copy.yearsOne : copy.yearsMany}
-          </small>
+          <span className='sr-only'>
+            {years} {years === 1 ? copy.yearsOne : copy.yearsMany}
+          </span>
+          <span aria-hidden='true'>
+            <DeskCountUp value={years} className='text-tv-up-ink' />
+            <small className='ml-1.5 text-xs font-normal text-tv-mute'>
+              {years === 1 ? copy.yearsOne : copy.yearsMany}
+            </small>
+          </span>
         </p>
       )}
       {facts.length > 0 && (

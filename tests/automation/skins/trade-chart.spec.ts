@@ -49,7 +49,12 @@ test('draws one weekly candle for every week of the career, and says it is an il
   expect(name).toContain('derived from my real jobs');
   expect(name).toContain('not financial data');
   expect(name).not.toMatch(/\$|€|buy|sell|%/i);
-  await expect(chart(page)).toHaveAttribute('role', 'img');
+  // it takes the focus and the arrow keys, so it is an application (an image is not interactive), with a role description
+  await expect(chart(page)).toHaveAttribute('role', 'application');
+  await expect(chart(page)).toHaveAttribute(
+    'aria-roledescription',
+    'Interactive chart',
+  );
   // all the candles are a handful of paths, not a node each
   const paths = await page.locator('[data-series="candles"] path').count();
   expect(paths).toBe(4);
@@ -359,14 +364,20 @@ test('the chart is drawn again when the size or the theme changes', async ({
   await expect.poll(color).not.toBe(dark);
 });
 
-test('with no job the chart is empty, not broken', async ({ page }) => {
+test('with no job the chart says so in words, not a blank cell', async ({
+  page,
+}) => {
   await mockFirestore(page, {}, (collection, _id, doc) =>
     collection === 'experience' ? { ...doc, visible: false } : doc,
   );
   await gotoSkin(page, '/');
   await expect(
-    page.getByRole('img', { name: 'There is no career to draw yet.' }),
-  ).toBeAttached();
+    page
+      .getByRole('status')
+      .filter({ hasText: 'No experience to show yet' })
+      .first(),
+  ).toBeVisible();
+  await expect(chart(page)).toHaveCount(0);
   await expect(page.locator('[data-marker]')).toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });

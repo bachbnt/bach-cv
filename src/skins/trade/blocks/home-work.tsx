@@ -6,9 +6,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
 import { homeCopy } from '@/content/copy/home';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
+import { useNow } from '@/hooks/use-now';
 import { formatPeriod } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -17,13 +17,12 @@ import { cn } from '@/lib/utils';
 import { lengthLabel } from '@/lib/derive/duration-label';
 import { jobLength } from '@/lib/derive/career-months';
 import { isCurrent } from '@/lib/derive/current-job';
+import { HOME_ROLES, latestRoles } from '@/lib/derive/home-lists';
 import { jobBadge } from '@/lib/derive/job-badge';
 import { ShellWidget } from '@/skins/trade/ui/shell-widget';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
-
-const LIMIT = 4;
 
 /**
  * "Where I've worked": the newest roles that appear in the CV as a compact timeline (company, role, tagline, period and how long it
@@ -33,9 +32,9 @@ export function HomeWork() {
   const copy = useCopy(homeCopy);
   const words = useCopy(tradeShellCopy).home;
   const { lang } = useLang();
-  const [now] = useState(() => new Date());
+  const now = useNow();
   const query = useContentQuery('experience');
-  const rows = (query.data ?? []).slice(0, LIMIT);
+  const rows = latestRoles(query.data ?? []);
   return (
     <ShellWidget
       id='tv-home-work'
@@ -60,7 +59,7 @@ export function HomeWork() {
         className='m-3'
         skeleton={
           <div className='grid gap-2 p-3'>
-            {Array.from({ length: LIMIT }, (_, i) => (
+            {Array.from({ length: HOME_ROLES }, (_, i) => (
               <TvSkeleton key={i} className='h-16' />
             ))}
           </div>

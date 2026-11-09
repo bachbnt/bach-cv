@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import type { ChartType } from '@/skins/trade/chart/chart-types';
 
 /**

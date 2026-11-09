@@ -2,8 +2,11 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+'use client';
+
 import type { CSSProperties } from 'react';
 import { cn } from '@/lib/utils';
+import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
 
 /** A placeholder shape with faint grid lines that shimmers while data loads (decoration: the block around it announces "Loading"). */
 export function TvSkeleton({
@@ -13,8 +16,10 @@ export function TvSkeleton({
   className?: string;
   style?: CSSProperties;
 }) {
+  const gate = useLoopGate();
   return (
     <div
+      ref={gate}
       aria-hidden='true'
       style={style}
       className={cn(

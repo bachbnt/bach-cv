@@ -13,7 +13,7 @@ import { TvAskButton } from '@/skins/trade/ui/tv-ask-button';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
-/** The closing band of Home and About: the address to write to, where I am, and the card that points to the chat. */
+/** The closing band of Home: the address to write to, where I am, and the card that points to the chat (About has its own links list). */
 export function ContactCard() {
   const query = useContentQuery('contacts');
   const contacts = query.data ?? [];

@@ -50,12 +50,11 @@ export function navItems(pages: Live['pages']): NavItem[] {
   }));
 }
 
-/** The four items of the bottom navigation of a phone (the chart is Home). */
+/** The pages in the bottom navigation of a phone (the chart is Home); the fourth button opens the watchlist, which has all of them. */
 export const PHONE_NAV = [
   'home',
-  'projects',
+  'about',
   'resume',
-  'services',
 ] as const satisfies readonly PageKey[];
 
 export type RangeKey = 'm3' | 'm6' | 'y1' | 'y3' | 'all';
@@ -68,6 +67,10 @@ export const RANGES: { key: RangeKey; weeks: number | null }[] = [
   { key: 'y3', weeks: 156 },
   { key: 'all', weeks: null },
 ];
+
+/** How many weeks a range covers (`null` for all of them). */
+export const weeksOf = (range: RangeKey) =>
+  RANGES.find((r) => r.key === range)?.weeks ?? null;
 
 export const DEFAULT_RANGE: RangeKey = 'all';
 

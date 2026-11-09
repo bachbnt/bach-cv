@@ -10,7 +10,7 @@ export const skinsCopy = defineCopy(
   {
     label: 'Skin',
     names: {
-      standard: { name: 'Standard', hint: 'Default look' },
+      standard: { name: 'Standard', hint: 'Rainbow palette' },
       dev: { name: 'Dev', hint: 'Code editor' },
       trade: { name: 'Trade', hint: 'Trading chart' },
       travel: { name: 'Travel', hint: 'Trip map of Nha Trang' },
@@ -20,7 +20,7 @@ export const skinsCopy = defineCopy(
   {
     label: 'Skin',
     names: {
-      standard: { name: 'Chuẩn', hint: 'Giao diện mặc định' },
+      standard: { name: 'Chuẩn', hint: 'Bảng màu cầu vồng' },
       dev: { name: 'Dev', hint: 'Trình soạn thảo code' },
       trade: { name: 'Trade', hint: 'Biểu đồ giao dịch' },
       travel: { name: 'Du lịch', hint: 'Bản đồ chuyến đi Nha Trang' },

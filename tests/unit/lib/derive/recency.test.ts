@@ -5,6 +5,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   issuedNewestFirst,
+  issuedOldestFirst,
+  latestCertificate,
   newestFirst,
   recencyKey,
 } from '@/lib/derive/recency';
@@ -50,5 +52,24 @@ describe('issuedNewestFirst', () => {
       '2022-12-31',
       '2021-03-01',
     ]);
+  });
+});
+
+describe('issuedOldestFirst and latestCertificate', () => {
+  const items = [
+    { id: 'b', issuedAt: '2022-12-31' },
+    { id: 'c', issuedAt: '2024-01-15' },
+    { id: 'a', issuedAt: '2021-03-01' },
+  ];
+
+  it('puts the oldest issued first, and keeps the list it is given', () => {
+    expect(issuedOldestFirst(items).map((c) => c.id)).toEqual(['a', 'b', 'c']);
+    expect(items.map((c) => c.id)).toEqual(['b', 'c', 'a']);
+  });
+
+  it('names the latest issued whatever the order given, and nothing for no certificate', () => {
+    expect(latestCertificate(items)?.id).toBe('c');
+    expect(latestCertificate([...items].reverse())?.id).toBe('c');
+    expect(latestCertificate([])).toBeUndefined();
   });
 });

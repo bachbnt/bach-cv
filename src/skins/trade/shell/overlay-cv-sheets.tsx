@@ -17,13 +17,14 @@ import { CvSkeleton } from '@/components/cv/cv-skeleton';
 import { cvCopy, pageLabel } from '@/content/copy/cv';
 import type { CvModel } from '@/lib/cv/build-cv';
 import { paginate } from '@/lib/cv/paginate';
+import {
+  CONTENT_HEIGHT,
+  CONTENT_WIDTH,
+  SHEET_HEIGHT,
+  SHEET_WIDTH,
+} from '@/lib/cv/sheet';
 import { useCopy } from '@/lib/i18n/copy';
 
-/** A4 at 96dpi, and the padding of a sheet (the same numbers as the Standard sheets, so the pages break in the same places). */
-const SHEET_WIDTH = 794;
-const SHEET_HEIGHT = 1123;
-const CONTENT_WIDTH = SHEET_WIDTH - 92;
-const CONTENT_HEIGHT = SHEET_HEIGHT - 80;
 const GAP = 24;
 const PAD = 16;
 
@@ -128,7 +129,7 @@ export function TvCvSheets({
               key={n}
               aria-label={pageLabel(copy, n + 1, pages.length)}
               style={{ zoom }}
-              className='theme-light box-border h-[1123px] w-[794px] flex-none overflow-hidden bg-card px-[46px] py-10 text-[11px] leading-[1.4] text-foreground shadow-[0_2px_12px_rgba(0,0,0,.45)]'
+              className='theme-light box-border h-[1123px] w-[794px] flex-none overflow-hidden bg-card px-[46px] py-10 text-[11px] leading-[1.4] text-foreground shadow-tv-paper'
             >
               {page.map((index) => (
                 <div key={blocks[index].key}>{blocks[index].node}</div>

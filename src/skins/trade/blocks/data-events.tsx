@@ -4,10 +4,11 @@
 
 'use client';
 
-import { useState, type CSSProperties } from 'react';
+import { useState } from 'react';
 import { formatIssued } from '@/components/certificates/format-issued';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import type { Doc } from '@/lib/content/schema';
+import { initialOf } from '@/lib/derive/initials';
 import { formatMonth } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -22,6 +23,7 @@ import {
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvToggleChip } from '@/skins/trade/ui/tv-toggle-chip';
 import { TvTile } from '@/skins/trade/ui/tv-tile';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 const KINDS = ['job', 'degree', 'certificate'] as const;
 const TILE = { job: 'accent', degree: 'violet', certificate: 'gold' } as const;
@@ -90,7 +92,7 @@ export function DataEvents({
                       {dateOf(event)}
                     </span>
                     <TvTile tile={TILE[event.kind]}>
-                      {kindLabel[event.kind].charAt(0)}
+                      {initialOf(kindLabel[event.kind])}
                     </TvTile>
                     <span className='min-w-0 flex-1 text-left'>
                       <span className='block truncate text-[13px] font-medium'>
@@ -111,8 +113,8 @@ export function DataEvents({
                   <li
                     key={event.id}
                     data-testid='event'
-                    style={{ '--i': Math.min(index++, 12) } as CSSProperties}
-                    className='animate-[tv-slide-in_0.35s_cubic-bezier(0.2,0.7,0.2,1)_both] border-b border-tv-line [animation-delay:calc(var(--i)*30ms)]'
+                    style={cssVars({ '--i': Math.min(index++, 12) })}
+                    className='animate-tv-slide-in border-b border-tv-line [animation-delay:calc(var(--i)*30ms)]'
                   >
                     {event.jobId ? (
                       <button

@@ -7,10 +7,10 @@ import {
   buildCandles,
   type Candle,
   type CareerEntry,
-} from '@/skins/trade/blocks/build-candles';
+} from '@/lib/derive/career-series';
 import { INTERVALS } from '@/skins/trade/chart/chart-types';
 import { computeIndicators } from '@/skins/trade/chart/indicators';
-import { aggregate } from '@/skins/trade/chart/intervals';
+import { aggregate } from '@/lib/derive/career-series';
 import { legendRows } from '@/skins/trade/chart/legend-rows';
 import { DEFAULT_PREFS } from '@/skins/trade/chart/chart-prefs';
 import {

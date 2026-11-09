@@ -19,7 +19,7 @@ import { DEV_PROJECT } from '@/skins/dev/config';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { emit } from '@/skins/dev/shell/devlog/store';
 import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
-import { useFullscreen } from '@/skins/dev/shell/use-fullscreen';
+import { useFullscreen } from '@/hooks/use-fullscreen';
 import { DevMenu } from '@/skins/dev/ui/dev-menu';
 import { WindowDots } from '@/skins/dev/ui/window-dots';
 
@@ -75,7 +75,7 @@ export function TitleBar({
     <div className='flex h-[30px] items-center gap-3 border-b border-line bg-chrome-2 px-3 font-sans text-[12.5px] leading-[normal] text-mute'>
       <button
         type='button'
-        className='group/nav -ml-1 hidden h-[26px] w-[34px] cursor-pointer place-items-center rounded-[6px] bg-transparent text-ink transition-colors duration-150 hover:bg-hov max-[900px]:inline-grid'
+        className='group/nav pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-x-1.5 pointer-coarse:after:-inset-y-2.5 pointer-coarse:after:content-[""] -ml-1 hidden h-[26px] w-[34px] cursor-pointer place-items-center rounded-[6px] bg-transparent text-ink transition-colors duration-150 hover:bg-hov max-[900px]:inline-grid'
         aria-expanded={navOpen}
         aria-controls='dv-explorer'
         aria-label={navOpen ? dev.closeFiles : dev.files}
@@ -111,9 +111,9 @@ export function TitleBar({
           fullscreen.active ? lights.exitFullscreen : lights.fullscreen
         }
       />
-      <div className='mx-auto flex h-[22px] w-[min(46%,440px)] items-center justify-center gap-2 overflow-hidden rounded-[6px] border border-line-2 bg-editor px-3 whitespace-nowrap text-mute max-[900px]:hidden'>
-        <DevIcon name='search' className='mr-1.5 size-[13px]' />
-        {DEV_PROJECT}
+      <div className='mx-auto flex h-[22px] w-[min(46%,440px)] min-w-0 items-center justify-center gap-2 overflow-hidden rounded-[6px] border border-line-2 bg-editor px-3 whitespace-nowrap text-mute max-[900px]:mx-0 max-[900px]:w-auto max-[900px]:flex-1 max-[900px]:px-2'>
+        <DevIcon name='search' className='mr-1.5 size-[13px] flex-none' />
+        <span className='truncate'>{DEV_PROJECT}</span>
       </div>
       <div className='flex items-center gap-1.5 text-mute max-[620px]:gap-0.5 max-[900px]:ml-auto'>
         {languages.length > 1 && (

@@ -29,7 +29,7 @@ export function SymbolButton() {
       aria-haspopup='dialog'
       aria-keyshortcuts='Control+K Meta+K /'
       onClick={openSearch}
-      className='group flex h-8 min-w-0 cursor-pointer items-center gap-2 rounded border border-tv-line px-2 text-[13px] whitespace-nowrap transition-[background-color,transform] duration-100 hover:bg-tv-hover active:scale-[.98] active:bg-tv-hover pointer-coarse:min-h-11 pointer-coarse:min-w-11'
+      className='group flex h-8 min-w-0 cursor-pointer items-center gap-2 rounded border border-tv-line px-2 text-[13px] whitespace-nowrap transition-[background-color,scale] duration-100 hover:bg-tv-hover active:scale-[.98] active:bg-tv-hover pointer-coarse:min-h-11 pointer-coarse:min-w-11'
     >
       {shell.avatar && (
         <Image

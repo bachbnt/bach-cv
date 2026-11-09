@@ -33,12 +33,15 @@ export function Toolbar() {
   const copy = useCopy(commonCopy);
   const words = useCopy(tradeShellCopy).toolbar;
   return (
-    <header className='flex h-10 min-w-0 items-center gap-1 border-b border-tv-line bg-tv-bg px-1.5 max-[1100px]:sticky max-[1100px]:top-0 max-[1100px]:z-30 max-[1100px]:h-auto max-[1100px]:min-h-12 max-[1100px]:flex-wrap'>
+    <header
+      data-tv-toolbar=''
+      className='flex h-10 min-w-0 items-center gap-1 border-b border-tv-line bg-tv-bg px-1.5 max-[1100px]:sticky max-[1100px]:top-0 max-[1100px]:z-30 max-[1100px]:h-auto max-[1100px]:min-h-12 max-[1100px]:flex-wrap'
+    >
       <Link
         href='/'
         data-slot='tv-logo'
         aria-label={fill(copy.homeLink, { name: shell.name })}
-        className='flex h-8 flex-none items-center gap-2 rounded px-1.5 text-sm font-bold whitespace-nowrap transition-[background-color,transform] duration-100 hover:bg-tv-hover active:scale-[.97] pointer-coarse:min-h-11 pointer-coarse:min-w-11 pointer-coarse:justify-center'
+        className='flex h-8 flex-none items-center gap-2 rounded px-1.5 text-sm font-bold whitespace-nowrap transition-[background-color,scale] duration-100 hover:bg-tv-hover active:scale-[.97] pointer-coarse:min-h-11 pointer-coarse:min-w-11 pointer-coarse:justify-center'
       >
         <Image
           src='/logo.png'

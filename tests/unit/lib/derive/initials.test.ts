@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { initialsOf, methodInitials } from '@/lib/derive/initials';
+import { initialOf, initialsOf, methodInitials } from '@/lib/derive/initials';
 
 describe('initialsOf', () => {
   it('takes the first letters of the words', () => {
@@ -34,5 +34,19 @@ describe('methodInitials', () => {
     ['momo', 'MO'],
   ])('%s -> %s', (name, initials) => {
     expect(methodInitials(name)).toBe(initials);
+  });
+});
+
+describe('initialOf', () => {
+  it('is the first letter as a capital, whole for a letter with marks', () => {
+    expect(initialOf('swift')).toBe('S');
+    expect(initialOf('  kotlin')).toBe('K');
+    expect(initialOf('đào tạo')).toBe('Đ');
+    expect(initialOf('Ôn tập')).toBe('Ô');
+  });
+
+  it('is empty for an empty name', () => {
+    expect(initialOf('')).toBe('');
+    expect(initialOf('   ')).toBe('');
   });
 });

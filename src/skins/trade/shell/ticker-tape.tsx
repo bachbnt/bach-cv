@@ -6,17 +6,19 @@
 
 import { Pause, Play } from 'lucide-react';
 import Link from 'next/link';
-import { Fragment, useMemo, useState, type CSSProperties } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { commonCopy } from '@/content/copy/common';
 import { homeCopy } from '@/content/copy/home';
 import { tradeCopy } from '@/content/copy/trade';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
 import { useLive } from '@/hooks/use-live';
+import { useNow } from '@/hooks/use-now';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { formatUsed } from '@/lib/derive/duration-label';
+import { initialOf } from '@/lib/derive/initials';
 import {
   pageItems,
   tapeItems,
@@ -27,6 +29,7 @@ import { navItems, WATCH, type Tile } from '@/skins/trade/config';
 import { useCounts } from '@/skins/trade/shell/use-counts';
 import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
 import { TvTile } from '@/skins/trade/ui/tv-tile';
+import { cssVars } from '@/skins/trade/ui/css-vars';
 
 const TILE: Record<'mobile' | 'web' | 'ai' | 'tools', Tile> = {
   mobile: 'up',
@@ -53,7 +56,7 @@ export function TickerTape({ className }: { className?: string }) {
   const counts = useCounts();
   const { data: skills = [] } = useContentQuery('skills');
   const { data: jobs = [] } = useContentQuery('experience');
-  const [now] = useState(() => new Date());
+  const now = useNow();
   const [paused, setPaused] = useState(false);
   const hidden = useDocumentHidden();
 
@@ -95,7 +98,7 @@ export function TickerTape({ className }: { className?: string }) {
         className='flex h-full items-center gap-1.5 px-3'
       >
         <TvTile tile={TILE[item.category]} size='sm'>
-          {item.label.charAt(0).toUpperCase()}
+          {initialOf(item.label)}
         </TvTile>
         <span className='font-semibold'>{item.label}</span>
         {used && <span className='text-tv-mute tabular-nums'>{used}</span>}
@@ -134,7 +137,7 @@ export function TickerTape({ className }: { className?: string }) {
         aria-pressed={paused}
         aria-label={paused ? home.playTechnologies : home.pauseTechnologies}
         onClick={() => setPaused((on) => !on)}
-        className='grid size-[30px] flex-none cursor-pointer place-items-center border-r border-tv-line text-tv-mute transition-[background-color,transform] duration-100 hover:bg-tv-hover hover:text-tv-ink active:scale-90 motion-reduce:hidden pointer-coarse:size-11'
+        className='grid size-[30px] flex-none cursor-pointer place-items-center border-r border-tv-line text-tv-mute transition-[background-color,scale] duration-100 hover:bg-tv-hover hover:text-tv-ink active:scale-90 motion-reduce:hidden pointer-coarse:size-11'
       >
         {paused ? (
           <Play aria-hidden='true' className='size-3.5' />
@@ -145,12 +148,10 @@ export function TickerTape({ className }: { className?: string }) {
       <div className='min-w-0 flex-1 overflow-hidden [mask-image:linear-gradient(90deg,#000_0,#000_94%,transparent)] motion-reduce:[mask-image:none]'>
         <div
           data-paused={paused || hidden || undefined}
-          style={
-            {
-              '--tv-tape-s': `${Math.round(items.length * SECONDS_PER_ITEM)}s`,
-            } as CSSProperties
-          }
-          className='flex h-[30px] w-max animate-[tv-tape_var(--tv-tape-s)_linear_infinite] items-stretch data-paused:[animation-play-state:paused] group-has-[a:focus-visible]/tape:[animation-play-state:paused] group-hover/tape:[animation-play-state:paused] motion-reduce:h-auto motion-reduce:w-auto motion-reduce:animate-none motion-reduce:py-1'
+          style={cssVars({
+            '--tv-tape-s': `${Math.round(items.length * SECONDS_PER_ITEM)}s`,
+          })}
+          className='flex h-[30px] w-max pointer-coarse:h-11 animate-[tv-tape_var(--tv-tape-s)_linear_infinite] items-stretch data-paused:[animation-play-state:paused] group-has-[a:focus-visible]/tape:[animation-play-state:paused] group-hover/tape:[animation-play-state:paused] motion-reduce:h-auto motion-reduce:w-auto motion-reduce:animate-none motion-reduce:py-1'
         >
           {list(false)}
           {list(true)}

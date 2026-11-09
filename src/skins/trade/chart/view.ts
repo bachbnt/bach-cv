@@ -2,13 +2,10 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import type { Interval } from '@/skins/trade/chart/chart-types';
-import {
-  calendarDay,
-  periodStart,
-  rangeBars,
-} from '@/skins/trade/chart/intervals';
+import { calendarDay, periodStart } from '@/lib/derive/career-series';
+import { rangeBars } from '@/skins/trade/chart/intervals';
 import type { TimeAxis } from '@/skins/trade/chart/time-axis';
 import type { RangeKey } from '@/skins/trade/config';
 import { RANGES } from '@/skins/trade/config';
@@ -86,14 +83,22 @@ export function activeRange(
   return same.at(-1) ?? null;
 }
 
-/** Zooms by `factor` (above 1 shows more bars) keeping the bar at `anchor` (0 to 1 across the plot) where it is. */
+/** The most and the fewest bars that may be across the plot. */
+const spanWithin = ({ count, minSpan, pad }: Limits, span: number): number =>
+  Math.min(Math.max(minSpan, count + pad), Math.max(minSpan, span));
+
+/**
+ * Zooms by `factor` (above 1 shows more bars) keeping the bar at `anchor` (0 to 1 across the plot) where it is. The span is limited
+ * FIRST and the left edge worked out from the span that is left: at the most or the fewest bars a zoom changes nothing, it never
+ * slides the chart (zooming out at the limit must not pull the chart back to its first bar).
+ */
 export function zoomView(
   view: View,
   factor: number,
   anchor: number,
   limits: Limits,
 ): View {
-  const span = view.span * factor;
+  const span = spanWithin(limits, view.span * factor);
   const pinned = view.from + view.span * anchor;
   return clampView({ from: pinned - span * anchor, span }, limits);
 }

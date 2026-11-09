@@ -17,10 +17,9 @@ import { jobBadge } from '@/lib/derive/job-badge';
 import { DevLivePill } from '@/skins/dev/blocks/live-pill';
 import { countHint } from '@/skins/dev/ui/count-hint';
 import { DevSkeleton } from '@/skins/dev/ui/dev-skeleton';
+import { HOME_ROLES, latestRoles } from '@/lib/derive/home-lists';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevSection } from '@/skins/dev/ui/dev-section';
-
-const LIMIT = 4;
 
 /** "Where I've worked": the newest roles that appear in the CV, each a link to the full resume. */
 export function HomeWork() {
@@ -28,7 +27,7 @@ export function HomeWork() {
   const dev = useCopy(devCopy);
   const { lang } = useLang();
   const query = useContentQuery('experience');
-  const rows = (query.data ?? []).slice(0, LIMIT);
+  const rows = latestRoles(query.data ?? []);
 
   return (
     <DevSection
@@ -46,7 +45,7 @@ export function HomeWork() {
         level={3}
         skeleton={
           <div className='grid gap-2'>
-            {Array.from({ length: LIMIT - 1 }, (_, i) => (
+            {Array.from({ length: HOME_ROLES - 1 }, (_, i) => (
               <DevSkeleton key={i} className='h-[92px]' />
             ))}
           </div>

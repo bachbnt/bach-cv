@@ -80,14 +80,12 @@ export const tradeDataCopy = defineCopy(
         duration: 'Duration',
         period: 'Period',
         bar: '{role} at {company}, {period}, {duration}. Open its notes.',
-        noteOf: 'Notes of {company}',
       },
       units: {
         yearOne: '1 year',
         yearMany: '{count} years',
         monthOne: '1 month',
         monthMany: '{count} months',
-        monthShort: '{count} mo',
       },
       skillsView: { label: 'View', list: 'List', heatmap: 'Heatmap' },
       heat: {
@@ -115,7 +113,6 @@ export const tradeDataCopy = defineCopy(
         start: 'Start',
         end: 'End',
         issued: 'Issued',
-        pending: 'Loading the certificates',
       },
       media: {
         view: 'View {name} picture',
@@ -124,12 +121,6 @@ export const tradeDataCopy = defineCopy(
       },
       notes: { title: 'Notes', lead: 'What each role was about.' },
       education: { major: 'Major', period: 'Period' },
-      jump: {
-        experience: 'Experience',
-        events: 'Events',
-        education: 'Education',
-        skills: 'Skills',
-      },
     },
     certificates: {
       view: { label: 'View', calendar: 'Calendar', feed: 'Feed' },
@@ -143,7 +134,6 @@ export const tradeDataCopy = defineCopy(
       results: '{shown} of {total} certificates',
       group: '{count} certificates',
       groupOne: '1 certificate',
-      preview: 'Preview',
     },
   },
   {
@@ -217,14 +207,12 @@ export const tradeDataCopy = defineCopy(
         duration: 'Thời lượng',
         period: 'Thời gian',
         bar: '{role} tại {company}, {period}, {duration}. Mở ghi chú.',
-        noteOf: 'Ghi chú về {company}',
       },
       units: {
         yearOne: '1 năm',
         yearMany: '{count} năm',
         monthOne: '1 tháng',
         monthMany: '{count} tháng',
-        monthShort: '{count} th',
       },
       skillsView: {
         label: 'Chế độ xem',
@@ -256,7 +244,6 @@ export const tradeDataCopy = defineCopy(
         start: 'Bắt đầu',
         end: 'Kết thúc',
         issued: 'Cấp',
-        pending: 'Đang tải các chứng chỉ',
       },
       media: {
         view: 'Xem ảnh {name}',
@@ -265,12 +252,6 @@ export const tradeDataCopy = defineCopy(
       },
       notes: { title: 'Ghi chú', lead: 'Mỗi vai trò làm những gì.' },
       education: { major: 'Chuyên ngành', period: 'Thời gian' },
-      jump: {
-        experience: 'Kinh nghiệm',
-        events: 'Sự kiện',
-        education: 'Học vấn',
-        skills: 'Kỹ năng',
-      },
     },
     certificates: {
       view: { label: 'Chế độ xem', calendar: 'Lịch', feed: 'Bảng tin' },
@@ -288,7 +269,6 @@ export const tradeDataCopy = defineCopy(
       results: '{shown} / {total} chứng chỉ',
       group: '{count} chứng chỉ',
       groupOne: '1 chứng chỉ',
-      preview: 'Xem trước',
     },
   },
 );

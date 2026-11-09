@@ -2,8 +2,8 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
-import { WEEK_MS } from '@/skins/trade/chart/intervals';
+import type { Candle } from '@/lib/derive/career-series';
+import { WEEK_MS } from '@/lib/derive/career-series';
 import type { TimeAxis } from '@/skins/trade/chart/time-axis';
 
 /**
@@ -124,7 +124,7 @@ export function snap(point: Point, candles: Candle[], axis: TimeAxis): Point {
 }
 
 /** Where data units are on screen (the chart gives its own), so drawings can be tested for a pointer without the chart. */
-export interface Projection {
+interface Projection {
   x: (t: number) => number;
   y: (price: number) => number;
   width: number;

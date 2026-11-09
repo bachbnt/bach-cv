@@ -4,21 +4,21 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  WEEK_MS,
   buildCandles,
-  careerAt,
   type Candle,
   type CareerEntry,
-} from '@/skins/trade/blocks/build-candles';
+} from '@/lib/derive/career-series';
 import { careerYears } from '@/lib/derive/career-years';
+import { jobAt } from '@/lib/derive/current-job';
+import { degreeAt } from '@/lib/derive/latest-degree';
 import {
   shortSchool,
   onChart,
   studiesOf,
-  studyAt,
   studyText,
   type Degree,
 } from '@/skins/trade/chart/education';
-import { WEEK_MS } from '@/skins/trade/chart/intervals';
 
 const school =
   'University of Science - Vietnam National University Ho Chi Minh City';
@@ -98,22 +98,26 @@ describe('the degrees on the chart', () => {
 
   it('are in progress between their start and the end of their last month, the newest when two overlap', () => {
     const studies = studiesOf(degrees);
-    expect(studyAt(studies, new Date(2018, 0, 1).getTime())?.id).toBe(
+    expect(degreeAt(studies, new Date(2018, 0, 1).getTime())?.id).toBe(
       'bachelor',
     );
-    expect(studyAt(studies, new Date(2020, 8, 30).getTime())?.id).toBe(
+    expect(degreeAt(studies, new Date(2020, 8, 30).getTime())?.id).toBe(
       'bachelor',
     );
-    expect(studyAt(studies, new Date(2020, 10, 1).getTime())).toBeNull();
-    expect(studyAt(studies, new Date(2021, 5, 1).getTime())?.id).toBe('master');
-    expect(studyAt(studies, new Date(2023, 6, 1).getTime())).toBeNull();
-    expect(studyAt(studies, new Date(2015, 0, 1).getTime())).toBeNull();
+    expect(degreeAt(studies, new Date(2020, 10, 1).getTime())).toBeNull();
+    expect(degreeAt(studies, new Date(2021, 5, 1).getTime())?.id).toBe(
+      'master',
+    );
+    expect(degreeAt(studies, new Date(2023, 6, 1).getTime())).toBeNull();
+    expect(degreeAt(studies, new Date(2015, 0, 1).getTime())).toBeNull();
     const overlap = studiesOf([
       degrees[1],
       { ...degrees[0], startMonth: '2019-01' },
     ]);
-    expect(studyAt(overlap, new Date(2019, 5, 1).getTime())?.id).toBe('master');
-    expect(studyAt(overlap, new Date(2017, 5, 1).getTime())?.id).toBe(
+    expect(degreeAt(overlap, new Date(2019, 5, 1).getTime())?.id).toBe(
+      'master',
+    );
+    expect(degreeAt(overlap, new Date(2017, 5, 1).getTime())?.id).toBe(
       'bachelor',
     );
   });
@@ -121,19 +125,19 @@ describe('the degrees on the chart', () => {
   it('are told in the legend beside the job of the bar, when one is in progress', () => {
     const studies = studiesOf(degrees);
     const t = new Date(2021, 5, 1).getTime();
-    const job = careerAt(jobs, t);
+    const job = jobAt(jobs, t);
     expect(job && `${job.role} · ${job.company}`).toBe('Junior · A');
-    expect(studyText(studyAt(studies, t))).toBe('MSc · University of Science');
+    expect(studyText(degreeAt(studies, t))).toBe('MSc · University of Science');
     // a job and a degree at once are two items, not one
     const later = new Date(2022, 7, 1).getTime();
-    const lead = careerAt(jobs, later);
+    const lead = jobAt(jobs, later);
     expect(lead && `${lead.role} · ${lead.company}`).toBe(
       'Team Lead · FPT Software',
     );
-    expect(studyText(studyAt(studies, later))).toBe(
+    expect(studyText(degreeAt(studies, later))).toBe(
       'MSc · University of Science',
     );
-    expect(studyText(studyAt(studies, new Date(2025, 0, 1).getTime()))).toBe(
+    expect(studyText(degreeAt(studies, new Date(2025, 0, 1).getTime()))).toBe(
       '',
     );
     expect(studyText(null)).toBe('');

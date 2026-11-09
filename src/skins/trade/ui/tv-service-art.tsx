@@ -2,9 +2,12 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+'use client';
+
 import type { JSX } from 'react';
 import type { Service } from '@/lib/content/schema';
 import { cn } from '@/lib/utils';
+import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
 import { TvArtApp } from '@/skins/trade/ui/tv-art-app';
 import { TvArtGeneric } from '@/skins/trade/ui/tv-art-generic';
 import { TvArtOss } from '@/skins/trade/ui/tv-art-oss';
@@ -35,8 +38,10 @@ export function TvServiceArt({
   className?: string;
 }) {
   const Drawing = DRAWINGS[art] ?? TvArtGeneric;
+  const gate = useLoopGate();
   return (
     <div
+      ref={gate}
       aria-hidden='true'
       data-testid='tv-service-art'
       data-art={art}
@@ -48,7 +53,7 @@ export function TvServiceArt({
       <svg
         viewBox='0 0 176 128'
         focusable='false'
-        className='size-full origin-center transition-transform duration-500 ease-out group-hover/row:scale-[1.04]'
+        className='size-full origin-center transition-transform duration-300 ease-tv-out group-hover/row:scale-[1.04]'
       >
         <Drawing />
       </svg>

@@ -4,11 +4,13 @@
 
 'use client';
 
-import { useEffect, useRef, type KeyboardEvent } from 'react';
+import { useEffect, type KeyboardEvent } from 'react';
+import { useLatest } from '@/hooks/use-latest';
+import { isTyping } from '@/lib/is-typing';
 import { chartStore } from '@/skins/trade/chart/chart-store';
 import type { Interval, ToolId } from '@/skins/trade/chart/chart-types';
-import type { Hover } from '@/skins/trade/chart/use-pointer-gestures';
-import type { useChartView } from '@/skins/trade/chart/use-chart-view';
+import type { Hover } from '@/skins/trade/chart/gesture-types';
+import type { ChartView } from '@/skins/trade/chart/use-chart-view';
 import {
   centerView,
   panView,
@@ -35,20 +37,17 @@ const INTERVAL_KEYS: Partial<Record<string, Interval>> = {
 };
 
 const inField = (target: EventTarget | null): boolean =>
-  target instanceof Element &&
-  target.closest(
-    'input, textarea, select, [contenteditable="true"], [role="dialog"], [role="menu"], [role="listbox"]',
-  ) !== null;
+  isTyping(target) ||
+  (target instanceof Element &&
+    target.closest('[role="dialog"], [role="menu"], [role="listbox"]') !==
+      null);
 
 /**
  * The shortcuts that work anywhere on the page while the chart is there (not while the visitor types in a field or has a window
  * open): Alt plus a letter for a tool and Alt plus a digit for the interval, Escape, undo and redo, Shift+R for the replay and the question mark for the list.
  */
 export function useChartShortcuts({ cancel }: { cancel: () => void }) {
-  const latest = useRef({ cancel });
-  useEffect(() => {
-    latest.current = { cancel };
-  });
+  const latest = useLatest({ cancel });
   useEffect(() => {
     const onKey = (event: globalThis.KeyboardEvent) => {
       if (event.defaultPrevented || inField(event.target)) return;
@@ -102,7 +101,7 @@ export function useChartShortcuts({ cancel }: { cancel: () => void }) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [latest]);
 }
 
 /** The keys of the chart itself (it has the focus): the arrows and Home and End move the crosshair, plus and minus zoom, Delete removes the chosen drawing, Enter chooses the start of the replay. */
@@ -117,7 +116,7 @@ export function useChartKeyboard({
   setHover: (hover: Hover | null) => void;
   last: number;
   limits: Limits;
-  chartView: ReturnType<typeof useChartView>;
+  chartView: ChartView;
 }) {
   return (event: KeyboardEvent<SVGSVGElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;

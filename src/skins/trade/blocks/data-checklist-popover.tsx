@@ -16,8 +16,8 @@ import { tvButton } from '@/skins/trade/ui/tv-button';
 import { TV_BADGE } from '@/skins/trade/ui/tv-chip';
 import { TV_POPUP } from '@/skins/trade/ui/tv-menu';
 
-export interface ChecklistItem {
-  id: string;
+interface ChecklistItem<T extends string = string> {
+  id: T;
   label: string;
   checked: boolean;
   /** a number at the end of the row (how many projects use it) */
@@ -30,7 +30,7 @@ export interface ChecklistItem {
  * A button that opens a list of checkboxes (the column chooser, the technology filter), built on the shadcn popover so focus,
  * Escape and outside clicks come with it. `badge` is a short note on the button (how many are chosen).
  */
-export function DataChecklistPopover({
+export function DataChecklistPopover<T extends string>({
   label,
   title,
   badge,
@@ -41,8 +41,8 @@ export function DataChecklistPopover({
   label: string;
   title: string;
   badge?: string;
-  items: ChecklistItem[];
-  onToggle: (id: string) => void;
+  items: ChecklistItem<T>[];
+  onToggle: (id: T) => void;
   footer?: ReactNode;
 }) {
   return (

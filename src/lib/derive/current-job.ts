@@ -4,7 +4,7 @@
 
 // Which role is current, first or latest, and whether an item is current.
 
-import type { MonthSpanned } from '@/lib/derive/career-months';
+import { activeAt, type MonthSpanned } from '@/lib/derive/career-months';
 import { newestFirst } from '@/lib/derive/recency';
 
 /** A role or a degree is current while it has no end month. */
@@ -29,3 +29,7 @@ export function firstJob<T extends Pick<MonthSpanned, 'startMonth'>>(
 export function latestJob<T extends MonthSpanned>(jobs: T[]): T | undefined {
   return currentJob(jobs) ?? newestFirst(jobs)[0];
 }
+
+/** The role I had at a time (milliseconds): started and not ended, the newest when two overlap; `null` before the first role. */
+export const jobAt = <T extends MonthSpanned>(jobs: T[], t: number): T | null =>
+  activeAt(jobs, t);

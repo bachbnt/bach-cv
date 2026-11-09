@@ -20,6 +20,7 @@ import {
 import { chartStore, useChartStore } from '@/skins/trade/chart/chart-store';
 import {
   CHART_TYPES,
+  isChartType,
   INDICATOR_IDS,
   INTERVALS,
   type ChartType,
@@ -27,18 +28,15 @@ import {
 } from '@/skins/trade/chart/chart-types';
 import { HintTip } from '@/skins/trade/chart/hint-tip';
 import { TypeIcon } from '@/skins/trade/chart/type-icon';
+import { useModKey } from '@/skins/trade/shell/use-mod-key';
 import { tvButton } from '@/skins/trade/ui/tv-button';
 import { TV_BADGE } from '@/skins/trade/ui/tv-chip';
 import { TV_MENU_ITEM, TV_POPUP } from '@/skins/trade/ui/tv-menu';
 
-/** A button of the toolbar: 32px, quiet until it is pointed at, a clear colour while it is on. */
-const flat = cn(
-  tvButton({ variant: 'ghost' }),
-  'h-8 gap-1.5 px-2 text-tv-ink focus-visible:ring-2 focus-visible:ring-tv-accent focus-visible:outline-none',
-);
-const on = 'bg-tv-hover text-tv-accent-ink';
+const flat = cn(tvButton({ variant: 'ghost' }), 'h-8 gap-1.5 px-2 text-tv-ink');
+const on =
+  'bg-tv-accent/15 text-tv-accent-ink hover:bg-tv-accent/25 active:bg-tv-accent/25';
 
-/** A thin line between the groups of the toolbar. */
 const Separator = ({ className }: { className?: string }) => (
   <span
     aria-hidden='true'
@@ -74,6 +72,7 @@ export function ChartToolbar({
   onReplay: () => void;
 }) {
   const copy = useCopy(tradeChartCopy);
+  const mod = useModKey();
   const canUndo = useChartStore((s) => s.history.past.length > 0);
   const canRedo = useChartStore((s) => s.history.future.length > 0);
   // how many indicators are on (the number on the Indicators button)
@@ -131,7 +130,9 @@ export function ChartToolbar({
         >
           <DropdownMenuRadioGroup
             value={type}
-            onValueChange={(value) => onType(value as ChartType)}
+            onValueChange={(value) => {
+              if (isChartType(value)) onType(value);
+            }}
           >
             {CHART_TYPES.map((key) => (
               <DropdownMenuRadioItem
@@ -190,7 +191,7 @@ export function ChartToolbar({
         </button>
       </HintTip>
       <Separator />
-      <HintTip label={copy.tools.undo} shortcut='Ctrl+Z'>
+      <HintTip label={copy.tools.undo} shortcut={`${mod}+Z`}>
         <button
           type='button'
           aria-label={copy.tools.undo}
@@ -201,7 +202,7 @@ export function ChartToolbar({
           <Undo2 aria-hidden='true' />
         </button>
       </HintTip>
-      <HintTip label={copy.tools.redo} shortcut='Shift+Ctrl+Z'>
+      <HintTip label={copy.tools.redo} shortcut={`Shift+${mod}+Z`}>
         <button
           type='button'
           aria-label={copy.tools.redo}

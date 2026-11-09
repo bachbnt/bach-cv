@@ -2,9 +2,9 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { Candle } from '@/skins/trade/blocks/build-candles';
+import type { Candle } from '@/lib/derive/career-series';
 import type { Interval } from '@/skins/trade/chart/chart-types';
-import { periodEnd, periodStart } from '@/skins/trade/chart/intervals';
+import { periodEnd, periodStart } from '@/lib/derive/career-series';
 
 /**
  * Time and the bar index of an interval, one into the other. Bar `k` covers the time from `candles[k].t` to the start of the next

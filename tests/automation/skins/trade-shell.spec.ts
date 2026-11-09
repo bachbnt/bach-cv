@@ -225,7 +225,13 @@ test.describe('the watchlist', () => {
     const aside = watchlist(page);
     await aside.getByRole('tab', { name: 'Skills' }).click();
     const panel = aside.getByRole('tabpanel');
-    for (const area of ['Mobile', 'Web', 'AI', 'Tools'])
+    // the names of the areas are the ones of the Resume skills (one change reaches every skin)
+    for (const area of [
+      'Mobile',
+      'Frontend and backend',
+      'AI and automation',
+      'Tools and process',
+    ])
       await expect(panel.getByRole('region', { name: area })).toBeVisible();
     // MoMo and FPT list Kotlin; Git is listed by no role, so it has no number
     const kotlin = panel.getByRole('button', { name: /Kotlin/ });
@@ -276,6 +282,21 @@ test.describe('the watchlist', () => {
     );
   });
 
+  test('Roles with the Resume page off still tells the jobs, with no button and no hint to open them', async ({
+    page,
+  }) => {
+    await mockFirestore(page, { 'site/live': { pages: { resume: 'soon' } } });
+    await gotoSkin(page, '/');
+    const aside = watchlist(page);
+    await aside.getByRole('tab', { name: 'Roles' }).click();
+    const panel = aside.getByRole('tabpanel');
+    await expect(panel.getByText('MoMo').first()).toBeVisible();
+    await expect(panel.getByText('Current')).toBeVisible();
+    await expect(panel.getByRole('button')).toHaveCount(0);
+    await expect(panel.getByText(/Open a role/)).toHaveCount(0);
+    await expect(page).toHaveURL(/\/$/);
+  });
+
   test('the tabs work with the arrow keys', async ({ page }) => {
     await gotoSkin(page, '/');
     await page.getByRole('tab', { name: 'Pages' }).focus();
@@ -290,7 +311,9 @@ test.describe('the watchlist', () => {
   }) => {
     await gotoSkin(page, '/about');
     const details = page.getByRole('region', { name: 'Details' });
-    await expect(details.getByText('years in software')).toBeVisible();
+    await expect(
+      details.getByText('years in software', { exact: true }),
+    ).toBeVisible();
     await expect(details.getByText('Team Lead')).toBeVisible();
     await expect(details.getByText('FPT Software')).toBeVisible();
     await expect(details.getByText('Ho Chi Minh City, Vietnam')).toBeVisible();
@@ -569,8 +592,14 @@ test.describe('the symbol search', () => {
     await page.keyboard.press('Control+k');
     await expect(page.getByRole('group', { name: 'Recent' })).toHaveCount(0);
     await box(page).fill('services');
+    // Enter picks the first result: wait until it is Services (the index is made as the content arrives), or it picks another one
+    await expect(page.getByRole('option').first()).toContainText('Services', {
+      timeout: 15_000,
+    });
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/services$/, SLOW);
+    // reopening while the window is still closing (160 ms) brings back the old one with what was typed: wait for it to be gone
+    await expect(page.getByRole('dialog', { name: 'Search' })).toBeHidden();
     await page.keyboard.press('Control+k');
     const recent = page.getByRole('group', { name: 'Recent' });
     await expect(recent.getByRole('option')).toHaveText([/Services/]);
@@ -744,14 +773,9 @@ test.describe('windows', () => {
       0,
     );
     await expect(win.getByText('Ho Chi Minh City, Vietnam')).toBeVisible();
-    // the group of a link is its tag, in one flat list
-    await expect(
-      win.getByText('Professional', { exact: true }).first(),
-    ).toBeVisible();
-    await expect(
-      win.getByText('Messaging', { exact: true }).first(),
-    ).toBeVisible();
-    await expect(win.getByRole('heading')).toHaveCount(0);
+    // the links are under the heading of their group, as on About
+    for (const group of ['Professional', 'Messaging', 'Social'])
+      await expect(win.getByRole('heading', { name: group })).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(win).toBeHidden();
   });
@@ -835,9 +859,10 @@ test.describe('on a phone', () => {
     const body = (await page.getByRole('main').boundingBox())!;
     const list = (await watchlist(page).boundingBox())!;
     expect(list.y).toBeGreaterThan(body.y);
+    // the Layout menu is in the bar on a phone too (the tool strip and the ticker tape)
     await expect(
       page.getByRole('button', { name: 'Choose what the terminal shows' }),
-    ).toBeHidden();
+    ).toBeVisible();
   });
 
   test('the menus, the CV button and the bottom bar are within reach with touch-sized targets', async ({
@@ -848,10 +873,12 @@ test.describe('on a phone', () => {
       await expect(page.getByRole('button', { name }).first()).toBeVisible();
     }
     const bar = page.getByRole('navigation', { name: 'Quick links' });
-    await expect(bar.getByRole('link')).toHaveCount(4);
-    await bar.getByRole('link', { name: 'Projects' }).click();
-    await expect(page).toHaveURL(/\/projects$/, SLOW);
-    await expect(bar.getByRole('link', { name: 'Projects' })).toHaveAttribute(
+    // three pages and the button that opens the watchlist, which has all of them
+    await expect(bar.getByRole('link')).toHaveCount(3);
+    await expect(bar.getByRole('button', { name: 'Watchlist' })).toBeVisible();
+    await bar.getByRole('link', { name: 'About' }).click();
+    await expect(page).toHaveURL(/\/about$/, SLOW);
+    await expect(bar.getByRole('link', { name: 'About' })).toHaveAttribute(
       'aria-current',
       'page',
     );

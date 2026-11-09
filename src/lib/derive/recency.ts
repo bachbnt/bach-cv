@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-// Newest-first order of roles, degrees and certificates.
+// Newest-first order of roles, degrees and certificates, and the latest certificate.
 
 import type { MonthSpanned } from '@/lib/derive/career-months';
 
@@ -18,3 +18,13 @@ export const newestFirst = <T extends MonthSpanned>(items: T[]): T[] =>
 export const issuedNewestFirst = <T extends { issuedAt: string }>(
   items: T[],
 ): T[] => [...items].sort((a, b) => b.issuedAt.localeCompare(a.issuedAt));
+
+/** Certificates, oldest issued first (a copy; the order of equal ones is kept). */
+export const issuedOldestFirst = <T extends { issuedAt: string }>(
+  items: T[],
+): T[] => [...items].sort((a, b) => a.issuedAt.localeCompare(b.issuedAt));
+
+/** The certificate issued last, or `undefined` with none: the one every list calls "Latest", whatever order it shows. */
+export const latestCertificate = <T extends { issuedAt: string }>(
+  items: T[],
+): T | undefined => issuedNewestFirst(items)[0];

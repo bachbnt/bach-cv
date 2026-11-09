@@ -118,7 +118,7 @@ export function DevMenu({
       <button
         type='button'
         data-slot='dev-menu-trigger'
-        className='group/dd inline-flex cursor-pointer items-center gap-1.5 rounded-[5px] bg-transparent px-[7px] py-0.5 font-code text-[12px] leading-[normal] font-normal whitespace-nowrap text-inherit aria-expanded:bg-hov aria-expanded:text-ink hover:bg-hov hover:text-ink max-[620px]:h-7 max-[620px]:px-[9px] max-[620px]:py-0'
+        className='group/dd pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-x-1.5 pointer-coarse:after:-inset-y-2.5 pointer-coarse:after:content-[""] inline-flex cursor-pointer items-center gap-1.5 rounded-[5px] bg-transparent px-[7px] py-0.5 font-code text-[12px] leading-[normal] font-normal whitespace-nowrap text-inherit aria-expanded:bg-hov aria-expanded:text-ink hover:bg-hov hover:text-ink max-[620px]:h-7 max-[620px]:px-[9px] max-[620px]:py-0'
         aria-haspopup='menu'
         aria-expanded={open}
         aria-controls={menuId}

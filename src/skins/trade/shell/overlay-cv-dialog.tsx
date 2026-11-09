@@ -132,7 +132,7 @@ export function TvCvDialog({
       {failed && (
         <p
           role='alert'
-          className='border-b border-tv-line bg-tv-down-bg px-4 py-2 text-xs font-semibold text-tv-down'
+          className='border-b border-tv-line bg-tv-down-bg px-4 py-2 text-xs font-semibold text-tv-down-ink'
         >
           {copy.downloadFailed}
         </p>

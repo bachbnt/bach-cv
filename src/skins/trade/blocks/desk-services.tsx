@@ -4,17 +4,12 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useContactForm } from '@/components/services/use-contact-form';
+import { useContactLimits } from '@/hooks/use-contact-limits';
 import { useLive } from '@/hooks/use-live';
-import { settingsSchema } from '@/lib/content/schema';
-import { settingsQueryOptions } from '@/lib/query/options';
 import { useContentQuery } from '@/lib/query/use-content';
 import { DeskCatalogue } from '@/skins/trade/blocks/desk-catalogue';
 import { DeskTicket } from '@/skins/trade/blocks/desk-ticket';
-
-/** Until the settings arrive the form uses the schema defaults. */
-const DEFAULT_LIMITS = settingsSchema.parse({}).contactForm;
 
 /**
  * The Services desk: the catalogue and the order ticket share one form, so the Trade action of a row fills the topic of the ticket. The
@@ -23,8 +18,7 @@ const DEFAULT_LIMITS = settingsSchema.parse({}).contactForm;
 export function DeskServices() {
   const { features } = useLive();
   const { data: services = [] } = useContentQuery('services');
-  const { data: settings } = useQuery(settingsQueryOptions());
-  const limits = settings?.contactForm ?? DEFAULT_LIMITS;
+  const limits = useContactLimits();
   const form = useContactForm(limits);
 
   return (

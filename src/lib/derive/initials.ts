@@ -18,6 +18,10 @@ export const initialsOf = (name: string): string => {
     .toUpperCase();
 };
 
+/** One capital for a small round tile (a skill, a page, a kind of event): the first letter of the name, whole even for a letter with marks ("Đào" is Đ). */
+export const initialOf = (name: string): string =>
+  (Array.from(name.trim())[0] ?? '').toLocaleUpperCase();
+
 /**
  * Two letters for the tile of a payment method: its first two capitals ('VietinBank' -> 'VB', 'VNPay' -> 'VN'), or its first two
  * letters when it has one capital ('Binance' -> 'BI'). A different rule from `initialsOf` on purpose: account names are brands.

@@ -71,10 +71,11 @@ See `src/skins/dev/README.md`. Its look is Tailwind in the TSX; `dev.css`, `dev-
 ## The Trade skin
 
 See `src/skins/trade/README.md`. A chart terminal (TradingView look) with its own interface for every page: a chart of the career as an
-illustrative index derived from the real jobs (candles of a week, month, quarter or year, month by default; chart types, indicators, drawing
+illustrative index derived from the real jobs (the series, the aggregation into months, quarters and years and the volume are the seeded
+decoration of `lib/derive/career-series.ts`, not of the skin, and only the weeks, the flags and the dates of jobs and degrees are real; candles of a week, month, quarter or year, month by default; chart types, indicators, drawing
 tools in grouped flyouts, a measure tool, a bar replay, flags that open the job on Resume, honest in its accessible name and never a quote), all
 of it controlled from ONE toolbar row like TradingView's (menus in the order Language, Skin, Theme, as in every skin), a symbol search (Ctrl+K) over all the real content, a ticker tape and a
-watchlist (pages, technologies with a sparkline of the years they were used, roles), a screener for Projects, financials for Resume, a
+watchlist (pages, skills with a sparkline of the years they were used, roles), a screener for Projects, financials for Resume, a
 calendar for Certificates, a symbol profile for About, an order ticket for Services and a deposit page for Payment. Prefix `tv-`, colours
 `tv-*`. The chart is its own lazy chunk; the watchlist counts are read from the cache only.
 
