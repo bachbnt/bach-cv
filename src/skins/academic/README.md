@@ -22,7 +22,7 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
 2. **Fonts: three families.** A book serif for the text (Crimson Pro), handwriting for notes, labels, buttons and names on paper (Kalam) and a
    brush for the headings written on the board (Caveat Brush). The two handwriting fonts have no Vietnamese letters: in Vietnamese (`html:lang(vi)`) the notes,
    buttons and headings use Patrick Hand and Playpen Sans, which have. A portal sits outside `.ac-root`, so its content carries `ac-scope` and
-   `AC_FONT_VARS` (`ui/ac-fonts.ts`) to get the font variables.
+   `AC_FONT_VARS` (`ui/ac-fonts.ts`) to get the font variables. A Vietnamese word inside an English page (the name of the language in its own menu) carries `lang='vi'`, so the whole word takes the same two fonts, not a mix of Kalam and the letters of the other.
 3. **No mono, no hover-only information.** Hover is the Tailwind `hover:` variant (inside `@media (hover: hover)`). Every control has a pressed
    state and a 44 px target on touch (`pointer-coarse:`). The marks after the words of a button, the arrows and the close cross are strokes drawn
    with a round pen (`ui/ac-icon.tsx`), not typed characters (which come from whatever font has them) and not an icon library; a line you write on

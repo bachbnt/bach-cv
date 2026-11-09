@@ -101,7 +101,7 @@ html[data-skin='academic']:not(.dark) {
 }
 
 /* The fonts. The next/font variables are defined on the element that carries them (the root, and the scope of a portal), so the
-   families are composed there. The handwriting fonts have no Vietnamese letters: in Vietnamese the two that have take over. */
+   families are composed there. The handwriting fonts have no Vietnamese letters: in Vietnamese the two that have take over (the whole page, or a word marked `lang='vi'` inside an English page). */
 .ac-root,
 .ac-scope {
   --ac-serif:
@@ -112,7 +112,9 @@ html[data-skin='academic']:not(.dark) {
     var(--font-ac-chalk), var(--font-ac-playpen), 'Comic Sans MS', cursive;
 }
 html:lang(vi) .ac-root,
-html:lang(vi) .ac-scope {
+html:lang(vi) .ac-scope,
+.ac-root [lang='vi'],
+.ac-scope [lang='vi'] {
   --ac-note: var(--font-ac-patrick), 'Comic Sans MS', cursive;
   --ac-chalk: var(--font-ac-playpen), 'Comic Sans MS', cursive;
 }

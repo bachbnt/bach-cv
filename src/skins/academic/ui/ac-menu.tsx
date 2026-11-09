@@ -20,6 +20,8 @@ interface AcMenuItem {
   label: string;
   /** a few words under the name */
   hint?: string;
+  /** the language of the name when it is not the language of the page (the name of Vietnamese in an English page): it takes that language's fonts */
+  lang?: string;
 }
 
 /**
@@ -75,7 +77,7 @@ export function AcMenu({
                 name='check'
                 className='absolute top-1/2 right-2.5 hidden size-5 -translate-y-1/2 text-ac-accent group-data-checked/item:block'
               />
-              <span className='flex flex-col'>
+              <span lang={item.lang} className='flex flex-col font-ac-note'>
                 {item.label}
                 {item.hint && (
                   <small className='font-ac-serif text-[14px] text-ac-mute'>
