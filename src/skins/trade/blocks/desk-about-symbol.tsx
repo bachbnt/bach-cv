@@ -14,6 +14,7 @@ import { useLang } from '@/lib/i18n/language';
 import { useProfileQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { DeskSection } from '@/skins/trade/blocks/desk-section';
+import { visibleSpecialties } from '@/lib/derive/specialties';
 
 /**
  * The top of the symbol page: my name as the symbol with the headline and the specialty tags (the sector and industry of a symbol), and the
@@ -23,7 +24,7 @@ export function DeskAboutSymbol() {
   const copy = useCopy(tradeDeskCopy).about;
   const { lang } = useLang();
   const { data: profile } = useProfileQuery();
-  const specialties = (profile?.specialties ?? []).filter((s) => s.visible);
+  const specialties = visibleSpecialties(profile);
 
   return (
     <>

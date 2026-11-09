@@ -12,6 +12,7 @@ import { useLive } from '@/hooks/use-live';
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
+import { emailContact, phoneContact } from '@/lib/derive/contacts';
 
 /** The dark closing band: the address to write to and where I am. */
 export function ContactBand() {
@@ -21,8 +22,8 @@ export function ContactBand() {
   const live = useLive();
   const copy = useCopy(homeCopy);
   const chat = useCopy(chatCopy);
-  const email = contacts.find((c) => c.kind === 'email');
-  const phone = contacts.find((c) => c.kind === 'phone');
+  const email = emailContact(contacts);
+  const phone = phoneContact(contacts);
 
   return (
     <section

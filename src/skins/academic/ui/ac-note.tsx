@@ -2,6 +2,8 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+'use client';
+
 import { cva, type VariantProps } from 'class-variance-authority';
 import { useId, type ReactNode } from 'react';
 import { cn } from '@/lib/utils';

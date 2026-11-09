@@ -15,6 +15,11 @@ import { TvEmailRow } from '@/skins/trade/ui/tv-email-row';
 import { TvLinkGroups } from '@/skins/trade/ui/tv-link-groups';
 import { TvLinkRow } from '@/skins/trade/ui/tv-link-row';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
+import {
+  emailContact,
+  phoneContact,
+  socialContacts,
+} from '@/lib/derive/contacts';
 
 /**
  * The links of the symbol page: the email as the joined Email + Copy control, the phone and the place, then the Professional, Messaging and Social links, the
@@ -25,9 +30,9 @@ export function DeskAboutLinks() {
   const query = useContentQuery('contacts');
   const contacts = query.data ?? [];
   const { data: profile } = useProfileQuery();
-  const email = contacts.find((c) => c.kind === 'email');
-  const phone = contacts.find((c) => c.kind === 'phone');
-  const social = contacts.filter((c) => c.kind === 'social' && c.url);
+  const email = emailContact(contacts);
+  const phone = phoneContact(contacts);
+  const social = socialContacts(contacts);
 
   return (
     <DeskSection id='tv-links' anchor='contact' title={title}>

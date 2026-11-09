@@ -12,6 +12,7 @@ import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 import { TvAskButton } from '@/skins/trade/ui/tv-ask-button';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
+import { emailContact, phoneContact } from '@/lib/derive/contacts';
 
 /** The closing band of Home: the address to write to, where I am, and the card that points to the chat (About has its own links list). */
 export function ContactCard() {
@@ -21,8 +22,8 @@ export function ContactCard() {
   const { features } = useLive();
   const copy = useCopy(homeCopy);
   const chat = useCopy(chatCopy);
-  const email = contacts.find((c) => c.kind === 'email');
-  const phone = contacts.find((c) => c.kind === 'phone');
+  const email = emailContact(contacts);
+  const phone = phoneContact(contacts);
 
   return (
     <section

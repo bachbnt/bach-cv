@@ -70,7 +70,7 @@ export function HomeProjects() {
                 <>
                   <span
                     style={{ rotate: `${TILTS[index % TILTS.length]}deg` }}
-                    className='ac-tape ac-wind relative block bg-ac-polaroid p-2 pb-3 shadow-[0_7px_16px_rgba(0,0,0,0.38)]'
+                    className='ac-tape ac-wind relative block bg-ac-polaroid p-2 pb-3 shadow-ac-photo'
                   >
                     <ProjectCover
                       project={project}

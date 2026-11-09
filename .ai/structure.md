@@ -24,8 +24,8 @@ Each module starts with a one-line comment saying what it works out; read `ls sr
 `career-months` / `career-years` (dates, years in software), `current-job` (current, first, latest role; "is current"), `latest-degree`,
 `short-degree`, `recency` (newest-first orders, the latest certificate), `skill-use` (roles, months, series, `careerSpan` and the "Used at" evidence of a skill), `skill-groups`
 and `skill-strip` (groups, areas, the strip), `highlighted` (ranked items), `home-lists` (what Home lists), `years-phrase`, `career-facts`, `duration-label`, `group-by-year`, `initials`, `job-badge`,
-`career-series` (the illustrative seeded series of the Trade chart and its intervals: the one place that data is made). `career-months` also says which role or degree was active at a date (`jobAt` in `current-job`, `degreeAt` in `latest-degree`).
-Shared hooks live in `src/hooks` (`useNow` is the one month-stable clock, `useGoBack`, `useChatSettings`, `useContactLimits`, and the generic ones: `useMediaQuery`, `useLatest`, `useBox`, `useFullscreen`) and `lib/query/use-career-years` (the years in software and the sentences that say them).
+`career-series` (the illustrative seeded series of the Trade chart and its intervals: the one place that data is made), `career-timeline` (the rows of the roles and studies in time), `tally` (the strokes for the years a skill was used), `payment-kinds` (how many methods of each kind), `shown-pages` (which pages are on, and the page before and after one), `offered-languages`, `core-stack`, `contacts` (the email and the social links) and `specialties` (the visible ones). `career-months` also says which role or degree was active at a date (`jobAt` in `current-job`, `degreeAt` in `latest-degree`).
+Shared hooks live in `src/hooks` (`useNow` is the one month-stable clock, `useGoBack`, `useChatSettings`, `useContactLimits`, and the generic ones: `useMediaQuery`, `useLatest`, `useBox`, `useFullscreen`, `useOnceTrue`) and `lib/query/use-career-years` (the years in software and the sentences that say them).
 
 ## Data rules
 

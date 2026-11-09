@@ -2,6 +2,8 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+'use client';
+
 import { paymentCopy } from '@/content/copy/payment';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';

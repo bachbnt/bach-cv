@@ -27,10 +27,12 @@ import { useLang } from '@/lib/i18n/language';
 import { useSkin } from '@/lib/skin/skin';
 import { SKIN_IDS } from '@/lib/skin/skins';
 import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
-import { LANGS, type Lang } from '@/lib/content/schema';
+import type { Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
+import { shownPages } from '@/lib/derive/shown-pages';
+import { offeredLanguages } from '@/lib/derive/offered-languages';
 
 const THEME_ICONS = { system: Monitor, light: Sun, dark: Moon } as const;
 
@@ -96,9 +98,8 @@ export function MobileMenu({
           </Link>
 
           <nav aria-label={copy.mainNav} className='mt-4 flex flex-col'>
-            {NAV_PAGES.map((page) => {
+            {shownPages(live.pages, NAV_PAGES).map((page) => {
               const state = live.pages[page];
-              if (state === 'hidden') return null;
               const meta = PAGE_META[page];
               const label = copy.nav[page];
               return state === 'soon' ? (
@@ -162,19 +163,17 @@ export function MobileMenu({
                 aria-label={copy.language.label}
                 className='inline-flex rounded-xl bg-background p-[3px]'
               >
-                {LANGS.filter((code) => shell.languages.includes(code)).map(
-                  (code: Lang) => (
-                    <button
-                      key={code}
-                      type='button'
-                      aria-pressed={lang === code}
-                      onClick={() => setLang(code)}
-                      className='min-h-10 min-w-14 cursor-pointer rounded-[10px] px-3.5 text-[15px] font-semibold text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
-                    >
-                      {code.toUpperCase()}
-                    </button>
-                  ),
-                )}
+                {offeredLanguages(shell.languages).map((code: Lang) => (
+                  <button
+                    key={code}
+                    type='button'
+                    aria-pressed={lang === code}
+                    onClick={() => setLang(code)}
+                    className='min-h-10 min-w-14 cursor-pointer rounded-[10px] px-3.5 text-[15px] font-semibold text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
+                  >
+                    {code.toUpperCase()}
+                  </button>
+                ))}
               </div>
             </div>
           )}

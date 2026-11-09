@@ -107,7 +107,7 @@ export function CertificateCard({
           type='button'
           onClick={onOpen}
           aria-label={copy.viewLabel(name)}
-          className='ac-wind group/shot relative h-fit w-full max-w-[210px] cursor-zoom-in justify-self-start rotate-[1.6deg] bg-ac-polaroid p-2 pb-8 shadow-[0_6px_14px_rgba(0,0,0,.34)] min-[700px]:justify-self-end'
+          className='ac-wind group/shot relative h-fit w-full max-w-[210px] cursor-zoom-in justify-self-start rotate-[1.6deg] bg-ac-polaroid p-2 pb-8 shadow-ac-photo min-[700px]:justify-self-end'
         >
           <Image
             src={image}

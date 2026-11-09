@@ -170,7 +170,7 @@ export function AcChatSheet({
               <>
                 <span
                   aria-hidden='true'
-                  className='size-2 animate-pulse rounded-full bg-[#16703a]'
+                  className='size-2 animate-pulse rounded-full bg-ac-mc'
                 />
                 <span className='font-bold text-ac-ink'>{copy.online}</span>
                 <span aria-hidden='true'>·</span>

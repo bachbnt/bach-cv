@@ -16,7 +16,7 @@
     linear-gradient(
       172deg,
       var(--ac-sheet),
-      color-mix(in srgb, var(--ac-sheet) 90%, #b9a77a)
+      color-mix(in srgb, var(--ac-sheet) 90%, var(--ac-paper-shade))
     );
 }
 .ac-notepad::before {
@@ -47,7 +47,7 @@
   background: repeating-linear-gradient(
       180deg,
       transparent 0 35px,
-      rgba(70, 110, 180, 0.3) 35px 36px
+      var(--ac-ruling) 35px 36px
     )
     0 0 / 100% 36px local;
 }

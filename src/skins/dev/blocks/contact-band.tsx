@@ -15,6 +15,7 @@ import { DevAskBotButton } from '@/skins/dev/ui/dev-ask-bot-button';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevSkeleton } from '@/skins/dev/ui/dev-skeleton';
 import { DevButtonGroup } from '@/skins/dev/ui/dev-button';
+import { emailContact, phoneContact } from '@/lib/derive/contacts';
 
 /** The closing band: the address to write to, where I am, and the way to the chat. */
 export function DevContactBand() {
@@ -24,8 +25,8 @@ export function DevContactBand() {
   const live = useLive();
   const copy = useCopy(homeCopy);
   const chat = useCopy(chatCopy);
-  const email = contacts.find((c) => c.kind === 'email');
-  const phone = contacts.find((c) => c.kind === 'phone');
+  const email = emailContact(contacts);
+  const phone = phoneContact(contacts);
 
   return (
     <section

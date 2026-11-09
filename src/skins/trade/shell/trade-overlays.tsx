@@ -6,7 +6,7 @@
 
 import dynamic from 'next/dynamic';
 import { useChat } from '@/components/chat/chat-provider';
-import { useOnceTrue } from '@/skins/trade/shell/use-once-true';
+import { useOnceTrue } from '@/hooks/use-once-true';
 import { useTrade } from '@/skins/trade/shell/trade-context';
 
 const TvCvDialog = dynamic(

@@ -116,7 +116,7 @@ function AcCvContent() {
       )}
       <div
         ref={body}
-        className='flex min-h-0 flex-1 flex-col overflow-y-auto bg-[color-mix(in_srgb,#8a7f63_22%,transparent)] shadow-[inset_0_3px_10px_rgba(0,0,0,0.16)] [&>[role=region]]:bg-transparent'
+        className='flex min-h-0 flex-1 flex-col overflow-y-auto bg-ac-stage/20 shadow-[inset_0_3px_10px_rgba(0,0,0,0.16)] [&>[role=region]]:bg-transparent'
       >
         {cv ? (
           <CvSheets cv={cv} />

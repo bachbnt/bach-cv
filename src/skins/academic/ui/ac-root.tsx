@@ -30,13 +30,3 @@ export function AcRoot({
     </div>
   );
 }
-
-/** What a portal (a dialog, a menu) needs to look like the skin: its fonts. The colours come from `html[data-skin]`. */
-export function AcScope({ className, ...props }: ComponentProps<'div'>) {
-  return (
-    <div
-      className={cn('ac-scope font-ac-serif', AC_FONT_VARS, className)}
-      {...props}
-    />
-  );
-}

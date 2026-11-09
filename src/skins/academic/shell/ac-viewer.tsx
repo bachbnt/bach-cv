@@ -113,7 +113,7 @@ function AcViewerSheet({
             {copy.description}
           </DialogDescription>
 
-          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 bg-[color-mix(in_srgb,#8a7f63_20%,transparent)] px-2 py-[22px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.09),inset_0_3px_10px_rgba(0,0,0,0.14)] [grid-template-areas:'prev_photo_next'] max-[720px]:grid-cols-2 max-[720px]:gap-y-3 max-[720px]:py-[18px] max-[720px]:[grid-template-areas:'photo_photo'_'prev_next']">
+          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 bg-ac-stage/20 px-2 py-[22px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.09),inset_0_3px_10px_rgba(0,0,0,0.14)] [grid-template-areas:'prev_photo_next'] max-[720px]:grid-cols-2 max-[720px]:gap-y-3 max-[720px]:py-[18px] max-[720px]:[grid-template-areas:'photo_photo'_'prev_next']">
             {single ? (
               <span className='[grid-area:prev] max-[720px]:hidden' />
             ) : (
@@ -131,7 +131,7 @@ function AcViewerSheet({
             )}
             <figure
               className={cn(
-                'relative m-0 mx-3.5 mt-1 mb-1 max-w-full -rotate-[0.6deg] justify-self-center bg-[#fffefa] p-[9px] pb-9 shadow-[0_8px_18px_rgba(0,0,0,0.34)] [grid-area:photo] max-[720px]:mx-2',
+                'relative m-0 mx-3.5 mt-1 mb-1 max-w-full -rotate-[0.6deg] justify-self-center bg-ac-photo-paper p-[9px] pb-9 shadow-ac-photo [grid-area:photo] max-[720px]:mx-2',
                 single && 'pb-[9px]',
               )}
             >
@@ -192,7 +192,7 @@ function AcViewerSheet({
                   aria-label={fill(copy.goTo, { current: i + 1, total })}
                   aria-current={i === index}
                   onClick={() => setViewerIndex(i)}
-                  className='relative size-[58px] shrink-0 cursor-pointer bg-[#fffefa] p-[3px] opacity-80 shadow-[0_2px_5px_rgba(0,0,0,0.32)] transition-opacity nth-[3n+1]:-rotate-[1.4deg] nth-[3n]:rotate-[1.6deg] aria-current:opacity-100 aria-current:outline-[2.5px] aria-current:outline-offset-1 aria-current:outline-ac-link aria-current:shadow-[0_0_0_5px_rgba(255,207,51,0.7),0_2px_5px_rgba(0,0,0,0.32)] pointer-coarse:size-12 hover:opacity-100'
+                  className='relative size-[58px] shrink-0 cursor-pointer bg-ac-photo-paper p-[3px] opacity-80 shadow-[0_2px_5px_rgba(0,0,0,0.32)] transition-opacity nth-[3n+1]:-rotate-[1.4deg] nth-[3n]:rotate-[1.6deg] aria-current:opacity-100 aria-current:outline-[2.5px] aria-current:outline-offset-1 aria-current:outline-ac-link aria-current:shadow-[0_0_0_5px_rgba(255,207,51,0.7),0_2px_5px_rgba(0,0,0,0.32)] pointer-coarse:size-12 hover:opacity-100'
                 >
                   <span className='relative block size-full overflow-hidden'>
                     <Image

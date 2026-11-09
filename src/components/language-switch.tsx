@@ -13,10 +13,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { commonCopy } from '@/content/copy/common';
-import { LANGS, type Lang } from '@/lib/content/schema';
+import { type Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
+import { offeredLanguages } from '@/lib/derive/offered-languages';
 
 /**
  * Header dropdown: the "language" mark and the current language code (so the choice is always visible), then the languages
@@ -25,7 +26,7 @@ import { useLang } from '@/lib/i18n/language';
 export function LanguageSwitch() {
   const copy = useCopy(commonCopy);
   const { lang, setLang } = useLang();
-  const options = LANGS.filter((code) => shell.languages.includes(code));
+  const options = offeredLanguages(shell.languages);
   const names: Record<Lang, string> = {
     en: copy.language.english,
     vi: copy.language.vietnamese,

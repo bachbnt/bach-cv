@@ -7,7 +7,7 @@
 import { commonCopy } from '@/content/copy/common';
 import { devCopy } from '@/content/copy/dev';
 import { skinsCopy } from '@/content/copy/skins';
-import { LANGS, type Lang } from '@/lib/content/schema';
+import { type Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -22,6 +22,7 @@ import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
 import { useFullscreen } from '@/hooks/use-fullscreen';
 import { DevMenu } from '@/skins/dev/ui/dev-menu';
 import { WindowDots } from '@/skins/dev/ui/window-dots';
+import { offeredLanguages } from '@/lib/derive/offered-languages';
 
 /** The two icons of the burger sit on top of each other and cross-fade when the Explorer drawer opens. */
 const NAV_ICON =
@@ -60,7 +61,7 @@ export function TitleBar({
     setSkin(value);
   };
 
-  const languages = LANGS.filter((code) => shell.languages.includes(code));
+  const languages = offeredLanguages(shell.languages);
   const names: Record<Lang, string> = {
     en: common.language.english,
     vi: common.language.vietnamese,

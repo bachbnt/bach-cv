@@ -8,16 +8,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { academicCopy } from '@/content/copy/academic';
-import { commonCopy } from '@/content/copy/common';
 import { useLive } from '@/hooks/use-live';
 import { fill } from '@/lib/chat/fill';
 import type { PageKey } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { PAGE_META, pageOfPath } from '@/lib/pages';
-import { neighbours, shownPages } from '@/skins/academic/config';
 import { useWipeCapture } from '@/skins/academic/shell/use-eraser-wipe';
+import { usePageLabels } from '@/skins/academic/shell/use-page-labels';
 import { AcIcon } from '@/skins/academic/ui/ac-icon';
+import { pageNeighbours, shownPages } from '@/lib/derive/shown-pages';
 
 /** How long a page that a key asked for stays the place the next key goes on from (a wipe and a route that has to compile take a moment). */
 const ASKED_MS = 1500;
@@ -33,17 +33,15 @@ const typing = (target: EventTarget | null) =>
  * something is being typed).
  */
 export function Pager({ page }: { page: PageKey }) {
-  const common = useCopy(commonCopy);
   const copy = useCopy(academicCopy);
+  const { label } = usePageLabels();
   const live = useLive();
   const router = useRouter();
   const captureWipe = useWipeCapture();
   // the page a key has already asked for: pressed again at once, the next key goes on from it (the address and the page on show are late during a wipe)
   const asked = useRef<{ page: PageKey; at: number } | null>(null);
-  const shown = shownPages(live);
-  const { previous, next, index } = neighbours(page, shown);
-  const label = (key: PageKey) =>
-    key === 'home' ? copy.home : common.nav[key];
+  const shown = shownPages(live.pages);
+  const { previous, next, index } = pageNeighbours(page, shown);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -57,13 +55,13 @@ export function Pager({ page }: { page: PageKey }) {
       if (typing(event.target) || document.querySelector('[role="dialog"]'))
         return;
       // the page asked for last, or else the one the address says (not the one on show: for a moment after a page change they differ)
-      const around = neighbours(
+      const around = pageNeighbours(
         (asked.current && Date.now() - asked.current.at < ASKED_MS
           ? asked.current.page
           : null) ??
           pageOfPath(window.location.pathname) ??
           page,
-        shownPages({ pages: live.pages }),
+        shownPages(live.pages),
       );
       const target =
         event.key === 'ArrowRight'

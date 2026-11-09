@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevCard } from '@/skins/dev/ui/dev-card';
+import { coreStack } from '@/lib/derive/core-stack';
 
 /** The grid has three columns: when the first card spans two of them the rows are full only for 5, 8, 11 ... cards. */
 const fillsWithMain = (count: number) => (count + 1) % 3 === 0;
@@ -34,7 +35,7 @@ export function DevCoreStack() {
   const copy = useCopy(resumeCopy);
   const dev = useCopy(devResumeCopy);
   const { skills, evidence, isPending, isError, refetch } = useSkills();
-  const core = skills.filter((skill) => skill.listed && skill.highlight);
+  const core = coreStack(skills);
   const hasMain = fillsWithMain(core.length);
 
   return (

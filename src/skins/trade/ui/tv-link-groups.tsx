@@ -6,9 +6,10 @@
 
 import { BrandIcon, brandColor, brandName } from '@/components/brand-icon';
 import { commonCopy } from '@/content/copy/common';
-import { CONTACT_GROUPS, type Contact } from '@/lib/content/schema';
+import type { Contact } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { TvLinkRow } from '@/skins/trade/ui/tv-link-row';
+import { socialByGroup } from '@/lib/derive/contacts';
 
 /**
  * The social links of Connect under the heading of their group (Professional, Messaging, Social), each as a `TvLinkRow`. The popover of
@@ -20,9 +21,7 @@ export function TvLinkGroups({
   contacts: (Contact & { id: string })[];
 }) {
   const groups = useCopy(commonCopy).connect.groups;
-  return CONTACT_GROUPS.map((group) => {
-    const items = contacts.filter((c) => c.menuGroup === group);
-    if (!items.length) return null;
+  return socialByGroup(contacts).map(({ group, items }) => {
     return (
       <div key={group} className='mt-2 first:mt-0'>
         <h3 className='mx-2 mb-1 text-[11px] font-bold tracking-wide text-tv-mute uppercase'>

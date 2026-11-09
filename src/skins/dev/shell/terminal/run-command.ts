@@ -5,6 +5,7 @@
 import type { DevTerminalCopy } from '@/content/copy/dev-terminal';
 import { fill } from '@/lib/chat/fill';
 import type { Live, PageKey } from '@/lib/content/schema';
+import { isPageShown } from '@/lib/derive/shown-pages';
 
 /** The commands of the terminal, in the order `help` lists them. */
 export const COMMANDS = [
@@ -69,7 +70,7 @@ const done = (
 
 /** The pages a visitor can see: the hidden ones do not exist. */
 const visible = (env: TerminalEnv) =>
-  env.pages.filter((page) => page.state !== 'hidden');
+  env.pages.filter((page) => isPageShown(page.state));
 
 /** `About.js` -> `about`, `about` -> `about`. */
 const stem = (name: string) => name.replace(/\.[^./]+$/, '').toLowerCase();

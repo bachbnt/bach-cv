@@ -7,7 +7,7 @@
 import dynamic from 'next/dynamic';
 import { DevChat } from '@/skins/dev/shell/dev-chat';
 import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
-import { useOnceTrue } from '@/skins/dev/shell/use-once-true';
+import { useOnceTrue } from '@/hooks/use-once-true';
 
 const DevViewer = dynamic(
   () => import('@/skins/dev/shell/dev-viewer').then((m) => m.DevViewer),

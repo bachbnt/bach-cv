@@ -49,7 +49,7 @@ export function ProjectCover({
         taped && 'ac-tape',
       )}
     >
-      <div className='relative aspect-[16/10] overflow-hidden border-[6px] border-ac-polaroid bg-ac-polaroid shadow-[0_6px_14px_rgba(0,0,0,0.38)]'>
+      <div className='relative aspect-[16/10] overflow-hidden border-[6px] border-ac-polaroid bg-ac-polaroid shadow-ac-photo'>
         {project.cover ? (
           <Image
             src={project.cover}

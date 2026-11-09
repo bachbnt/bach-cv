@@ -10,6 +10,7 @@ import { localize } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
+import { emailContact } from '@/lib/derive/contacts';
 
 export interface Maintenance {
   /** the switch of `site/live`: when it is on, the whole site is replaced by the maintenance screen */
@@ -25,7 +26,7 @@ export function useMaintenance(): Maintenance {
   const { lang } = useLang();
   const copy = useCopy(commonCopy);
   const { data: contacts = [] } = useContentQuery('contacts');
-  const email = contacts.find((c) => c.kind === 'email');
+  const email = emailContact(contacts);
   return {
     enabled: maintenance.enabled,
     message: localize(maintenance, lang).message || copy.maintenance.body,

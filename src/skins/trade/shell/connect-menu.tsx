@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { commonCopy } from '@/content/copy/common';
-import { CONTACT_GROUPS, localize } from '@/lib/content/schema';
+import { localize } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
@@ -23,6 +23,11 @@ import { TV_POPUP } from '@/skins/trade/ui/tv-menu';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvEmailRow } from '@/skins/trade/ui/tv-email-row';
 import { TvLinkGroups } from '@/skins/trade/ui/tv-link-groups';
+import {
+  emailContact,
+  socialByGroup,
+  socialContacts,
+} from '@/lib/derive/contacts';
 
 /**
  * Connect, in the rail: the same email, the same links (each with its group) and the same place as the Standard Connect menu, laid out
@@ -35,11 +40,10 @@ export function ConnectMenu() {
   const wide = useWide();
   const { data: contacts = [] } = useContentQuery('contacts');
   const { data: profile } = useProfileQuery();
-  const email = contacts.find((c) => c.kind === 'email');
-  const social = contacts.filter((c) => c.kind === 'social' && c.url);
+  const email = emailContact(contacts);
   // the order of the groups, then the order of the contacts inside a group
-  const links = CONTACT_GROUPS.flatMap((group) =>
-    social.filter((c) => c.menuGroup === group),
+  const links = socialByGroup(socialContacts(contacts)).flatMap(
+    ({ items }) => items,
   );
 
   return (

@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { commonCopy } from '@/content/copy/common';
 import { devConnectCopy } from '@/content/copy/dev-connect';
 import { useClipboard } from '@/hooks/use-clipboard';
-import { CONTACT_GROUPS } from '@/lib/content/schema';
 import { BRAND_ICONS } from '@/lib/brand-icons';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
@@ -17,6 +16,11 @@ import { cn } from '@/lib/utils';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { ConnectTile } from '@/skins/dev/shell/connect-tile';
 import { DevButton } from '@/skins/dev/ui/dev-button';
+import {
+  emailContact,
+  socialByGroup,
+  socialContacts,
+} from '@/lib/derive/contacts';
 
 /** The colour of a brand in this skin: a real brand colour, or the heading colour when the brand has none of its own. */
 const colorOf = (platform: string) => {
@@ -48,13 +52,10 @@ export function ConnectPaletteBox({
   const matches = (...parts: (string | undefined)[]) =>
     !q || parts.some((part) => part?.toLowerCase().includes(q));
 
-  const email = contacts.find((c) => c.kind === 'email');
+  const email = emailContact(contacts);
   const showEmail = email && matches(text.email, email.label);
-  const social = contacts.filter(
-    (c) =>
-      c.kind === 'social' &&
-      c.url &&
-      matches(BRAND_ICONS[c.platform]?.name, c.platform, c.label),
+  const social = socialContacts(contacts).filter((c) =>
+    matches(BRAND_ICONS[c.platform]?.name, c.platform, c.label),
   );
   const empty = !showEmail && social.length === 0;
 
@@ -136,9 +137,7 @@ export function ConnectPaletteBox({
           </div>
         )}
 
-        {CONTACT_GROUPS.map((group) => {
-          const inGroup = social.filter((c) => c.menuGroup === group);
-          if (!inGroup.length) return null;
+        {socialByGroup(social).map(({ group, items: inGroup }) => {
           return (
             <div key={group}>
               <p className='mx-3 mt-3 mb-1 font-code text-[11.5px] leading-[normal] font-semibold text-dim lowercase'>

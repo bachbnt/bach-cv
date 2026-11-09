@@ -11,6 +11,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useProfileQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { DevChip } from '@/skins/dev/ui/dev-chip';
+import { visibleSpecialties } from '@/lib/derive/specialties';
 
 /** the photos are frames the pictures fill */
 const PHOTO =
@@ -23,7 +24,7 @@ const PICTURE =
 export function AboutHead() {
   const copy = useCopy(aboutCopy);
   const { data: profile } = useProfileQuery();
-  const specialties = (profile?.specialties ?? []).filter((s) => s.visible);
+  const specialties = visibleSpecialties(profile);
   const [top, bottom] = profile?.covers ?? [];
 
   return (

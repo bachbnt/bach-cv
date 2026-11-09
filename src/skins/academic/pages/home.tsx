@@ -2,8 +2,6 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-'use client';
-
 import { HomeAbstract } from '@/skins/academic/blocks/home-abstract';
 import { HomeBuild } from '@/skins/academic/blocks/home-build';
 import { HomeContents } from '@/skins/academic/blocks/home-contents';

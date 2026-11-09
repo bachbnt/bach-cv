@@ -13,13 +13,17 @@ import {
 import { commonCopy } from '@/content/copy/common';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { useLive } from '@/hooks/use-live';
-import { CONTACT_GROUPS } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { AcButton } from '@/skins/academic/ui/ac-button';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
 import { AcIcon } from '@/skins/academic/ui/ac-icon';
+import {
+  emailContact,
+  socialByGroup,
+  socialContacts,
+} from '@/lib/derive/contacts';
 
 /**
  * The Connect menu of the header: a tag that opens a slip of paper with the email (and a button that copies it), the social links by group
@@ -33,8 +37,8 @@ export function AcConnectMenu() {
   const text = useCopy(commonCopy);
 
   if (!live.features.connectMenu) return null;
-  const email = contacts.find((c) => c.kind === 'email');
-  const social = contacts.filter((c) => c.kind === 'social' && c.url);
+  const email = emailContact(contacts);
+  const social = socialContacts(contacts);
 
   return (
     <Popover>
@@ -80,9 +84,7 @@ export function AcConnectMenu() {
           </div>
         )}
 
-        {CONTACT_GROUPS.map((group) => {
-          const items = social.filter((c) => c.menuGroup === group);
-          if (!items.length) return null;
+        {socialByGroup(social).map(({ group, items }) => {
           return (
             <div key={group} className='mt-2.5'>
               <p className='mx-1 mb-1 font-ac-note text-[15px] text-ac-mute'>

@@ -10,13 +10,15 @@ import { useCopy } from '@/lib/i18n/copy';
 import { AREA_INK } from '@/skins/academic/blocks/resume-tags';
 import type { SkillRow } from '@/skins/academic/blocks/resume-skills-model';
 import { cn } from '@/lib/utils';
+import { coreStack } from '@/lib/derive/core-stack';
 
 /** The core stack: the skills marked `highlight`, in rank order, each with where it was used (Standard's cards, as a list of chalk lines). */
 export function ResumeCoreStack({ rows }: { rows: SkillRow[] }) {
   const { skills } = useCopy(resumeCopy);
-  const core = rows
-    .filter((row) => row.skill.highlight !== null)
-    .sort((a, b) => (a.skill.highlight ?? 0) - (b.skill.highlight ?? 0));
+  const byId = new Map(rows.map((row) => [row.skill.id, row]));
+  const core = coreStack(rows.map((row) => row.skill)).flatMap(
+    (skill) => byId.get(skill.id) ?? [],
+  );
   if (!core.length) return null;
   return (
     <ul className='m-0 mt-4 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,210px),1fr))] gap-x-6 gap-y-4 p-0'>

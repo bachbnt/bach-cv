@@ -12,7 +12,6 @@
   --color-ac-accent: var(--ac-accent);
   --color-ac-link: var(--ac-link);
   --color-ac-hit: var(--ac-hit);
-  --color-ac-field: var(--ac-field);
   /* the three bar colours of the timeline, and the colours of the margin notes (chalk or marker) */
   --color-ac-b1: var(--ac-b1);
   --color-ac-b2: var(--ac-b2);
@@ -31,16 +30,18 @@
   --color-ac-sticky: var(--ac-sticky);
   --color-ac-tape: var(--ac-tape);
   --color-ac-polaroid: var(--ac-polaroid);
+  --color-ac-photo-paper: var(--ac-photo-paper);
+  --color-ac-stage: var(--ac-stage);
 
   --font-ac-serif: var(--ac-serif);
   --font-ac-note: var(--ac-note);
   --font-ac-chalk: var(--ac-chalk);
 
-  /* what lies on the board casts a shadow; a menu or a dialog a bigger one */
+  /* what lies on the board casts a shadow */
+  /* a photograph taped to the board, and a small one */
+  --shadow-ac-photo: 0 7px 16px rgb(0 0 0 / 0.38);
+  --shadow-ac-photo-sm: 0 4px 9px rgb(0 0 0 / 0.35);
   --shadow-ac-paper:
     0 1px 0 rgb(255 255 255 / 0.5) inset, 0 9px 22px rgb(0 0 0 / 0.4),
     0 2px 3px rgb(0 0 0 / 0.3);
-  --shadow-ac-pop: 0 12px 26px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.3);
-  --shadow-ac-dialog:
-    0 22px 50px rgb(0 0 0 / 0.55), 0 3px 6px rgb(0 0 0 / 0.35);
 }

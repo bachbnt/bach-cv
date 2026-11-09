@@ -8,6 +8,7 @@ import { cva } from 'class-variance-authority';
 import Link from 'next/link';
 import { useLive } from '@/hooks/use-live';
 import type { PageKey } from '@/lib/content/schema';
+import { shownPages } from '@/lib/derive/shown-pages';
 import { PAGE_META } from '@/lib/pages';
 import { cn } from '@/lib/utils';
 import { DEV_FILES, type TreeNode } from '@/skins/dev/config';
@@ -63,6 +64,7 @@ export function ExplorerTree({
   onFolder: (path: string, open: boolean) => void;
 }) {
   const live = useLive();
+  const shown = shownPages(live.pages);
   return (
     <>
       {nodes.map((node) => {
@@ -98,8 +100,8 @@ export function ExplorerTree({
           );
         }
         if (node.type === 'page') {
+          if (!shown.includes(node.page)) return null;
           const state = live.pages[node.page];
-          if (state === 'hidden') return null;
           const file = DEV_FILES[node.page];
           if (state === 'soon') {
             return (

@@ -34,7 +34,6 @@ export const academicHomeAboutCopy = defineCopy(
     },
     about: {
       expertise: 'Expertise',
-      photos: 'Photographs',
     },
   },
   {
@@ -57,7 +56,6 @@ export const academicHomeAboutCopy = defineCopy(
     },
     about: {
       expertise: 'Chuyên môn',
-      photos: 'Hình ảnh',
     },
   },
 );

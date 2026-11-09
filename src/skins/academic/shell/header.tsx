@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { academicCopy } from '@/content/copy/academic';
 import { commonCopy } from '@/content/copy/common';
 import { skinsCopy } from '@/content/copy/skins';
-import { LANGS, type Lang } from '@/lib/content/schema';
+import { type Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
@@ -20,6 +20,8 @@ import { AcConnectMenu } from '@/skins/academic/shell/ac-connect-menu';
 import { AcCvButton } from '@/skins/academic/shell/ac-cv-button';
 import { preloadSkin } from '@/skins/registry';
 import { AcMenu } from '@/skins/academic/ui/ac-menu';
+import { initialOf } from '@/lib/derive/initials';
+import { offeredLanguages } from '@/lib/derive/offered-languages';
 
 /**
  * The top of the board: the name and what this is, then the tags that change the language, the skin and the theme (in that order, as in every
@@ -33,7 +35,7 @@ export function Header() {
   const { theme, setTheme } = useTheme();
   const { skin, setSkin } = useSkin();
 
-  const languages = LANGS.filter((code) => shell.languages.includes(code));
+  const languages = offeredLanguages(shell.languages);
   const names: Record<Lang, string> = {
     en: common.language.english,
     vi: common.language.vietnamese,
@@ -55,7 +57,7 @@ export function Header() {
           aria-hidden='true'
           className='inline-grid size-[34px] rotate-[-3deg] place-items-center rounded-[9px_4px_10px_5px/5px_10px_4px_9px] border-[2.4px] border-ac-accent font-ac-chalk text-[25px]/none text-ac-accent'
         >
-          {shell.name.slice(0, 1)}
+          {initialOf(shell.name)}
         </span>
         <b className='ac-glow font-ac-chalk text-[34px]/none font-normal tracking-[0.01em]'>
           {shell.name}

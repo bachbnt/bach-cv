@@ -17,6 +17,7 @@ import { HomeCol } from '@/skins/academic/blocks/home-col';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
 import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
+import { coreStack } from '@/lib/derive/core-stack';
 
 /**
  * The skills I use every day, as small cards taped to the board (the skills marked `highlight`, in rank order, with where each was used), and the link to
@@ -26,7 +27,7 @@ export function AboutCoreStack() {
   const { core } = useCopy(aboutCopy);
   const copy = useCopy(resumeCopy);
   const { skills, evidence, isPending, isError, refetch } = useSkills();
-  const stack = skills.filter((skill) => skill.listed && skill.highlight);
+  const stack = coreStack(skills);
 
   return (
     <HomeCol className='mt-16'>

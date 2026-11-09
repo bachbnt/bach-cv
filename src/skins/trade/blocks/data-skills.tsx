@@ -20,6 +20,7 @@ import { DataSkillTile } from '@/skins/trade/blocks/data-skill-tile';
 import { useSkillTip } from '@/skins/trade/blocks/data-use-skill-tip';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
+import { coreStack } from '@/lib/derive/core-stack';
 
 const DOT: Record<Skill['category'], string> = {
   ai: 'bg-ai-foreground',
@@ -47,7 +48,7 @@ export function DataSkills({
   const { skills, evidence, isPending, isError, refetch } = useSkills();
   const { tip, setTip, hide } = useSkillTip();
   const query = { isPending, isError, refetch };
-  const core = skills.filter((skill) => skill.listed && skill.highlight);
+  const core = coreStack(skills);
   const groups = skillGroups(skills);
 
   const tileProps = (skill: Skill & { id: string }) => ({

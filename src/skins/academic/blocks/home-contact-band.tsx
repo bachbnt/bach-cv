@@ -15,6 +15,7 @@ import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcPaper } from '@/skins/academic/ui/ac-paper';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
 import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
+import { emailContact, phoneContact } from '@/lib/derive/contacts';
 
 /**
  * The closing of the page, as the correspondence of a paper: the address to write to and where I am, and a sticky note that sends the visitor to the
@@ -27,8 +28,8 @@ export function HomeContactBand() {
   const live = useLive();
   const copy = useCopy(homeCopy);
   const chat = useCopy(chatCopy);
-  const email = contacts.find((c) => c.kind === 'email');
-  const phone = contacts.find((c) => c.kind === 'phone');
+  const email = emailContact(contacts);
+  const phone = phoneContact(contacts);
 
   return (
     <HomeCol className='mt-20'>

@@ -5,14 +5,15 @@
 'use client';
 
 import Link from 'next/link';
-import { academicCopy } from '@/content/copy/academic';
 import { commonCopy } from '@/content/copy/common';
 import { useLive } from '@/hooks/use-live';
 import type { PageKey } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { PAGE_META } from '@/lib/pages';
 import { cn } from '@/lib/utils';
-import { shownPages } from '@/skins/academic/config';
+import { usePageLabels } from '@/skins/academic/shell/use-page-labels';
+import { AcSoonTag } from '@/skins/academic/ui/ac-soon-tag';
+import { shownPages } from '@/lib/derive/shown-pages';
 
 /**
  * The contents under the header: one tab for each page that is on (a page that is `soon` is a tab without a link, a hidden one is not there).
@@ -20,10 +21,8 @@ import { shownPages } from '@/skins/academic/config';
  */
 export function Toc({ page }: { page: PageKey }) {
   const common = useCopy(commonCopy);
-  const copy = useCopy(academicCopy);
+  const { label } = usePageLabels();
   const live = useLive();
-  const label = (key: PageKey) =>
-    key === 'home' ? copy.home : common.nav[key];
 
   return (
     <nav
@@ -31,7 +30,7 @@ export function Toc({ page }: { page: PageKey }) {
       className='mx-auto max-w-[1120px] px-5 max-[760px]:px-3.5'
     >
       <ol className='m-0 flex list-none gap-x-2.5 overflow-x-auto border-y-2 border-dashed border-ac-rule p-0 [scrollbar-width:none] max-[760px]:flex-nowrap max-[760px]:[mask-image:linear-gradient(90deg,#000_88%,transparent)] max-[760px]:pr-9 min-[761px]:flex-wrap [&::-webkit-scrollbar]:hidden'>
-        {shownPages(live).map((key, i) => {
+        {shownPages(live.pages).map((key, i) => {
           const current = key === page;
           const soon = live.pages[key] === 'soon';
           const inner = (
@@ -46,11 +45,7 @@ export function Toc({ page }: { page: PageKey }) {
                 {i + 1}
               </i>
               {label(key)}
-              {soon && (
-                <small className='rounded-full border border-ac-rule px-1.5 text-[13px]'>
-                  {common.soon}
-                </small>
-              )}
+              {soon && <AcSoonTag />}
             </>
           );
           const cls = cn(

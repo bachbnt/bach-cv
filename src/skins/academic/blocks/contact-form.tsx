@@ -98,7 +98,7 @@ export function ContactForm({
           aria-describedby='f-message-error'
           className={cn(
             lineInput,
-            'min-h-[160px] field-sizing-fixed resize-y border-b-0 bg-[repeating-linear-gradient(180deg,transparent_0_31px,rgba(70,110,180,.3)_31px_32px)] px-0.5 py-0 leading-8 dark:bg-[repeating-linear-gradient(180deg,transparent_0_31px,rgba(70,110,180,.3)_31px_32px)]',
+            'min-h-[160px] field-sizing-fixed resize-y border-b-0 bg-[repeating-linear-gradient(180deg,transparent_0_31px,var(--ac-ruling)_31px_32px)] px-0.5 py-0 leading-8 dark:bg-[repeating-linear-gradient(180deg,transparent_0_31px,var(--ac-ruling)_31px_32px)]',
           )}
         />
       </ContactField>

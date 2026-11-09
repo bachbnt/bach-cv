@@ -15,9 +15,14 @@ import {
 import { useClipboard } from '@/hooks/use-clipboard';
 import { commonCopy } from '@/content/copy/common';
 import { useCopy } from '@/lib/i18n/copy';
-import { CONTACT_GROUPS, type Doc } from '@/lib/content/schema';
+import type { Doc } from '@/lib/content/schema';
 import { cn } from 'cn';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
+import {
+  emailContact,
+  socialByGroup,
+  socialContacts,
+} from '@/lib/derive/contacts';
 
 /** Handle shown under a link: the label without a leading URL scheme. */
 const handleOf = (c: Doc<'contacts'>) => c.label;
@@ -28,8 +33,8 @@ export function ConnectMenu() {
   const { copied, copy } = useClipboard();
   const text = useCopy(commonCopy);
 
-  const email = contacts.find((c) => c.kind === 'email');
-  const social = contacts.filter((c) => c.kind === 'social' && c.url);
+  const email = emailContact(contacts);
+  const social = socialContacts(contacts);
 
   return (
     <Popover>
@@ -81,9 +86,7 @@ export function ConnectMenu() {
           </div>
         )}
 
-        {CONTACT_GROUPS.map((group) => {
-          const items = social.filter((c) => c.menuGroup === group);
-          if (!items.length) return null;
+        {socialByGroup(social).map(({ group, items }) => {
           return (
             <div key={group} className='mt-2.5'>
               <p className='mx-2 mb-1 text-xs font-semibold tracking-[0.02em] text-muted-foreground'>

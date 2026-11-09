@@ -94,8 +94,12 @@ describe('the palette of the Academic skin keeps its text readable (4.5:1)', () 
     it(`writes on paper pinned to the ${name} in ink that reads on both ends of the sheet`, () => {
       const tokens2 = { ...tokens, ...paperVars };
       const sheet = resolve(tokens['--ac-sheet'], tokens);
-      // the sheet is shaded towards one corner: `color-mix(in srgb, sheet 90%, #b9a77a)`
-      const shaded = mix(sheet, hex('#b9a77a'), 0.9);
+      // the sheet is shaded towards one corner: `color-mix(in srgb, sheet 90%, --ac-paper-shade)`
+      const shaded = mix(
+        sheet,
+        resolve(tokens['--ac-paper-shade'], tokens),
+        0.9,
+      );
       for (const key of [
         '--ac-ink',
         '--ac-mute',

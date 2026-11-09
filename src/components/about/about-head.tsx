@@ -13,6 +13,7 @@ import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useProfileQuery } from '@/lib/query/use-content';
 import { cn } from 'cn';
+import { visibleSpecialties } from '@/lib/derive/specialties';
 
 /** A frame the photo fills: the photo's own width and height are never overridden by CSS, which Next.js warns about. It rises under the mouse like a card. */
 const frame =
@@ -25,7 +26,7 @@ const photo =
 export function AboutHead() {
   const copy = useCopy(aboutCopy);
   const { data: profile } = useProfileQuery();
-  const specialties = (profile?.specialties ?? []).filter((s) => s.visible);
+  const specialties = visibleSpecialties(profile);
   const [top, bottom] = profile?.covers ?? [];
   // the chips lean toward the mouse when it comes near
   const chips = useRef<HTMLUListElement>(null);

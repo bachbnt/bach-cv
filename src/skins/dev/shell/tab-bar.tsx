@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { DEV_FILES } from '@/skins/dev/config';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { FileIcon } from '@/skins/dev/icons/file-icon';
+import { shownPages } from '@/lib/derive/shown-pages';
 
 /** A tab: the file icon lifts when the pointer is over it and the cross shows up; the open tab has a green line on top that glides from tab to tab. */
 const TAB =
@@ -34,9 +35,8 @@ export function TabBar({ page }: { page: PageKey }) {
       className='flex h-[35px] items-stretch overflow-x-auto bg-chrome [scrollbar-width:none] max-[900px]:hidden group-data-[zen]/dv:hidden'
       aria-label={common.mainNav}
     >
-      {ORDER.map((key) => {
+      {shownPages(live.pages, ORDER).map((key) => {
         const state = live.pages[key];
-        if (state === 'hidden') return null;
         const file = DEV_FILES[key];
         const content = (
           <>

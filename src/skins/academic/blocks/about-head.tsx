@@ -12,6 +12,7 @@ import { useProfileQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { HomeCol } from '@/skins/academic/blocks/home-col';
 import { HomePolaroid } from '@/skins/academic/blocks/home-polaroid';
+import { visibleSpecialties } from '@/lib/derive/specialties';
 
 /** How a specialty is written: the area it belongs to is the colour of its chalk; the main one is filled in. */
 const TONE = {
@@ -29,7 +30,7 @@ export function AboutHead() {
   const copy = useCopy(aboutCopy);
   const mine = useCopy(academicHomeAboutCopy).about;
   const { data: profile } = useProfileQuery();
-  const specialties = (profile?.specialties ?? []).filter((s) => s.visible);
+  const specialties = visibleSpecialties(profile);
   const [top, bottom] = profile?.covers ?? [];
 
   return (

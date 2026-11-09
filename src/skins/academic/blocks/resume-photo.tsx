@@ -18,7 +18,7 @@ export function ResumePhoto({
   return (
     <figure
       className={cn(
-        'ac-tape relative m-0 w-full max-w-[220px] rotate-[-2deg] bg-ac-polaroid p-2 shadow-[0_7px_16px_rgba(0,0,0,0.38)] even:rotate-[1.6deg]',
+        'ac-tape relative m-0 w-full max-w-[220px] rotate-[-2deg] bg-ac-polaroid p-2 shadow-ac-photo even:rotate-[1.6deg]',
         className,
       )}
     >

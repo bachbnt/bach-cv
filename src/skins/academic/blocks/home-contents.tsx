@@ -5,17 +5,16 @@
 'use client';
 
 import Link from 'next/link';
-import { academicCopy } from '@/content/copy/academic';
 import { academicHomeAboutCopy } from '@/content/copy/academic-home-about';
-import { commonCopy } from '@/content/copy/common';
 import { useLive } from '@/hooks/use-live';
-import type { PageKey } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { PAGE_META } from '@/lib/pages';
 import { cn } from '@/lib/utils';
-import { shownPages } from '@/skins/academic/config';
 import { HomeCol } from '@/skins/academic/blocks/home-col';
+import { usePageLabels } from '@/skins/academic/shell/use-page-labels';
+import { AcSoonTag } from '@/skins/academic/ui/ac-soon-tag';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
+import { shownPages } from '@/lib/derive/shown-pages';
 
 /**
  * The contents of the manuscript: a line for each page that is on, with its number and a dotted leader, like the contents of a book. It is the
@@ -23,11 +22,8 @@ import { AcHeading } from '@/skins/academic/ui/ac-section';
  */
 export function HomeContents() {
   const home = useCopy(academicHomeAboutCopy).home;
-  const copy = useCopy(academicCopy);
-  const common = useCopy(commonCopy);
+  const { label } = usePageLabels();
   const live = useLive();
-  const label = (key: PageKey) =>
-    key === 'home' ? copy.home : common.nav[key];
 
   return (
     <HomeCol className='mt-11'>
@@ -41,7 +37,7 @@ export function HomeContents() {
         {home.contents}
       </AcHeading>
       <ol className='mt-2 list-none p-0 min-[761px]:columns-2 min-[761px]:gap-x-10'>
-        {shownPages(live).map((key, i) => {
+        {shownPages(live.pages).map((key, i) => {
           const soon = live.pages[key] === 'soon';
           const line = (
             <>
@@ -52,11 +48,7 @@ export function HomeContents() {
                 {i + 1}
               </span>
               <span>{label(key)}</span>
-              {soon && (
-                <small className='rounded-full border border-ac-rule px-1.5 text-[13px] text-ac-mute'>
-                  {common.soon}
-                </small>
-              )}
+              {soon && <AcSoonTag className='text-ac-mute' />}
               <span
                 aria-hidden='true'
                 className='min-w-3 flex-1 -translate-y-1 border-b-2 border-dotted border-ac-rule'

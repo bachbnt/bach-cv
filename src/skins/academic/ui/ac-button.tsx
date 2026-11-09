@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
  * A button written by hand: a pen outline in the colour of ink (`pen`, the main action), or a quiet one (`quiet`). The outline is a little uneven
  * on purpose; the height is fixed, so the pen and the quiet button side by side are the same height.
  */
-export const acButtonVariants = cva(
+const acButtonVariants = cva(
   'inline-flex cursor-pointer items-center justify-center gap-2 rounded-[9px_4px_10px_5px/5px_10px_4px_9px] border-[2.2px] bg-transparent px-4 leading-none whitespace-nowrap no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:min-h-11',
   {
     variants: {

@@ -17,6 +17,7 @@ import { DeskSection } from '@/skins/trade/blocks/desk-section';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 import { cssVars } from '@/skins/trade/ui/css-vars';
+import { coreStack } from '@/lib/derive/core-stack';
 
 /**
  * The core stack as the composition of a symbol: one tile for each skill I use every day, with where I used it, and the link to the full list.
@@ -27,7 +28,7 @@ export function DeskAboutStack() {
   const kicker = useCopy(tradeDeskCopy).about.composition;
   const resume = useCopy(resumeCopy);
   const { skills, evidence, isPending, isError, refetch } = useSkills();
-  const core = skills.filter((skill) => skill.listed && skill.highlight);
+  const core = coreStack(skills);
 
   return (
     <DeskSection

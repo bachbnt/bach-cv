@@ -20,6 +20,7 @@ import { shell } from '@/lib/content/shell';
 import { NAV_PAGES, PAGE_META } from '@/lib/pages';
 import { liveQueryOptions } from '@/lib/query/options';
 import { cn } from 'cn';
+import { shownPages } from '@/lib/derive/shown-pages';
 
 /** Until the switches arrive (or if they cannot be read) every page is on: the site fails open. */
 const DEFAULT_LIVE = liveSchema.parse({});
@@ -53,9 +54,8 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
 
       <div className='hidden items-center gap-7 min-[1200px]:flex'>
         <nav aria-label={copy.mainNav} className='flex items-center gap-7'>
-          {NAV_PAGES.map((page) => {
+          {shownPages(live.pages, NAV_PAGES).map((page) => {
             const state = live.pages[page];
-            if (state === 'hidden') return null;
             const { href } = PAGE_META[page];
             const label = copy.nav[page];
             return state === 'soon' ? (

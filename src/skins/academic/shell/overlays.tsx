@@ -7,7 +7,7 @@
 import dynamic from 'next/dynamic';
 import { useAcOverlays } from '@/skins/academic/shell/overlay-context';
 import { AcToast } from '@/skins/academic/shell/ac-toast';
-import { useOnceTrue } from '@/skins/academic/shell/use-once-true';
+import { useOnceTrue } from '@/hooks/use-once-true';
 
 const AcViewer = dynamic(
   () => import('@/skins/academic/shell/ac-viewer').then((m) => m.AcViewer),

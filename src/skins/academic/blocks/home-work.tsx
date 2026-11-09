@@ -68,7 +68,7 @@ export function HomeWork() {
                   className='group/row flex flex-wrap items-center gap-x-6 gap-y-3 border-b-2 border-dashed border-ac-faint px-1 py-5 no-underline transition-colors hover:bg-ac-faint/40'
                 >
                   {job.logo ? (
-                    <span className='relative block h-[66px] w-[92px] flex-none -rotate-[1.5deg] overflow-hidden bg-ac-polaroid p-1 shadow-[0_4px_9px_rgba(0,0,0,0.35)]'>
+                    <span className='relative block h-[66px] w-[92px] flex-none -rotate-[1.5deg] overflow-hidden bg-ac-polaroid p-1 shadow-ac-photo-sm'>
                       <Image
                         src={job.logo}
                         alt={job.company}

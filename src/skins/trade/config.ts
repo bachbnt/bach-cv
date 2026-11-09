@@ -3,6 +3,7 @@
  */
 
 import type { Live, PageKey } from '@/lib/content/schema';
+import { shownPages } from '@/lib/derive/shown-pages';
 
 /** The colour of the round tile of a watchlist row (a theme colour of the skin: `bg-tv-<tile>`). */
 export type Tile =
@@ -44,7 +45,7 @@ export interface NavItem {
 
 /** The pages the navigation shows: a hidden page is absent, a `soon` page is marked. */
 export function navItems(pages: Live['pages']): NavItem[] {
-  return WATCH_ORDER.filter((page) => pages[page] !== 'hidden').map((page) => ({
+  return shownPages(pages, WATCH_ORDER).map((page) => ({
     page,
     soon: pages[page] === 'soon',
   }));
