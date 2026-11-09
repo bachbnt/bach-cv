@@ -22,7 +22,7 @@ export function HomePipeline() {
 
   return (
     <HomeCol className='mt-16'>
-      <AcPaper kind='pinned' className='rotate-[0.4deg] px-7 pt-[30px]'>
+      <AcPaper kind='pinned' wind className='rotate-[0.4deg] px-7 pt-[30px]'>
         <section aria-labelledby='pipeline-h'>
           <p
             aria-hidden='true'

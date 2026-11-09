@@ -5,7 +5,6 @@
 'use client';
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { X } from 'lucide-react';
 import {
   useEffect,
   useLayoutEffect,
@@ -28,6 +27,7 @@ import { AcButton } from '@/skins/academic/ui/ac-button';
 import { lineInput } from '@/skins/academic/ui/ac-line-input';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
 import '@/skins/academic/css/overlays.css';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** What the notepad says for a message: who speaks, in ink (blue for the bot, red for the visitor). */
 function Line({
@@ -155,9 +155,9 @@ export function AcChatSheet({
     >
       <div
         ref={pad}
-        className='ac-paper ac-notepad ac-unfold relative max-h-[calc(100dvh-24px-var(--chat-inset,0px))] overflow-y-auto rounded-[2px] py-5 pr-[30px] pl-[74px] max-[720px]:pr-4 max-[720px]:pl-[58px]'
+        className='ac-paper ac-notepad ac-unfold relative flex h-[min(560px,calc(100dvh-24px-var(--chat-inset,0px)))] flex-col overflow-hidden rounded-[2px] py-5 pr-[30px] pl-[74px] max-[720px]:pr-4 max-[720px]:pl-[58px]'
       >
-        <header className='flex flex-wrap items-baseline gap-x-3 pr-10'>
+        <header className='flex shrink-0 flex-wrap items-baseline gap-x-3 pr-10'>
           <DialogTitle className='ac-line mb-2.5 inline-block font-ac-chalk text-[34px]/9 font-normal [--ul:var(--ac-accent)] [--ac-line-y:-3px] max-[720px]:text-[30px]'>
             <span aria-hidden='true'>{botName}</span>
             {/* the name of the window is the Standard one (`BB Bot, AI assistant`) */}
@@ -184,7 +184,7 @@ export function AcChatSheet({
           onClick={onClose}
           className='absolute top-3 right-3.5 grid size-9 cursor-pointer place-items-center rounded-full border-2 border-transparent text-ac-mute transition-colors hover:border-ac-mute pointer-coarse:size-11'
         >
-          <X aria-hidden='true' className='size-5' strokeWidth={2.2} />
+          <AcIcon name='close' className='size-5' />
         </DialogPrimitive.Close>
 
         <div
@@ -192,7 +192,7 @@ export function AcChatSheet({
           role='log'
           aria-live='polite'
           aria-label={extra.messages}
-          className='ac-ruled-log max-h-[min(46vh,330px)] min-h-36 overflow-y-auto overscroll-contain'
+          className='ac-ruled-log min-h-0 flex-1 overflow-y-auto overscroll-contain'
         >
           {available ? (
             <Line who={botName} tone='bot'>
@@ -258,7 +258,7 @@ export function AcChatSheet({
           <div
             role='group'
             aria-label={copy.suggestionsLabel}
-            className='flex flex-wrap gap-2 pt-2.5'
+            className='flex shrink-0 flex-wrap gap-2 pt-2.5'
           >
             {remaining.map((s) => (
               <button
@@ -276,12 +276,15 @@ export function AcChatSheet({
         {isLimitReached ? (
           <p
             role='status'
-            className='m-0 pt-3 font-ac-note text-[18px]/[1.4] text-ac-mute'
+            className='m-0 shrink-0 pt-3 font-ac-note text-[18px]/[1.4] text-ac-mute'
           >
             {copy.limitReached}
           </p>
         ) : (
-          <form onSubmit={submit} className='flex items-end gap-3 pt-2'>
+          <form
+            onSubmit={submit}
+            className='flex shrink-0 items-end gap-3 pt-2'
+          >
             <textarea
               ref={textarea}
               rows={1}
@@ -303,12 +306,13 @@ export function AcChatSheet({
               aria-label={copy.send}
               disabled={!available || isSending || !draft.trim()}
             >
-              {extra.send} ✎
+              {extra.send}
+              <AcIcon name='pencil' />
             </AcButton>
           </form>
         )}
 
-        <p className='m-0 flex flex-wrap justify-between gap-x-3 pt-2 text-[14px] text-ac-mute'>
+        <p className='m-0 flex shrink-0 flex-wrap justify-between gap-x-3 pt-2 text-[14px] text-ac-mute'>
           <span>
             {fill(copy.count, { used: userCount, max: maxUserMessages })}
           </span>

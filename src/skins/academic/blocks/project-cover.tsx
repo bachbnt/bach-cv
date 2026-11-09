@@ -44,7 +44,7 @@ export function ProjectCover({
   return (
     <figure
       className={cn(
-        'relative m-0 mt-2 max-w-[320px]',
+        'ac-wind relative m-0 mt-2 max-w-[320px]',
         number % 2 === 0 ? '-rotate-[1.6deg]' : 'rotate-[1.4deg]',
         taped && 'ac-tape',
       )}

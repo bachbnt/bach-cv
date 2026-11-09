@@ -14,6 +14,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { ServiceSkeleton } from '@/skins/academic/blocks/service-skeleton';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcButton } from '@/skins/academic/ui/ac-button';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /**
  * What I do, as the work packages of a proposal: a numbered line each (decoration), the name, the description and, when the contact form is on,
@@ -68,7 +69,8 @@ export function ServiceList({
                   aria-label={fill(own.discussLabel, { name: service.name })}
                   onClick={() => onDiscuss(service)}
                 >
-                  {own.discuss} ✎
+                  {own.discuss}
+                  <AcIcon name='pencil' />
                 </AcButton>
               )}
             </div>

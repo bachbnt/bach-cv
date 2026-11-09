@@ -16,6 +16,7 @@ import { ResumeTags } from '@/skins/academic/blocks/resume-tags';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
 import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** One degree: the school's logo, the degree, the school, the period, the major and the thesis with its technologies and links. */
 function Degree({
@@ -72,7 +73,8 @@ function Degree({
                     rel='noopener noreferrer'
                     className='inline-flex font-ac-note text-[17px] text-ac-link underline underline-offset-4 pointer-coarse:min-h-11 pointer-coarse:items-center'
                   >
-                    {label} ↗
+                    {label}
+                    <AcIcon name='external' className='ml-1 inline' />
                   </a>
                 ))}
               </p>

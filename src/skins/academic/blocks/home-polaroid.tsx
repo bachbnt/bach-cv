@@ -29,7 +29,7 @@ export function HomePolaroid({
     <figure
       style={{ rotate: `${tilt}deg` }}
       className={cn(
-        'ac-tape relative m-0 bg-ac-polaroid p-2 pb-8 shadow-[0_7px_16px_rgba(0,0,0,0.38)]',
+        'ac-tape ac-wind relative m-0 bg-ac-polaroid p-2 pb-8 shadow-[0_7px_16px_rgba(0,0,0,0.38)]',
         className,
       )}
     >

@@ -18,6 +18,7 @@ import { servicesCopy } from '@/content/copy/services';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { AcButton } from '@/skins/academic/ui/ac-button';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** The message form on a pinned sheet: name, email, message (ruled like a page of a notebook), the failure note and the Send pen. */
 export function ContactForm({
@@ -144,7 +145,10 @@ export function ContactForm({
           ) : status === 'failed' ? (
             copy.retry
           ) : (
-            <>{copy.send} ✎</>
+            <>
+              {copy.send}
+              <AcIcon name='pencil' />
+            </>
           )}
         </AcButton>
       </div>

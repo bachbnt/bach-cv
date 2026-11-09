@@ -39,7 +39,7 @@ export function PaymentFeature({
             type='button'
             onClick={onOpenQr}
             aria-label={copy.enlargeQr(method.name)}
-            className='group/qr relative block w-[176px] flex-none -rotate-[1.4deg] cursor-zoom-in border-0 bg-ac-polaroid px-2 pt-2 pb-9 text-ac-sheet-ink shadow-[0_6px_14px_rgba(0,0,0,0.38)] max-[640px]:self-center'
+            className='ac-wind group/qr relative block w-[176px] flex-none -rotate-[1.4deg] cursor-zoom-in border-0 bg-ac-polaroid px-2 pt-2 pb-9 text-ac-sheet-ink shadow-[0_6px_14px_rgba(0,0,0,0.38)] max-[640px]:self-center'
           >
             <Image
               src={method.qr}

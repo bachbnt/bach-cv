@@ -25,13 +25,18 @@ const paperVariants = cva('', {
 
 export function AcPaper({
   kind,
+  wind = kind === 'sticky',
   className,
   ...props
-}: ComponentProps<'div'> & VariantProps<typeof paperVariants>) {
+}: ComponentProps<'div'> &
+  VariantProps<typeof paperVariants> & {
+    /** a breath of wind lifts it from behind when the pointer is over it (not for a sheet that has controls in it: it would move under the pointer) */
+    wind?: boolean;
+  }) {
   return (
     <div
       data-slot='ac-paper'
-      className={cn(paperVariants({ kind }), className)}
+      className={cn(paperVariants({ kind }), wind && 'ac-wind', className)}
       {...props}
     />
   );

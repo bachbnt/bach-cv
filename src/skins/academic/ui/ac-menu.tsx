@@ -4,7 +4,6 @@
 
 'use client';
 
-import { ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 export interface AcMenuItem {
   value: string;
@@ -48,10 +48,10 @@ export function AcMenu({
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={`${label}: ${current}`}
-        className='inline-flex min-h-[34px] cursor-pointer items-center gap-1.5 rounded-[8px_4px_9px_5px/5px_9px_4px_8px] border-2 border-ac-rule bg-transparent px-3 pt-[5px] pb-1.5 font-ac-note text-[17px]/[1.1] whitespace-nowrap text-ac-ink transition-colors outline-none hover:border-ac-mute hover:bg-ac-faint data-popup-open:border-ac-mute data-popup-open:bg-ac-faint pointer-coarse:min-h-11'
+        className='inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-[8px_4px_9px_5px/5px_9px_4px_8px] border-2 border-ac-rule bg-transparent px-3 font-ac-note text-[17px]/none whitespace-nowrap text-ac-ink transition-colors outline-none hover:border-ac-mute hover:bg-ac-faint data-popup-open:border-ac-mute data-popup-open:bg-ac-faint pointer-coarse:min-h-11'
       >
         {current}
-        <ChevronDown aria-hidden='true' className='size-3.5' />
+        <AcIcon name='chevronDown' className='size-4' />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align='end'

@@ -5,7 +5,7 @@
 'use client';
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { Loader2, X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { CvSheets } from '@/components/cv/cv-sheets';
 import { CvSkeleton } from '@/components/cv/cv-skeleton';
@@ -26,6 +26,7 @@ import { useAcOverlays } from '@/skins/academic/shell/overlay-context';
 import { AcButton } from '@/skins/academic/ui/ac-button';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
 import { AcStateNotice } from '@/skins/academic/ui/ac-state-notice';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /**
  * Creates the PDF on click. The label never changes (so the bar does not shift): the pen turns into a spinner and a polite status
@@ -98,7 +99,7 @@ function AcCvContent() {
             onClick={closeCv}
             className='grid size-9 cursor-pointer place-items-center rounded-full border-2 border-transparent text-ac-mute transition-colors hover:border-ac-mute pointer-coarse:size-11'
           >
-            <X aria-hidden='true' className='size-5' strokeWidth={2.2} />
+            <AcIcon name='close' className='size-5' />
           </DialogPrimitive.Close>
         </div>
       </div>

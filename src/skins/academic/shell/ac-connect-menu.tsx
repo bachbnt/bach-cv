@@ -4,7 +4,7 @@
 
 'use client';
 
-import { ArrowUpRight, ChevronDown, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { BrandIcon, brandColor, brandName } from '@/components/brand-icon';
 import {
   Popover,
@@ -20,6 +20,7 @@ import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { AcButton } from '@/skins/academic/ui/ac-button';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /**
  * The Connect menu of the header: a tag that opens a slip of paper with the email (and a button that copies it), the social links by group
@@ -38,9 +39,9 @@ export function AcConnectMenu() {
 
   return (
     <Popover>
-      <PopoverTrigger className='inline-flex min-h-[34px] cursor-pointer items-center gap-1.5 rounded-[8px_4px_9px_5px/5px_9px_4px_8px] border-2 border-ac-link bg-transparent px-3 pt-[5px] pb-1.5 font-ac-note text-[17px]/[1.1] whitespace-nowrap text-ac-link transition-colors outline-none hover:bg-ac-link/15 data-popup-open:bg-ac-link/15 pointer-coarse:min-h-11'>
+      <PopoverTrigger className='inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-[8px_4px_9px_5px/5px_9px_4px_8px] border-2 border-ac-link bg-transparent px-3 font-ac-note text-[17px]/none whitespace-nowrap text-ac-link transition-colors outline-none hover:bg-ac-link/15 data-popup-open:bg-ac-link/15 pointer-coarse:min-h-11'>
         {text.connect.button}
-        <ChevronDown aria-hidden='true' className='size-3.5' />
+        <AcIcon name='chevronDown' className='size-4' />
       </PopoverTrigger>
       <PopoverContent
         align='end'
@@ -114,8 +115,8 @@ export function AcConnectMenu() {
                           {c.label}
                         </span>
                       </span>
-                      <ArrowUpRight
-                        aria-hidden='true'
+                      <AcIcon
+                        name='external'
                         className='size-4 text-ac-mute opacity-0 transition-opacity group-hover/item:opacity-100 group-focus-visible/item:opacity-100'
                       />
                     </a>

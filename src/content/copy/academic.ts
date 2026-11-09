@@ -33,7 +33,7 @@ export const academicCopy = defineCopy(
       next: 'Next page: {page}',
       /** `Bach Bui · board 3 of 7` */
       position: '{name} · page {n} of {total}',
-      keys: '← → change page',
+      keys: 'change page',
     },
   },
   {
@@ -54,7 +54,7 @@ export const academicCopy = defineCopy(
       previous: 'Trang trước: {page}',
       next: 'Trang sau: {page}',
       position: '{name} · trang {n} / {total}',
-      keys: '← → đổi trang',
+      keys: 'đổi trang',
     },
   },
 );

@@ -125,6 +125,38 @@ test.describe('chat', () => {
     await expect(pad.getByText(/daily question limit/)).toBeVisible();
   });
 
+  test('the notepad keeps its size while the conversation grows, and the log scrolls inside it', async ({
+    page,
+  }) => {
+    await mockWorker(page, () => ({
+      body: { text: 'A fairly long answer. '.repeat(6) },
+    }));
+    await gotoSkin(page);
+    const pad = await openChat(page);
+    const height = async () => (await pad.boundingBox())?.height ?? 0;
+    const first = await height();
+    const box = pad.getByRole('textbox', { name: 'Message' });
+    for (const question of ['one', 'two', 'three']) {
+      await box.fill(question);
+      await box.press('Enter');
+      // (the word `You` and the question are one line of the log)
+      await expect(
+        pad.getByRole('log').getByText(new RegExp(`You${question}$`)),
+      ).toBeAttached();
+      await expect(
+        pad
+          .getByRole('log')
+          .getByText(/long answer\.\s*$/)
+          .last(),
+      ).toBeVisible({ timeout: 15_000 });
+      expect(await height()).toBe(first);
+    }
+    const log = pad.getByRole('log');
+    expect(await log.evaluate((el) => el.scrollHeight > el.clientHeight)).toBe(
+      true,
+    );
+  });
+
   test('the message limit from settings ends the conversation', async ({
     page,
   }) => {

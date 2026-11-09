@@ -14,6 +14,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { AcButtonLink } from '@/skins/academic/ui/ac-button';
 import { AcPaper } from '@/skins/academic/ui/ac-paper';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /**
  * One certificate as a reviewer's index card taped to the board: name, who issued it and when, what it covers, the picture (it opens the
@@ -95,7 +96,8 @@ export function CertificateCard({
         {pdfUrl && (
           <p className='mt-3.5'>
             <AcButtonLink variant='quiet' size='sm' href={pdfUrl}>
-              {copy.openPdf} ↗
+              {copy.openPdf}
+              <AcIcon name='external' />
             </AcButtonLink>
           </p>
         )}
@@ -105,7 +107,7 @@ export function CertificateCard({
           type='button'
           onClick={onOpen}
           aria-label={copy.viewLabel(name)}
-          className='group/shot relative h-fit w-full max-w-[210px] cursor-zoom-in justify-self-start rotate-[1.6deg] bg-ac-polaroid p-2 pb-8 shadow-[0_6px_14px_rgba(0,0,0,.34)] transition-transform min-[700px]:justify-self-end hover:rotate-0'
+          className='ac-wind group/shot relative h-fit w-full max-w-[210px] cursor-zoom-in justify-self-start rotate-[1.6deg] bg-ac-polaroid p-2 pb-8 shadow-[0_6px_14px_rgba(0,0,0,.34)] min-[700px]:justify-self-end'
         >
           <Image
             src={image}

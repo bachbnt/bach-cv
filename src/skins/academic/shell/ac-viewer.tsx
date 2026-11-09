@@ -5,7 +5,6 @@
 'use client';
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, type KeyboardEvent } from 'react';
 import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
@@ -27,6 +26,7 @@ import {
 import { AcButton, AcButtonLink } from '@/skins/academic/ui/ac-button';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
 import '@/skins/academic/css/overlays.css';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** The round pen buttons that step to the next or the previous picture. */
 const STEP =
@@ -104,7 +104,7 @@ function AcViewerSheet({
             className='absolute top-3 right-3.5 grid size-9 cursor-pointer place-items-center rounded-full border-2 border-transparent text-ac-mute transition-colors hover:border-ac-mute pointer-coarse:size-11'
             onClick={closeViewer}
           >
-            <X aria-hidden='true' className='size-5' strokeWidth={2.2} />
+            <AcIcon name='close' className='size-5' />
           </DialogPrimitive.Close>
           <DialogTitle className='ac-line mx-auto mb-3.5 block w-fit max-w-full text-center font-ac-chalk text-[34px]/[1.05] font-normal [--ul:var(--ac-accent)] [--ac-line-y:-5px] max-[720px]:text-[28px]'>
             {item.title}
@@ -126,11 +126,7 @@ function AcViewerSheet({
                   '[grid-area:prev] max-[720px]:justify-self-end',
                 )}
               >
-                <ChevronLeft
-                  aria-hidden='true'
-                  className='size-5'
-                  strokeWidth={2.4}
-                />
+                <AcIcon name='chevronLeft' className='size-6' />
               </button>
             )}
             <figure
@@ -177,11 +173,7 @@ function AcViewerSheet({
                   '[grid-area:next] max-[720px]:justify-self-start',
                 )}
               >
-                <ChevronRight
-                  aria-hidden='true'
-                  className='size-5'
-                  strokeWidth={2.4}
-                />
+                <AcIcon name='chevronRight' className='size-6' />
               </button>
             )}
           </div>
@@ -253,7 +245,8 @@ function AcViewerSheet({
                   size='sm'
                   href={link.url}
                 >
-                  {link.label} ↗
+                  {link.label}
+                  <AcIcon name='external' />
                 </AcButtonLink>
               ))}
             </div>

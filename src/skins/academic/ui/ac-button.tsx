@@ -22,7 +22,7 @@ export const acButtonVariants = cva(
       },
       // a fixed height: the pen and the quiet button use different fonts (and a symbol such as the arrow of a CV falls back to a third),
       // whose line boxes differ, so the height must not come from the text
-      size: { md: 'h-10', sm: 'h-8 px-3 text-[18px]' },
+      size: { md: 'h-10', sm: 'h-9 px-3 text-[18px]' },
     },
     defaultVariants: { variant: 'pen', size: 'md' },
   },

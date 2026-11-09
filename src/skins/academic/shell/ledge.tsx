@@ -9,6 +9,7 @@ import { chatCopy } from '@/content/copy/chat';
 import { useChat } from '@/components/chat/chat-provider';
 import { useLive } from '@/hooks/use-live';
 import { useCopy } from '@/lib/i18n/copy';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** A stick of chalk lying on the ledge: a rounded bar with the light on its top, a chipped end and a shadow. `chipped` breaks the end. */
 function Chalk({
@@ -211,7 +212,8 @@ export function Ledge() {
             onClick={openChat}
             className='pointer-events-auto absolute right-6 bottom-7 inline-flex h-[38px] origin-bottom -rotate-[1.6deg] cursor-pointer items-center gap-2 rounded-[2px_3px_2px_4px] border-0 bg-[repeating-linear-gradient(180deg,transparent_0_18px,rgba(60,100,170,.22)_18px_19px),linear-gradient(180deg,#f7f3e6,#ebe5d2)] pr-4 pl-[18px] font-ac-note text-[20px]/none font-bold text-[#23272a] shadow-[0_1px_0_rgba(0,0,0,.3),0_4px_7px_rgba(0,0,0,.42)] transition-transform before:absolute before:top-0 before:bottom-0 before:left-[9px] before:w-[1.5px] before:bg-[rgba(190,50,40,.5)] before:content-[""] after:absolute after:-top-[7px] after:right-2 after:h-[13px] after:w-[34px] after:rotate-[5deg] after:bg-ac-tape after:shadow-[0_1px_1px_rgba(0,0,0,.25)] after:content-[""] hover:-translate-y-0.5 max-[760px]:right-3.5 max-[760px]:bottom-[22px] max-[760px]:h-9 max-[760px]:text-[19px] pointer-coarse:min-h-11'
           >
-            <span className='pl-1.5'>{chat.askButton}</span> ✎
+            <span className='pl-1.5'>{chat.askButton}</span>
+            <AcIcon name='pencil' />
           </button>
         )}
       </div>

@@ -4,9 +4,9 @@
 
 'use client';
 
-import { ChevronDown } from 'lucide-react';
 import { useId, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /**
  * The responsibilities of a role: a button and a list that slides open (the first role is open). Shut, the list is hidden from the keyboard
@@ -35,10 +35,10 @@ export function ResumeResponsibilities({
         className='inline-flex min-h-9 cursor-pointer items-center gap-2 font-ac-note text-[17px] text-ac-link underline underline-offset-4 pointer-coarse:min-h-11'
       >
         {open ? hide : show}
-        <ChevronDown
-          aria-hidden='true'
+        <AcIcon
+          name='chevronDown'
           className={cn(
-            'size-4 transition-transform duration-300',
+            'size-5 transition-transform duration-300',
             open && 'rotate-180',
           )}
         />

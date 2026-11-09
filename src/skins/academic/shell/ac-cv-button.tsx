@@ -9,6 +9,7 @@ import { useLive } from '@/hooks/use-live';
 import { useCopy } from '@/lib/i18n/copy';
 import { useAcOverlays } from '@/skins/academic/shell/overlay-context';
 import { AcButton } from '@/skins/academic/ui/ac-button';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** The CV button of the header: it opens the CV sheet, and is gone when the `cvDownload` switch is off. Same name as Standard's. */
 export function AcCvButton() {
@@ -18,7 +19,8 @@ export function AcCvButton() {
   if (!live.features.cvDownload) return null;
   return (
     <AcButton variant='quiet' size='sm' aria-haspopup='dialog' onClick={openCv}>
-      {copy.downloadCv} ⇩
+      {copy.downloadCv}
+      <AcIcon name='download' />
     </AcButton>
   );
 }

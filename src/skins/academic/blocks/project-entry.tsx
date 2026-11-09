@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { ProjectCover } from '@/skins/academic/blocks/project-cover';
 import { AcButton } from '@/skins/academic/ui/ac-button';
 import { AcNoteBig, AcNoteCap, AcRow } from '@/skins/academic/ui/ac-note';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** The colour of a technology is the chalk of its category, as the tags of Standard are tinted by it. */
 const TONE: Record<Doc<'skills'>['category'], string> = {
@@ -145,7 +146,9 @@ export function ProjectEntry({
                     className='text-ac-link underline decoration-[1.6px] underline-offset-[3px]'
                   >
                     {linkLabel(link, copy.links)}
-                    {external && <span aria-hidden='true'> ↗</span>}
+                    {external && (
+                      <AcIcon name='external' className='ml-1 inline' />
+                    )}
                   </a>
                 );
               })}

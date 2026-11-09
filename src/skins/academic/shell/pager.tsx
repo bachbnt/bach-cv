@@ -17,6 +17,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { PAGE_META, pageOfPath } from '@/lib/pages';
 import { neighbours, shownPages } from '@/skins/academic/config';
 import { useWipeCapture } from '@/skins/academic/shell/use-eraser-wipe';
+import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** Keys that are typed into something never turn a page. */
 const typing = (target: EventTarget | null) =>
@@ -71,33 +72,40 @@ export function Pager({ page }: { page: PageKey }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [page, router, live.pages, captureWipe]);
 
-  const link = (key: PageKey, arrow: string, side: 'previous' | 'next') => (
+  const link = (key: PageKey, side: 'previous' | 'next') => (
     <Link
       href={PAGE_META[key].href}
       aria-label={fill(copy.pager[side], { page: label(key) })}
       className='inline-flex items-baseline gap-2 font-ac-note text-[19px] text-ac-link no-underline hover:underline hover:underline-offset-[3px]'
     >
-      {side === 'previous'
-        ? `${arrow} ${label(key)}`
-        : `${label(key)} ${arrow}`}
+      {side === 'previous' && (
+        <AcIcon name='arrowLeft' className='self-center' />
+      )}
+      {label(key)}
+      {side === 'next' && <AcIcon name='arrowRight' className='self-center' />}
     </Link>
   );
 
   return (
     <footer className='mt-14 flex flex-wrap items-center justify-between gap-3 border-t-2 border-dashed border-ac-rule pt-3.5 text-[0.9em] text-ac-mute'>
-      <span>{previous && link(previous, '←', 'previous')}</span>
+      <span>{previous && link(previous, 'previous')}</span>
       <span className='font-ac-note text-[16.5px]'>
         {fill(copy.pager.position, {
           name: shell.name,
           n: index + 1,
           total: shown.length,
         })}
-        <span aria-hidden='true' className='text-[15px] max-[900px]:hidden'>
+        <span
+          aria-hidden='true'
+          className='inline-flex items-center gap-1.5 text-[15px] max-[900px]:hidden'
+        >
           {' · '}
+          <AcIcon name='arrowLeft' className='size-[0.95em]' />
+          <AcIcon name='arrowRight' className='size-[0.95em]' />
           {copy.pager.keys}
         </span>
       </span>
-      <span>{next && link(next, '→', 'next')}</span>
+      <span>{next && link(next, 'next')}</span>
     </footer>
   );
 }
