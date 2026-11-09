@@ -14,7 +14,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { settingsQueryOptions } from '@/lib/query/options';
 import { BookingSection } from '@/skins/travel/blocks/booking-section';
 import { TourList } from '@/skins/travel/blocks/tour-list';
-import { TlKicker } from '@/skins/travel/ui/tl-card';
+import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 
 /** The id of the page's heading: the panel is named by it. */
 export const SERVICES_TITLE_ID = 'tl-services-title';

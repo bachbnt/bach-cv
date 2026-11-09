@@ -8,7 +8,7 @@ import { paymentCopy } from '@/content/copy/payment';
 import { travelDeskCopy } from '@/content/copy/travel-desk';
 import { useCopy } from '@/lib/i18n/copy';
 import { PaymentDesk } from '@/skins/travel/blocks/payment-desk';
-import { TlKicker } from '@/skins/travel/ui/tl-card';
+import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 import { TlPage } from '@/skins/travel/ui/tl-page';
 import { TlPanel } from '@/skins/travel/ui/tl-panel';
 

@@ -23,7 +23,7 @@ import { STOP_COLORS } from '@/skins/travel/config';
 import { placeStops } from '@/skins/travel/map/route';
 import type { MapStop } from '@/skins/travel/map/types';
 
-export type CareerStop = RouteStop<Doc<'experience'>, Doc<'education'>>;
+type CareerStop = RouteStop<Doc<'experience'>, Doc<'education'>>;
 
 /** A stop of the trip: the career place (from `lib/derive`), where it is on the map and how its pin reads. */
 export interface TripStop {

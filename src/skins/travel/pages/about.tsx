@@ -16,7 +16,7 @@ import { useProfileQuery } from '@/lib/query/use-content';
 import { TripLuggage } from '@/skins/travel/blocks/trip-luggage';
 import { TlButtonLink } from '@/skins/travel/ui/tl-button';
 import { TlChip } from '@/skins/travel/ui/tl-chip';
-import { TlKicker } from '@/skins/travel/ui/tl-card';
+import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 import { TlPage } from '@/skins/travel/ui/tl-page';
 import { TlPanel } from '@/skins/travel/ui/tl-panel';
 

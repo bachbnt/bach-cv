@@ -20,7 +20,7 @@ export const WIPE = {
   sectorSoft: 7,
 } as const;
 
-export interface WipeGeometry {
+interface WipeGeometry {
   /** the pivot, in viewport px */
   cx: number;
   cy: number;
@@ -79,7 +79,7 @@ export function wipeGeometry(width: number, height: number): WipeGeometry {
   };
 }
 
-export interface WipeFrame {
+interface WipeFrame {
   /** the half width of the swath where the old page is gone, and where the new one shows */
   radius: number;
   newRadius: number;
@@ -120,7 +120,7 @@ export function wipeFrame(geometry: WipeGeometry, progress: number): WipeFrame {
 }
 
 /** What a mask of a box is drawn from: where the pivot is inside the box. */
-export interface MaskOrigin {
+interface MaskOrigin {
   x: number;
   y: number;
 }
@@ -133,7 +133,7 @@ export const maskOrigin = (
 ): MaskOrigin => ({ x: geometry.cx - left, y: geometry.cy - top });
 
 /** How the layers of a mask combine: the old page is seen outside the swath or outside the sector (`add`), the new one only inside both. */
-export type MaskComposite = 'add' | 'intersect';
+type MaskComposite = 'add' | 'intersect';
 
 export interface BoardMask {
   /** the gradient layers (always two, or one that hides everything) */

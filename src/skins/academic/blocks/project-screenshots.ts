@@ -7,7 +7,7 @@ import type { Doc } from '@/lib/content/schema';
 import type { ViewerItem } from '@/skins/academic/shell/overlay-context';
 
 /** The words the pictures of a project need (the Standard copy of the page plus the one line of the skin). */
-export interface ScreenshotWords {
+interface ScreenshotWords {
   kinds: Record<Doc<'projects'>['kind'], string>;
   links: Parameters<typeof linkLabel>[1];
   dialog: {

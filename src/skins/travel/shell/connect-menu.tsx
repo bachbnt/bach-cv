@@ -4,7 +4,11 @@
 
 'use client';
 
-import { emailContact, socialContacts } from '@/lib/derive/contacts';
+import {
+  emailContact,
+  socialByGroup,
+  socialContacts,
+} from '@/lib/derive/contacts';
 import { ArrowUpRight, Check, Copy, MapPin, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import { BrandIcon, brandColor, brandName } from '@/components/brand-icon';
@@ -16,7 +20,7 @@ import {
 import { commonCopy } from '@/content/copy/common';
 import { travelOverlaysCopy } from '@/content/copy/travel-overlays';
 import { useClipboard } from '@/hooks/use-clipboard';
-import { CONTACT_GROUPS, localize } from '@/lib/content/schema';
+import { localize } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -128,9 +132,7 @@ export function ConnectMenu() {
             </div>
           )}
 
-          {CONTACT_GROUPS.map((group) => {
-            const items = social.filter((c) => c.menuGroup === group);
-            if (!items.length) return null;
+          {socialByGroup(social).map(({ group, items }) => {
             return (
               <div key={group} className='mt-4'>
                 <p className='m-0 mb-1 flex items-center gap-2 px-1 text-xs font-extrabold tracking-[0.5px] text-tl-muted uppercase'>

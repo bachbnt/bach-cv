@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
-export interface TlMenuItem {
+interface TlMenuItem {
   value: string;
   label: string;
   /** a short note after the label (`Trip map of Nha Trang`) */

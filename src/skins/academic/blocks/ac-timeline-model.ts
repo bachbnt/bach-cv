@@ -6,7 +6,7 @@ import { monthSpan } from '@/lib/derive/career-months';
 import type { TimelineKind, TimelineRow } from '@/lib/derive/career-timeline';
 
 /** How a row is drawn: a full-time role, any other role, or a degree. */
-export type BarKind = 'full' | 'part' | 'edu';
+type BarKind = 'full' | 'part' | 'edu';
 
 export const barKind = (kind: TimelineKind): BarKind =>
   kind === 'degree' ? 'edu' : kind === 'full-time' ? 'full' : 'part';

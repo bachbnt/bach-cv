@@ -11,7 +11,7 @@ import type { ChartFlag } from '@/skins/trade/chart/use-chart-flags';
 import { flagsPassed, type ReplayState } from '@/skins/trade/chart/replay';
 
 /** The words said when the playhead passes a flag (`copy.replay.reached` and `.graduated`, with {company} {role} or {degree} {school}). */
-export interface ReplayWords {
+interface ReplayWords {
   reached: string;
   graduated: string;
 }

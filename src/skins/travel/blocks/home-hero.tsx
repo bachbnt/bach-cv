@@ -16,7 +16,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useTravel } from '@/skins/travel/shell/travel-context';
 import { TlButton } from '@/skins/travel/ui/tl-button';
-import { TlKicker } from '@/skins/travel/ui/tl-card';
+import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 
 export const HOME_TITLE_ID = 'tl-home-title';
 

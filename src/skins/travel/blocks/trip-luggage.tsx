@@ -97,7 +97,7 @@ export function TripLuggage({ coreOnly = false }: { coreOnly?: boolean }) {
                 </span>
               </h4>
               <ul className='m-0 flex list-none flex-wrap gap-1.5 p-0'>
-                {items.map((s) => chip(s, Boolean(s.highlight)))}
+                {items.map((s) => chip(s, s.highlight !== null))}
               </ul>
             </section>
           ))}

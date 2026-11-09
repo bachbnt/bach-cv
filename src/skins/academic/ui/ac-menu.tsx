@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
 import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
-export interface AcMenuItem {
+interface AcMenuItem {
   value: string;
   label: string;
   /** a few words under the name */

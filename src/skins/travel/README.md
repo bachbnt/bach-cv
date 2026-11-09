@@ -68,7 +68,7 @@ travel.css          palette on html[data-skin='travel'] (night base, day `:not(.
 css/                map.css (the map), then one file for each area
 map/                geo (generated), projection, iso, route, sights, camera, the map component and its layers, sprites/
 shell/              the frame: header, rail, menus, context (trip stops, CV window), overlays
-ui/                 tl-root, tl-button, tl-card, tl-chip, tl-panel (card or sheet), tl-page, data states, status screens
+ui/                 tl-root, tl-button, tl-kicker, tl-chip, tl-panel (card or sheet), tl-page, data states, status screens
 pages/ blocks/      the seven pages and what they are made of
 ```
 

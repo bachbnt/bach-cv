@@ -32,7 +32,7 @@ export type ChartFlag =
 const FLAG_STEP = 24;
 
 /** The words of a flag (`copy.chart.openJob` and `.openDegree`). */
-export interface FlagWords {
+interface FlagWords {
   openJob: string;
   openDegree: string;
 }

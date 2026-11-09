@@ -55,7 +55,7 @@ const STOP_CLASSES = [
 export const stopClass = (stop: number): string =>
   STOP_CLASSES[(((stop - 1) % 6) + 6) % 6];
 
-export interface StampParts {
+interface StampParts {
   /** the first name of the issuer: "Google / Coursera" is "Google" */
   issuer: string;
   /** the month as the site writes it ("May", "Thg 5") */

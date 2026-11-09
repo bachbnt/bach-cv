@@ -11,7 +11,7 @@ export interface Plane {
 }
 
 /** Shrinks a degree of longitude to its real length at the latitude of the map (equirectangular projection). */
-export const COS_LAT = Math.cos(
+const COS_LAT = Math.cos(
   (((GEO_BOX.north + GEO_BOX.south) / 2) * Math.PI) / 180,
 );
 

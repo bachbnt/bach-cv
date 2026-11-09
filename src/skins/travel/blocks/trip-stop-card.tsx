@@ -28,7 +28,7 @@ import { TripCurrentFlag } from '@/skins/travel/blocks/trip-current-flag';
 import type { TripStop } from '@/skins/travel/shell/travel-context';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlChip } from '@/skins/travel/ui/tl-chip';
-import { TlKicker } from '@/skins/travel/ui/tl-card';
+import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 
 /**
  * The card of one stop: what Standard tells about a role (company, role and team, period, Current, summary, key projects,
