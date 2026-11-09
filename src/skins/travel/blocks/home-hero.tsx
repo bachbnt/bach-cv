@@ -72,11 +72,12 @@ export function HomeHero() {
         )}
       </ul>
       {stops.length > 0 && (
-        <div className='flex flex-wrap items-center gap-2'>
+        <div className='flex items-center gap-3'>
           <TlButton
             variant='solid'
             aria-pressed={touring}
             onClick={touring ? stopTour : startTour}
+            className='flex-none'
           >
             {touring ? (
               <Square aria-hidden='true' />
@@ -85,11 +86,29 @@ export function HomeHero() {
             )}
             {touring ? words.stopTrip : words.startTrip}
           </TlButton>
-          <p
-            role='status'
-            className='m-0 text-[12.5px] font-semibold text-tl-muted'
-          >
-            {riding ? fill(words.tripRunning, { name: riding }) : ''}
+          {/* the sentence is for the screen reader; what is seen is a badge on the same row as the button, so the row never changes height */}
+          <p role='status' className='m-0 min-w-0'>
+            {riding && (
+              <>
+                <span className='sr-only'>
+                  {fill(words.tripRunning, { name: riding })}
+                </span>
+                <span
+                  aria-hidden='true'
+                  className='tl-rise flex max-w-full min-w-0 items-center gap-2 rounded-full bg-tl-chip py-1.5 pr-3.5 pl-3 text-tl-chip-ink'
+                >
+                  <span className='tl-live relative size-2 flex-none rounded-full bg-tl-teal' />
+                  <span className='flex min-w-0 flex-col leading-tight'>
+                    <small className='text-[10.5px] font-extrabold tracking-[0.8px] text-tl-coral uppercase'>
+                      {words.ridingTo}
+                    </small>
+                    <b className='truncate text-[13.5px] font-extrabold'>
+                      {riding}
+                    </b>
+                  </span>
+                </span>
+              </>
+            )}
           </p>
         </div>
       )}

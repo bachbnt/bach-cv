@@ -10,7 +10,6 @@ import { formatIssued } from '@/components/certificates/format-issued';
 import { certificatesCopy } from '@/content/copy/certificates';
 import { travelPostcardsCopy } from '@/content/copy/travel-postcards';
 import { useCopy } from '@/lib/i18n/copy';
-import { cn } from '@/lib/utils';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
 import { LazyLightbox } from '@/skins/travel/blocks/lazy-dialogs';
@@ -18,7 +17,6 @@ import {
   PassportStamp,
   type StampSkill,
 } from '@/skins/travel/blocks/passport-stamp';
-import { READABLE_SOLID } from '@/skins/travel/blocks/solid-button';
 import { tlButton } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
 import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
@@ -110,7 +108,7 @@ export function PassportList() {
                 href={current.pdfUrl}
                 target='_blank'
                 rel='noopener noreferrer'
-                className={cn(tlButton({ variant: 'solid' }), READABLE_SOLID)}
+                className={tlButton({ variant: 'solid', size: 'sm' })}
               >
                 <ExternalLink aria-hidden='true' />
                 {copy.openPdfDialog}

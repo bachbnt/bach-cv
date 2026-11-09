@@ -23,7 +23,6 @@ import { formatPeriod } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { fill } from '@/lib/chat/fill';
-import { cn } from '@/lib/utils';
 import { TripCurrentFlag } from '@/skins/travel/blocks/trip-current-flag';
 import type { TripStop } from '@/skins/travel/shell/travel-context';
 import { TlButton } from '@/skins/travel/ui/tl-button';
@@ -241,18 +240,19 @@ export function TripStopCard({
           disabled={index <= 0}
           onClick={() => onStep(-1)}
         >
-          <ChevronLeft aria-hidden='true' />
+          {/* the chevron is 4 units wide in a box of 16: the margins take the empty sides away, so icon and words are centred together */}
+          <ChevronLeft aria-hidden='true' className='-mr-1 -ml-1.5' />
           {words.previous}
         </TlButton>
         <TlButton
           size='sm'
           variant='solid'
-          className={cn('flex-1')}
+          className='flex-1'
           disabled={index >= total - 1}
           onClick={() => onStep(1)}
         >
           {words.next}
-          <ChevronRight aria-hidden='true' />
+          <ChevronRight aria-hidden='true' className='-mr-1.5 -ml-1' />
         </TlButton>
       </div>
     </article>
