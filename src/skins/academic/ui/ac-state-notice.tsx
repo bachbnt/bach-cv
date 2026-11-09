@@ -27,7 +27,7 @@ export function AcStateNotice({
       role={kind === 'error' ? 'alert' : 'status'}
       data-state={kind}
       className={cn(
-        'ac-paper max-w-[640px] rounded-[2px] border-l-[5px] px-[22px] py-5',
+        'ac-paper ac-wind max-w-[640px] rounded-[2px] border-l-[5px] px-[22px] py-5',
         kind === 'error' ? 'border-ac-accent' : 'border-ac-rule',
         className,
       )}

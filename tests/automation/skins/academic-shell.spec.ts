@@ -39,6 +39,21 @@ test.describe('the board', () => {
     );
   });
 
+  test('the name of Vietnamese in the language menu of an English page is written whole in the font that has its letters', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await page.getByRole('button', { name: /^Language/ }).click();
+    const family = (name: string) =>
+      page
+        .getByRole('menuitemradio', { name })
+        .locator('[lang]')
+        .evaluate((el) => getComputedStyle(el).fontFamily);
+    // Kalam has no Vietnamese letters: a name in it would be drawn with a mix of two hands
+    expect(await family('Tiếng Việt')).toMatch(/^"?Patrick Hand/);
+    expect(await family('English')).toMatch(/^"?Kalam/);
+  });
+
   test('turns the page with the arrow keys and the foot of the page', async ({
     page,
   }) => {

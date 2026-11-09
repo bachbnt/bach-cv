@@ -72,7 +72,7 @@ export function AboutCoreStack() {
                         rotate: `${index % 2 ? 0.7 : -0.6}deg`,
                       } as CSSProperties
                     }
-                    className='ac-paper ac-tape flex h-full flex-col gap-3 rounded-[2px] px-4 pt-5 pb-4'
+                    className='ac-paper ac-tape ac-wind flex h-full flex-col gap-3 rounded-[2px] px-4 pt-5 pb-4'
                   >
                     <span className='grid size-10 flex-none place-items-center rounded-[10px_5px_11px_6px/6px_11px_5px_10px] border-2 border-(--c) text-(--c)'>
                       <SkillIcon

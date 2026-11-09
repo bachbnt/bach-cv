@@ -76,6 +76,7 @@ export function Header() {
               value: code,
               label: names[code],
               hint: code.toUpperCase(),
+              lang: code,
             }))}
             onSelect={(value) => {
               const next = languages.find((code) => code === value);

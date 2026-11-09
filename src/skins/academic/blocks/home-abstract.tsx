@@ -40,7 +40,7 @@ export function HomeAbstract() {
         )
       }
     >
-      <AcPaper kind='pinned' wind className='max-w-[640px]'>
+      <AcPaper kind='pinned' className='max-w-[640px]'>
         <AcHeading
           level={2}
           className='mb-3.5 text-[32px] [--ul:var(--ac-accent)]'

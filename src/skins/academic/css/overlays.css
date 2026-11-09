@@ -52,23 +52,122 @@
     0 0 / 100% 36px local;
 }
 
-/* the notepad opens from the slip that was pressed: it starts small, flat and tilted at the slip (the offset is set on it, --dx and --dy), then unfolds */
+/* the notepad opens from the slip that was pressed: it starts small, flat and tilted at the slip (the offset is set on it, --dx and --dy), then
+   unfolds. The easing of an animation is applied between each pair of keyframes, so a curve over three keyframes comes to rest at the middle one
+   and starts again (the hitch at a small size): the curve is sampled into linear keyframes (cubic-bezier(0.2, 0.8, 0.25, 1) over 0.52 s, the width
+   ahead of the height) so the sheet never stops on its way. */
 .ac-unfold {
   transform-origin: 50% 0;
-  animation: ac-unfold 0.52s cubic-bezier(0.2, 0.8, 0.25, 1);
+  animation: ac-unfold 0.52s linear;
 }
 @keyframes ac-unfold {
   0% {
-    transform: translate(var(--dx, 30vw), var(--dy, 40vh)) scale(0.14, 0.09)
-      rotate(-3deg);
+    transform: translate(calc(var(--dx, 30vw) * 1), calc(var(--dy, 40vh) * 1))
+      scale(0.14, 0.09) rotate(-3deg);
     opacity: 0.15;
   }
-  45% {
+  4% {
     transform: translate(
-        calc(var(--dx, 30vw) * 0.25),
-        calc(var(--dy, 40vh) * 0.2)
+        calc(var(--dx, 30vw) * 0.841),
+        calc(var(--dy, 40vh) * 0.841)
       )
-      scale(0.8, 0.4) rotate(-1deg);
+      scale(0.483, 0.235) rotate(-2.52deg);
+    opacity: 0.56;
+  }
+  8% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.689),
+        calc(var(--dy, 40vh) * 0.689)
+      )
+      scale(0.62, 0.373) rotate(-2.07deg);
+    opacity: 0.94;
+  }
+  12% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.553),
+        calc(var(--dy, 40vh) * 0.553)
+      )
+      scale(0.715, 0.497) rotate(-1.66deg);
+    opacity: 1;
+  }
+  16% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.437),
+        calc(var(--dy, 40vh) * 0.437)
+      )
+      scale(0.785, 0.602) rotate(-1.31deg);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.345),
+        calc(var(--dy, 40vh) * 0.345)
+      )
+      scale(0.836, 0.686) rotate(-1.04deg);
+    opacity: 1;
+  }
+  26% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.243),
+        calc(var(--dy, 40vh) * 0.243)
+      )
+      scale(0.888, 0.779) rotate(-0.73deg);
+    opacity: 1;
+  }
+  32% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.172),
+        calc(var(--dy, 40vh) * 0.172)
+      )
+      scale(0.922, 0.843) rotate(-0.52deg);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.11),
+        calc(var(--dy, 40vh) * 0.11)
+      )
+      scale(0.952, 0.9) rotate(-0.33deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.061),
+        calc(var(--dy, 40vh) * 0.061)
+      )
+      scale(0.973, 0.944) rotate(-0.18deg);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.033),
+        calc(var(--dy, 40vh) * 0.033)
+      )
+      scale(0.986, 0.97) rotate(-0.1deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.016),
+        calc(var(--dy, 40vh) * 0.016)
+      )
+      scale(0.993, 0.986) rotate(-0.05deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.006),
+        calc(var(--dy, 40vh) * 0.006)
+      )
+      scale(0.997, 0.994) rotate(-0.02deg);
+    opacity: 1;
+  }
+  90% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.001),
+        calc(var(--dy, 40vh) * 0.001)
+      )
+      scale(0.999, 0.999) rotate(-0deg);
     opacity: 1;
   }
   100% {

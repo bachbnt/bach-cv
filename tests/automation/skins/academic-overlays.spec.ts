@@ -243,6 +243,36 @@ test.describe('chat', () => {
     ).toBe('none');
   });
 
+  test('the notepad slows down on its way open and never stops half-way and starts again', async ({
+    page,
+  }) => {
+    await gotoSkin(page);
+    await page.locator('[data-ac-slip]').click();
+    const sheet = page
+      .getByRole('dialog', { name: 'BB Bot, AI assistant' })
+      .locator('.ac-unfold');
+    await expect(sheet).toBeVisible();
+    // the animation is stepped by hand, so the measure does not depend on how busy the machine is
+    const heights = await sheet.evaluate(async (el) => {
+      const animation = el.getAnimations()[0];
+      animation.pause();
+      const out: number[] = [];
+      for (let t = 0; t <= 520; t += 20) {
+        animation.currentTime = t;
+        await new Promise((done) => requestAnimationFrame(done));
+        out.push(new DOMMatrixReadOnly(getComputedStyle(el).transform).d);
+      }
+      return out;
+    });
+    const speeds = heights.slice(1).map((h, i) => h - heights[i]);
+    // an easing curve applied between the keyframes of a three-keyframe animation brings it to rest at the middle one and sets it off again
+    const speedsUp = speeds.filter(
+      (v, i) => i > 0 && v > speeds[i - 1] + 0.002,
+    );
+    expect(speedsUp).toEqual([]);
+    expect(heights.at(-1)).toBeCloseTo(1, 2);
+  });
+
   test('on a phone the notepad fits and the page does not scroll sideways', async ({
     page,
   }) => {

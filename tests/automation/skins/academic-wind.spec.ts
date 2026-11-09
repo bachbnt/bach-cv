@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -49,5 +49,75 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
       'transform',
       'none',
     );
+  });
+
+  for (const path of [
+    '/',
+    '/about',
+    '/resume',
+    '/projects',
+    '/certificates',
+    '/services',
+    '/payment',
+  ]) {
+    test(`${path}: every sheet, note and photo of the board is lifted the same way`, async ({
+      page,
+    }) => {
+      await gotoSkin(page, path);
+      await page.waitForTimeout(1500);
+      const still = await page.evaluate(() => {
+        const paper =
+          '.ac-tape, .ac-sticky, [data-slot="ac-paper"], [class*="bg-ac-polaroid"]';
+        return [...document.querySelectorAll(paper)]
+          .filter((el) => {
+            const box = el.getBoundingClientRect();
+            return (
+              box.width > 0 &&
+              // a window, a menu and the toast are not pinned to the board; a photo inside one that is lifted moves with it
+              !el.closest(
+                '[role="dialog"], [role="menu"], .pointer-events-none',
+              ) &&
+              !el.closest('.ac-wind') &&
+              // a sheet with a field to type in would shift under the hand; one with a button or a link is lifted like the others
+              !el.querySelector('input, textarea, select') &&
+              !el.classList.contains('ac-wind')
+            );
+          })
+          .map((el) => (el.getAttribute('class') ?? '').slice(0, 60));
+      });
+      expect(still).toEqual([]);
+    });
+  }
+
+  test.describe('the screens that are not a page', () => {
+    const lifted = (page: Page) =>
+      page.locator('[data-slot="ac-paper"]').first();
+
+    test('the 404, Coming soon and the maintenance note are lifted like the other sheets', async ({
+      page,
+    }) => {
+      await gotoSkin(page, '/no-such-page');
+      await expect(lifted(page)).toHaveClass(/ac-wind/);
+      await expect(
+        page.getByRole('heading', { level: 1, name: /doesn't exist/i }),
+      ).toBeVisible();
+
+      await mockFirestore(page, { 'site/live': { pages: { resume: 'soon' } } });
+      await gotoSkin(page, '/resume');
+      await expect(
+        page.getByRole('heading', { level: 1, name: /coming soon/i }),
+      ).toBeVisible();
+      await expect(lifted(page)).toHaveClass(/ac-wind/);
+
+      await page.unroute('**/firestore.googleapis.com/**');
+      await mockFirestore(page, {
+        'site/live': {
+          maintenance: { enabled: true, message: 'Back soon', l10n: {} },
+        },
+      });
+      await gotoSkin(page, '/');
+      await expect(page.getByText('Back soon', { exact: true })).toBeVisible();
+      await expect(lifted(page)).toHaveClass(/ac-wind/);
+    });
   });
 });

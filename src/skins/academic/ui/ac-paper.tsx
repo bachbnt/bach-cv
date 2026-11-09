@@ -25,12 +25,12 @@ const paperVariants = cva('', {
 
 export function AcPaper({
   kind,
-  wind = kind === 'sticky',
+  wind = true,
   className,
   ...props
 }: ComponentProps<'div'> &
   VariantProps<typeof paperVariants> & {
-    /** a breath of wind lifts it from behind when the pointer is over it (not for a sheet that has controls in it: it would move under the pointer) */
+    /** a breath of wind lifts it from behind when the pointer is over it: every sheet of the board has it, except one with a field to type in (`wind={false}`), which would shift under the hand */
     wind?: boolean;
   }) {
   return (
