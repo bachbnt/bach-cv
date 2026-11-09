@@ -11,7 +11,7 @@ import {
 } from '@/skins/trade/chart/view';
 
 /** Where a press landed: the plot, the price scale (the right strip), the time axis (the bottom strip) or nothing that takes a gesture. */
-export type Zone = 'plot' | 'scale' | 'time' | 'none';
+type Zone = 'plot' | 'scale' | 'time' | 'none';
 
 export function zoneAt(layout: Layout, x: number, y: number): Zone {
   if (y < layout.toolbar) return 'none';

@@ -67,7 +67,7 @@ export interface ProblemInfo {
   subject: string;
 }
 
-export interface BuiltEntry {
+interface BuiltEntry {
   level: Level;
   tag: string;
   text: string;

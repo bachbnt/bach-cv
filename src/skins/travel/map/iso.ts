@@ -10,7 +10,7 @@ import { project, type Plane } from '@/skins/travel/map/projection';
  * squashed vertically. Sprites stand upright on the squashed ground. One matrix serves the SVG ground and the HTML sprites.
  */
 export const ROTATION = (40 * Math.PI) / 180;
-export const TILT = 0.55;
+const TILT = 0.55;
 const COS = Math.cos(ROTATION);
 const SIN = Math.sin(ROTATION);
 
@@ -18,7 +18,7 @@ const SIN = Math.sin(ROTATION);
 export const GROUND_MATRIX = [COS, SIN * TILT, -SIN, COS * TILT] as const;
 
 /** A point of the flat map as it appears on screen at zoom 1, before the offset that puts the map's corner at 0,0. */
-export const rawIso = (p: Plane): Plane => ({
+const rawIso = (p: Plane): Plane => ({
   x: p.x * COS - p.y * SIN,
   y: (p.x * SIN + p.y * COS) * TILT,
 });

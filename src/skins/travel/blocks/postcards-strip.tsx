@@ -18,7 +18,7 @@ import { useScreenshotsDialog } from '@/skins/travel/blocks/use-screenshots-dial
 import { useReducedMotion } from '@/skins/travel/shell/use-reduced-motion';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
-import { TlKicker } from '@/skins/travel/ui/tl-card';
+import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
 
 /** The page's heading id: the panel is named by it. */

@@ -18,7 +18,7 @@ import type { TagTone } from '@/components/tag';
 import { emit } from '@/skins/dev/shell/devlog/store';
 
 /** A chip under a picture. */
-export interface ViewerTag {
+interface ViewerTag {
   label: string;
   tone?: TagTone;
   /** a kind of the thing (`Bank`), shown as the pill of the kinds in the page, not as a technology chip */

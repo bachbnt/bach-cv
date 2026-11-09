@@ -12,7 +12,7 @@ import { useTipEvents } from '@/skins/trade/blocks/data-use-tip-taps';
 import { cssVars } from '@/skins/trade/ui/css-vars';
 
 /** Each area in a colour of the terminal mixed into the background, so the ink keeps its contrast in both themes. */
-export const AREA: Record<Category, string> = {
+const AREA: Record<Category, string> = {
   ai: 'border-tv-violet bg-[color-mix(in_srgb,var(--tv-violet)_30%,var(--tv-bg))]',
   mobile: 'border-tv-up bg-[color-mix(in_srgb,var(--tv-up)_30%,var(--tv-bg))]',
   web: 'border-tv-sky bg-[color-mix(in_srgb,var(--tv-sky)_30%,var(--tv-bg))]',

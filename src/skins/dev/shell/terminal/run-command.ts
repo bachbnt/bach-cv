@@ -22,7 +22,7 @@ export const COMMANDS = [
 type PageState = Live['pages'][PageKey];
 
 /** A page as the terminal sees it: its key, its file name in the editor and its state in `site/live`. */
-export interface TerminalPage {
+interface TerminalPage {
   key: PageKey;
   /** the file name of its tab (`About.js`) */
   file: string;
@@ -40,7 +40,7 @@ export interface TerminalEnv {
 
 export type OutputTone = 'plain' | 'dim' | 'error';
 
-export interface OutputLine {
+interface OutputLine {
   tone: OutputTone;
   text: string;
 }
@@ -54,7 +54,7 @@ export type TerminalAction =
   | { type: 'clear' }
   | { type: 'exit' };
 
-export interface CommandResult {
+interface CommandResult {
   lines: OutputLine[];
   action: TerminalAction | null;
 }
@@ -162,7 +162,7 @@ export function runCommand(input: string, env: TerminalEnv): CommandResult {
   }
 }
 
-export interface Completion {
+interface Completion {
   /** the new text of the line (the same when nothing could be added) */
   line: string;
   /** the names to list under the line, when several match and nothing more could be added (like zsh) */

@@ -15,7 +15,7 @@ import {
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import type { CodiconName } from '@/skins/dev/icons/codicons';
 
-export interface DevMenuItem {
+interface DevMenuItem {
   value: string;
   label: string;
   /** a short note after the label (`default look`) */

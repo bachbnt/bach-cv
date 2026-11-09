@@ -14,7 +14,7 @@ import { travelPostcardsCopy } from '@/content/copy/travel-postcards';
 import { useLive } from '@/hooks/use-live';
 import { useCopy } from '@/lib/i18n/copy';
 import { BookingForm } from '@/skins/travel/blocks/booking-form';
-import { TlKicker } from '@/skins/travel/ui/tl-card';
+import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 
 /** Shown in place of the form once the message is sent: a "booked" stamp, the thanks, and a way to write another. The heading takes focus so screen readers land on it. */
 function BookedNote({
