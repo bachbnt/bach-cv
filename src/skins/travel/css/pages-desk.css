@@ -17,9 +17,11 @@
   mask-composite: intersect;
 }
 
-/* the counter: a bar of warm wood under the heading of the page (lighter at night, so it still shows) */
+/* the counter of the ticket window: a bar of warm wood under the heading of the page (lighter at night, so it still shows), with the slot
+   the tickets come out of and a ticket that is printed once when the page opens */
 .tl-counter {
-  height: 10px;
+  position: relative;
+  height: 12px;
   border-radius: 999px;
   background: linear-gradient(
     to bottom,
@@ -27,6 +29,44 @@
     var(--tl-brick)
   );
   box-shadow: 0 3px 0 color-mix(in srgb, var(--tl-brick) 45%, transparent);
+}
+.tl-counter::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 3px;
+  left: 50%;
+  width: 96px;
+  height: 5px;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tl-ink) 70%, transparent);
+}
+.tl-counter::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  bottom: 7px;
+  left: 50%;
+  width: 58px;
+  height: 22px;
+  translate: -50% 0;
+  box-sizing: border-box;
+  border: 1px solid var(--tl-line);
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(
+    90deg,
+    var(--tl-coral) 0 9px,
+    var(--tl-solid) 9px
+  );
+  transform-origin: 50% 100%;
+  animation: tl-ticket-out 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.15) 0.4s backwards;
+}
+@keyframes tl-ticket-out {
+  from {
+    transform: scaleY(0);
+  }
 }
 html[data-skin='travel']:not(.dark) .tl-counter {
   background: linear-gradient(to bottom, var(--tl-soil), var(--tl-soil-2));

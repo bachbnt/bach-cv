@@ -32,7 +32,7 @@ export function PaymentPage() {
               {copy.title}
             </h1>
             <p className='m-0 mt-1.5 text-tl-muted'>{copy.intro}</p>
-            <div aria-hidden='true' className='tl-counter mt-3.5' />
+            <div aria-hidden='true' className='tl-counter mt-9' />
           </header>
           <div className='mt-5'>
             <PaymentDesk />
