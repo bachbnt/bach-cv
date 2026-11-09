@@ -1,0 +1,80 @@
+/*
+ * Travel skin: overlays (the dialogs, the BB Bot card, the Connect postcard). Prefix tl-, hover only inside @media (hover: hover).
+ * Dialogs and popovers are drawn in the body, outside .tl-root, so what .tl-root gives the page (the focus ring, the stillness of
+ * reduced motion) is repeated here for .tl-pop, the class they carry.
+ */
+
+.tl-pop :focus-visible:not(input, textarea, select) {
+  outline: 3px solid var(--tl-coral);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl-pop,
+  .tl-pop *,
+  .tl-pop *::before,
+  .tl-pop *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* the table of the picture windows: a faint dotted cloth under the print or the ticket */
+.tl-table {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in srgb, var(--tl-ink) 11%, transparent) 1px,
+    transparent 0
+  );
+  background-size: 18px 18px;
+}
+
+/* the print: two strips of tape on its top corners (only at the size that fits; zoomed it fills the table) */
+.tl-tape {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 0;
+  pointer-events: none;
+}
+.tl-tape::before,
+.tl-tape::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  width: 44px;
+  height: 18px;
+  background: color-mix(in srgb, var(--tl-sun) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tl-sun) 40%, transparent);
+}
+.tl-tape::before {
+  left: 12px;
+  rotate: -6deg;
+}
+.tl-tape::after {
+  right: 12px;
+  rotate: 5deg;
+}
+
+/* the account ticket under the QR: half circles bitten out of both ends of its tear line */
+.tl-ticket-edge {
+  mask:
+    radial-gradient(circle 9px at 0 50%, #0000 98%, #000),
+    radial-gradient(circle 9px at 100% 50%, #0000 98%, #000);
+  mask-composite: intersect;
+}
+
+/* the Connect postcard: an airmail edge and the stamp of the owner's photo */
+.tl-airmail {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--tl-coral) 0 14px,
+    var(--tl-solid) 14px 20px,
+    var(--tl-teal) 20px 34px,
+    var(--tl-solid) 34px 40px
+  );
+}
+.tl-stamp {
+  border: 2px dashed color-mix(in srgb, var(--tl-coral) 60%, transparent);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px -6px color-mix(in srgb, var(--tl-ink) 35%, transparent);
+}

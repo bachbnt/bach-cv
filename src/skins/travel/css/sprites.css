@@ -1,0 +1,103 @@
+/* Travel skin: sprites. Prefix tl-, hover only inside @media (hover: hover). */
+.tl-flag {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  animation: tl-wave 2.4s ease-in-out infinite;
+}
+@keyframes tl-wave {
+  0%,
+  100% {
+    transform: skewY(0deg) scaleX(1);
+  }
+  50% {
+    transform: skewY(-8deg) scaleX(0.88);
+  }
+}
+.tl-steam {
+  opacity: 0;
+  animation: tl-steam 3.6s ease-out infinite;
+}
+.tl-steam-1 {
+  animation-delay: 1.2s;
+}
+.tl-steam-2 {
+  animation-delay: 2.4s;
+}
+@keyframes tl-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  25% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+.tl-fall {
+  stroke-dasharray: 5 7;
+}
+/* a stroke-dashoffset is not moved by the compositor and keeps the main thread drawing at every frame: the water falls only where it can be seen (zoomed in) */
+.tl-close .tl-fall {
+  animation: tl-fall 1.1s linear infinite;
+}
+@keyframes tl-fall {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+.tl-wheel {
+  transform-origin: 50px 82px;
+  animation: tl-turn 60s linear infinite;
+}
+.tl-pod {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: tl-turn-back 60s linear infinite;
+}
+@keyframes tl-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes tl-turn-back {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+.tl-dive {
+  animation: tl-dive-bob 3.2s ease-in-out infinite alternate;
+}
+@keyframes tl-dive-bob {
+  from {
+    transform: translateY(0) rotate(-1.5deg);
+  }
+  to {
+    transform: translateY(-2px) rotate(1.5deg);
+  }
+}
+.tl-bubble {
+  opacity: 0;
+  animation: tl-bubble 2.6s ease-out infinite;
+}
+.tl-bubble-1 {
+  animation-delay: 0.9s;
+}
+.tl-bubble-2 {
+  animation-delay: 1.8s;
+}
+@keyframes tl-bubble {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
