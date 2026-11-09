@@ -25,7 +25,7 @@ const ORDER = [
 ] as const satisfies readonly (typeof SKILL_CATEGORIES)[number][];
 
 /**
- * The packing list: the skills of Standard's Skills section. The core stack (what is used every day) is the cabin bag, all the skills
+ * The packing list: the skills of Standard's Skills section (with `coreOnly` only the cabin bag, under the heading of the page that shows it). The core stack (what is used every day) is the cabin bag, all the skills
  * by area are the suitcases. Standard shows where a skill was used in a tip on hover or focus; here a skill is a button and its
  * "used at ... first used ..." line shows under the list, so a keyboard or a finger reads the same words.
  */
@@ -76,10 +76,17 @@ export function TripLuggage({ coreOnly = false }: { coreOnly?: boolean }) {
       skeleton={<TlSkeleton className='h-40' />}
     >
       <div>
-        <h3 className='m-0 text-[13px] font-extrabold tracking-[0.9px] text-tl-muted uppercase'>
-          {copy.core.title}
-        </h3>
-        <p className='m-0 mb-2 text-[12.5px] text-tl-muted'>{copy.core.lead}</p>
+        {/* About brings its own heading and lead for the core stack; saying them twice in a row read as a mistake */}
+        {!coreOnly && (
+          <>
+            <h3 className='m-0 text-[13px] font-extrabold tracking-[0.9px] text-tl-muted uppercase'>
+              {copy.core.title}
+            </h3>
+            <p className='m-0 mb-2 text-[12.5px] text-tl-muted'>
+              {copy.core.lead}
+            </p>
+          </>
+        )}
         <ul className='m-0 flex list-none flex-wrap gap-1.5 p-0'>
           {core.map((s) => chip(s, true))}
         </ul>

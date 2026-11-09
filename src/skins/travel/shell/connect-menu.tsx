@@ -144,7 +144,7 @@ export function ConnectMenu() {
                 </p>
                 <ul className='m-0 grid grid-cols-2 list-none gap-2 p-0'>
                   {items.map((c) => (
-                    <li key={c.id} className='last:odd:col-span-2'>
+                    <li key={c.id}>
                       {/* a stamp of the postcard: a dashed edge, the mark of the network, its name and the handle */}
                       <a
                         href={c.url}
