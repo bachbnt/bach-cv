@@ -12,7 +12,7 @@ import {
   WASH_DARK,
   type BoxShape,
 } from '@/skins/travel/map/sprites/art-parts';
-import { Shallows } from '@/skins/travel/map/sprites/art-sea';
+import { Shallows } from '@/skins/travel/map/sprites/art-sea-shallows';
 
 /** A scrubby bush: two leaf blobs, the back one shaded. */
 function Scrub({ x, y, s = 1 }: { x: number; y: number; s?: number }) {

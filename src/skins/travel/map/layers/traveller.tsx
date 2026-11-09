@@ -15,7 +15,7 @@ import {
 import type { Plane } from '@/skins/travel/map/projection';
 
 /** The way from one stop to the next along the real road: the road to where the side trip leaves it, then the spur. */
-export function tripPath(from: PlacedStop, to: PlacedStop): Plane[] {
+function tripPath(from: PlacedStop, to: PlacedStop): Plane[] {
   const out: Plane[] = [];
   if (from.side) out.push(from.at, from.from);
   out.push(...roadBetween(from.t, to.t));
@@ -98,7 +98,7 @@ export function Traveller({
       ref={ref}
       aria-hidden='true'
       className='tl-traveller'
-      style={{ zIndex: 5000 }}
+      style={{ zIndex: 20000 }}
     >
       <div className={moving ? 'tl-traveller-in tl-moving' : 'tl-traveller-in'}>
         <span className='tl-traveller-badge'>

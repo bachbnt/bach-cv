@@ -9,7 +9,23 @@ import type { Plane } from '@/skins/travel/map/projection';
  * The route of the trip is the real coast road of Nha Trang (Tran Phu street, then Pham Van Dong road) from south to north, taken from
  * OpenStreetMap. A stop is a place on it: the first place of the career in the south, the current one in the north.
  */
-const ROAD: readonly Plane[] = COAST_ROAD.map(([x, y]) => ({ x, y }));
+/**
+ * Where the coast road goes on to the north-east, past the end of `COAST_ROAD`: the next points of Pham Van Dong road from OpenStreetMap,
+ * up to the foot of Co Tien mountain. The last pin (the current job) stands there instead of among the beach pins.
+ */
+const NORTH_ROAD: readonly (readonly [number, number])[] = [
+  [1699, 2185],
+  [1731, 2153],
+  [1746, 2148],
+  [1806, 2122],
+];
+
+/** The whole road of the trip, from the south end to the foot of Co Tien mountain. */
+export const ROUTE_ROAD: readonly (readonly [number, number])[] = [
+  ...COAST_ROAD,
+  ...NORTH_ROAD,
+];
+const ROAD: readonly Plane[] = ROUTE_ROAD.map(([x, y]) => ({ x, y }));
 const CUMULATIVE: readonly number[] = ROAD.reduce<number[]>((acc, p, i) => {
   acc.push(
     i === 0
@@ -58,7 +74,7 @@ const SPUR = 190;
 /** The ends of the route are left free so the first and the last pin do not sit on the edge of the beach. */
 const MARGIN = 0.05;
 
-export interface StopSlot {
+interface StopSlot {
   id: string;
   side: boolean;
 }

@@ -36,9 +36,9 @@ test.describe('the map', () => {
   }) => {
     await gotoSkin(page, '/');
     const sights = page.locator('[data-sight]');
-    expect(await sights.count()).toBe(18);
+    expect(await sights.count()).toBe(23);
     expect(await page.locator('[data-sight][aria-hidden="true"]').count()).toBe(
-      18,
+      23,
     );
     expect(
       await page.locator('[data-sight] button, [data-sight] a').count(),
@@ -80,6 +80,55 @@ test.describe('the map', () => {
       'animation-play-state',
       'running',
     );
+  });
+
+  test('every sight has a name tag in a layer of its own, and no shown tag lies on a card of a stop', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await expect(page.locator('[data-label]')).toHaveCount(23);
+    expect(await page.locator('[data-label][aria-hidden="true"]').count()).toBe(
+      23,
+    );
+    // the tags are placed once the camera rests: wait until none lies on a card
+    const covered = () =>
+      page.evaluate(() => {
+        const box = (e: Element) => e.getBoundingClientRect();
+        const cards = [
+          ...document.querySelectorAll(
+            '.tl-pin-head, .tl-pin-label, .tl-pin-flag',
+          ),
+        ].map(box);
+        return [...document.querySelectorAll('[data-label]')]
+          .filter((tag) => {
+            const name = tag.querySelector('.tl-name');
+            if (!name || name.classList.contains('tl-off')) return false;
+            const t = box(name);
+            return cards.some(
+              (c) =>
+                t.left < c.right &&
+                c.left < t.right &&
+                t.top < c.bottom &&
+                c.top < t.bottom,
+            );
+          })
+          .map((tag) => (tag as HTMLElement).dataset.label);
+      });
+    await expect.poll(covered).toEqual([]);
+  });
+
+  test('the "You are here" flag hangs under its pin, where nothing of the map stands over it', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const flag = page.locator('.tl-pin-flag');
+    await expect(flag).toBeVisible();
+    const head = await page
+      .locator('.tl-pin', { has: flag })
+      .locator('.tl-pin-head')
+      .boundingBox();
+    const under = await flag.boundingBox();
+    expect(head && under && under.y >= head.y + head.height).toBe(true);
   });
 
   test('keys move the map when it has the focus', async ({ page }) => {

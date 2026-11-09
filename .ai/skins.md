@@ -84,7 +84,8 @@ See `src/skins/travel/README.md`. A 2.5D trip map of Nha Trang: the map is real 
 `scripts/travel/build-geo.mjs`, credit "© OpenStreetMap contributors (ODbL)" in the UI and the README), the stops of the trip are the real roles
 (`routeStops` in `src/lib/derive/route-stops.ts`, placed along the real coast road by `map/route.ts`), and the famous sights are decoration
 (`aria-hidden`, copy in `content/copy/travel-map.ts`). Every page is a card over the map (a sheet on a phone) and a real link in the rail, so the map
-is never the only way to anything. Styling: Tailwind with the `--tl-*` tokens (`travel.css`, night base and day `:not(.dark)`), CSS only for keyframes
-and the map, class prefix `tl-`.
+is never the only way to anything. The map's weight is kept down: about 4,800 elements, only transform and opacity animate (a unit test enforces it),
+what moves stops when the whole map is on screen (`tl-whole`), and a state class of the map root (`tl-moving`, `tl-close`, `tl-whole`) is never also a drawing class. Styling: Tailwind with the `--tl-*` tokens (`travel.css`, night base and day `:not(.dark)`), CSS only for
+keyframes and the map, class prefix `tl-`.
 
 A new skin follows the skill `.claude/skills/build-skin` (read its SKILL.md first).

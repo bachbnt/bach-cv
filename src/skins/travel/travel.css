@@ -5,6 +5,9 @@
  */
 html[data-skin='travel'] {
   --tl-night: 1;
+  /* the warm end of the coral buttons, and the shade at the foot of the slab's walls */
+  --tl-coral-grad: color-mix(in srgb, var(--tl-coral) 65%, #ffb44d);
+  --tl-wall-shade: #000;
   --tl-ink: #eef1ff;
   --tl-muted: #a9b1dc;
   --tl-panel: rgb(22, 24, 64);
@@ -146,9 +149,10 @@ html[data-skin='travel']:not(.dark) {
   --tl-leaf: #3f9e4d;
   --tl-trunk: #8a5a2b;
   --tl-hull: #e8503a;
-  --tl-bldg-top: #f4efe4;
-  --tl-bldg-l: #cfe3ee;
-  --tl-bldg-r: #a9c6d6;
+  /* the city leans toward the colour of the land so that the sights stand out from it */
+  --tl-bldg-top: color-mix(in srgb, #f4efe4 72%, var(--tl-land-1));
+  --tl-bldg-l: color-mix(in srgb, #cfe3ee 58%, var(--tl-land-1));
+  --tl-bldg-r: color-mix(in srgb, #a9c6d6 58%, var(--tl-land-1));
   --tl-bldg-line: rgba(15, 47, 68, 0.14);
 }
 

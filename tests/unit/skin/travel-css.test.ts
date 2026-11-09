@@ -135,4 +135,35 @@ describe('the CSS of the Travel skin', () => {
     );
     expect(styled).toEqual([]);
   });
+
+  it('stops every loop that runs on the map when the whole map is on screen, but those that are not on it or already off', () => {
+    // the sky is outside the map's own layer, the waves are not drawn then and the falling water runs only zoomed in
+    const exempt = ['tl-cloud', 'tl-bird', 'tl-stars', 'tl-wave', 'tl-fall'];
+    const looping = new Set<string>();
+    for (const rule of rules()) {
+      const animates = rule.nodes.some(
+        (n) =>
+          n.type === 'decl' &&
+          n.prop === 'animation' &&
+          /infinite/.test(n.value),
+      );
+      if (!animates) continue;
+      for (const [, name] of rule.selector.matchAll(/\.(tl-[\w-]+)/g))
+        if (!/^tl-(close|whole|moving)$/.test(name)) looping.add(name);
+    }
+    const stopped = rules()
+      .filter((r) => r.selector.startsWith('.tl-whole'))
+      .flatMap((r) =>
+        [...r.selector.matchAll(/\.(tl-[\w-]+)/g)].map((m) => m[1]),
+      );
+    const left = [...looping].filter(
+      (name) =>
+        !exempt.includes(name) &&
+        !stopped.includes(name) &&
+        // a modifier of a looping class (a delay) is covered by the class it modifies
+        !/-\d$/.test(name) &&
+        !/^tl-(live|spin|rise|stamp|dive-bob)/.test(name),
+    );
+    expect(left).toEqual([]);
+  });
 });

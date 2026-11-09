@@ -3,8 +3,23 @@
  */
 
 import { memo } from 'react';
-import { CITY, PALMS } from '@/skins/travel/map/geo';
-import { toWorld, WORLD } from '@/skins/travel/map/iso';
+import {
+  CITY,
+  PALMS,
+  RIVERS,
+  ROADS_MAJOR,
+  ROADS_MINOR,
+} from '@/skins/travel/map/geo';
+import {
+  crowdsSight,
+  squashHeight,
+  standsOnWay,
+  type Way,
+} from '@/skins/travel/map/city-shape';
+import { ROUTE_ROAD } from '@/skins/travel/map/route';
+import { pathSegments, polylineSegments } from '@/skins/travel/map/segments';
+import { toWorld, worldOf, WORLD } from '@/skins/travel/map/iso';
+import { SIGHTS } from '@/skins/travel/map/sights';
 
 interface Box {
   key: string;
@@ -13,14 +28,15 @@ interface Box {
   right: string;
   tall: boolean;
   depth: number;
-  tone: 0 | 1 | 2;
+  tone: 0 | 1;
 }
 
 const fmt = (list: readonly { x: number; y: number }[]) =>
   list.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
 
 /** A building is the footprint standing up: its roof is the footprint lifted by the height, its two visible walls hang under it. */
-function box([x, y, w, d, h, ang, tone]: readonly number[]): Box {
+function box([x, y, w, d, rawHeight, ang, tone]: readonly number[]): Box {
+  const h = squashHeight(rawHeight);
   const a = (ang * 5 * Math.PI) / 180;
   const cos = Math.cos(a);
   const sin = Math.sin(a);
@@ -46,20 +62,39 @@ function box([x, y, w, d, h, ang, tone]: readonly number[]): Box {
     roof: fmt(corners.map(up)),
     left: fmt([wl, base, up(base), up(wl)]),
     right: fmt([base, wr, up(wr), up(base)]),
-    tall: h > 44,
+    tall: h > 36,
     depth: base.y,
-    tone: tone === 1 ? 1 : tone === 2 ? 2 : 0,
+    tone: tone === 0 ? 0 : 1,
   };
 }
 
-/** Three kinds of walls: glass and concrete, stone, and sand-coloured houses. */
+/** Two kinds of walls, glass and concrete and stone: more colours made the streets busy (the sand-coloured houses are stone now). */
 const TONES = [
   { left: 'fill-tl-bldg-l', right: 'fill-tl-bldg-r', top: 'fill-tl-bldg-top' },
   { left: 'fill-tl-stone', right: 'fill-tl-rock-2', top: 'fill-tl-wall' },
-  { left: 'fill-tl-sand', right: 'fill-tl-sand-2', top: 'fill-tl-wall' },
 ] as const;
 
-const BOXES = CITY.map(box).sort((a, b) => a.depth - b.depth);
+/** Where the sights stand: no building is drawn on the ground around them. */
+const SPOTS = SIGHTS.map((sight) => {
+  const w = worldOf(sight.lat, sight.lng);
+  return { x: w.x, y: w.y, scale: sight.scale };
+});
+
+/** The ways the ground draws (`ground.tsx`), at half the width of their strokes: no building stands on them. */
+const WAYS: readonly Way[] = [
+  { segments: pathSegments(ROADS_MAJOR), halfWidth: 7.5 },
+  { segments: pathSegments(ROADS_MINOR), halfWidth: 3.5 },
+  { segments: pathSegments(RIVERS), halfWidth: 4.5 },
+  { segments: polylineSegments(ROUTE_ROAD), halfWidth: 7.5 },
+];
+
+const BOXES = CITY.filter(
+  (row) =>
+    !standsOnWay(row, WAYS) &&
+    !crowdsSight(toWorld({ x: row[0], y: row[1] }), SPOTS),
+)
+  .map(box)
+  .sort((a, b) => a.depth - b.depth);
 const TREES = PALMS.map(([x, y]) => toWorld({ x, y })).sort(
   (a, b) => a.y - b.y,
 );

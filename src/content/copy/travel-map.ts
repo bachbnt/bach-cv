@@ -94,6 +94,26 @@ export const travelMapCopy = defineCopy(
         name: 'Ba Ho waterfalls',
         text: 'Three cascades with natural pools in the forest north-west of the city, reached by a short trek.',
       },
+      'do-theatre': {
+        name: 'Do Theatre',
+        text: 'A theatre by the sea at Bai Tien built in the shape of a do, the bamboo fish trap of Vietnamese fishermen.',
+      },
+      'co-tien': {
+        name: 'Co Tien mountain',
+        text: 'A ridge of three peaks about 400 m high north-west of the city, whose outline looks like a fairy lying down.',
+      },
+      'truc-lam': {
+        name: 'Truc Lam Phung Thuy Son',
+        text: 'A Zen monastery on the summit of Chin Khuc mountain, with a golden thirteen-storey stupa and a view over the whole city.',
+      },
+      'dong-bo': {
+        name: 'Dong Bo mountain',
+        text: 'Hoang Nguu Son, the range of nearly 1,000 m behind the city, once the Dong Bo war base, now green forest and streams.',
+      },
+      'hon-ro': {
+        name: 'Hon Ro',
+        text: 'A green hill of 344 m on the southern shore of the city, with a fishing village at its foot.',
+      },
     },
     edges: {
       'cam-ranh': 'Cam Ranh airport',
@@ -185,6 +205,26 @@ export const travelMapCopy = defineCopy(
       'ba-ho': {
         name: 'Thác Ba Hồ',
         text: 'Ba tầng thác với những hồ nước tự nhiên trong rừng phía tây bắc thành phố, đi bộ một đoạn ngắn là tới.',
+      },
+      'do-theatre': {
+        name: 'Nhà hát Đó',
+        text: 'Nhà hát ven biển ở Bãi Tiên, dựng theo hình chiếc đó, dụng cụ bắt cá bằng tre của ngư dân Việt.',
+      },
+      'co-tien': {
+        name: 'Núi Cô Tiên',
+        text: 'Dãy núi ba đỉnh cao khoảng 400 m ở phía tây bắc thành phố, đường nét trông như nàng tiên nằm.',
+      },
+      'truc-lam': {
+        name: 'Trúc Lâm Phụng Thuỳ Sơn',
+        text: 'Thiền viện trên đỉnh núi Chín Khúc, có bảo tháp mười ba tầng dát vàng và nhìn xuống toàn thành phố.',
+      },
+      'dong-bo': {
+        name: 'Núi Đồng Bò',
+        text: 'Hoàng Ngưu Sơn, dãy núi gần 1.000 m phía sau thành phố, xưa là chiến khu Đồng Bò, nay là rừng xanh và suối.',
+      },
+      'hon-ro': {
+        name: 'Hòn Rớ',
+        text: 'Ngọn đồi xanh cao 344 m ở phía nam thành phố, dưới chân là làng chài.',
       },
     },
     edges: {

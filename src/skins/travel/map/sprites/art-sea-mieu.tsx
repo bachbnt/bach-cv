@@ -15,7 +15,9 @@ import {
   Win,
   type BoxShape,
 } from '@/skins/travel/map/sprites/art-parts';
-import { Dinghy, Jetty, Shallows } from '@/skins/travel/map/sprites/art-sea';
+import { Dinghy } from '@/skins/travel/map/sprites/art-sea-dinghy';
+import { Jetty } from '@/skins/travel/map/sprites/art-sea-jetty';
+import { Shallows } from '@/skins/travel/map/sprites/art-sea-shallows';
 
 /** A small sea turtle seen from above: green shell with scutes, a head and four flippers. */
 function Turtle({ x, y }: { x: number; y: number }) {

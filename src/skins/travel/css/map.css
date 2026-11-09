@@ -170,33 +170,35 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 /* ---- waves: two layers of strokes drifting over the sea, moved by the compositor only */
 .tl-wave {
   position: absolute;
-  left: -200px;
-  top: -200px;
-  width: calc(100% + 400px);
-  height: calc(100% + 400px);
+  left: -260px;
+  top: -130px;
+  width: calc(100% + 520px);
+  height: calc(100% + 260px);
   background: var(--tl-foam);
-  -webkit-mask-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48'%3E%3Cg fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 14q8-8 16 0t16 0'/%3E%3Cpath d='M56 38q8-8 16 0t16 0'/%3E%3Cpath d='M60 10q5-5 10 0t10 0' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E");
-  mask-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='48'%3E%3Cg fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 14q8-8 16 0t16 0'/%3E%3Cpath d='M56 38q8-8 16 0t16 0'/%3E%3Cpath d='M60 10q5-5 10 0t10 0' stroke-width='1.6'/%3E%3C/g%3E%3C/svg%3E");
-  -webkit-mask-size: 96px 48px;
-  mask-size: 96px 48px;
-  opacity: 0.5;
-  animation: tl-wave-a 9s linear infinite;
+  -webkit-mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27260%27%20height=%27130%27%3E%3Cg%20fill=%27none%27%20stroke=%27white%27%20stroke-linecap=%27round%27%3E%3Cpath%20d=%27M18%2022q8-8%2016%200t16%200t16%200%27%20stroke-width=%272.4%27/%3E%3Cpath%20d=%27M150%2058q8-8%2016%200t16%200%27%20stroke-width=%272.4%27/%3E%3Cpath%20d=%27M70%20104q5-5%2010%200t10%200%27%20stroke-width=%271.6%27/%3E%3Cpath%20d=%27M205%20112q8-8%2016%200t16%200%27%20stroke-width=%272%27/%3E%3C/g%3E%3C/svg%3E');
+  mask-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27260%27%20height=%27130%27%3E%3Cg%20fill=%27none%27%20stroke=%27white%27%20stroke-linecap=%27round%27%3E%3Cpath%20d=%27M18%2022q8-8%2016%200t16%200t16%200%27%20stroke-width=%272.4%27/%3E%3Cpath%20d=%27M150%2058q8-8%2016%200t16%200%27%20stroke-width=%272.4%27/%3E%3Cpath%20d=%27M70%20104q5-5%2010%200t10%200%27%20stroke-width=%271.6%27/%3E%3Cpath%20d=%27M205%20112q8-8%2016%200t16%200%27%20stroke-width=%272%27/%3E%3C/g%3E%3C/svg%3E');
+  -webkit-mask-size: 260px 130px;
+  mask-size: 260px 130px;
+  opacity: 0.3;
+  animation: tl-crest 24s linear infinite;
   will-change: transform;
 }
-.tl-wave-b {
-  -webkit-mask-size: 150px 74px;
-  mask-size: 150px 74px;
-  opacity: 0.32;
-  animation: tl-wave-b 14s linear infinite;
-}
-@keyframes tl-wave-a {
+/* the sea is flat, with a few crests that drift: the move is one tile of the mask, so the loop does not show */
+@keyframes tl-crest {
   to {
-    transform: translate3d(-96px, 48px, 0);
+    transform: translate3d(-260px, 130px, 0);
   }
 }
-@keyframes tl-wave-b {
+/* the foam at the shore breathes: opacity only, so the compositor does it */
+.tl-shore {
+  animation: tl-lap 5s ease-in-out infinite alternate;
+}
+@keyframes tl-lap {
+  from {
+    opacity: 0.55;
+  }
   to {
-    transform: translate3d(150px, 74px, 0);
+    opacity: 1;
   }
 }
 .tl-ground {
@@ -267,6 +269,19 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
   transform-origin: 100% 0;
   top: -40px;
 }
+.tl-tag-above .tl-name {
+  /* over the top of what is drawn (the box is 160 px times the sight's size, `--tl-crown` the part of it that is drawn, set by use-declutter.ts) */
+  transform: translate(
+      -50%,
+      calc(
+        -160px * var(--tl-crown, 0.88) * var(--tl-art) * var(--tl-sc) - 100% *
+          var(--tl-sc) - 6px
+      )
+    )
+    scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  top: 0;
+}
 .tl-tag-right .tl-name {
   transform: translateX(10px) scale(var(--tl-sc));
   transform-origin: 0 0;
@@ -305,14 +320,26 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 }
 .tl-gondola {
   z-index: 701;
-  width: 14px;
-  height: 12px;
-  margin: -6px 0 0 -7px;
-  border-radius: 4px 4px 7px 7px;
-  background: var(--tl-coral);
-  box-shadow: 0 0 0 2px var(--tl-solid);
+  width: 0;
+  height: 0;
   animation: tl-gondola 24s ease-in-out infinite alternate;
   pointer-events: none;
+}
+/* the other cabin starts at the far end and comes the other way */
+.tl-gondola-back {
+  animation-direction: alternate-reverse;
+}
+/* the cabin hangs from the cable and grows with the other sprites; the animation moves the box, so this transform stays apart */
+.tl-gondola-in {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, 0) scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  transition: transform 0.2s ease-out;
+}
+.tl-gondola-in svg {
+  display: block;
 }
 @keyframes tl-gondola {
   from {
@@ -418,7 +445,7 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
   border-right: 4px solid var(--tl-pc);
   text-align: right;
 }
-.tl-pin-on .tl-pin-btn {
+.tl-pin[data-on] .tl-pin-btn {
   scale: 1.14;
 }
 .tl-pin-btn:focus-visible {
@@ -433,9 +460,10 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
     scale: 1.14;
   }
 }
+/* under the pin, where nothing of the map stands over it (above, it lay on the cards and drawings of the places around) */
 .tl-pin-flag {
-  transform: translate(-50%, -100%) translateY(-84px) scale(var(--tl-sc));
-  transform-origin: 50% 100%;
+  transform: translate(-50%, 0) translateY(10px) scale(var(--tl-sc));
+  transform-origin: 50% 0;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -605,7 +633,8 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
     .tl-wheel,
     .tl-pod,
     .tl-dive,
-    .tl-bubble
+    .tl-bubble,
+    .tl-shore
   ) {
   animation-play-state: paused;
 }

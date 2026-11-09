@@ -39,7 +39,7 @@ export function Rail({ page }: { page: PageKey | null }) {
             className={cn(
               'relative flex flex-col items-center gap-0.5 rounded-2xl text-[10.5px] font-semibold text-tl-muted transition-[background-color,color,transform] max-md:size-11 max-md:justify-center md:w-[68px] md:py-2',
               'hover:bg-tl-chip hover:text-tl-chip-ink',
-              'aria-[current=page]:bg-gradient-to-br aria-[current=page]:from-tl-coral aria-[current=page]:to-[color-mix(in_srgb,var(--tl-coral)_62%,#ffb44d)] aria-[current=page]:text-tl-on-coral aria-[current=page]:shadow-[0_8px_16px_-8px_var(--tl-coral)]',
+              'aria-[current=page]:bg-gradient-to-br aria-[current=page]:from-tl-coral aria-[current=page]:to-tl-coral-grad aria-[current=page]:text-tl-on-coral aria-[current=page]:shadow-[0_8px_16px_-8px_var(--tl-coral)]',
             )}
           >
             <Icon aria-hidden='true' className='size-[22px] max-md:size-6' />

@@ -100,7 +100,7 @@ export function PostcardCover({
       <CoverView project={project} firstSkill={firstSkill} />
       <span
         aria-hidden='true'
-        className='absolute bottom-2 left-2 inline-flex items-center gap-1.5 rounded-full bg-tl-paper px-2.5 py-1 text-[11.5px] font-bold text-tl-paper-ink shadow-[0_2px_8px_rgba(0,0,0,0.25)]'
+        className='absolute bottom-2 left-2 inline-flex items-center gap-1.5 rounded-full bg-tl-paper px-2.5 py-1 text-[11.5px] font-bold text-tl-paper-ink shadow-tl-tag'
       >
         <Camera className='size-3.5' />
         {label}

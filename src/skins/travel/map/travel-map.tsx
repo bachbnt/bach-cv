@@ -24,13 +24,13 @@ import {
 } from '@/skins/travel/map/camera';
 import { City } from '@/skins/travel/map/layers/city';
 import { Land, Sea } from '@/skins/travel/map/layers/ground';
+import { Shore } from '@/skins/travel/map/layers/shore';
 import { Pins } from '@/skins/travel/map/layers/pins';
 import { Sky } from '@/skins/travel/map/layers/sky';
 import { Sprites } from '@/skins/travel/map/layers/sprites';
 import { Traveller } from '@/skins/travel/map/layers/traveller';
 import { Waves } from '@/skins/travel/map/layers/waves';
-import { COAST_ROAD } from '@/skins/travel/map/geo';
-import { pointAt } from '@/skins/travel/map/route';
+import { pointAt, ROUTE_ROAD } from '@/skins/travel/map/route';
 import {
   toWorld,
   WORLD,
@@ -150,16 +150,14 @@ export function TravelMap({
     set(target(focus), false);
   }, [ready, focus, set, target]);
 
-  useDeclutter(stage, ready && !moving && !flying, [
-    restZoom,
-    size,
-    routeOn,
-    stops,
-    activeId,
-  ]);
+  useDeclutter(
+    stage,
+    ready && !moving && !flying,
+    `${restZoom}|${size.w}x${size.h}|${routeOn}|${activeId}|${stops.map((stop) => stop.id).join()}`,
+  );
 
   const route = useMemo(
-    () => COAST_ROAD.map(([x, y]) => `${x},${y}`).join(' '),
+    () => ROUTE_ROAD.map(([x, y]) => `${x},${y}`).join(' '),
     [],
   );
   const zoom = (factor: number) =>
@@ -201,6 +199,7 @@ export function TravelMap({
       >
         <Sea />
         <Waves />
+        <Shore />
         <Land />
         <City />
         {routeOn && (

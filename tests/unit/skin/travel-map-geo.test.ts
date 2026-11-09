@@ -277,4 +277,12 @@ describe('the coast road and the stations', () => {
   it('worldOf gives the same place as toWorld(project())', () => {
     expect(worldOf(12.25, 109.2)).toEqual(toWorld(project(12.25, 109.2)));
   });
+
+  it('takes the last pin on to the north, to the foot of Co Tien mountain, past the end of the coast road data', () => {
+    const end = COAST_ROAD[COAST_ROAD.length - 1];
+    const last = pointAt(0.95);
+    const coTien = project(12.29409, 109.20756);
+    expect(last.y).toBeLessThan(end[1] - 150);
+    expect(Math.hypot(last.x - coTien.x, last.y - coTien.y)).toBeLessThan(200);
+  });
 });

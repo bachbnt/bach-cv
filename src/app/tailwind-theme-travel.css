@@ -12,6 +12,7 @@
   --color-tl-teal: var(--tl-teal);
   --color-tl-coral: var(--tl-coral);
   --color-tl-coral-2: var(--tl-coral-2);
+  --color-tl-coral-grad: var(--tl-coral-grad);
   --color-tl-sun: var(--tl-sun);
   --color-tl-sky-1: var(--tl-sky-1);
   --color-tl-sky-2: var(--tl-sky-2);
@@ -76,4 +77,10 @@
   --color-tl-cover-2: var(--tl-cover-2);
   --shadow-tl-card: var(--tl-shadow);
   --shadow-tl-pop: 0 18px 44px -12px rgb(2 12 40 / 0.55);
+  --shadow-tl-avatar:
+    0 6px 16px -4px rgb(0 0 0 / 0.35), 0 0 0 3px var(--tl-coral);
+  --shadow-tl-postcard: 0 12px 24px -10px rgb(0 0 0 / 0.45);
+  --shadow-tl-tag: 0 2px 8px rgb(0 0 0 / 0.25);
+  --shadow-tl-lift: 0 6px 14px -6px rgb(0 0 0 / 0.3);
+  --shadow-tl-halo: 0 0 0 14px rgb(255 255 255 / 0.06);
 }

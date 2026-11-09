@@ -10,7 +10,7 @@ const pts = FOOTPRINT.map(
 ).join(',');
 
 /**
- * Two layers of drifting waves over the whole sea. They move by `transform` only (the compositor does it, no repaint) and are
+ * One layer of a few drifting crests over the whole sea. They move by `transform` only (the compositor does it, no repaint) and are
  * clipped to the footprint; the land is drawn above them, so they only show on water. Paused by `.tl-paused` on the root.
  */
 export const Waves = memo(function Waves() {
@@ -24,8 +24,7 @@ export const Waves = memo(function Waves() {
         clipPath: `polygon(${pts})`,
       }}
     >
-      <div className='tl-wave tl-wave-a' />
-      <div className='tl-wave tl-wave-b' />
+      <div className='tl-wave' />
     </div>
   );
 });

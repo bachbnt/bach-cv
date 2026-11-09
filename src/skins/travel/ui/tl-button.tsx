@@ -18,8 +18,8 @@ export const tlButton = cva(
     variants: {
       variant: {
         solid:
-          'bg-gradient-to-br from-tl-coral to-[color-mix(in_srgb,var(--tl-coral)_65%,#ffb44d)] text-tl-on-coral shadow-[0_8px_18px_-8px_var(--tl-coral)] hover:-translate-y-px',
-        soft: 'bg-tl-chip text-tl-chip-ink hover:-translate-y-px hover:shadow-[0_6px_14px_-6px_rgba(0,0,0,0.3)]',
+          'bg-gradient-to-br from-tl-coral to-tl-coral-grad text-tl-on-coral shadow-[0_8px_18px_-8px_var(--tl-coral)] hover:-translate-y-px',
+        soft: 'bg-tl-chip text-tl-chip-ink hover:-translate-y-px hover:shadow-tl-lift',
         ghost:
           'border border-tl-line bg-transparent text-tl-ink hover:-translate-y-px hover:bg-tl-chip',
       },

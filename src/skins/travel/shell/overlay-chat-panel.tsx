@@ -317,7 +317,7 @@ export function ChatPanel({
             type='submit'
             aria-label={copy.send}
             disabled={!available || !canSend || !draft.trim()}
-            className='grid size-10 flex-none cursor-pointer place-items-center rounded-full bg-gradient-to-br from-tl-coral to-[color-mix(in_srgb,var(--tl-coral)_65%,#ffb44d)] text-tl-solid shadow-[0_8px_18px_-8px_var(--tl-coral)] transition-[transform,opacity] hover:-translate-y-px active:scale-95 disabled:pointer-events-none disabled:opacity-40 pointer-coarse:size-11'
+            className='grid size-10 flex-none cursor-pointer place-items-center rounded-full bg-gradient-to-br from-tl-coral to-tl-coral-grad text-tl-solid shadow-[0_8px_18px_-8px_var(--tl-coral)] transition-[transform,opacity] hover:-translate-y-px active:scale-95 disabled:pointer-events-none disabled:opacity-40 pointer-coarse:size-11'
           >
             <Send aria-hidden='true' className='size-[18px]' />
           </button>

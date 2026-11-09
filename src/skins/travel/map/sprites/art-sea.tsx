@@ -3,6 +3,9 @@
  */
 
 import { BoatBody } from '@/skins/travel/map/sprites/boat-body';
+import { Dinghy } from '@/skins/travel/map/sprites/art-sea-dinghy';
+import { Jetty } from '@/skins/travel/map/sprites/art-sea-jetty';
+import { Shallows } from '@/skins/travel/map/sprites/art-sea-shallows';
 import {
   Box,
   Boulder,
@@ -16,135 +19,6 @@ import {
   WASH_LIGHT,
   type BoxShape,
 } from '@/skins/travel/map/sprites/art-parts';
-
-/** Shallow water around an island: a foam halo, a turquoise disc and a dashed shoreline ring. */
-export function Shallows({
-  rx,
-  ry,
-  cy = 146,
-  tone = 'fill-tl-sea-1',
-}: {
-  rx: number;
-  ry: number;
-  cy?: number;
-  tone?: string;
-}) {
-  return (
-    <g>
-      <ellipse
-        cx={80}
-        cy={cy}
-        rx={rx + 6}
-        ry={ry + 2.5}
-        className='fill-tl-foam'
-        opacity={0.5}
-      />
-      <ellipse cx={80} cy={cy} rx={rx} ry={ry} className={tone} />
-      <ellipse
-        cx={80}
-        cy={cy - 1.5}
-        rx={rx}
-        ry={ry}
-        className='fill-none stroke-tl-foam'
-        strokeWidth={1.3}
-        strokeDasharray='6 5'
-        opacity={0.7}
-      />
-    </g>
-  );
-}
-
-/** A plank walkway on posts running down to the right (`dir` 1) or to the left (-1) at the isometric slope. */
-export function Jetty({
-  x,
-  y,
-  len,
-  dir = 1,
-  w = 4,
-}: {
-  x: number;
-  y: number;
-  len: number;
-  dir?: 1 | -1;
-  w?: number;
-}) {
-  const ax = dir * len;
-  const ay = len / 2;
-  const bx = -dir * w;
-  const by = w / 2;
-  const steps = Math.round(len / 5);
-  const along = Array.from({ length: steps + 1 }, (_, i) => i / steps);
-  const planks = along
-    .slice(1, -1)
-    .map((t) => `M${x + ax * t} ${y + ay * t}l${bx} ${by}`)
-    .join('');
-  const posts = along
-    .filter((_, i) => i % 2 === 0)
-    .map((t) => `M${x + bx + ax * t} ${y + by + ay * t + 2}v6`)
-    .join('');
-  return (
-    <g>
-      <path
-        d={posts}
-        className='fill-none stroke-tl-trunk'
-        strokeWidth={1.6}
-        strokeLinecap='round'
-      />
-      <path
-        d={`M${x + bx} ${y + by}l${ax} ${ay}v2.4l${-ax} ${-ay}z`}
-        className='fill-tl-trunk'
-      />
-      <path
-        d={`M${x} ${y}l${ax} ${ay}l${bx} ${by}l${-ax} ${-ay}z`}
-        className='fill-tl-soil'
-      />
-      <path
-        d={planks}
-        className='fill-none stroke-tl-soil-2'
-        strokeOpacity={0.4}
-        strokeWidth={0.8}
-      />
-    </g>
-  );
-}
-
-/** A tiny boat seen from the front left: hull, white rail, cabin and a canopy. Stands on (x, y) at the waterline. */
-export function Dinghy({
-  x,
-  y,
-  s = 1,
-  canopy = 'fill-tl-coral',
-}: {
-  x: number;
-  y: number;
-  s?: number;
-  canopy?: string;
-}) {
-  return (
-    <g transform={`translate(${x} ${y}) scale(${s})`}>
-      <ellipse
-        cx={0}
-        cy={5.4}
-        rx={11}
-        ry={2.4}
-        className='fill-none stroke-tl-foam'
-        strokeWidth={1}
-        opacity={0.8}
-      />
-      <path d='M-9 0 H9 L6 5 Q0 6.6 -6 5z' className='fill-tl-hull' />
-      <path d='M-9 0 H9 l-0.6 1.8 H-8.4z' className='fill-tl-foam' />
-      <rect x={-3} y={-5} width={7} height={5} className='fill-tl-wall' />
-      <rect
-        x={-4.5}
-        y={-7}
-        width={10}
-        height={2.4}
-        rx={1.2}
-        className={canopy}
-      />
-    </g>
-  );
-}
 
 /** A little monkey sitting, in fur (`trunk`) with a sand face, a curled tail and a lit shoulder. */
 function Monkey({

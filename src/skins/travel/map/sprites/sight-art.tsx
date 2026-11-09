@@ -29,6 +29,11 @@ import {
 import { HonMieuArt } from '@/skins/travel/map/sprites/art-sea-mieu';
 import { HonMotArt } from '@/skins/travel/map/sprites/art-sea-mot';
 import { HonTamArt } from '@/skins/travel/map/sprites/art-sea-tam';
+import { HonRoArt } from '@/skins/travel/map/sprites/art-ro';
+import { CoTienArt } from '@/skins/travel/map/sprites/art-ridge-cotien';
+import { DongBoArt } from '@/skins/travel/map/sprites/art-ridge-dongbo';
+import { DoTheatreArt } from '@/skins/travel/map/sprites/art-theatre';
+import { ZenPeakArt } from '@/skins/travel/map/sprites/art-zen';
 import {
   AquariumArt,
   DomeMarketArt,
@@ -57,6 +62,11 @@ const DRAWINGS: Partial<Record<ArtKind, () => ReactNode>> = {
   'buddha-pagoda': BuddhaPagodaArt,
   'villa-hill': VillaHillArt,
   aquarium: AquariumArt,
+  'do-theatre': DoTheatreArt,
+  'co-tien': CoTienArt,
+  'zen-peak': ZenPeakArt,
+  'dong-bo': DongBoArt,
+  'hon-ro': HonRoArt,
 };
 
 /** The drawing of a sight (decoration). */

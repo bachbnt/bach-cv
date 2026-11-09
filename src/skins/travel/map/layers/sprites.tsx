@@ -8,6 +8,7 @@ import { toWorld, worldOf } from '@/skins/travel/map/iso';
 import { project, haversineKm } from '@/skins/travel/map/projection';
 import { BOATS } from '@/skins/travel/map/scenery';
 import { ART_BOX, SightArt } from '@/skins/travel/map/sprites/sight-art';
+import { CableCabin } from '@/skins/travel/map/sprites/cable-cabin';
 import { BoatArt, MountainArt } from '@/skins/travel/map/sprites/nature-art';
 import {
   CABLE_CAR,
@@ -36,11 +37,21 @@ const at = (lat: number, lng: number): Placed => {
   return { left: w.x, top: w.y };
 };
 
+/** The mountains that have a drawing of their own among the sights are left out here, so that two mountains never stand on one peak. */
+const OWN_PEAKS = SIGHTS.filter((sight) => sight.onPeak).map((sight) =>
+  project(sight.lat, sight.lng),
+);
+const OWNED = 300;
+
 /** Mountains of the real peaks (decoration): taller for higher peaks. */
-const MOUNTAINS = PEAKS.map(([x, y, metres]) => ({
-  ...toWorld({ x, y }),
-  metres,
-})).sort((a, b) => a.y - b.y);
+const MOUNTAINS = PEAKS.filter(
+  ([x, y]) => !OWN_PEAKS.some((p) => Math.hypot(p.x - x, p.y - y) < OWNED),
+)
+  .map(([x, y, metres]) => ({
+    ...toWorld({ x, y }),
+    metres,
+  }))
+  .sort((a, b) => a.y - b.y);
 
 const CABLE = (() => {
   const a = toWorld(project(CABLE_CAR.from.lat, CABLE_CAR.from.lng));
@@ -79,34 +90,39 @@ export const Sprites = memo(function Sprites({ words }: { words: Words }) {
           y2={CABLE.b.y - 46}
         />
       </svg>
-      <div
-        aria-hidden='true'
-        className='tl-gondola absolute'
-        style={
-          {
-            left: CABLE.a.x,
-            top: CABLE.a.y - 30,
-            '--tl-dx': `${CABLE.b.x - CABLE.a.x}px`,
-            '--tl-dy': `${CABLE.b.y - CABLE.a.y - 16}px`,
-          } as CSSProperties
-        }
-      />
+      {/* two cabins, one going up while the other comes down, like the real cable car */}
+      {[false, true].map((back) => (
+        <div
+          key={String(back)}
+          aria-hidden='true'
+          className={cn('tl-gondola absolute', back && 'tl-gondola-back')}
+          style={
+            {
+              left: CABLE.a.x,
+              top: CABLE.a.y - 30,
+              '--tl-dx': `${CABLE.b.x - CABLE.a.x}px`,
+              '--tl-dy': `${CABLE.b.y - CABLE.a.y - 16}px`,
+            } as CSSProperties
+          }
+        >
+          <div className='tl-gondola-in'>
+            <CableCabin />
+          </div>
+        </div>
+      ))}
       {SIGHTS.map((sight) => {
         const p = at(sight.lat, sight.lng);
-        const name = words.sights[sight.id].name;
         return (
           <div
             key={sight.id}
             aria-hidden='true'
             data-sight={sight.id}
-            data-rank={RANK.get(sight.id)}
-            className={cn('tl-sprite tl-sight', `tl-tag-${sight.tag}`)}
+            className='tl-sprite tl-sight'
             style={
               {
                 left: p.left,
                 top: p.top,
                 zIndex: Math.round(p.top) + 1000,
-                '--tl-art': sight.scale,
               } as CSSProperties
             }
           >
@@ -119,7 +135,30 @@ export const Sprites = memo(function Sprites({ words }: { words: Words }) {
             >
               <SightArt art={sight.art} />
             </div>
-            <span className='tl-name'>{name}</span>
+          </div>
+        );
+      })}
+      {/* the name tags are a layer of their own above every drawing, so no drawing stands in front of a name */}
+      {SIGHTS.map((sight) => {
+        const p = at(sight.lat, sight.lng);
+        return (
+          <div
+            key={sight.id}
+            aria-hidden='true'
+            data-label={sight.id}
+            data-rank={RANK.get(sight.id)}
+            data-side={sight.tag}
+            className={cn('tl-sprite tl-label', `tl-tag-${sight.tag}`)}
+            style={
+              {
+                left: p.left,
+                top: p.top,
+                zIndex: Math.round(p.top) + 4500,
+                '--tl-art': sight.scale,
+              } as CSSProperties
+            }
+          >
+            <span className='tl-name'>{words.sights[sight.id].name}</span>
           </div>
         );
       })}

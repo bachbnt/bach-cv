@@ -26,7 +26,7 @@ export function ChatLauncher() {
       type='button'
       aria-label={copy.open}
       onClick={openChat}
-      className='tl-fab fixed right-4 bottom-7 z-35 grid size-14 cursor-pointer place-items-center rounded-full bg-gradient-to-br from-tl-coral to-[color-mix(in_srgb,var(--tl-coral)_65%,#ffb44d)] shadow-[0_12px_26px_-8px_var(--tl-coral)] transition-transform hover:-translate-y-0.5 active:scale-95 max-md:top-[66px] max-md:right-auto max-md:bottom-auto max-md:left-3 max-md:size-12'
+      className='tl-fab fixed right-4 bottom-7 z-35 grid size-14 cursor-pointer place-items-center rounded-full bg-gradient-to-br from-tl-coral to-tl-coral-grad shadow-[0_12px_26px_-8px_var(--tl-coral)] transition-transform hover:-translate-y-0.5 active:scale-95 max-md:top-[66px] max-md:right-auto max-md:bottom-auto max-md:left-3 max-md:size-12'
     >
       <span
         aria-hidden='true'

@@ -33,16 +33,15 @@ export function Pins({
           return (
             <div
               key={stop.id}
-              className={cn(
-                'tl-sprite tl-pin',
-                activeId === stop.id && 'tl-pin-on',
-                left && 'tl-pin-left',
-              )}
+              className={cn('tl-sprite tl-pin', left && 'tl-pin-left')}
+              data-on={activeId === stop.id ? '' : undefined}
               style={
                 {
                   left: w.x,
                   top: w.y,
-                  zIndex: Math.round(w.y) + 2000,
+                  zIndex:
+                    Math.round(w.y) +
+                    (stop.current || activeId === stop.id ? 13500 : 9000),
                   '--tl-pc': `var(--tl-stop-${stop.color})`,
                 } as CSSProperties
               }

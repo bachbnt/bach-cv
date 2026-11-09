@@ -13,7 +13,8 @@ import {
   Win,
   type BoxShape,
 } from '@/skins/travel/map/sprites/art-parts';
-import { Jetty, Shallows } from '@/skins/travel/map/sprites/art-sea';
+import { Jetty } from '@/skins/travel/map/sprites/art-sea-jetty';
+import { Shallows } from '@/skins/travel/map/sprites/art-sea-shallows';
 
 /** A bungalow on stilts: posts, a plank deck, a small hip-roofed house with a door and a window. `roof` is a `fill-tl-*` class. */
 function Bungalow({

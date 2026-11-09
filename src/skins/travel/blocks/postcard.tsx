@@ -72,7 +72,7 @@ export function Postcard({
       data-testid='project'
       className={cn(
         tiltClass(index),
-        'tl-postcard flex w-full flex-col gap-2.5 rounded-xl border border-black/5 bg-tl-paper p-2.5 pb-3 text-tl-paper-ink shadow-[0_12px_24px_-10px_rgba(0,0,0,0.45)] md:w-[262px] md:flex-none',
+        'tl-postcard flex w-full flex-col gap-2.5 rounded-xl border border-black/5 bg-tl-paper p-2.5 pb-3 text-tl-paper-ink shadow-tl-postcard md:w-[262px] md:flex-none',
       )}
     >
       <div className='relative'>
@@ -83,7 +83,7 @@ export function Postcard({
         />
         <span
           aria-hidden='true'
-          className='pointer-events-none absolute top-2 right-2 grid size-11 rotate-12 place-items-center rounded-full border-2 border-dashed border-tl-paper-hot-ink bg-tl-paper text-tl-paper-hot-ink shadow-[0_2px_8px_rgba(0,0,0,0.2)]'
+          className='pointer-events-none absolute top-2 right-2 grid size-11 rotate-12 place-items-center rounded-full border-2 border-dashed border-tl-paper-hot-ink bg-tl-paper text-tl-paper-hot-ink shadow-tl-tag'
         >
           <KindIcon className='size-5' strokeWidth={2.2} />
         </span>

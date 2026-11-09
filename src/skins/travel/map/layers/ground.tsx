@@ -23,11 +23,11 @@ import {
 
 /** The thickness of the slab the map sits on, and how far the land stands above the sea (pixels at zoom 1). */
 const SLAB = 96;
-const LIFT = 16;
+export const LIFT = 16;
 const STEP = 8;
 
 const [A, B, C, D] = GROUND_MATRIX;
-const GROUND = `matrix(${A} ${B} ${C} ${D} ${WORLD_OFFSET.x} ${WORLD_OFFSET.y})`;
+export const GROUND = `matrix(${A} ${B} ${C} ${D} ${WORLD_OFFSET.x} ${WORLD_OFFSET.y})`;
 const pts = (list: readonly { x: number; y: number }[]) =>
   list.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
 const shift = (list: readonly { x: number; y: number }[], dy: number) =>
@@ -81,9 +81,52 @@ export const Sea = memo(function Sea() {
           <stop offset='0.55' style={{ stopColor: 'var(--tl-sea-2)' }} />
           <stop offset='1' style={{ stopColor: 'var(--tl-sea-3)' }} />
         </linearGradient>
+        <linearGradient
+          id='tl-sea-light'
+          gradientUnits='userSpaceOnUse'
+          x1={0}
+          y1={0}
+          x2={440}
+          y2={-190}
+          spreadMethod='repeat'
+        >
+          <stop
+            offset='0'
+            style={{ stopColor: 'var(--tl-foam)' }}
+            stopOpacity={0}
+          />
+          <stop
+            offset='0.4'
+            style={{ stopColor: 'var(--tl-foam)' }}
+            stopOpacity={0}
+          />
+          <stop
+            offset='0.55'
+            style={{ stopColor: 'var(--tl-foam)' }}
+            stopOpacity={0.14}
+          />
+          <stop
+            offset='0.7'
+            style={{ stopColor: 'var(--tl-foam)' }}
+            stopOpacity={0}
+          />
+          <stop
+            offset='1'
+            style={{ stopColor: 'var(--tl-foam)' }}
+            stopOpacity={0}
+          />
+        </linearGradient>
         <linearGradient id='tl-wall-shade' x1='0' y1='0' x2='0' y2='1'>
-          <stop offset='0' stopColor='#000' stopOpacity='0' />
-          <stop offset='1' stopColor='#000' stopOpacity='0.42' />
+          <stop
+            offset='0'
+            style={{ stopColor: 'var(--tl-wall-shade)' }}
+            stopOpacity='0'
+          />
+          <stop
+            offset='1'
+            style={{ stopColor: 'var(--tl-wall-shade)' }}
+            stopOpacity='0.42'
+          />
         </linearGradient>
         <radialGradient id='tl-hill-fill'>
           <stop
@@ -106,6 +149,8 @@ export const Sea = memo(function Sea() {
 
       {/* the slab: the sea on top, its two visible walls below */}
       <polygon points={pts(FOOTPRINT)} fill='url(#tl-sea-fill)' />
+      {/* broad slanting bands of light on the water, like the sun on a calm sea (static: the sea itself does not move) */}
+      <polygon points={pts(FOOTPRINT)} fill='url(#tl-sea-light)' />
       <polygon points={pts(WALL_LEFT)} className='fill-tl-sea-3' />
       <polygon points={pts(WALL_RIGHT)} className='fill-tl-sea-2' />
       {/* the earth of the slab under the land */}
@@ -130,6 +175,13 @@ export const Sea = memo(function Sea() {
           <use
             href='#tl-land'
             className='fill-none stroke-tl-sea-1'
+            strokeWidth={120}
+            strokeOpacity={0.14}
+            strokeLinejoin='round'
+          />
+          <use
+            href='#tl-land'
+            className='fill-none stroke-tl-sea-1'
             strokeWidth={64}
             strokeOpacity={0.3}
             strokeLinejoin='round'
@@ -140,14 +192,6 @@ export const Sea = memo(function Sea() {
             strokeWidth={30}
             strokeOpacity={0.5}
             strokeLinejoin='round'
-          />
-        </g>
-        <g transform={`translate(0 ${LIFT}) ${GROUND}`}>
-          <use
-            href='#tl-land'
-            className='fill-none stroke-tl-foam'
-            strokeWidth={6}
-            strokeOpacity={0.9}
           />
         </g>
       </g>

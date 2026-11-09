@@ -34,18 +34,27 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   `<name>.json` (`coast river roads streets beach landuse wood peaks`) in a folder and run
   `node scripts/travel/build-geo.mjs <folder>`.
 - **View.** `map/iso.ts`: the flat map is turned 40 degrees clockwise (north points up and to the right, the sea is at the lower
-  right) and squashed (0.55). The ground is SVG (`layers/ground.tsx`: sea and slab, then land with its earth edge), the waves a CSS
-  layer moved by `transform` only, the city SVG polygons (`layers/city.tsx`, houses seeded along the real streets), sprites HTML.
-- **Sights** (`map/sights.ts`, copy `content/copy/travel-map.ts`): 18 famous places with real coordinates (Po Nagar towers, Hon
+  right) and squashed (0.55). The ground is SVG (`layers/ground.tsx`: sea and slab with broad slanting bands of light and a few bands of
+  shallow water, then land with its earth edge), a layer of sparse crests moved by `transform` only (`layers/waves.tsx`), the foam along the
+  shore as a layer of its own that breathes by opacity (`layers/shore.tsx`), the city SVG polygons (`layers/city.tsx`, houses seeded along
+  the real streets), sprites HTML. The city is thinned so the sights stand out: tall houses are squashed (`map/city-shape.ts`), no house
+  stands on a road or a river (`map/segments.ts`) or on the ground around a sight.
+- **Sights** (`map/sights.ts`, copy `content/copy/travel-map.ts`): 23 famous places with real coordinates (Po Nagar towers, Hon
   Chong, Long Son pagoda, the cathedral, Tram Huong tower, Dam Market, the Yersin museum, the Institute of Oceanography, Bao Dai villa,
-  the Thap Ba mud baths, Vinpearl on Hon Tre, the cable car, Hon Mieu, Hon Tam, Hon Mot, Hon Mun, Monkey Island, Ba Ho waterfalls) and
+  the Thap Ba mud baths, Vinpearl on Hon Tre, the cable car, Hon Mieu, Hon Tam, Hon Mot, Hon Mun, Monkey Island, Ba Ho waterfalls, the Do Theatre, Co Tien mountain, the Truc Lam Phung Thuy Son monastery, Dong Bo mountain and Hon Ro hill) and
   signs for places off the map (Cam Ranh airport, Bai Dai, Doc Let). They are SCENERY: `aria-hidden`, never mixed with the owner's
-  data. Each has an original drawing in `map/sprites/`.
+  data. Each has an original drawing in `map/sprites/` (about 100 shapes at most, no filter, mask or animation of its own: the page holds about
+  4,800 elements). A sight on a peak (`onPeak`) takes the place of the plain mountain there. The name tags are a layer of their own over
+  every drawing (`data-label`), and `map/use-declutter.ts` (with the pure `map/declutter.ts`) runs once the camera rests: a tag that a card
+  of a stop would cover moves to another side of its sight (below, left, right, above) and is left out only when none is free; each card
+  of a stop takes the side that covers the drawings less.
 - **Stations.** The stops are `routeStops()` of `lib/derive/route-stops.ts` (school first, then jobs by start month; a part-time job that
   overlaps a full-time job is a side trip). The rule that gives them a place (`map/route.ts`, `placeStops`): the stops on the main
   road are spaced evenly along the real coast road (Tran Phu street, then Pham Van Dong road, from the OSM road graph) from the first in
   the south to the current in the north; a side trip leaves the road at the main stop before it and ends on a spur toward the hills.
-  The traveller (the owner's photo in a pin) rides along the same road with the Web Animations API.
+  The road goes on past the end of the OSM coast road to the foot of Co Tien mountain (`NORTH_ROAD` in `map/route.ts`, the next points of
+  Pham Van Dong road), so the current job stands apart from the beach pins. The traveller (the owner's photo in a pin) rides along the
+  same road with the Web Animations API.
 - **Camera.** Drag, wheel, pinch, arrow keys, `+` and `-`; buttons for zoom and "show the whole trip"; the page and the open stop decide
   where it flies (`config.ts`, `PAGE_FOCUS`). Animations pause when the map is off screen, the tab is hidden or the visitor asked for
   less motion.

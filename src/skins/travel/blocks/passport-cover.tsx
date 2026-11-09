@@ -52,7 +52,7 @@ export function PassportCover() {
         </div>
         <span
           aria-hidden='true'
-          className='pointer-events-none absolute -top-8 -right-8 size-[120px] rounded-full border-2 border-white/20 shadow-[0_0_0_14px_rgba(255,255,255,0.06)]'
+          className='pointer-events-none absolute -top-8 -right-8 size-[120px] rounded-full border-2 border-white/20 shadow-tl-halo'
         />
       </header>
       <div className='flex items-center gap-3.5 px-5 pt-4'>

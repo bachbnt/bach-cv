@@ -27,6 +27,11 @@ export const SIGHT_IDS = [
   'hon-mun',
   'monkey-island',
   'ba-ho',
+  'do-theatre',
+  'co-tien',
+  'truc-lam',
+  'dong-bo',
+  'hon-ro',
 ] as const;
 export type SightId = (typeof SIGHT_IDS)[number];
 
@@ -49,9 +54,14 @@ export type SightArt =
   | 'hon-mot'
   | 'island-dive'
   | 'island-monkey'
-  | 'waterfall';
+  | 'waterfall'
+  | 'do-theatre'
+  | 'co-tien'
+  | 'zen-peak'
+  | 'dong-bo'
+  | 'hon-ro';
 
-export interface Sight {
+interface Sight {
   id: SightId;
   art: SightArt;
   lat: number;
@@ -60,6 +70,8 @@ export interface Sight {
   scale: number;
   /** Where the name tag sits against the drawing. */
   tag: 'left' | 'right' | 'below';
+  /** The drawing is a mountain: it takes the place of the plain mountain of the peak under it. */
+  onPeak?: true;
 }
 
 export const SIGHTS: readonly Sight[] = [
@@ -207,6 +219,50 @@ export const SIGHTS: readonly Sight[] = [
     scale: 1.1,
     tag: 'right',
   },
+  {
+    id: 'do-theatre',
+    art: 'do-theatre',
+    lat: 12.30059,
+    lng: 109.23734,
+    scale: 1.1,
+    tag: 'left',
+  },
+  {
+    id: 'co-tien',
+    art: 'co-tien',
+    lat: 12.29409,
+    lng: 109.20756,
+    scale: 1.8,
+    tag: 'below',
+    onPeak: true,
+  },
+  {
+    id: 'truc-lam',
+    art: 'zen-peak',
+    lat: 12.22762,
+    lng: 109.13005,
+    scale: 1.6,
+    tag: 'right',
+    onPeak: true,
+  },
+  {
+    id: 'dong-bo',
+    art: 'dong-bo',
+    lat: 12.16366,
+    lng: 109.14332,
+    scale: 2.1,
+    tag: 'right',
+    onPeak: true,
+  },
+  {
+    id: 'hon-ro',
+    art: 'hon-ro',
+    lat: 12.1925,
+    lng: 109.18448,
+    scale: 1.3,
+    tag: 'right',
+    onPeak: true,
+  },
 ];
 
 /**
@@ -219,8 +275,7 @@ export const CABLE_CAR = {
 } as const;
 
 /** Places that are off the map: a sign at its edge points to them (name and distance from the copy and the coordinates). */
-export const EDGE_IDS = ['cam-ranh', 'bai-dai', 'doc-let'] as const;
-export type EdgeId = (typeof EDGE_IDS)[number];
+type EdgeId = 'cam-ranh' | 'bai-dai' | 'doc-let';
 
 export const EDGE_SIGNS: readonly { id: EdgeId; lat: number; lng: number }[] = [
   { id: 'cam-ranh', lat: 11.9975, lng: 109.2189 },

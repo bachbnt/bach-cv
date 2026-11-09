@@ -21,7 +21,7 @@ export function PaymentStubButton({
       className={cn(
         'flex w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl px-1.5 py-2 text-center text-[11.5px]/[1.15] font-bold transition-[transform,box-shadow] hover:-translate-y-px active:scale-95 pointer-coarse:min-h-12 [&_svg]:size-[18px]',
         primary
-          ? 'bg-gradient-to-br from-tl-coral to-[color-mix(in_srgb,var(--tl-coral)_65%,#ffb44d)] text-tl-solid shadow-[0_8px_16px_-8px_var(--tl-coral)]'
+          ? 'bg-gradient-to-br from-tl-coral to-tl-coral-grad text-tl-solid shadow-[0_8px_16px_-8px_var(--tl-coral)]'
           : 'bg-tl-chip text-tl-chip-ink',
         className,
       )}
