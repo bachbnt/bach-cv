@@ -54,6 +54,27 @@ test.describe('the board', () => {
     expect(await family('English')).toMatch(/^"?Kalam/);
   });
 
+  test('the names of the languages are written the same in the menu of an English page and of a Vietnamese one', async ({
+    page,
+  }) => {
+    const families = async () => {
+      await gotoSkin(page, '/');
+      await page.getByRole('button', { name: /^(Language|Ngôn ngữ)/ }).click();
+      const family = (name: string) =>
+        page
+          .getByRole('menuitemradio', { name })
+          .locator('[lang]')
+          .evaluate((el) => getComputedStyle(el).fontFamily);
+      return [await family('English'), await family('Tiếng Việt')];
+    };
+    const [en, vi] = await families();
+    expect(en).toMatch(/^"?Kalam/);
+    expect(vi).toMatch(/^"?Patrick Hand/);
+    await page.keyboard.press('Escape');
+    await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
+    expect(await families()).toEqual([en, vi]);
+  });
+
   test('turns the page with the arrow keys and the foot of the page', async ({
     page,
   }) => {

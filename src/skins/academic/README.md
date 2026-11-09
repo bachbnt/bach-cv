@@ -22,7 +22,7 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
 2. **Fonts: three families.** A book serif for the text (Crimson Pro), handwriting for notes, labels, buttons and names on paper (Kalam) and a
    brush for the headings written on the board (Caveat Brush). The two handwriting fonts have no Vietnamese letters: in Vietnamese (`html:lang(vi)`) the notes,
    buttons and headings use Patrick Hand and Playpen Sans, which have. A portal sits outside `.ac-root`, so its content carries `ac-scope` and
-   `AC_FONT_VARS` (`ui/ac-fonts.ts`) to get the font variables. A Vietnamese word inside an English page (the name of the language in its own menu) carries `lang='vi'`, so the whole word takes the same two fonts, not a mix of Kalam and the letters of the other.
+   `AC_FONT_VARS` (`ui/ac-fonts.ts`) to get the font variables. The name of a language in the language menu carries its own `lang` (`en`, `vi`), so it takes the fonts of that language on a page of either one: the two menus match, and a Vietnamese name is not a mix of Kalam and the letters of the other font.
 3. **No mono, no hover-only information.** Hover is the Tailwind `hover:` variant (inside `@media (hover: hover)`). Every control has a pressed
    state and a 44 px target on touch (`pointer-coarse:`). The marks after the words of a button, the arrows and the close cross are strokes drawn
    with a round pen (`ui/ac-icon.tsx`), not typed characters (which come from whatever font has them) and not an icon library; a line you write on
@@ -36,9 +36,9 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
 6. **The contents list of the manuscript is on Home** (`blocks/home-contents.tsx`): the same pages as the tabs, with the same names and tags
    (`shell/use-page-labels.ts`), in the dotted-leader form of a book.
 7. **Wind.** Every sheet, note and photo of the board is lifted from behind when the pointer is over it (`.ac-wind` in `academic.css`: a small turn
-   about its top edge, held by the tape or the pin, then it settles): `AcPaper` has it by default, the photos and the cards that are not an `AcPaper`
-   carry the class. Not for a sheet with a field to type in (the contact form, `wind={false}`: it would shift under the hand), not for the paper
-   of a window, a menu or the toast (it is not pinned to the board), only where there is a hover, never with reduced motion.
+   about its top edge, held by the tape or the pin, then it settles), the contact form too: `AcPaper` has it by default, the photos and the
+   cards that are not an `AcPaper` carry the class. Not for the paper of a window, a menu or the toast (it is not pinned to the board), only
+   where there is a hover, never with reduced motion.
 8. **Content the mock had and Standard has not** was dropped or made decoration: the circled citations
    between roles and projects, the full-time/part-time label, the canned chat answers, the placeholder CV and QR dialogs, the moving tech strip
    (a still list of keywords, so there is no pause button to keep).

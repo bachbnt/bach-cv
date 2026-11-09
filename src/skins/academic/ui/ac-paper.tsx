@@ -30,7 +30,7 @@ export function AcPaper({
   ...props
 }: ComponentProps<'div'> &
   VariantProps<typeof paperVariants> & {
-    /** a breath of wind lifts it from behind when the pointer is over it: every sheet of the board has it, except one with a field to type in (`wind={false}`), which would shift under the hand */
+    /** a breath of wind lifts it from behind when the pointer is over it: every sheet of the board has it, the one with the contact form too (`wind={false}` is for a sheet that must stay put) */
     wind?: boolean;
   }) {
   return (

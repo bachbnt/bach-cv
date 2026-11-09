@@ -118,6 +118,15 @@ html:lang(vi) .ac-scope,
   --ac-note: var(--font-ac-patrick), 'Comic Sans MS', cursive;
   --ac-chalk: var(--font-ac-playpen), 'Comic Sans MS', cursive;
 }
+/* a word marked with its own language keeps that language's fonts on a page of the other one: the name of English in the menu of a Vietnamese
+   page is written like the name of English on an English page, so the two menus match */
+.ac-root [lang='en'],
+.ac-scope [lang='en'] {
+  --ac-note:
+    var(--font-ac-kalam), var(--font-ac-patrick), 'Comic Sans MS', cursive;
+  --ac-chalk:
+    var(--font-ac-chalk), var(--font-ac-playpen), 'Comic Sans MS', cursive;
+}
 
 /* the shadcn tokens in the Academic palette: Dialog, Sheet, DropdownMenu, Tooltip, Skeleton, ... follow the skin, also in a portal */
 html[data-skin='academic'] {

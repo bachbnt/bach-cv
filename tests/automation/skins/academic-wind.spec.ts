@@ -38,17 +38,19 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
     await expect(photo).toHaveCSS('transform', 'none');
   });
 
-  test('a sheet with controls in it is not moved under the pointer', async ({
+  test('the sheet with the contact form is lifted like the others, and the form still works under the pointer', async ({
     page,
   }) => {
     await gotoSkin(page, '/services');
-    const form = page.getByRole('button', { name: 'Send' });
-    await form.scrollIntoViewIfNeeded();
-    await form.hover();
-    await expect(page.locator('[data-slot="ac-paper"]:has(form)')).toHaveCSS(
-      'transform',
-      'none',
-    );
+    const sheet = page.locator('[data-slot="ac-paper"]:has(form)');
+    await expect(sheet).toHaveClass(/ac-wind/);
+    const send = page.getByRole('button', { name: 'Send' });
+    await send.scrollIntoViewIfNeeded();
+    await send.hover();
+    await expect(sheet).toHaveCSS('transform', /^matrix3d\(/);
+    const name = page.getByLabel('Name');
+    await name.fill('Ada');
+    await expect(name).toHaveValue('Ada');
   });
 
   for (const path of [
@@ -78,8 +80,6 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
                 '[role="dialog"], [role="menu"], .pointer-events-none',
               ) &&
               !el.closest('.ac-wind') &&
-              // a sheet with a field to type in would shift under the hand; one with a button or a link is lifted like the others
-              !el.querySelector('input, textarea, select') &&
               !el.classList.contains('ac-wind')
             );
           })
