@@ -37,6 +37,12 @@ describe('the list of skins', () => {
       }
     }
   });
+
+  it('names the Academic skin in Vietnamese by its meaning, not by the English word, and no skin name says "Giao diện"', () => {
+    expect(skinsCopy.vi.names.academic.name).toBe('Học thuật');
+    for (const id of SKIN_IDS)
+      expect(skinsCopy.vi.names[id].name).not.toMatch(/giao diện/i);
+  });
 });
 
 describe('the script in <head>', () => {

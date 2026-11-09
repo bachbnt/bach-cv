@@ -24,7 +24,7 @@ export const skinsCopy = defineCopy(
       standard: { name: 'Chuẩn', hint: 'Bảng màu cầu vồng' },
       dev: { name: 'Dev', hint: 'Trình soạn thảo code' },
       trade: { name: 'Trade', hint: 'Biểu đồ giao dịch' },
-      academic: { name: 'Academic', hint: 'Bảng đen và giấy' },
+      academic: { name: 'Học thuật', hint: 'Bảng đen và giấy' },
       travel: { name: 'Du lịch', hint: 'Bản đồ chuyến đi Nha Trang' },
     } satisfies Record<SkinId, { name: string; hint: string }>,
     loadFailed: 'Không tải được skin này. Đang hiển thị skin chuẩn.',
