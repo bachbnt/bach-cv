@@ -25,11 +25,11 @@ import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
 
 function StampsSkeleton() {
   return (
-    <div className='grid gap-4'>
+    <div className='grid grid-cols-1 gap-4'>
       {[0, 1, 2].map((i) => (
         <div key={i} className='flex items-center gap-3.5'>
           <TlSkeleton className='size-[88px] flex-none rounded-full' />
-          <div className='grid flex-1 gap-2'>
+          <div className='grid grid-cols-1 flex-1 gap-2'>
             <TlSkeleton className='h-4 w-4/5' />
             <TlSkeleton className='h-3 w-1/2' />
           </div>
@@ -77,7 +77,7 @@ export function PassportList() {
       >
         <ul
           aria-label={words.stampsLabel}
-          className='tl-ruled m-0 -mx-5 grid list-none gap-5 px-5 py-2 pb-3'
+          className='tl-ruled m-0 -mx-5 grid grid-cols-1 list-none gap-5 px-5 py-2 pb-3'
         >
           {items.map((certificate, i) => (
             <li key={certificate.id}>

@@ -205,3 +205,24 @@ test.describe('Home, the trip overview', () => {
     ).toHaveAttribute('aria-expanded', 'true');
   });
 });
+
+test.describe('the cards over the map', () => {
+  for (const width of [800, 1024, 1440]) {
+    for (const path of ['/', '/resume', '/about']) {
+      test(`${path} fits its card at ${width}px, with nothing cut at the right`, async ({
+        page,
+      }) => {
+        await page.setViewportSize({ width, height: 900 });
+        await gotoSkin(page, path);
+        const body = page.locator('.tl-panel .tl-scroll');
+        await expect(body).toBeVisible();
+        // a grid column that grows to its widest child pushes the text out of the card
+        const [scroll, client] = await body.evaluate((el) => [
+          el.scrollWidth,
+          el.clientWidth,
+        ]);
+        expect(scroll).toBeLessThanOrEqual(client);
+      });
+    }
+  }
+});

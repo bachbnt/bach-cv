@@ -145,7 +145,7 @@ export function TripStopCard({
                 </span>
               </button>
               {open && (
-                <ul className='m-0 mt-2 grid list-none gap-1.5 p-0'>
+                <ul className='m-0 mt-2 grid grid-cols-1 list-none gap-1.5 p-0'>
                   {career.job.bullets.map((bullet) => (
                     <li
                       key={bullet}
@@ -169,7 +169,7 @@ export function TripStopCard({
           <h3 className='mt-1 text-xl/[1.15] font-extrabold'>
             {career.school}
           </h3>
-          <div className='mt-2 grid gap-3'>
+          <div className='mt-2 grid grid-cols-1 gap-3'>
             {career.degrees.map((degree) => (
               <section
                 key={degree.id}

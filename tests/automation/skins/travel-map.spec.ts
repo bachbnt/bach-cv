@@ -56,6 +56,32 @@ test.describe('the map', () => {
     await expect.poll(() => viewTransform(page)).toBe(start);
   });
 
+  test('zoomed all the way out the map keeps its size, stands still and leaves the waves out, and zooming in brings them back', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const map = page.getByRole('group', { name: 'Trip map of Nha Trang' });
+    const box = await map.boundingBox();
+    await page.mouse.move(700, 400);
+    for (let i = 0; i < 30; i++) await page.mouse.wheel(0, 400);
+    await expect(map).toHaveClass(/tl-whole/);
+    // the state class must not resize the stage (it once shared its name with the far mountains of the sky)
+    expect(await map.boundingBox()).toEqual(box);
+    await expect(page.locator('.tl-waves')).toBeHidden();
+    await expect(page.locator('.tl-boat').first()).toHaveCSS(
+      'animation-play-state',
+      'paused',
+    );
+    await page.getByRole('button', { name: 'Zoom in' }).click();
+    await page.getByRole('button', { name: 'Zoom in' }).click();
+    await expect(map).not.toHaveClass(/tl-whole/);
+    await expect(page.locator('.tl-waves')).toBeVisible();
+    await expect(page.locator('.tl-boat').first()).toHaveCSS(
+      'animation-play-state',
+      'running',
+    );
+  });
+
   test('keys move the map when it has the focus', async ({ page }) => {
     await gotoSkin(page, '/');
     const map = page.getByRole('group', { name: 'Trip map of Nha Trang' });

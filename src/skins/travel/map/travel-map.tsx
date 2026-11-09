@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils';
 import {
   cameraTransform,
   fitBox,
+  showsWholeMap,
   spriteScale,
   zoomAt,
   type Camera,
@@ -40,6 +41,7 @@ import { MapControls } from '@/skins/travel/map/map-controls';
 import { worldOf } from '@/skins/travel/map/iso';
 import type { MapFocus, MapStop } from '@/skins/travel/map/types';
 import { useCamera } from '@/skins/travel/map/use-camera';
+import { useDeclutter } from '@/skins/travel/map/use-declutter';
 import { usePaused } from '@/skins/travel/map/use-paused';
 import { useSize } from '@/skins/travel/map/use-size';
 
@@ -148,6 +150,14 @@ export function TravelMap({
     set(target(focus), false);
   }, [ready, focus, set, target]);
 
+  useDeclutter(stage, ready && !moving && !flying, [
+    restZoom,
+    size,
+    routeOn,
+    stops,
+    activeId,
+  ]);
+
   const route = useMemo(
     () => COAST_ROAD.map(([x, y]) => `${x},${y}`).join(' '),
     [],
@@ -168,6 +178,7 @@ export function TravelMap({
         dragging && 'tl-dragging',
         moving && 'tl-moving',
         camera.z >= CLOSE_ZOOM && 'tl-close',
+        showsWholeMap(camera.z, size) && 'tl-whole',
         className,
       )}
       {...handlers}

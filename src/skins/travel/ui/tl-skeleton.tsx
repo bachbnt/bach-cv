@@ -34,7 +34,7 @@ export function TlRowsSkeleton({
   className?: string;
 }) {
   return (
-    <div className={cn('grid gap-3', className)}>
+    <div className={cn('grid grid-cols-1 gap-3', className)}>
       {Array.from({ length: count }, (_, i) => (
         <TlSkeleton key={i} className='h-16' />
       ))}

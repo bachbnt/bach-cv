@@ -139,7 +139,7 @@ export function ConnectMenu() {
                     className='h-px flex-1 border-t border-dashed border-tl-line'
                   />
                 </p>
-                <ul className='m-0 grid list-none gap-0.5 p-0'>
+                <ul className='m-0 grid grid-cols-1 list-none gap-0.5 p-0'>
                   {items.map((c) => (
                     <li key={c.id}>
                       <a

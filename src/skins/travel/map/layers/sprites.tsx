@@ -20,6 +20,13 @@ import { cn } from '@/lib/utils';
 
 type Words = (typeof travelMapCopy)['en'];
 
+/** The bigger a drawing, the better known the place: its name is kept first when tags would lie on each other. */
+const RANK = new Map(
+  [...SIGHTS]
+    .sort((a, b) => b.scale - a.scale)
+    .map((sight, index) => [sight.id, index] as const),
+);
+
 interface Placed {
   left: number;
   top: number;
@@ -92,6 +99,7 @@ export const Sprites = memo(function Sprites({ words }: { words: Words }) {
             key={sight.id}
             aria-hidden='true'
             data-sight={sight.id}
+            data-rank={RANK.get(sight.id)}
             className={cn('tl-sprite tl-sight', `tl-tag-${sight.tag}`)}
             style={
               {

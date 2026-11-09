@@ -42,7 +42,7 @@ export function HomePipeline() {
         {pipeline.title}
       </h2>
       <p className='m-0 mt-1 text-[13px] text-tl-muted'>{pipeline.subtitle}</p>
-      <ol className='m-0 mt-3 grid list-none gap-3 p-0'>
+      <ol className='m-0 mt-3 grid grid-cols-1 list-none gap-3 p-0'>
         {pipeline.steps.map((step, i) => (
           <li key={step.title} className='relative flex gap-3'>
             <span
@@ -100,7 +100,7 @@ export function HomeBuilds() {
         {copy.title}
       </h2>
       <p className='m-0 mb-2 text-[13px] text-tl-muted'>{copy.intro}</p>
-      <ul className='m-0 grid list-none gap-2 p-0'>
+      <ul className='m-0 grid grid-cols-1 list-none gap-2 p-0'>
         {copy.items.map((item, i) => (
           <li
             key={item.title}
@@ -192,7 +192,7 @@ export function HomeFeatured() {
           <TlRowsSkeleton count={2} />
         </div>
       ) : (
-        <ul className='m-0 grid list-none gap-2.5 p-0'>
+        <ul className='m-0 grid grid-cols-1 list-none gap-2.5 p-0'>
           {shown.map((project) => {
             const tags = skillsOf(project.technologies, byId);
             return (

@@ -7,7 +7,7 @@ html[data-skin='travel'] {
   --tl-night: 1;
   --tl-ink: #eef1ff;
   --tl-muted: #a9b1dc;
-  --tl-panel: rgba(22, 24, 64, 0.94);
+  --tl-panel: rgb(22, 24, 64);
   --tl-panel-2: rgba(40, 44, 100, 0.7);
   --tl-solid: #181b48;
   --tl-line: rgba(190, 200, 255, 0.16);
@@ -89,7 +89,7 @@ html[data-skin='travel']:not(.dark) {
   --tl-night: 0;
   --tl-ink: #0f2f44;
   --tl-muted: #4a6877;
-  --tl-panel: rgba(255, 255, 255, 0.95);
+  --tl-panel: rgb(255, 255, 255);
   --tl-panel-2: rgba(255, 255, 255, 0.62);
   --tl-solid: #ffffff;
   --tl-line: rgba(15, 47, 68, 0.12);

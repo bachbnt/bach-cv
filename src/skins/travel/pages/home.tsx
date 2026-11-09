@@ -25,7 +25,7 @@ export function HomePage() {
   return (
     <TlPage page='home'>
       <TlPanel side='left' labelledBy={HOME_TITLE_ID}>
-        <div className='grid gap-5 p-4 pt-2 md:p-5'>
+        <div className='grid grid-cols-1 gap-5 p-4 pt-2 md:p-5'>
           <HomeHero />
           <HomePipeline />
           <HomeLuggage />

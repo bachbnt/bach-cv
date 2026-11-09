@@ -34,7 +34,7 @@ export function ResumePage() {
   return (
     <TlPage page='resume'>
       <TlPanel side='right' labelledBy='tl-resume-title'>
-        <div className='grid gap-5 p-4 pt-2 md:p-5'>
+        <div className='grid grid-cols-1 gap-5 p-4 pt-2 md:p-5'>
           <header>
             <h1 id='tl-resume-title' className='m-0 text-2xl font-extrabold'>
               {copy.title}

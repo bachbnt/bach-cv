@@ -21,6 +21,13 @@ export const MAX_ZOOM = 2.4;
 export const minZoom = (size: Size): number =>
   Math.max(size.w / WORLD.width, size.h / WORLD.height, 0.05);
 
+/** Within this factor of the smallest zoom the whole map is on screen at once and its details are too small to see. */
+const WHOLE_FACTOR = 1.6;
+
+/** True when the camera is so far out that the whole map shows (`.tl-whole`): the map then stops what moves on it and drops the waves. */
+export const showsWholeMap = (z: number, size: Size): boolean =>
+  z <= minZoom(size) * WHOLE_FACTOR;
+
 /** Keeps the camera inside the world and its zoom inside the limits. */
 export function clampCamera(camera: Camera, size: Size): Camera {
   const z = Math.min(MAX_ZOOM, Math.max(minZoom(size), camera.z));

@@ -122,4 +122,17 @@ describe('the CSS of the Travel skin', () => {
     );
     expect(loose.map((r) => r.selector)).toEqual([]);
   });
+
+  it('keeps the state classes of the map for ancestors only, so no other rule can style the map itself through them', () => {
+    // a state class that is also a drawing class resized the whole map once (`tl-far` is the far mountains of the sky)
+    const states = ['tl-paused', 'tl-moving', 'tl-close', 'tl-whole'];
+    const styled = rules().flatMap((rule) =>
+      rule.selector
+        .split(',')
+        .map((part) => part.trim().split(/\s+/).pop() ?? '')
+        .filter((last) => states.some((name) => last.includes(`.${name}`)))
+        .map(() => rule.selector),
+    );
+    expect(styled).toEqual([]);
+  });
 });

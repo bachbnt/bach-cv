@@ -29,7 +29,10 @@ export function TourList({
   const query = useContentQuery('services');
   const services = query.data ?? [];
   const list = (
-    <ul aria-label={copy.list.label} className='m-0 grid list-none gap-2 p-0'>
+    <ul
+      aria-label={copy.list.label}
+      className='m-0 grid grid-cols-1 list-none gap-2 p-0'
+    >
       {services.map((service) => (
         <li key={service.id}>
           <TourCard
@@ -50,7 +53,7 @@ export function TourList({
       empty='services'
       subject='services'
       skeleton={
-        <div className='grid gap-2'>
+        <div className='grid grid-cols-1 gap-2'>
           {[0, 1, 2].map((i) => (
             <TlSkeleton key={i} className='h-[68px] rounded-2xl' />
           ))}

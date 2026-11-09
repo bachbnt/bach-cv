@@ -18,6 +18,7 @@ import {
 } from '@/skins/travel/config';
 import {
   clampCamera,
+  showsWholeMap,
   minZoom,
   zoomAt,
   MAX_ZOOM,
@@ -77,6 +78,13 @@ describe('the camera', () => {
       minZoom(size),
     );
     expect(clampCamera({ cx: 0, cy: 0, z: 99 }, size).z).toBe(MAX_ZOOM);
+  });
+
+  it('counts as far out only near the smallest zoom', () => {
+    expect(showsWholeMap(minZoom(size), size)).toBe(true);
+    expect(showsWholeMap(minZoom(size) * 1.5, size)).toBe(true);
+    expect(showsWholeMap(minZoom(size) * 2, size)).toBe(false);
+    expect(showsWholeMap(1, size)).toBe(false);
   });
 
   it('keeps the view inside the world', () => {

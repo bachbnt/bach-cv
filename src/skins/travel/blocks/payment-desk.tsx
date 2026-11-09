@@ -58,7 +58,7 @@ export function PaymentDesk() {
       }
       subject='payments'
       skeleton={
-        <div className='grid gap-4'>
+        <div className='grid grid-cols-1 gap-4'>
           <TlSkeleton className='h-36 rounded-3xl' />
           <TlSkeleton className='h-36 rounded-3xl' />
         </div>
@@ -119,7 +119,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
           <h2 id='tl-pay-featured' className='text-[17px] font-extrabold'>
             {rest.length ? copy.preferred : copy.details}
           </h2>
-          <div className='mt-3 grid gap-4'>
+          <div className='mt-3 grid grid-cols-1 gap-4'>
             {featured.map((m, i) => (
               <PaymentTicket
                 key={m.id}
@@ -169,7 +169,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
             exit='list-out'
             default='none'
           >
-            <ul className='m-0 mt-3 grid list-none gap-3.5 p-0'>
+            <ul className='m-0 mt-3 grid grid-cols-1 list-none gap-3.5 p-0'>
               {shownRows.map((m, i) => (
                 <PaymentTicketRow
                   key={m.id}

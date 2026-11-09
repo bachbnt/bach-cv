@@ -254,6 +254,13 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
   padding: 2px 8px;
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.2s ease-out,
+    opacity 0.15s;
+}
+/* a tag that would lie on a card of a stop or on a better-known tag is left out (see use-declutter.ts) */
+.tl-name.tl-off {
+  opacity: 0;
 }
 .tl-tag-left .tl-name {
   transform: translateX(calc(-100% - 10px)) scale(var(--tl-sc));
@@ -316,6 +323,14 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
   }
 }
 
+/* the sprites take their new size once the camera has stopped: they grow into it instead of jumping (that jump was seen as a flicker) */
+.tl-art,
+.tl-boat > *,
+.tl-pin-flag,
+.tl-traveller-in {
+  transition: transform 0.2s ease-out;
+}
+
 /* ---- pins of the stops */
 .tl-pin {
   pointer-events: none;
@@ -334,7 +349,9 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
   display: block;
   padding-bottom: 12px;
   cursor: pointer;
-  transition: scale 0.25s cubic-bezier(0.3, 1.5, 0.5, 1);
+  transition:
+    scale 0.25s cubic-bezier(0.3, 1.5, 0.5, 1),
+    transform 0.2s ease-out;
 }
 .tl-pin-head {
   position: relative;
@@ -572,6 +589,28 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 .tl-paused *::before,
 .tl-paused *::after {
   animation-play-state: paused !important;
+}
+
+/*
+ * Zoomed all the way out the whole map is on screen: every layer is in view, the two wave layers are as big as the map, and each loop
+ * that ends wakes the main thread. Nothing that moves there can be seen, so it stands still and the waves are not drawn. The animated
+ * parts are named one by one: a universal selector (and its pseudo-elements) is matched against every element at each style update.
+ */
+.tl-whole
+  :is(
+    .tl-boat,
+    .tl-gondola,
+    .tl-flag,
+    .tl-steam,
+    .tl-wheel,
+    .tl-pod,
+    .tl-dive,
+    .tl-bubble
+  ) {
+  animation-play-state: paused;
+}
+.tl-whole .tl-waves {
+  display: none;
 }
 
 /* a long name (a school) is cut inside its pin label instead of making the label wider than the map */

@@ -34,7 +34,7 @@ export function AboutPage() {
   return (
     <TlPage page='about'>
       <TlPanel side='left' labelledBy='tl-about-title'>
-        <div className='grid gap-5 p-4 pt-2 md:p-5'>
+        <div className='grid grid-cols-1 gap-5 p-4 pt-2 md:p-5'>
           <header className='flex items-center gap-3.5'>
             {shell.avatar && (
               <span className='relative size-20 flex-none overflow-hidden rounded-2xl border-[3px] border-tl-solid shadow-[0_6px_16px_-4px_rgba(0,0,0,.35),0_0_0_3px_var(--tl-coral)]'>
