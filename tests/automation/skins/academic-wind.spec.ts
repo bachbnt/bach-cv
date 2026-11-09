@@ -50,4 +50,43 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
       'none',
     );
   });
+
+  for (const path of [
+    '/',
+    '/about',
+    '/resume',
+    '/projects',
+    '/certificates',
+    '/services',
+    '/payment',
+  ]) {
+    test(`${path}: every photo and note with no control in it is lifted the same way`, async ({
+      page,
+    }) => {
+      await gotoSkin(page, path);
+      await page.waitForTimeout(1500);
+      const still = await page.evaluate(() => {
+        const paper =
+          '.ac-tape, .ac-sticky, [data-slot="ac-paper"], [class*="bg-ac-polaroid"]';
+        return [...document.querySelectorAll(paper)]
+          .filter((el) => {
+            const box = el.getBoundingClientRect();
+            return (
+              box.width > 0 &&
+              // a window, a menu and the toast are not pinned to the board; a photo inside one that is lifted moves with it
+              !el.closest(
+                '[role="dialog"], [role="menu"], .pointer-events-none',
+              ) &&
+              !el.closest('.ac-wind') &&
+              // a sheet with a field or a button in it would move under the pointer
+              !el.querySelector('button, a[href], input, textarea, select') &&
+              !el.matches('button, a') &&
+              !el.classList.contains('ac-wind')
+            );
+          })
+          .map((el) => (el.getAttribute('class') ?? '').slice(0, 60));
+      });
+      expect(still).toEqual([]);
+    });
+  }
 });
