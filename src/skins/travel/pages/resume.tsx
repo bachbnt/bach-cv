@@ -7,6 +7,7 @@
 import { resumeCopy } from '@/content/copy/resume';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { useCopy } from '@/lib/i18n/copy';
+import { useYearsText } from '@/lib/query/use-career-years';
 import { TripLuggage } from '@/skins/travel/blocks/trip-luggage';
 import { TripStopCard } from '@/skins/travel/blocks/trip-stop-card';
 import { TripStopList } from '@/skins/travel/blocks/trip-stop-list';
@@ -23,6 +24,7 @@ import { TlRowsSkeleton } from '@/skins/travel/ui/tl-skeleton';
 export function ResumePage() {
   const copy = useCopy(resumeCopy);
   const words = useCopy(travelTripCopy).resume;
+  const intro = useYearsText(copy.intro, copy.introUndated, { spelled: true });
   const { stops, selectedId, select, queries } = useTravel();
   const { experience, education } = queries;
   const currentId =
@@ -39,7 +41,7 @@ export function ResumePage() {
             <h1 id='tl-resume-title' className='m-0 text-2xl font-extrabold'>
               {copy.title}
             </h1>
-            <p className='m-0 mt-1 text-tl-muted'>{copy.intro}</p>
+            <p className='m-0 mt-1 text-tl-muted'>{intro}</p>
           </header>
           <TlDataState
             query={{
