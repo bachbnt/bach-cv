@@ -23,10 +23,12 @@ import {
   CableCarArt,
 } from '@/skins/travel/map/sprites/art-park';
 import {
-  IslandArt,
   IslandDiveArt,
   IslandMonkeyArt,
 } from '@/skins/travel/map/sprites/art-sea';
+import { HonMieuArt } from '@/skins/travel/map/sprites/art-sea-mieu';
+import { HonMotArt } from '@/skins/travel/map/sprites/art-sea-mot';
+import { HonTamArt } from '@/skins/travel/map/sprites/art-sea-tam';
 import {
   AquariumArt,
   DomeMarketArt,
@@ -46,7 +48,9 @@ const DRAWINGS: Partial<Record<ArtKind, () => ReactNode>> = {
   waterfall: WaterfallArt,
   'ferris-island': FerrisIslandArt,
   'cable-car': CableCarArt,
-  island: IslandArt,
+  'hon-mieu': HonMieuArt,
+  'hon-tam': HonTamArt,
+  'hon-mot': HonMotArt,
   'island-monkey': IslandMonkeyArt,
   'island-dive': IslandDiveArt,
   'twin-rocks': TwinRocksArt,

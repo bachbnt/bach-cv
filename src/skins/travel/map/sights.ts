@@ -44,9 +44,11 @@ export type SightArt =
   | 'hot-spring'
   | 'ferris-island'
   | 'cable-car'
-  | 'island'
-  | 'island-monkey'
+  | 'hon-mieu'
+  | 'hon-tam'
+  | 'hon-mot'
   | 'island-dive'
+  | 'island-monkey'
   | 'waterfall';
 
 export interface Sight {
@@ -159,7 +161,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-mieu',
-    art: 'island',
+    art: 'hon-mieu',
     lat: 12.1907,
     lng: 109.2249,
     scale: 0.9,
@@ -167,7 +169,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-tam',
-    art: 'island',
+    art: 'hon-tam',
     lat: 12.1765,
     lng: 109.2436,
     scale: 0.9,
@@ -175,7 +177,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-mot',
-    art: 'island',
+    art: 'hon-mot',
     lat: 12.1773,
     lng: 109.2743,
     scale: 0.9,
