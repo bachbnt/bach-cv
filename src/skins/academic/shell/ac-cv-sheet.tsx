@@ -89,7 +89,7 @@ function AcCvContent() {
   return (
     <>
       <div className='flex items-center justify-between gap-3 border-b-2 border-dashed border-ac-rule px-5 py-3 max-[720px]:px-3.5'>
-        <DialogTitle className='ac-line min-w-0 truncate font-ac-chalk text-[30px]/[1.1] font-normal [--ul:var(--ac-accent)] [--ac-line-y:-3px] max-[720px]:text-[24px]'>
+        <DialogTitle className='ac-line min-w-0 font-ac-chalk break-words text-[30px]/[1.1] font-normal [--ul:var(--ac-accent)] [--ac-line-y:-3px] max-[720px]:text-[24px]'>
           {title}
         </DialogTitle>
         <div className='flex flex-none items-center gap-2.5'>

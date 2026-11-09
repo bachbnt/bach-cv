@@ -30,6 +30,17 @@ test.describe('what an audit of the board found', () => {
     expect(box && viewport && box.y + box.height <= viewport.height).toBe(true);
   });
 
+  test('the title of the CV sheet does not cut its wavy underline', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await page.getByRole('button', { name: /CV/ }).first().click();
+    const title = page.getByRole('dialog').getByRole('heading').first();
+    await expect(title).toBeVisible();
+    // the underline hangs under the line box, so an `overflow` other than visible would cut it
+    await expect(title).toHaveCSS('overflow', 'visible');
+  });
+
   test('a note is squared paper from a spiral pad, held by a paper clip, with a highlighter pen over its first line', async ({
     page,
   }) => {
