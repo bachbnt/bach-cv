@@ -77,7 +77,11 @@ export function ContactSection({
           <div role='status' aria-live='polite' className='sr-only'>
             {form.announcement}
           </div>
-          <AcPaper kind='pinned' className='px-7 pt-8 pb-5 max-[560px]:px-5'>
+          <AcPaper
+            kind='pinned'
+            wind={false}
+            className='px-7 pt-8 pb-5 max-[560px]:px-5'
+          >
             {form.status === 'sent' ? (
               <ContactSent
                 name={form.sentTo.name}

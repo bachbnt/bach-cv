@@ -35,8 +35,10 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
    in software, the length of a role, how many services, the latest certificate); nothing is invented.
 6. **The contents list of the manuscript is on Home** (`blocks/home-contents.tsx`): the same pages as the tabs, with the same names and tags
    (`shell/use-page-labels.ts`), in the dotted-leader form of a book.
-7. **Wind.** A photo or a note is lifted from behind when the pointer is over it (`.ac-wind` in `academic.css`: a small turn about its top edge, held
-   by the tape or the pin, then it settles); not for a sheet that has controls in it, only where there is a hover, never with reduced motion.
+7. **Wind.** Every sheet, note and photo of the board is lifted from behind when the pointer is over it (`.ac-wind` in `academic.css`: a small turn
+   about its top edge, held by the tape or the pin, then it settles): `AcPaper` has it by default, the photos and the cards that are not an `AcPaper`
+   carry the class. Not for a sheet with a field to type in (the contact form, `wind={false}`: it would shift under the hand), not for the paper
+   of a window, a menu or the toast (it is not pinned to the board), only where there is a hover, never with reduced motion.
 8. **Content the mock had and Standard has not** was dropped or made decoration: the circled citations
    between roles and projects, the full-time/part-time label, the canned chat answers, the placeholder CV and QR dialogs, the moving tech strip
    (a still list of keywords, so there is no pause button to keep).

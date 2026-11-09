@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -60,7 +60,7 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
     '/services',
     '/payment',
   ]) {
-    test(`${path}: every photo and note with no control in it is lifted the same way`, async ({
+    test(`${path}: every sheet, note and photo of the board is lifted the same way`, async ({
       page,
     }) => {
       await gotoSkin(page, path);
@@ -78,9 +78,8 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
                 '[role="dialog"], [role="menu"], .pointer-events-none',
               ) &&
               !el.closest('.ac-wind') &&
-              // a sheet with a field or a button in it would move under the pointer
-              !el.querySelector('button, a[href], input, textarea, select') &&
-              !el.matches('button, a') &&
+              // a sheet with a field to type in would shift under the hand; one with a button or a link is lifted like the others
+              !el.querySelector('input, textarea, select') &&
               !el.classList.contains('ac-wind')
             );
           })
@@ -89,4 +88,36 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
       expect(still).toEqual([]);
     });
   }
+
+  test.describe('the screens that are not a page', () => {
+    const lifted = (page: Page) =>
+      page.locator('[data-slot="ac-paper"]').first();
+
+    test('the 404, Coming soon and the maintenance note are lifted like the other sheets', async ({
+      page,
+    }) => {
+      await gotoSkin(page, '/no-such-page');
+      await expect(lifted(page)).toHaveClass(/ac-wind/);
+      await expect(
+        page.getByRole('heading', { level: 1, name: /doesn't exist/i }),
+      ).toBeVisible();
+
+      await mockFirestore(page, { 'site/live': { pages: { resume: 'soon' } } });
+      await gotoSkin(page, '/resume');
+      await expect(
+        page.getByRole('heading', { level: 1, name: /coming soon/i }),
+      ).toBeVisible();
+      await expect(lifted(page)).toHaveClass(/ac-wind/);
+
+      await page.unroute('**/firestore.googleapis.com/**');
+      await mockFirestore(page, {
+        'site/live': {
+          maintenance: { enabled: true, message: 'Back soon', l10n: {} },
+        },
+      });
+      await gotoSkin(page, '/');
+      await expect(page.getByText('Back soon', { exact: true })).toBeVisible();
+      await expect(lifted(page)).toHaveClass(/ac-wind/);
+    });
+  });
 });
