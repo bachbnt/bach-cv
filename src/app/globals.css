@@ -5,6 +5,7 @@
 @import './tailwind-theme.css';
 @import './tailwind-theme-trade.css';
 @import './tailwind-theme-academic.css';
+@import './tailwind-theme-travel.css';
 
 /*
  * Palette from the design mockup: ink on a cool grey, one accent red, and a colour pair per page.

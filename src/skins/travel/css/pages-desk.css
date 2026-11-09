@@ -1,0 +1,34 @@
+/*
+ * Travel skin: the Payment page, the ticket counter. Prefix tl-, hover only inside @media (hover: hover).
+ * A ticket is two parts side by side, the main one and the stub; each has half circles bitten out of the corners that meet at the tear
+ * line, so the map (or the panel) shows through like on a real ticket.
+ */
+
+.tl-notch-r {
+  mask:
+    radial-gradient(circle 9px at 100% 0, #0000 98%, #000),
+    radial-gradient(circle 9px at 100% 100%, #0000 98%, #000);
+  mask-composite: intersect;
+}
+.tl-notch-l {
+  mask:
+    radial-gradient(circle 9px at 0 0, #0000 98%, #000),
+    radial-gradient(circle 9px at 0 100%, #0000 98%, #000);
+  mask-composite: intersect;
+}
+
+/* the counter: a bar of warm wood under the heading of the page (lighter at night, so it still shows) */
+.tl-counter {
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--tl-sun) 70%, var(--tl-soil)),
+    var(--tl-brick)
+  );
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--tl-brick) 45%, transparent);
+}
+html[data-skin='travel']:not(.dark) .tl-counter {
+  background: linear-gradient(to bottom, var(--tl-soil), var(--tl-soil-2));
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--tl-soil-2) 45%, transparent);
+}
