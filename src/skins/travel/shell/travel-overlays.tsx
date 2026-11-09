@@ -6,7 +6,7 @@
 
 import dynamic from 'next/dynamic';
 import { useChat } from '@/components/chat/chat-provider';
-import { useOnceTrue } from '@/skins/travel/shell/overlay-use-once';
+import { useOnceTrue } from '@/hooks/use-once-true';
 import { ChatLauncher } from '@/skins/travel/shell/overlay-chat-launcher';
 import { useTravel } from '@/skins/travel/shell/travel-context';
 

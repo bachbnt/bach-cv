@@ -4,11 +4,12 @@
 
 'use client';
 
+import { offeredLanguages } from '@/lib/derive/offered-languages';
 import { LayoutTemplate, Languages, Monitor, Moon, Sun } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { commonCopy } from '@/content/copy/common';
 import { skinsCopy } from '@/content/copy/skins';
-import { LANGS, type Lang } from '@/lib/content/schema';
+import type { Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -22,7 +23,7 @@ import { TlMenu } from '@/skins/travel/ui/tl-menu';
 export function LanguageMenu() {
   const copy = useCopy(commonCopy);
   const { lang, setLang } = useLang();
-  const options = LANGS.filter((code) => shell.languages.includes(code));
+  const options = offeredLanguages(shell.languages);
   const names: Record<Lang, string> = {
     en: copy.language.english,
     vi: copy.language.vietnamese,

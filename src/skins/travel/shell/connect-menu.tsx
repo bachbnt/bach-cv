@@ -4,6 +4,7 @@
 
 'use client';
 
+import { emailContact, socialContacts } from '@/lib/derive/contacts';
 import { ArrowUpRight, Check, Copy, MapPin, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import { BrandIcon, brandColor, brandName } from '@/components/brand-icon';
@@ -35,8 +36,8 @@ export function ConnectMenu() {
   const { data: contacts = [] } = useContentQuery('contacts');
   const { data: profile } = useProfileQuery();
   const { copied, copy } = useClipboard();
-  const email = contacts.find((c) => c.kind === 'email');
-  const social = contacts.filter((c) => c.kind === 'social' && c.url);
+  const email = emailContact(contacts);
+  const social = socialContacts(contacts);
 
   return (
     <Popover>

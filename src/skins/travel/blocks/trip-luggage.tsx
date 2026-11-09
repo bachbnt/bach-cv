@@ -4,6 +4,7 @@
 
 'use client';
 
+import { coreStack } from '@/lib/derive/core-stack';
 import { useState } from 'react';
 import { SkillIcon } from '@/components/skills/skill-icon';
 import { tipText } from '@/components/skills/skill-text';
@@ -33,7 +34,7 @@ export function TripLuggage({ coreOnly = false }: { coreOnly?: boolean }) {
   const { skills, evidence, isPending, isError, refetch } = useSkills();
   const [pickedId, setPickedId] = useState<string | null>(null);
   const picked = skills.find((s) => s.id === pickedId);
-  const core = skills.filter((s) => s.listed && s.highlight);
+  const core = coreStack(skills);
   const groups = ORDER.map((category) => ({
     category,
     items: skills.filter((s) => s.listed && s.category === category),

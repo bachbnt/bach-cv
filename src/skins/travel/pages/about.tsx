@@ -4,6 +4,7 @@
 
 'use client';
 
+import { visibleSpecialties } from '@/lib/derive/specialties';
 import { Route } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,7 +30,7 @@ export function AboutPage() {
   const copy = useCopy(aboutCopy);
   const words = useCopy(travelTripCopy).about;
   const { data: profile } = useProfileQuery();
-  const specialties = (profile?.specialties ?? []).filter((s) => s.visible);
+  const specialties = visibleSpecialties(profile);
   const photos = profile?.covers ?? [];
   return (
     <TlPage page='about'>

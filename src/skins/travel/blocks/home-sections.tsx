@@ -4,6 +4,7 @@
 
 'use client';
 
+import { emailContact, phoneContact } from '@/lib/derive/contacts';
 import { ArrowRight, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -251,8 +252,8 @@ export function HomeContact() {
   const contactsQuery = useContentQuery('contacts');
   const contacts = contactsQuery.data ?? [];
   const { data: profile } = useProfileQuery();
-  const email = contacts.find((c) => c.kind === 'email');
-  const phone = contacts.find((c) => c.kind === 'phone');
+  const email = emailContact(contacts);
+  const phone = phoneContact(contacts);
   return (
     <section
       id='contact'

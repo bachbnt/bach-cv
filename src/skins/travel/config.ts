@@ -2,6 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+import { shownPages } from '@/lib/derive/shown-pages';
 import type { LucideIcon } from 'lucide-react';
 import {
   Camera,
@@ -49,7 +50,7 @@ export interface NavItem {
 
 /** The pages the navigation shows: a hidden page is absent, a `soon` page is marked. */
 export function navItems(pages: Live['pages']): NavItem[] {
-  return NAV_ORDER.filter((page) => pages[page] !== 'hidden').map((page) => ({
+  return shownPages(pages, NAV_ORDER).map((page) => ({
     page,
     soon: pages[page] === 'soon',
   }));

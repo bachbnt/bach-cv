@@ -4,6 +4,7 @@
 
 'use client';
 
+import { highlighted } from '@/lib/derive/highlighted';
 import {
   BookOpen,
   CalendarDays,
@@ -103,25 +104,19 @@ export function TripStopCard({
               {career.job.summary || career.job.tagline}
             </p>
           )}
-          {career.job.projects
-            .filter((p) => p.highlight !== null)
-            .sort((a, b) => (a.highlight ?? 0) - (b.highlight ?? 0))
-            .map((project) => (
-              <div
-                key={project.name}
-                className='mt-3 rounded-xl bg-tl-chip p-3'
-              >
-                <TlChip className='bg-tl-solid'>
-                  {copy.experience.keyProject}
-                </TlChip>
-                <h4 className='mt-1.5 text-[15px] font-bold'>{project.name}</h4>
-                {project.description && (
-                  <p className='mt-0.5 text-[13.5px] text-tl-muted'>
-                    {project.description}
-                  </p>
-                )}
-              </div>
-            ))}
+          {highlighted(career.job.projects).map((project) => (
+            <div key={project.name} className='mt-3 rounded-xl bg-tl-chip p-3'>
+              <TlChip className='bg-tl-solid'>
+                {copy.experience.keyProject}
+              </TlChip>
+              <h4 className='mt-1.5 text-[15px] font-bold'>{project.name}</h4>
+              {project.description && (
+                <p className='mt-0.5 text-[13.5px] text-tl-muted'>
+                  {project.description}
+                </p>
+              )}
+            </div>
+          ))}
           {career.job.bullets.length > 0 && (
             <div className='mt-3'>
               <button
