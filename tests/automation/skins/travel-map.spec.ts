@@ -94,11 +94,14 @@ test.describe('the map', () => {
     const covered = () =>
       page.evaluate(() => {
         const box = (e: Element) => e.getBoundingClientRect();
+        // the card of a stop is only in the way while it is shown (the open stop's, or one that is pointed at)
         const cards = [
           ...document.querySelectorAll(
             '.tl-pin-head, .tl-pin-label, .tl-pin-flag',
           ),
-        ].map(box);
+        ]
+          .filter((e) => Number(getComputedStyle(e).opacity) > 0.5)
+          .map(box);
         return [...document.querySelectorAll('[data-label]')]
           .filter((tag) => {
             const name = tag.querySelector('.tl-name');
@@ -131,12 +134,54 @@ test.describe('the map', () => {
     expect(head && under && under.y >= head.y + head.height).toBe(true);
   });
 
+  test('the card of a stop shows when its pin is pointed at or its stop is open, not for every pin at once', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const cards = page.locator('.tl-pin-label');
+    const shown = () =>
+      cards.evaluateAll(
+        (all) =>
+          all.filter((e) => Number(getComputedStyle(e).opacity) > 0.5).length,
+      );
+    await expect(cards).toHaveCount(5);
+    // on Home the open stop is the destination, the current job: its card is shown and the others are only pins
+    expect(await shown()).toBe(1);
+    const pin = page.locator('.tl-pin-btn[aria-label^="Devblock Vietnam"]');
+    await pin.hover();
+    await expect.poll(shown).toBe(2);
+    await page.mouse.move(2, 2);
+    await expect.poll(shown).toBe(1);
+    await pin.focus();
+    await page.keyboard.press('Enter');
+    await expect.poll(shown).toBeGreaterThan(0);
+  });
+
+  test('the cabins of the cable car cross over the drawings and the names, under the pins', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const z = (selector: string) =>
+      page
+        .locator(selector)
+        .evaluateAll((all) =>
+          all.map((e) => Number(getComputedStyle(e).zIndex) || 0),
+        );
+    const cabins = await z('.tl-gondola');
+    expect(cabins).toHaveLength(2);
+    const under = [...(await z('[data-sight]')), ...(await z('[data-label]'))];
+    const over = await z('.tl-pin');
+    expect(Math.min(...cabins)).toBeGreaterThan(Math.max(...under));
+    expect(Math.max(...cabins)).toBeLessThan(Math.min(...over));
+  });
+
   test('keys move the map when it has the focus', async ({ page }) => {
     await gotoSkin(page, '/');
     const map = page.getByRole('group', { name: 'Trip map of Nha Trang' });
     await map.focus();
     const start = await viewTransform(page);
-    await page.keyboard.press('ArrowLeft');
+    // the overview frames the whole trip, from the south to the Do Theatre: the view starts at the west edge of the map
+    await page.keyboard.press('ArrowRight');
     await expect.poll(() => viewTransform(page)).not.toBe(start);
   });
 

@@ -58,7 +58,8 @@ export function useDeclutter(
         },
       );
       const pins = [...root.querySelectorAll<HTMLElement>('.tl-pin')];
-      for (const pin of pins) {
+      // only the card of the open stop is always shown: the others appear when a pin is pointed at
+      for (const pin of pins.filter((p) => p.hasAttribute('data-on'))) {
         const label = pin.querySelector('.tl-pin-label');
         const head = pin.querySelector('.tl-pin-head');
         if (!label || !head) continue;
@@ -66,7 +67,7 @@ export function useDeclutter(
           .filter((other) => other !== pin)
           .flatMap((other) => [
             ...other.querySelectorAll(
-              '.tl-pin-label, .tl-pin-head, .tl-pin-flag',
+              '.tl-pin[data-on] .tl-pin-label, .tl-pin-head, .tl-pin-flag',
             ),
           ])
           .map(boxOf);
@@ -111,7 +112,7 @@ export function useDeclutter(
       });
       const obstacles = [
         ...root.querySelectorAll(
-          '.tl-pin-head, .tl-pin-label, .tl-pin-flag, .tl-traveller-badge',
+          '.tl-pin-head, .tl-pin[data-on] .tl-pin-label, .tl-pin-flag, .tl-traveller-badge',
         ),
       ].map(boxOf);
       const placed = placeTags(

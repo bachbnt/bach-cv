@@ -50,11 +50,14 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   of a stop takes the side that covers the drawings less.
 - **Stations.** The stops are `routeStops()` of `lib/derive/route-stops.ts` (school first, then jobs by start month; a part-time job that
   overlaps a full-time job is a side trip). The rule that gives them a place (`map/route.ts`, `placeStops`): the stops on the main
-  road are spaced evenly along the real coast road (Tran Phu street, then Pham Van Dong road, from the OSM road graph) from the first in
-  the south to the current in the north; a side trip leaves the road at the main stop before it and ends on a spur toward the hills.
-  The road goes on past the end of the OSM coast road to the foot of Co Tien mountain (`NORTH_ROAD` in `map/route.ts`, the next points of
-  Pham Van Dong road), so the current job stands apart from the beach pins. The traveller (the owner's photo in a pin) rides along the
-  same road with the Web Animations API.
+  road take the places of `MAIN_PLACES` along the real coast road (Tran Phu street, then Pham Van Dong road, from the OSM road graph), in
+  the order of the career: two in the empty south, one across the Cai River north of Hon Chong, and the current one at the end of the road,
+  beside the Do Theatre. They are stretches with no sight beside them (a test keeps them clear), so the cards and the names do not cover
+  each other. A side trip takes a place of its own (the sandbank of the river beside Po Nagar, in the houses) and joins the road where it
+  is nearest; one more takes a spur toward the hills. With more stops than places they are spaced evenly. The road goes on past the end
+  of the OSM coast road to the Do Theatre (`NORTH_ROAD`, the next points of Pham Van Dong road). The card of a stop (its name and period)
+  shows when its pin is pointed at or focused, or for the stop that is open; the pin keeps its accessible name. The traveller (the
+  owner's photo in a pin) rides along the same road with the Web Animations API.
 - **Camera.** Drag, wheel, pinch, arrow keys, `+` and `-`; buttons for zoom and "show the whole trip"; the page and the open stop decide
   where it flies (`config.ts`, `PAGE_FOCUS`). Animations pause when the map is off screen, the tab is hidden or the visitor asked for
   less motion.

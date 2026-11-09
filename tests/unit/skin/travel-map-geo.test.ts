@@ -21,6 +21,7 @@ import {
 } from '@/skins/travel/map/projection';
 import { ROTATION, toWorld, worldOf } from '@/skins/travel/map/iso';
 import {
+  MAIN_PLACES,
   placeStops,
   pointAt,
   roadBetween,
@@ -260,7 +261,7 @@ describe('the coast road and the stations', () => {
       expect(onLand(stop.at.x, stop.at.y), stop.id).toBe(true);
   });
 
-  it('puts a side trip on a spur toward the hills, off the road, between its main stops', () => {
+  it('puts the side trip on the sandbank of the river beside Po Nagar, joined to the road near the bridge', () => {
     const [, , , side] = placeStops([
       { id: 'a', side: false },
       { id: 'b', side: false },
@@ -268,21 +269,91 @@ describe('the coast road and the stations', () => {
       { id: 'side', side: true },
       { id: 'd', side: false },
     ]);
-    expect(side.at.x).toBeLessThan(side.from.x);
+    const bank = project(12.2631, 109.1966);
+    expect(side.at).toEqual(bank);
+    expect(Math.hypot(side.from.x - bank.x, side.from.y - bank.y)).toBeLessThan(
+      100,
+    );
+    // it leaves the road at the bridge of Tran Phu, between the stop before the river and the one after it
+    expect(side.t).toBeGreaterThan(0.27);
+    expect(side.t).toBeLessThan(0.82);
+  });
+
+  it('gives a second side trip a spur toward the hills, off the road', () => {
+    const [, , , , second] = placeStops([
+      { id: 'a', side: false },
+      { id: 'b', side: false },
+      { id: 'c', side: false },
+      { id: 'side', side: true },
+      { id: 'again', side: true },
+      { id: 'd', side: false },
+    ]);
+    expect(second.at.x).toBeLessThan(second.from.x);
     expect(
-      Math.hypot(side.at.x - side.from.x, side.at.y - side.from.y),
+      Math.hypot(second.at.x - second.from.x, second.at.y - second.from.y),
     ).toBeGreaterThan(100);
+  });
+
+  it('stands the four stops of the main road on their places: two in the south, one across the river, the last at the Do Theatre', () => {
+    const main = placeStops(
+      ['a', 'b', 'c', 'd'].map((id) => ({ id, side: false })),
+    );
+    expect(main.map((s) => s.t)).toEqual([...MAIN_PLACES]);
+    const bridge = project(12.2617, 109.1992);
+    expect(main[0].at.y).toBeGreaterThan(bridge.y + 700);
+    expect(main[1].at.y).toBeGreaterThan(bridge.y + 400);
+    // across the river is north of the bridge
+    expect(main[2].at.y).toBeLessThan(bridge.y - 150);
+    const theatre = project(12.30059, 109.23734);
+    expect(
+      Math.hypot(main[3].at.x - theatre.x, main[3].at.y - theatre.y),
+    ).toBeLessThan(200);
+  });
+
+  it('spreads fewer stops over the places, the first in the south and the last at the Do Theatre, and spaces more stops along the road', () => {
+    const two = placeStops([
+      { id: 'a', side: false },
+      { id: 'b', side: false },
+    ]);
+    expect(two.map((s) => s.t)).toEqual([MAIN_PLACES[0], MAIN_PLACES[3]]);
+    const one = placeStops([{ id: 'only', side: false }]);
+    expect(one[0].t).toBe(MAIN_PLACES[3]);
+    const six = placeStops(
+      ['a', 'b', 'c', 'd', 'e', 'f'].map((id) => ({ id, side: false })),
+    );
+    const gaps = six.slice(1).map((s, i) => s.t - six[i].t);
+    for (const gap of gaps) expect(gap).toBeCloseTo(gaps[0], 6);
+  });
+
+  it('keeps every place of the main road clear of the sights, but the last, which is beside the Do Theatre on purpose', () => {
+    const near = (t: number) => {
+      const p = pointAt(t);
+      return Math.min(
+        ...SIGHTS.map(
+          (sight) =>
+            Math.hypot(
+              p.x - project(sight.lat, sight.lng).x,
+              p.y - project(sight.lat, sight.lng).y,
+            ) / Math.max(0.8, sight.scale),
+        ),
+      );
+    };
+    // a card of a pin is about as wide as the drawing of a sight: nearer than this they cover each other
+    for (const place of MAIN_PLACES.slice(0, -1))
+      expect(near(place), String(place)).toBeGreaterThan(100);
   });
 
   it('worldOf gives the same place as toWorld(project())', () => {
     expect(worldOf(12.25, 109.2)).toEqual(toWorld(project(12.25, 109.2)));
   });
 
-  it('takes the last pin on to the north, to the foot of Co Tien mountain, past the end of the coast road data', () => {
+  it('takes the last pin on to the north-east, to the Do Theatre, past the end of the coast road data', () => {
     const end = COAST_ROAD[COAST_ROAD.length - 1];
-    const last = pointAt(0.95);
-    const coTien = project(12.29409, 109.20756);
+    const last = pointAt(1);
+    const theatre = project(12.30059, 109.23734);
     expect(last.y).toBeLessThan(end[1] - 150);
-    expect(Math.hypot(last.x - coTien.x, last.y - coTien.y)).toBeLessThan(200);
+    expect(Math.hypot(last.x - theatre.x, last.y - theatre.y)).toBeLessThan(
+      200,
+    );
   });
 });
