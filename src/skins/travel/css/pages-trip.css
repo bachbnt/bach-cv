@@ -1,1 +1,40 @@
 /* Travel skin: pages-trip. Prefix tl-, hover only inside @media (hover: hover). */
+
+/* the traveller's page is put together as you watch: the portrait is stamped on, the specialties pop in one by one and the photos drop on
+   the table and settle (`--dl` is the turn of each one, `--from` the tilt a photo falls with). Only transform properties and opacity. */
+@keyframes tl-portrait-in {
+  from {
+    opacity: 0;
+    scale: 1.7;
+    rotate: -14deg;
+  }
+  60% {
+    opacity: 1;
+  }
+}
+.tl-portrait-in {
+  animation: tl-portrait-in 0.6s cubic-bezier(0.2, 1.5, 0.4, 1) backwards;
+}
+@keyframes tl-chip-in {
+  from {
+    opacity: 0;
+    scale: 0.6;
+    translate: 0 8px;
+  }
+}
+.tl-chip-in {
+  animation: tl-chip-in 0.42s cubic-bezier(0.2, 1.6, 0.4, 1) var(--dl, 0s)
+    backwards;
+}
+@keyframes tl-photo-in {
+  from {
+    opacity: 0;
+    scale: 1.08;
+    translate: 0 -30px;
+    rotate: var(--from, -8deg);
+  }
+}
+.tl-photo-in {
+  animation: tl-photo-in 0.7s cubic-bezier(0.2, 1.2, 0.4, 1) var(--dl, 0s)
+    backwards;
+}

@@ -36,20 +36,26 @@ export function Header() {
   const { openCv } = useTravel();
   const headline = localize(shell, lang).headline;
   return (
-    <header className='tl-header relative z-30 flex md:col-span-2 items-center gap-2 border-b border-tl-line bg-tl-panel px-3 md:gap-3 md:px-4'>
+    <header className='tl-header relative z-30 flex items-center gap-2 border-b border-tl-line bg-tl-panel px-3 md:col-span-2 md:gap-3 md:px-4'>
       <Link
         href='/'
         aria-label={fill(common.homeLink, { name: shell.name })}
         className='flex min-w-0 items-center gap-2.5 rounded-xl'
       >
-        <Image
-          src='/logo.png'
-          alt=''
-          width={34}
-          height={32}
-          priority
-          className='h-auto w-[34px] rounded-[10px]'
-        />
+        {/* the owner's mark as a stamp stuck on the bar */}
+        <span
+          aria-hidden='true'
+          className='grid size-10 flex-none -rotate-3 place-items-center rounded-[5px] border-2 border-dashed border-tl-coral/60 bg-tl-solid shadow-tl-card'
+        >
+          <Image
+            src='/logo.png'
+            alt=''
+            width={30}
+            height={28}
+            priority
+            className='h-auto w-[26px]'
+          />
+        </span>
         <span className='flex min-w-0 flex-col max-sm:hidden'>
           <b className='truncate text-[15px]/[1.2] font-extrabold'>
             {shell.name}
@@ -64,6 +70,7 @@ export function Header() {
       {features.cvDownload && (
         <TlButton
           id={CV_TRIGGER_ID}
+          variant='solid'
           aria-haspopup='dialog'
           onClick={openCv}
           aria-label={common.downloadCv}
@@ -89,6 +96,8 @@ export function Header() {
       <LanguageMenu />
       <SkinMenu />
       <ThemeMenu />
+      {/* the road of the trip along the bottom edge of the bar */}
+      <span aria-hidden='true' className='tl-road' />
     </header>
   );
 }

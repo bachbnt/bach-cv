@@ -186,6 +186,15 @@ test.describe('the BB Bot card', () => {
     await expect(
       chips.getByRole('button', { name: 'Which stack do you use?' }),
     ).toHaveCount(0);
+    // the lines rise into place; measure them once they have stopped
+    await panel.evaluate((el) =>
+      Promise.all(
+        el
+          .getAnimations({ subtree: true })
+          .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
+          .map((a) => a.finished),
+      ),
+    );
     const answer = await panel
       .getByText('Kotlin, KMM and React Native.')
       .boundingBox();

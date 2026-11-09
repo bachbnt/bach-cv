@@ -162,7 +162,8 @@ describe('the CSS of the Travel skin', () => {
         !stopped.includes(name) &&
         // a modifier of a looping class (a delay) is covered by the class it modifies
         !/-\d$/.test(name) &&
-        !/^tl-(live|spin|rise|stamp|dive-bob)/.test(name),
+        // the dot that walks while the BB Bot answers is in its card, not on the map, and runs only during the wait
+        !/^tl-(live|spin|rise|stamp|dive-bob|guide-walk)/.test(name),
     );
     expect(left).toEqual([]);
   });

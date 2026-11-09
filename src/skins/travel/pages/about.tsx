@@ -8,11 +8,13 @@ import { visibleSpecialties } from '@/lib/derive/specialties';
 import { Route } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import { aboutCopy } from '@/content/copy/about';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useProfileQuery } from '@/lib/query/use-content';
+import { cn } from '@/lib/utils';
 import { TripLuggage } from '@/skins/travel/blocks/trip-luggage';
 import { TlButtonLink } from '@/skins/travel/ui/tl-button';
 import { TlChip } from '@/skins/travel/ui/tl-chip';
@@ -39,7 +41,7 @@ export function AboutPage() {
         <div className='grid grid-cols-1 gap-5 p-4 pt-2 md:p-5'>
           <header className='flex items-center gap-3.5'>
             {shell.avatar && (
-              <span className='relative size-20 flex-none overflow-hidden rounded-2xl border-[3px] border-tl-solid shadow-tl-avatar'>
+              <span className='tl-portrait-in relative size-20 flex-none overflow-hidden rounded-2xl border-[3px] border-tl-solid shadow-tl-avatar'>
                 <Image
                   src={shell.avatar}
                   alt={`${copy.avatarAlt} ${shell.name}`}
@@ -50,7 +52,10 @@ export function AboutPage() {
                 />
               </span>
             )}
-            <div className='min-w-0'>
+            <div
+              className='tl-rise min-w-0'
+              style={{ animationDelay: '120ms' }}
+            >
               <TlKicker>{words.passport}</TlKicker>
               <h1
                 id='tl-about-title'
@@ -70,8 +75,12 @@ export function AboutPage() {
           )}
           {specialties.length > 0 && (
             <ul className='m-0 flex list-none flex-wrap gap-2 p-0'>
-              {specialties.map((s) => (
-                <li key={s.name}>
+              {specialties.map((s, i) => (
+                <li
+                  key={s.name}
+                  className='tl-chip-in'
+                  style={{ '--dl': `${260 + i * 80}ms` } as CSSProperties}
+                >
                   <TlChip
                     color={TONE_STOP[s.tone]}
                     className='px-3 py-1.5 text-[13px]'
@@ -87,7 +96,16 @@ export function AboutPage() {
               {photos.slice(0, 2).map((src, i) => (
                 <li
                   key={src}
-                  className={`relative h-28 overflow-hidden rounded-xl bg-tl-chip ${i % 2 ? 'rotate-[1.5deg]' : '-rotate-[1.5deg]'} border-4 border-tl-solid shadow-tl-card`}
+                  style={
+                    {
+                      '--dl': `${520 + i * 140}ms`,
+                      '--from': i % 2 ? '9deg' : '-9deg',
+                    } as CSSProperties
+                  }
+                  className={cn(
+                    'tl-photo-in relative h-28 overflow-hidden rounded-xl border-4 border-tl-solid bg-tl-chip shadow-tl-card transition-[rotate,translate] hover:-translate-y-1 hover:rotate-0',
+                    i % 2 ? 'rotate-[1.5deg]' : '-rotate-[1.5deg]',
+                  )}
                 >
                   <Image
                     src={src}

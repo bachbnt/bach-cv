@@ -305,3 +305,17 @@ html[data-skin='travel'] {
     transition: none !important;
   }
 }
+
+/* the road of the trip along the bottom edge of the header: the dashes of the route on the map, over its line */
+.tl-road {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -2px;
+  height: 3px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--tl-coral) 75%, transparent) 0 8px,
+    transparent 8px 18px
+  );
+}

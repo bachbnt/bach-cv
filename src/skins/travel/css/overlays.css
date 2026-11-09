@@ -78,3 +78,47 @@
   border-radius: 4px;
   box-shadow: 0 6px 12px -6px color-mix(in srgb, var(--tl-ink) 35%, transparent);
 }
+
+/* the BB Bot, the travel guide: the head of the card has the contour lines of a map around its corner, the conversation is a dashed
+   route that runs down the left (each answer of the guide is a stop on it, and it scrolls with the messages), the visitor's lines are
+   luggage tags with a hole punched in them, and the wait is a traveller walking a short stretch of the road */
+.tl-guide-head {
+  background:
+    repeating-radial-gradient(
+      circle at 100% 0,
+      transparent 0 11px,
+      color-mix(in srgb, var(--tl-coral) 18%, transparent) 11px 12px
+    ),
+    var(--tl-chip);
+}
+.tl-guide-log {
+  background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--tl-coral) 55%, transparent) 0 6px,
+      transparent 6px
+    )
+    17px 0 / 2px 12px repeat-y local;
+}
+.tl-guide-tag {
+  position: relative;
+  mask: radial-gradient(circle 4.5px at 13px 50%, #0000 98%, #000);
+}
+.tl-guide-tag::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1.5px dashed color-mix(in srgb, var(--tl-solid) 50%, transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+@keyframes tl-guide-walk {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(44px);
+  }
+}
+.tl-guide-walk {
+  animation: tl-guide-walk 1.2s ease-in-out infinite alternate;
+}

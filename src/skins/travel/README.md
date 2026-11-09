@@ -62,6 +62,20 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   where it flies (`config.ts`, `PAGE_FOCUS`). Animations pause when the map is off screen, the tab is hidden or the visitor asked for
   less motion.
 
+## The frame and the windows
+
+- **Header.** The owner's logo is a stamp on the bar, Download CV is the one coral call to action, and the bottom edge of the bar is a dashed
+  road (`tl-road`) like the route on the map. Order of the menus is still Language, Skin, Theme.
+- **BB Bot** (`shell/overlay-chat-*.tsx`): the travel guide as the road of the conversation. The head has the contour lines of a map and the
+  logo as a pin; in the log a dashed route runs down the left, the guide's answers are stops on it, the visitor's questions are luggage tags
+  with a punched hole, the wait is a dot walking a few dashes (`tl-guide-walk`, the only loop of the card, it runs only during the wait), the
+  questions not asked yet are tags to pick, the send button is a stamp, and the limit of messages is a stretch of road that fills up. The launcher
+  is a map pin. The session, limits, errors and Try again are the Standard ones (`useChatSession`).
+- **Connect** is a postcard (airmail edge, the owner's photo as the stamp, the email as the address) and every link is a stamp with a
+  dashed edge, grouped as in Standard.
+- **About** is put together as you watch (`tl-portrait-in`, `tl-chip-in`, `tl-photo-in`): the portrait is stamped on, the specialties pop in one by
+  one and the photos drop on the table. Only transform properties and opacity move, and reduced motion shows the final page.
+
 ## Files
 
 ```

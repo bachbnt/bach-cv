@@ -142,9 +142,10 @@ export function ConnectMenu() {
                     className='h-px flex-1 border-t border-dashed border-tl-line'
                   />
                 </p>
-                <ul className='m-0 grid grid-cols-1 list-none gap-0.5 p-0'>
+                <ul className='m-0 grid grid-cols-2 list-none gap-2 p-0'>
                   {items.map((c) => (
-                    <li key={c.id}>
+                    <li key={c.id} className='last:odd:col-span-2'>
+                      {/* a stamp of the postcard: a dashed edge, the mark of the network, its name and the handle */}
                       <a
                         href={c.url}
                         target='_blank'
@@ -154,29 +155,31 @@ export function ConnectMenu() {
                             '--c': brandColor(c.platform),
                           } as React.CSSProperties
                         }
-                        className='group/item flex min-h-[52px] items-center gap-3 rounded-2xl p-2 text-tl-ink no-underline transition-colors hover:bg-tl-chip focus-visible:bg-tl-chip pointer-coarse:min-h-14'
+                        className='group/item flex h-full min-h-[84px] flex-col justify-between gap-2 rounded-lg border-2 border-dashed border-tl-line bg-tl-solid p-2.5 text-tl-ink no-underline transition-[transform,border-color,background-color] hover:-translate-y-px hover:border-tl-coral hover:bg-tl-chip focus-visible:bg-tl-chip active:scale-[0.98] pointer-coarse:min-h-[92px]'
                       >
-                        <span
-                          aria-hidden='true'
-                          className='grid size-9 flex-none place-items-center rounded-full bg-[color-mix(in_srgb,var(--c)_14%,var(--tl-solid))] text-[color-mix(in_srgb,var(--c)_72%,var(--tl-ink))]'
-                        >
-                          <BrandIcon
-                            platform={c.platform}
-                            className='size-[18px]'
+                        <span className='flex items-start justify-between'>
+                          <span
+                            aria-hidden='true'
+                            className='grid size-9 flex-none place-items-center rounded-full bg-[color-mix(in_srgb,var(--c)_14%,var(--tl-solid))] text-[color-mix(in_srgb,var(--c)_72%,var(--tl-ink))]'
+                          >
+                            <BrandIcon
+                              platform={c.platform}
+                              className='size-[18px]'
+                            />
+                          </span>
+                          <ArrowUpRight
+                            aria-hidden='true'
+                            className='size-4 flex-none text-tl-muted'
                           />
                         </span>
-                        <span className='flex min-w-0 flex-1 flex-col'>
-                          <span className='text-[14.5px] font-bold'>
+                        <span className='flex min-w-0 flex-col'>
+                          <span className='text-[14.5px]/[1.2] font-bold'>
                             {brandName(c.platform)}
                           </span>
                           <span className='truncate text-[13px] text-tl-muted'>
                             {c.label}
                           </span>
                         </span>
-                        <ArrowUpRight
-                          aria-hidden='true'
-                          className='size-4 flex-none text-tl-muted'
-                        />
                       </a>
                     </li>
                   ))}
