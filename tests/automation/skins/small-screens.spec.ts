@@ -3,6 +3,7 @@
  */
 
 import { expect, test } from '@playwright/test';
+import { SKIN_IDS } from '@/lib/skin/skins';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -67,14 +68,17 @@ for (const size of SIZES) {
         expect(right).toBeLessThanOrEqual(rects.right - 15);
       if (rects.downloadTop !== null)
         expect(rects.downloadTop - rects.themeBottom).toBeGreaterThanOrEqual(8);
-      // the three skins are one row and every name is whole
+      // the skins are in even rows (three to a row, or two when the count is not a multiple of three) and every name is whole
       const names = await skin.evaluate((el) =>
         [...el.querySelectorAll('button')].map((b) => ({
           top: Math.round(b.getBoundingClientRect().top),
           clipped: b.scrollWidth - b.clientWidth,
         })),
       );
-      expect(new Set(names.map((n) => n.top)).size).toBe(1);
+      const perRow = SKIN_IDS.length % 3 === 0 ? 3 : 2;
+      expect(new Set(names.map((n) => n.top)).size).toBe(
+        Math.ceil(SKIN_IDS.length / perRow),
+      );
       for (const n of names) expect(n.clipped).toBeLessThanOrEqual(0);
     });
 

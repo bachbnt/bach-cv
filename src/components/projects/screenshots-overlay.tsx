@@ -6,7 +6,7 @@
 
 import { ImageIcon } from 'lucide-react';
 import { MediaBadge } from '@/components/media-badge';
-import { fillCopy } from '@/components/projects/project-helpers';
+import { screenshotsLabel } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
@@ -14,10 +14,7 @@ import type { Doc } from '@/lib/content/schema';
 /** "6 screenshots" / "1 screenshot", in the visitor's language. */
 function useScreenshotsLabel(project: Doc<'projects'>) {
   const copy = useCopy(projectsCopy);
-  const count = project.images.length;
-  return count === 1
-    ? copy.screenshotsOne
-    : fillCopy(copy.screenshotsMany, { count });
+  return screenshotsLabel(project.images.length, copy);
 }
 
 /**

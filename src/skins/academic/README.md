@@ -1,0 +1,100 @@
+# The Academic skin
+
+The site as a **chalkboard** (dark theme) or a **whiteboard** (light theme) with an annotated manuscript pinned to it: each page is a part of a
+manuscript, a hand-written margin runs down the right of the page, paper (the abstract, the reviewers' cards, a sticky note, the chat slip) is
+pinned or taped to the board, and an eraser wipes one page away for the next. It is one of the **skins** of the site (see `src/skins/types.ts`
+and `.ai/skins.md`); the visitor picks it in the header and the URL does not change. Id `academic`, class prefix `ac-`, colours `ac-*`.
+
+Same information and features as Standard; only the presentation is its own. The look was designed as a mock (`design/skins/academic-*.html`) and
+the real content, copy and behaviour were read from the Standard components, like every skin.
+
+## The tabs keep the Standard names
+
+The pages are Home, About, Resume, Projects, Certificates, Services and Payment, in the tabs, the page titles and the page turns. The word of
+the manuscript that goes with a page (Abstract, Authors, Results, References, Peer review, Proposal, Funding; `content/copy/academic.ts`, en and
+vi) is a small kicker above the title (`§ Results`), decoration, so nothing is hard to find.
+
+## Rules of the skin
+
+1. **Paper has its own ink.** The board is `ac-board` with chalk-white (dark) or marker-black (light) ink. Anything on paper (`.ac-paper`,
+   `AcPaper`) redefines `--ac-ink`, `--ac-mute`, `--ac-accent`, `--ac-link`, `--ac-rule` to the ink of paper, so `text-ac-ink` is dark inside it
+   in both themes. A dialog is paper too (`shell/ac-viewer`, `ac-chat-sheet`, `ac-cv-sheet`, the menus).
+2. **Fonts.** A book serif for the text (Crimson Pro), handwriting for notes and buttons (Kalam), a brush for names on paper (Caveat) and for
+   headings written on the board (Caveat Brush). The handwriting fonts have no Vietnamese letters: in Vietnamese (`html:lang(vi)`) the notes,
+   buttons and headings use Patrick Hand and Playpen Sans, which have. A portal sits outside `.ac-root`, so it is wrapped in `AcScope`
+   (`ui/ac-root.tsx`) to get the font variables.
+3. **No mono, no hover-only information.** Hover is the Tailwind `hover:` variant (inside `@media (hover: hover)`). Every control has a pressed
+   state and a 44 px target on touch (`pointer-coarse:`).
+4. **Tallies are only for years.** In the skills table of Resume a skill carries one stroke for each year it was used (months / 12, rounded up;
+   four strokes and a crossing stroke make five, `lib/derive/tally.ts`). The exact months are always the text beside it; the tally is
+   `aria-hidden`. Services and Payment show plain numbers.
+5. **Margin notes are real text.** `AcRow` ties a block to its note with `aria-describedby`; on a wide screen the note stands in the right margin
+   with a bracket and an arrow, on a phone it folds under the block. A note only says what is derived from real data (the current role, the years
+   in software, the length of a role, how many services, the latest certificate); nothing is invented.
+6. **Content the mock had and Standard has not** was dropped or made decoration: the contents list (the tabs do that), the circled citations
+   between roles and projects, the full-time/part-time label, the canned chat answers, the placeholder CV and QR dialogs, the moving tech strip
+   (a still list of keywords, so there is no pause button to keep).
+
+## Page change: the eraser
+
+`shell/use-eraser-wipe.ts` copies the page that is on screen when the visitor chooses another (a click on a link of the skin or an arrow key,
+`shell/pager.tsx`), and when the new page has mounted an eraser crosses the board along an arc around a pivot below it (about 0.6 s), leaving a
+hazy swath where the old page is gone; then the swath swells to the corners (about 0.7 s, 1.2 s in all). The old page is the copy, fixed over the
+board, inert and `aria-hidden` (class `ac-ghost`, no ids), and the new page is masked in behind the eraser. Each board needs only two mask layers
+(a radial-gradient ring around the pivot and a conic-gradient sector: a row of many gradients janked), so a frame takes the 16.7 ms of the display.
+The arithmetic is pure and tested (`shell/wipe-geometry.ts`, `tests/unit/skin/academic-wipe.test.ts`). No wipe on the first render, with
+reduced motion, for an anchor jump, for back/forward of the browser (they fall back to the foundation's fade, `ac-vt-in` / `ac-vt-out`), or when
+the old page is not on screen; a second change during a wipe ends the first at once.
+
+## Where things are
+
+```text
+skin.tsx            SkinDefinition: Frame (AcademicShell) + one component for each page + NotFound + Maintenance
+academic.css        the palette (dark = chalkboard, light = whiteboard), the shadcn tokens, the board and its frame, paper, tape, pins, the hand-drawn line,
+                    the ledge, keyframes and reduced motion
+css/<area>.css      pseudo-element decoration of an area (home-about, overlays, wipe), imported by the component that needs it
+config.ts           the pages that are shown (`site/live`), the page before and after one
+fonts.ts            next/font declarations (preload false, so they load only with the skin)
+shell/              the frame: header (language, skin, theme, Connect, CV), contents (tabs), pager, ledge with the chat slip, the overlays host
+                    (viewer, chat, CV sheet, toast), the eraser wipe
+pages/<page>.tsx    one file for each page: AcPage + AcPageHead + the blocks
+blocks/             the parts of a page (named for their page)
+ui/                 ac-root, ac-page, ac-page-head, ac-section (chalk headings), ac-note (AcRow, a block with its margin note), ac-paper, ac-button,
+                    ac-chip, ac-menu, ac-data-state, ac-state-notice, ac-skeleton, status screens
+```
+
+Words only this skin has: `content/copy/academic*.ts` (shell, home and about, resume, projects, certificates and services, payment,
+overlays), en and vi; Standard's own copy is reused wherever Standard has the word.
+
+## Styling
+
+- Tailwind utilities with the `ac-*` theme colours (`bg-ac-sheet`, `text-ac-mute`) and fonts (`font-ac-chalk`, `font-ac-note`, `font-ac-hand`,
+  `font-ac-serif`) of `app/tailwind-theme-academic.css`; their values live once on `html[data-skin='academic']` in `academic.css`, so portals
+  see them. The shadcn tokens are mapped to the same palette there, so the shadcn components follow the skin.
+- CSS only for what utilities do not say: the palette, the board and its frame, paper grain, tape and pins, the wavy hand-drawn line (a mask),
+  the ledge, keyframes. Classes have the prefix `ac-`. CSS outside a layer beats utilities on the same element, so no rule is left that targets an
+  element which also carries utilities.
+
+## Data
+
+Components never import Firebase. The pages read through `@/lib/query/use-content`, `@/hooks/use-live`, `components/skills/use-skills`,
+`components/cv/use-cv`, `components/services/use-contact-form`, `components/chat/use-chat-session`, `components/payment/*` and the helpers of
+`components/projects/project-helpers.ts`. What more than one place needs is in `src/lib/derive/` (`tally`, `career-timeline`, `payment-kinds`
+were added for this skin). The chat, the CV and the payments are Standard's logic in this skin's windows.
+
+## Things to know
+
+- **CSP.** The only request the viewer makes to the host of a picture is the one of **Save QR**, the same `saveQr` as Standard's QR dialog
+  (`components/payment/save-qr.ts`): a `fetch` of the image to save it, and when the browser or the policy of the live site refuses it, the
+  picture opens in a new tab and the toast says so. There is no HEAD for the weight of a picture. `academic-payment.spec.ts` covers both.
+- The page's server-rendered content is not used in a skin: `SkinFrame` renders `skins/academic/pages/<page>`.
+- Standard's floating chat button is not shown in a skin: the slip on the ledge opens the same chat (`useChat`).
+- The only things the skin keeps in the browser are the choice of skin (`bach-cv-skin`), the language and the theme, like Standard.
+
+## Tests
+
+- Unit (`tests/unit/skin/academic-*.test.ts`, `tests/unit/lib/derive/{tally,career-timeline,payment-kinds}.test.ts`): the page turns, the timeline
+  model, the skills table (filter, sort), the screenshots of a project, the geometry of the eraser, the tally.
+- Playwright (`tests/automation/skins/academic-*.spec.ts`): the frame and the menus (shell), each page with real data, its states (loading,
+  error with Try again, empty), `soon` and `hidden`, Vietnamese, 390 px without a horizontal scroll, the overlays (viewer, chat, CV, Connect), the
+  eraser.

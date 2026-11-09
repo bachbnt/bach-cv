@@ -66,3 +66,12 @@ export const skillsOf = (
 /** The tag colour of a skill category, as on the mockup: mobile green, web blue, AI violet, tools amber. */
 export const toneOf = (category: Doc<'skills'>['category']): TagTone =>
   category;
+
+/** "6 screenshots" or "1 screenshot": the name of the button that opens a project's pictures, from the slots of the copy. */
+export const screenshotsLabel = (
+  count: number,
+  words: { screenshotsOne: string; screenshotsMany: string },
+) =>
+  count === 1
+    ? words.screenshotsOne
+    : fillCopy(words.screenshotsMany, { count });

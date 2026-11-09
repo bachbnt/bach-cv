@@ -1,0 +1,99 @@
+/*
+ * The windows of the Academic skin (chat, viewer, CV sheet): what utilities do not say. Every class has the prefix ac- and the paper itself
+ * is `ac-paper` of academic.css. The notepad is lined paper with a red margin line and punched holes; it unfolds from the slip on the ledge.
+ */
+
+/* the chat: lined notepaper. The lines are the background of the log, so a line of text sits on a ruled line (36px, as the text's line height) */
+.ac-notepad {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 56px,
+      rgba(190, 50, 40, 0.45) 56px 58px,
+      transparent 58px
+    ),
+    var(--ac-paper-grain),
+    linear-gradient(
+      172deg,
+      var(--ac-sheet),
+      color-mix(in srgb, var(--ac-sheet) 90%, #b9a77a)
+    );
+}
+.ac-notepad::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 18px;
+  width: 22px;
+  pointer-events: none;
+  background: radial-gradient(
+      circle at 11px 50%,
+      rgba(18, 24, 22, 0.92) 0 8.5px,
+      rgba(0, 0, 0, 0.25) 9px 10px,
+      transparent 10.5px
+    )
+    0 0 / 22px 33.34% repeat-y;
+}
+.ac-notepad::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 12px;
+  background: linear-gradient(180deg, rgba(190, 50, 40, 0.16), transparent);
+  pointer-events: none;
+}
+.ac-ruled-log {
+  background: repeating-linear-gradient(
+      180deg,
+      transparent 0 35px,
+      rgba(70, 110, 180, 0.3) 35px 36px
+    )
+    0 0 / 100% 36px local;
+}
+.ac-ruled-line {
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0 35px,
+    rgba(70, 110, 180, 0.3) 35px 36px
+  );
+}
+
+/* the notepad opens from the slip that was pressed: it starts small, flat and tilted at the slip (the offset is set on it, --dx and --dy), then unfolds */
+.ac-unfold {
+  transform-origin: 50% 0;
+  animation: ac-unfold 0.52s cubic-bezier(0.2, 0.8, 0.25, 1);
+}
+@keyframes ac-unfold {
+  0% {
+    transform: translate(var(--dx, 30vw), var(--dy, 40vh)) scale(0.14, 0.09)
+      rotate(-3deg);
+    opacity: 0.15;
+  }
+  45% {
+    transform: translate(
+        calc(var(--dx, 30vw) * 0.25),
+        calc(var(--dy, 40vh) * 0.2)
+      )
+      scale(0.8, 0.4) rotate(-1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* the three dots of the typing note: they rise one after another */
+@keyframes ac-typing {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+    opacity: 0.45;
+  }
+  30% {
+    translate: 0 -4px;
+    opacity: 1;
+  }
+}

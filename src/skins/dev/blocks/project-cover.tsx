@@ -4,6 +4,7 @@
 
 'use client';
 
+import { screenshotsLabel } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
@@ -11,7 +12,6 @@ import { cn } from '@/lib/utils';
 import { COVER } from '@/skins/dev/blocks/cover-styles';
 import { ProjectCoverArt } from '@/skins/dev/blocks/project-cover-art';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
-import { screenshotsLabel } from '@/skins/dev/blocks/screenshots-label';
 import { DevBadge } from '@/skins/dev/ui/dev-badge';
 
 /**
