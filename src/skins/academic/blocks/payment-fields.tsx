@@ -32,7 +32,7 @@ export function PaymentFields({
         <dt className='font-ac-note text-[14.5px] leading-tight text-ac-mute'>
           {copy.accountNumber}
         </dt>
-        <dd className='m-0 font-ac-hand text-[27px]/[1.15] font-bold tracking-[0.04em] text-ac-accent [overflow-wrap:anywhere]'>
+        <dd className='m-0 font-ac-note text-[23px]/[1.15] font-bold tracking-[0.04em] text-ac-accent [overflow-wrap:anywhere]'>
           {method.account}
         </dd>
       </div>

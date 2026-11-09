@@ -51,13 +51,6 @@
     )
     0 0 / 100% 36px local;
 }
-.ac-ruled-line {
-  background: repeating-linear-gradient(
-    180deg,
-    transparent 0 35px,
-    rgba(70, 110, 180, 0.3) 35px 36px
-  );
-}
 
 /* the notepad opens from the slip that was pressed: it starts small, flat and tilted at the slip (the offset is set on it, --dx and --dy), then unfolds */
 .ac-unfold {

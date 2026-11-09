@@ -9,18 +9,20 @@ import { cn } from '@/lib/utils';
 
 /**
  * A button written by hand: a pen outline in the colour of ink (`pen`, the main action), or a quiet one (`quiet`). The outline is a little uneven
- * on purpose; the height is the same in every state.
+ * on purpose; the height is fixed, so the pen and the quiet button side by side are the same height.
  */
 export const acButtonVariants = cva(
-  'inline-flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-[9px_4px_10px_5px/5px_10px_4px_9px] border-[2.2px] bg-transparent px-4 pt-[3px] pb-1 leading-[1.1] whitespace-nowrap no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:min-h-11',
+  'inline-flex cursor-pointer items-center justify-center gap-2 rounded-[9px_4px_10px_5px/5px_10px_4px_9px] border-[2.2px] bg-transparent px-4 leading-none whitespace-nowrap no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-50 pointer-coarse:min-h-11',
   {
     variants: {
       variant: {
-        pen: 'border-ac-link font-ac-hand text-[22px] font-bold text-ac-link hover:bg-ac-link/15',
+        pen: 'border-ac-link font-ac-note text-[19px] font-bold text-ac-link hover:bg-ac-link/15',
         quiet:
           'border-ac-rule font-ac-note text-[18px] text-ac-ink hover:border-ac-mute hover:bg-ac-faint',
       },
-      size: { md: '', sm: 'min-h-8 px-3 text-[18px]' },
+      // a fixed height: the pen and the quiet button use different fonts (and a symbol such as the arrow of a CV falls back to a third),
+      // whose line boxes differ, so the height must not come from the text
+      size: { md: 'h-10', sm: 'h-8 px-3 text-[18px]' },
     },
     defaultVariants: { variant: 'pen', size: 'md' },
   },

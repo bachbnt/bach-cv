@@ -139,6 +139,9 @@ test.describe('chat', () => {
     await box.fill('one');
     await box.press('Enter');
     await expect(pad.getByText('1/2 messages')).toBeVisible();
+    // Enter does nothing while an answer is on its way: wait for the first one
+    // (the name of the bot and the answer are one line of the log: `BB Botok`)
+    await expect(pad.getByRole('log').getByText(/BB Botok$/)).toBeVisible();
     await box.fill('two');
     await box.press('Enter');
     await expect(pad.getByText('Message limit reached')).toBeVisible();

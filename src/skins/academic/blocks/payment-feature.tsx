@@ -51,7 +51,7 @@ export function PaymentFeature({
             />
             <span
               aria-hidden='true'
-              className='absolute inset-x-1.5 bottom-[5px] text-center font-ac-hand text-[22px]/[1.1]'
+              className='absolute inset-x-1.5 bottom-[5px] text-center font-ac-note text-[19px]/[1.1]'
             >
               {copy.enlarge}
             </span>

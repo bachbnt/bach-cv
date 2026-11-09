@@ -25,6 +25,7 @@ import { remainingSuggestions, type Suggestion } from '@/lib/chat/suggestions';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { AcButton } from '@/skins/academic/ui/ac-button';
+import { lineInput } from '@/skins/academic/ui/ac-line-input';
 import { AC_FONT_VARS } from '@/skins/academic/ui/ac-fonts';
 import '@/skins/academic/css/overlays.css';
 
@@ -42,7 +43,7 @@ function Line({
     <p className='m-0 font-ac-note text-[20px]/[36px] wrap-break-word whitespace-pre-wrap'>
       <b
         className={cn(
-          'mr-2 font-ac-hand text-[25px]/[36px] font-bold',
+          'mr-2 font-ac-note text-[21px]/[36px] font-bold',
           tone === 'bot' ? 'text-ac-link' : 'text-ac-accent',
         )}
       >
@@ -234,7 +235,7 @@ export function AcChatSheet({
           )}
           {isSending && (
             <p className='m-0 font-ac-note text-[20px]/[36px]'>
-              <b className='mr-2 font-ac-hand text-[25px]/[36px] font-bold text-ac-link'>
+              <b className='mr-2 font-ac-note text-[21px]/[36px] font-bold text-ac-link'>
                 {botName}
               </b>
               <span aria-hidden='true' className='inline-flex gap-1'>
@@ -280,7 +281,7 @@ export function AcChatSheet({
             {copy.limitReached}
           </p>
         ) : (
-          <form onSubmit={submit} className='flex items-end gap-3 pt-1'>
+          <form onSubmit={submit} className='flex items-end gap-3 pt-2'>
             <textarea
               ref={textarea}
               rows={1}
@@ -291,7 +292,10 @@ export function AcChatSheet({
               aria-label={copy.messageLabel}
               onChange={(event) => onDraftChange(event.target.value)}
               onKeyDown={onKeyDown}
-              className='ac-ruled-line max-h-24 min-h-9 min-w-0 flex-1 resize-none rounded-none border-0 border-b-2 border-ac-link bg-transparent px-0.5 font-ac-note text-[20px]/[36px] text-ac-ink outline-none placeholder:text-ac-mute placeholder:italic focus-visible:outline-2 focus-visible:outline-dashed focus-visible:outline-offset-[3px] focus-visible:outline-ac-accent disabled:opacity-60 max-[720px]:text-[18px] pointer-coarse:min-h-11'
+              className={cn(
+                lineInput,
+                'max-h-24 min-w-0 flex-1 resize-none disabled:opacity-60 max-[720px]:text-[18px] pointer-coarse:min-h-11',
+              )}
             />
             <AcButton
               type='submit'

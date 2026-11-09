@@ -159,7 +159,7 @@ function AcViewerSheet({
               {!single && (
                 <figcaption
                   aria-live='polite'
-                  className='absolute inset-x-2 bottom-1.5 truncate text-center font-ac-hand text-[21px]/[1.1] text-ac-ink'
+                  className='absolute inset-x-2 bottom-1.5 truncate text-center font-ac-note text-[18px]/[1.1] text-ac-ink'
                 >
                   {fill(copy.counter, { current: index + 1, total })}
                 </figcaption>

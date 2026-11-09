@@ -4,7 +4,8 @@
 
 'use client';
 
-import { ContactField, lineInput } from '@/skins/academic/blocks/contact-field';
+import { ContactField } from '@/skins/academic/blocks/contact-field';
+import { lineInput } from '@/skins/academic/ui/ac-line-input';
 import {
   counterText,
   warnAt,

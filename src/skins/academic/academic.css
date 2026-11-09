@@ -16,6 +16,8 @@ html[data-skin='academic'] {
   --ac-accent: #f0a3b8;
   --ac-link: #8ec5f0;
   --ac-hit: rgba(240, 211, 106, 0.2);
+  /* the highlighter: a solid yellow stroke under the chip that is chosen */
+  --ac-mark: #f0d36a;
   --ac-field: #17211e;
   --ac-b1: #8ec5f0;
   --ac-b2: #8fd6a0;
@@ -64,6 +66,7 @@ html[data-skin='academic']:not(.dark) {
   --ac-accent: #bd2519;
   --ac-link: #1b4fa8;
   --ac-hit: rgba(255, 214, 64, 0.45);
+  --ac-mark: #f5c400;
   --ac-field: #ffffff;
   --ac-b1: #1b4fa8;
   --ac-b2: #17703a;
@@ -100,15 +103,12 @@ html[data-skin='academic']:not(.dark) {
     var(--font-ac-crimson), 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --ac-note:
     var(--font-ac-kalam), var(--font-ac-patrick), 'Comic Sans MS', cursive;
-  --ac-hand:
-    var(--font-ac-caveat), var(--font-ac-patrick), 'Comic Sans MS', cursive;
   --ac-chalk:
     var(--font-ac-chalk), var(--font-ac-playpen), 'Comic Sans MS', cursive;
 }
 html:lang(vi) .ac-root,
 html:lang(vi) .ac-scope {
   --ac-note: var(--font-ac-patrick), 'Comic Sans MS', cursive;
-  --ac-hand: var(--font-ac-patrick), 'Comic Sans MS', cursive;
   --ac-chalk: var(--font-ac-playpen), 'Comic Sans MS', cursive;
 }
 
@@ -276,6 +276,8 @@ html[data-skin='academic']:not(.dark) .ac-paper {
 .ac-tape::before {
   content: '';
   position: absolute;
+  /* tape lies over the picture or the card it holds, never under it */
+  z-index: 1;
   top: -10px;
   left: 50%;
   width: 78px;
@@ -311,6 +313,15 @@ html[data-skin='academic']:not(.dark) .ac-paper {
   outline: 2px dashed var(--ac-accent);
   outline-offset: 3px;
   border-radius: 3px;
+}
+/* a line you write on (the chat, the contact form) shows the focus by its underline turning to the accent colour and thickening, not by a box (that box,
+   with its offset, made the field look padded and taller than the button beside it) and not by a fill (the chat has the focus as soon as it opens, so the
+   fill would always be there). Unlayered CSS beats utilities, so it is said here. */
+.ac-root .ac-writing:focus-visible,
+.ac-scope .ac-writing:focus-visible {
+  outline: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 var(--ac-accent);
 }
 
 @keyframes ac-lift {

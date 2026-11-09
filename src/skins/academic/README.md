@@ -19,8 +19,8 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
 1. **Paper has its own ink.** The board is `ac-board` with chalk-white (dark) or marker-black (light) ink. Anything on paper (`.ac-paper`,
    `AcPaper`) redefines `--ac-ink`, `--ac-mute`, `--ac-accent`, `--ac-link`, `--ac-rule` to the ink of paper, so `text-ac-ink` is dark inside it
    in both themes. A dialog is paper too (`shell/ac-viewer`, `ac-chat-sheet`, `ac-cv-sheet`, the menus).
-2. **Fonts.** A book serif for the text (Crimson Pro), handwriting for notes and buttons (Kalam), a brush for names on paper (Caveat) and for
-   headings written on the board (Caveat Brush). The handwriting fonts have no Vietnamese letters: in Vietnamese (`html:lang(vi)`) the notes,
+2. **Fonts: three families.** A book serif for the text (Crimson Pro), handwriting for notes, labels, buttons and names on paper (Kalam) and a
+   brush for the headings written on the board (Caveat Brush). The two handwriting fonts have no Vietnamese letters: in Vietnamese (`html:lang(vi)`) the notes,
    buttons and headings use Patrick Hand and Playpen Sans, which have. A portal sits outside `.ac-root`, so it is wrapped in `AcScope`
    (`ui/ac-root.tsx`) to get the font variables.
 3. **No mono, no hover-only information.** Hover is the Tailwind `hover:` variant (inside `@media (hover: hover)`). Every control has a pressed
@@ -68,8 +68,7 @@ overlays), en and vi; Standard's own copy is reused wherever Standard has the wo
 
 ## Styling
 
-- Tailwind utilities with the `ac-*` theme colours (`bg-ac-sheet`, `text-ac-mute`) and fonts (`font-ac-chalk`, `font-ac-note`, `font-ac-hand`,
-  `font-ac-serif`) of `app/tailwind-theme-academic.css`; their values live once on `html[data-skin='academic']` in `academic.css`, so portals
+- Tailwind utilities with the `ac-*` theme colours (`bg-ac-sheet`, `text-ac-mute`) and fonts (`font-ac-chalk`, `font-ac-note`, `font-ac-serif`) of `app/tailwind-theme-academic.css`; their values live once on `html[data-skin='academic']` in `academic.css`, so portals
   see them. The shadcn tokens are mapped to the same palette there, so the shadcn components follow the skin.
 - CSS only for what utilities do not say: the palette, the board and its frame, paper grain, tape and pins, the wavy hand-drawn line (a mask),
   the ledge, keyframes. Classes have the prefix `ac-`. CSS outside a layer beats utilities on the same element, so no rule is left that targets an

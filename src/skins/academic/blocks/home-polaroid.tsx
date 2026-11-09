@@ -46,7 +46,7 @@ export function HomePolaroid({
         />
       </div>
       {caption && (
-        <figcaption className='absolute inset-x-1.5 bottom-1 truncate text-center font-ac-hand text-[21px]/[1.1] text-ac-sheet-ink'>
+        <figcaption className='absolute inset-x-1.5 bottom-1 truncate text-center font-ac-note text-[18px]/[1.1] text-ac-sheet-ink'>
           {caption}
         </figcaption>
       )}

@@ -53,7 +53,7 @@ export function ContactSection({
           </>
         ) : (
           <AcPaper kind='sticky' role='note' className='mt-6'>
-            <p className='font-ac-hand text-[26px]/[1.1] font-bold'>
+            <p className='font-ac-note text-[22px]/[1.1] font-bold'>
               {copy.off.title}
             </p>
             <p className='mt-1.5'>{copy.off.body}</p>

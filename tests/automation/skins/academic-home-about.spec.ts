@@ -246,6 +246,61 @@ test.describe('Home in the Academic skin', () => {
     await expect(page.getByText('Not sure where to look?')).toHaveCount(0);
   });
 
+  test('the contents list the pages of the tabs, each a link', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const contents = page
+      .getByRole('heading', { name: 'Contents' })
+      .locator('xpath=following::ol[1]');
+    await expect(contents.getByRole('link')).toHaveText([
+      /Home/,
+      /About/,
+      /Resume/,
+      /Projects/,
+      /Certificates/,
+      /Services/,
+      /Payment/,
+    ]);
+    await contents.getByRole('link', { name: /Services/ }).click();
+    await expect(page).toHaveURL(/\/services$/, { timeout: 20_000 });
+  });
+
+  test('a page that is soon is only named in the contents and one that is off is left out', async ({
+    page,
+  }) => {
+    await page.unroute('**/firestore.googleapis.com/**');
+    await mockFirestore(page, {
+      'site/live': {
+        pages: {
+          home: 'on',
+          about: 'hidden',
+          resume: 'soon',
+          projects: 'on',
+          certificates: 'on',
+          services: 'on',
+          payment: 'on',
+        },
+        features: {
+          chat: true,
+          cvDownload: true,
+          contactForm: true,
+          connectMenu: true,
+        },
+        maintenance: { message: '', l10n: {}, enabled: false },
+      },
+    });
+    await gotoSkin(page, '/');
+    const contents = page
+      .getByRole('heading', { name: 'Contents' })
+      .locator('xpath=following::ol[1]');
+    await expect(contents.getByRole('link', { name: /About/ })).toHaveCount(0);
+    await expect(contents.getByRole('link', { name: /Resume/ })).toHaveCount(0);
+    await expect(contents).toContainText('Resume');
+    await expect(contents).toContainText('Soon');
+    await expect(contents).not.toContainText('About');
+  });
+
   test('a page that is coming soon, or switched off, says so', async ({
     page,
   }) => {

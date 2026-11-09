@@ -27,6 +27,7 @@ export const academicHomeAboutCopy = defineCopy(
         open: 'Select a row to read the resume.',
         axis: 'Years',
       },
+      contents: 'Contents',
       method: 'Method',
       /** `Step 2` over the title of a step of the pipeline */
       step: 'Step {n}',
@@ -50,6 +51,7 @@ export const academicHomeAboutCopy = defineCopy(
         open: 'Chọn một hàng để đọc hồ sơ.',
         axis: 'Năm',
       },
+      contents: 'Mục lục',
       method: 'Phương pháp',
       step: 'Bước {n}',
     },

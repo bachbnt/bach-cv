@@ -54,7 +54,7 @@ export function CertificateCard({
           {fill(own.reviewer, { n: position })}
         </p>
         {latest && (
-          <span className='mb-1.5 inline-block -rotate-3 rounded-[10px_4px_12px_5px/5px_12px_4px_10px] border-2 border-ac-accent px-3 pt-px pb-0.5 font-ac-hand text-[22px]/[1.2] font-bold text-ac-accent'>
+          <span className='mb-1.5 inline-block -rotate-3 rounded-[10px_4px_12px_5px/5px_12px_4px_10px] border-2 border-ac-accent px-3 pt-px pb-0.5 font-ac-note text-[19px]/[1.2] font-bold text-ac-accent'>
             {copy.latest}
           </span>
         )}
@@ -117,7 +117,7 @@ export function CertificateCard({
           />
           <span
             aria-hidden='true'
-            className='absolute inset-x-1 bottom-1 truncate text-center font-ac-hand text-[21px]/[1.1] text-ac-ink'
+            className='absolute inset-x-1 bottom-1 truncate text-center font-ac-note text-[18px]/[1.1] text-ac-ink'
           >
             {copy.enlarge}
           </span>
