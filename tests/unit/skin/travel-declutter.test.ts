@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   cardSide,
+  maxFame,
   placeTags,
   tagBox,
   type Tag,
@@ -117,5 +118,16 @@ describe('the side of the card of a stop', () => {
       { x: 340, y: 90, w: 100, h: 80 },
     ];
     expect(cardSide('right', card, 500, both)).toBe('right');
+  });
+});
+
+describe('the names the map keeps at a zoom', () => {
+  it('keeps only the best known far out and all of them close', () => {
+    expect(maxFame(0.2)).toBe(1);
+    expect(maxFame(0.41)).toBe(1);
+    expect(maxFame(0.5)).toBe(2);
+    expect(maxFame(0.69)).toBe(2);
+    expect(maxFame(0.7)).toBe(3);
+    expect(maxFame(2.4)).toBe(3);
   });
 });

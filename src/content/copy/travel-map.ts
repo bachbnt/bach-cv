@@ -21,6 +21,13 @@ export const travelMapCopy = defineCopy(
       'Map data © OpenStreetMap contributors (ODbL). Drawings are original.',
     scenery: 'Sights of Nha Trang',
     kmFromCentre: '{n} km',
+    hint: 'Point at a pin to see its stop.',
+    hintTouch: 'Tap a pin to see its stop.',
+    places: {
+      title: 'Places of Nha Trang',
+      intro: 'Pick a place and the map flies there.',
+      shown: '{name}: {text}',
+    },
     sights: {
       'po-nagar': {
         name: 'Po Nagar towers',
@@ -133,6 +140,13 @@ export const travelMapCopy = defineCopy(
       'Dữ liệu bản đồ © những người đóng góp OpenStreetMap (ODbL). Hình vẽ là bản gốc.',
     scenery: 'Danh thắng Nha Trang',
     kmFromCentre: '{n} km',
+    hint: 'Rê chuột vào pin để xem chặng.',
+    hintTouch: 'Chạm vào pin để xem chặng.',
+    places: {
+      title: 'Địa điểm ở Nha Trang',
+      intro: 'Chọn một nơi, bản đồ sẽ bay tới đó.',
+      shown: '{name}: {text}',
+    },
     sights: {
       'po-nagar': {
         name: 'Tháp Bà Ponagar',

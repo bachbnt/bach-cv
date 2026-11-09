@@ -5,10 +5,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useMemo, ViewTransition, type ReactNode } from 'react';
+import { useEffect, useMemo, ViewTransition, type ReactNode } from 'react';
 import { shell } from '@/lib/content/shell';
 import type { PageKey } from '@/lib/content/schema';
 import { PAGE_FOCUS, PAGE_PANEL, ROUTE_PAGES } from '@/skins/travel/config';
+import { SIGHTS } from '@/skins/travel/map/sights';
 import { TravelMap } from '@/skins/travel/map/travel-map';
 import type { MapFocus } from '@/skins/travel/map/types';
 import { Header } from '@/skins/travel/shell/header';
@@ -37,6 +38,9 @@ export function TravelShell({
   );
 }
 
+/** How close the camera comes to a sight that was picked in the list. */
+const SIGHT_ZOOM = 1.1;
+
 function Frame({
   page,
   children,
@@ -44,13 +48,16 @@ function Frame({
   page: PageKey | null;
   children: ReactNode;
 }) {
-  const { stops, selectedId, select } = useTravel();
+  const { stops, selectedId, select, sight, showSight } = useTravel();
   const router = useRouter();
+  useEffect(() => showSight(null), [page, showSight]);
   const reduced = useReducedMotion();
   const routeOn = ROUTE_PAGES.includes(page);
   const mapStops = useMemo(() => stops.map((s) => s.map), [stops]);
-  const focus: MapFocus =
-    selectedId && routeOn
+  const picked = sight?.fly ? SIGHTS.find((s) => s.id === sight.id) : undefined;
+  const focus: MapFocus = picked
+    ? { kind: 'place', lat: picked.lat, lng: picked.lng, zoom: SIGHT_ZOOM }
+    : selectedId && routeOn
       ? { kind: 'stop', id: selectedId }
       : page
         ? PAGE_FOCUS[page]
@@ -73,6 +80,8 @@ function Frame({
           avatar={shell.avatar}
           travellerName={shell.name}
           reduced={reduced}
+          sightId={sight?.id ?? null}
+          onSight={showSight}
           onSelect={(id) => {
             select(id);
             if (page !== 'resume') router.push('/resume');

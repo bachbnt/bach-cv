@@ -9,6 +9,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
   type CSSProperties,
 } from 'react';
 import { travelMapCopy } from '@/content/copy/travel-map';
@@ -27,10 +28,11 @@ import { Land, Sea } from '@/skins/travel/map/layers/ground';
 import { Shore } from '@/skins/travel/map/layers/shore';
 import { Pins } from '@/skins/travel/map/layers/pins';
 import { Sky } from '@/skins/travel/map/layers/sky';
+import { SightInfo } from '@/skins/travel/map/layers/sight-info';
 import { Sprites } from '@/skins/travel/map/layers/sprites';
 import { Traveller } from '@/skins/travel/map/layers/traveller';
 import { Waves } from '@/skins/travel/map/layers/waves';
-import { pointAt, ROUTE_ROAD } from '@/skins/travel/map/route';
+import { pointAt, ROUTE_ROAD, tripPath } from '@/skins/travel/map/route';
 import {
   toWorld,
   WORLD,
@@ -38,6 +40,8 @@ import {
   GROUND_MATRIX,
 } from '@/skins/travel/map/iso';
 import { MapControls } from '@/skins/travel/map/map-controls';
+import { MapHint } from '@/skins/travel/map/map-hint';
+import { SIGHT_IDS, type SightId } from '@/skins/travel/map/sights';
 import { worldOf } from '@/skins/travel/map/iso';
 import type { MapFocus, MapStop } from '@/skins/travel/map/types';
 import { useCamera } from '@/skins/travel/map/use-camera';
@@ -47,6 +51,15 @@ import { useSize } from '@/skins/travel/map/use-size';
 
 /** From this zoom on, the details that are too small to see from afar (a waterfall) are animated. */
 const CLOSE_ZOOM = 0.7;
+
+/** The sight a hit area under the pointer belongs to (`data-hit`), or null. */
+const sightUnder = (element: EventTarget | null): SightId | null => {
+  const id =
+    element instanceof Element
+      ? element.closest('[data-hit]')?.getAttribute('data-hit')
+      : null;
+  return SIGHT_IDS.find((sight) => sight === id) ?? null;
+};
 
 /** The route as a dashed line on the ground, from the first stop to the last (the same road the traveller rides). */
 const [A, B, C, D] = GROUND_MATRIX;
@@ -62,6 +75,8 @@ export function TravelMap({
   travellerName,
   reduced,
   onSelect,
+  sightId,
+  onSight,
   className,
 }: {
   stops: readonly MapStop[];
@@ -75,6 +90,9 @@ export function TravelMap({
   travellerName: string;
   reduced: boolean;
   onSelect: (id: string) => void;
+  /** the sight whose card is open (picked in the list or by a tap), and the way to open or close one */
+  sightId: SightId | null;
+  onSight: (id: SightId | null) => void;
   className?: string;
 }) {
   const words = useCopy(travelMapCopy);
@@ -131,8 +149,22 @@ export function TravelMap({
     },
     [stops, size, free],
   );
+  // the sight the mouse is over shows its card too, but only while it is over it; a tap or the list keeps one open
+  const [hover, setHover] = useState<SightId | null>(null);
+  const shownSight = sightId ?? hover;
   const { camera, flying, dragging, moving, restZoom, set, handlers } =
-    useCamera(stage, size, target(focus));
+    useCamera(stage, size, target(focus), (under) => {
+      const id = sightUnder(under);
+      onSight(id && id !== sightId ? id : null);
+    });
+  useEffect(() => {
+    if (!sightId) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onSight(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [sightId, onSight]);
 
   // a new focus (another page, another stop) makes the camera fly there
   const focusKey = JSON.stringify(focus);
@@ -160,6 +192,14 @@ export function TravelMap({
     () => ROUTE_ROAD.map(([x, y]) => `${x},${y}`).join(' '),
     [],
   );
+  // the way to the open stop, from the one before it: it is lit over the dashes of the whole route
+  const lit = useMemo(() => {
+    const i = stops.findIndex((stop) => stop.id === activeId);
+    if (!routeOn || i < 0) return '';
+    return tripPath(stops[i - 1]?.placed ?? null, stops[i].placed)
+      .map((p) => `${p.x},${p.y}`)
+      .join(' ');
+  }, [stops, activeId, routeOn]);
   const zoom = (factor: number) =>
     set(zoomAt(camera, size, factor, size.w / 2, size.h / 2), !reduced);
 
@@ -179,6 +219,10 @@ export function TravelMap({
         showsWholeMap(camera.z, size) && 'tl-whole',
         className,
       )}
+      onPointerOver={(event) => {
+        if (event.pointerType === 'mouse') setHover(sightUnder(event.target));
+      }}
+      onPointerLeave={() => setHover(null)}
       {...handlers}
     >
       <p id='tl-map-help' className='sr-only'>
@@ -227,10 +271,30 @@ export function TravelMap({
                 strokeLinejoin='round'
                 strokeDasharray='2 22'
               />
+              {lit && (
+                <g key={activeId} className='tl-lit'>
+                  <polyline
+                    points={lit}
+                    className='fill-none stroke-tl-solid'
+                    strokeWidth={26}
+                    strokeOpacity={0.85}
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                  <polyline
+                    points={lit}
+                    className='fill-none stroke-tl-coral'
+                    strokeWidth={13}
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  />
+                </g>
+              )}
             </g>
           </svg>
         )}
         <Sprites words={words} />
+        <SightInfo id={shownSight} words={words} />
         {routeOn && (
           <>
             <Pins
@@ -254,6 +318,7 @@ export function TravelMap({
         onZoom={zoom}
         onRecentre={() => set(target({ kind: 'overview' }), !reduced)}
       />
+      {routeOn && <MapHint text={words.hint} touchText={words.hintTouch} />}
       <p className='tl-credits'>{words.credits}</p>
     </div>
   );

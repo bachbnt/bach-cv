@@ -125,3 +125,10 @@ export function cardSide(
 
 export const sideOf = (value: string | undefined): Side =>
   SIDES.find((side) => side === value) ?? 'below';
+
+/**
+ * How far down the names of the sights go at a zoom: the best known only while the map is far out (the names would be a crowd), then
+ * the next, then all of them.
+ */
+export const maxFame = (z: number): 1 | 2 | 3 =>
+  z < 0.42 ? 1 : z < 0.7 ? 2 : 3;

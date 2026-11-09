@@ -25,6 +25,8 @@ const FLY_MS = 800;
 /** How long after the last drag, wheel or key step the map still counts as moving (and keeps one raster instead of painting at each step). */
 const SETTLE_MS = 220;
 const PAN_KEY = 90;
+/** A press that moved less than this (in pixels, all the moves added) is a tap, not a drag. */
+const TAP_PX = 6;
 
 /**
  * The camera of the map: drag to pan, wheel and pinch to zoom, keys to move (arrows, + and -). `fly` moves it with a CSS transition
@@ -34,6 +36,7 @@ export function useCamera(
   stage: RefObject<HTMLElement | null>,
   size: Size,
   initial: Camera,
+  onTap?: (target: Element | null) => void,
 ) {
   const [raw, setCamera] = useState<Camera>(() => clampCamera(initial, size));
   // the view may change size (a window resize, a panel): the camera shown is always valid for it
@@ -157,9 +160,17 @@ export function useCamera(
     );
   };
   const onPointerUp = (event: ReactPointerEvent<HTMLElement>) => {
-    pointers.current.delete(event.pointerId);
+    const began = pointers.current.delete(event.pointerId);
     pinch.current = null;
     if (pointers.current.size === 0) setDragging(false);
+    // a press on the map that did not drag is a tap: what is under the finger is told to the map (a sight shows its card)
+    if (
+      began &&
+      event.type === 'pointerup' &&
+      pointers.current.size === 0 &&
+      moved.current < TAP_PX
+    )
+      onTap?.(document.elementFromPoint(event.clientX, event.clientY));
   };
   const onKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
     if (event.target !== event.currentTarget) return;

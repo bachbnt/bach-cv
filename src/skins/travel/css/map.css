@@ -212,6 +212,15 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 .tl-route {
   pointer-events: none;
 }
+/* the way to the open stop comes up over the dashes of the route (one fade, when the stop changes) */
+.tl-lit {
+  animation: tl-lit-in 0.45s ease-out;
+}
+@keyframes tl-lit-in {
+  from {
+    opacity: 0;
+  }
+}
 
 /* ---- sprites: they stand on their point and keep a readable size at every zoom */
 .tl-sprite {
@@ -352,11 +361,97 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 }
 
 /* the sprites take their new size once the camera has stopped: they grow into it instead of jumping (that jump was seen as a flicker) */
-.tl-art,
 .tl-boat > *,
 .tl-pin-flag,
 .tl-traveller-in {
   transition: transform 0.2s ease-out;
+}
+/* a drawing pointed at (or with its card open) rises a little and swells, with a small overshoot; `translate` and `scale` are their own
+   properties, apart from the `transform` that sizes it, so the compositor does both */
+.tl-art {
+  transition:
+    transform 0.2s ease-out,
+    translate 0.32s cubic-bezier(0.3, 1.6, 0.5, 1),
+    scale 0.32s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.tl-sight[data-hot] .tl-art {
+  translate: 0 -8px;
+  scale: 1.05;
+}
+@media (hover: hover) {
+  .tl-hit:hover + .tl-art {
+    translate: 0 -8px;
+    scale: 1.05;
+  }
+}
+/* where the pointer finds a sight: the middle and lower part of its drawing, not the empty corners of its box */
+.tl-hit {
+  left: 0;
+  top: 0;
+  width: calc(96px * var(--tl-art, 1));
+  height: calc(104px * var(--tl-art, 1));
+  border-radius: 46% 46% 30% 30%;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  pointer-events: auto;
+  cursor: pointer;
+}
+/* the card of a sight, in the layer of the names: over its drawing, with the name tag giving way */
+.tl-info-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  width: 224px;
+  margin: 0;
+  padding: 8px 12px 9px;
+  transform: translate(
+      -50%,
+      calc(
+        -160px * var(--tl-crown, 0.88) * var(--tl-art, 1) * var(--tl-sc) -
+          100% * var(--tl-sc) - 8px
+      )
+    )
+    scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  border-radius: 14px;
+  background: var(--tl-panel);
+  color: var(--tl-ink);
+  box-shadow: var(--tl-shadow);
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: none;
+  animation: tl-lit-in 0.2s ease-out;
+}
+.tl-info-card b {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.tl-info-card span {
+  color: var(--tl-muted);
+}
+[data-label][data-info] .tl-name {
+  opacity: 0;
+}
+/* the line that says how to see a stop: at the top of the map, where no card or sheet covers it */
+.tl-hint {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  z-index: 13;
+  margin: 0;
+  padding: 7px 14px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: var(--tl-panel);
+  color: var(--tl-ink);
+  box-shadow: var(--tl-shadow);
+  font-size: 13px;
+  font-weight: 700;
+  pointer-events: none;
+  animation: tl-lit-in 0.4s ease-out;
 }
 
 /* ---- pins of the stops */

@@ -21,10 +21,10 @@ import { cn } from '@/lib/utils';
 
 type Words = (typeof travelMapCopy)['en'];
 
-/** The bigger a drawing, the better known the place: its name is kept first when tags would lie on each other. */
+/** The better known a place, the earlier its name chooses its place when tags would lie on each other (then the bigger drawing first). */
 const RANK = new Map(
   [...SIGHTS]
-    .sort((a, b) => b.scale - a.scale)
+    .sort((a, b) => a.fame - b.fame || b.scale - a.scale)
     .map((sight, index) => [sight.id, index] as const),
 );
 
@@ -123,9 +123,12 @@ export const Sprites = memo(function Sprites({ words }: { words: Words }) {
                 left: p.left,
                 top: p.top,
                 zIndex: Math.round(p.top) + 1000,
+                '--tl-art': sight.scale,
               } as CSSProperties
             }
           >
+            {/* where the pointer finds the sight: it shows its card, and the drawing is lifted (the map reads `data-hit`) */}
+            <div data-hit={sight.id} className='tl-hit' />
             <div
               className='tl-art'
               style={{
@@ -147,6 +150,7 @@ export const Sprites = memo(function Sprites({ words }: { words: Words }) {
             aria-hidden='true'
             data-label={sight.id}
             data-rank={RANK.get(sight.id)}
+            data-fame={sight.fame}
             data-side={sight.tag}
             className={cn('tl-sprite tl-label', `tl-tag-${sight.tag}`)}
             style={

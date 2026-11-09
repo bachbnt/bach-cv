@@ -63,6 +63,8 @@ export type SightArt =
 
 interface Sight {
   id: SightId;
+  /** How well known the place is, or how much it stands out on the map (1 the most): the names of the first rank are always written, the others as the map is brought closer, and they choose their place first when tags lie on each other. */
+  fame: 1 | 2 | 3;
   art: SightArt;
   lat: number;
   lng: number;
@@ -77,6 +79,7 @@ interface Sight {
 export const SIGHTS: readonly Sight[] = [
   {
     id: 'po-nagar',
+    fame: 1,
     art: 'cham-towers',
     lat: 12.2653,
     lng: 109.1951,
@@ -85,6 +88,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-chong',
+    fame: 1,
     art: 'twin-rocks',
     lat: 12.2721,
     lng: 109.2059,
@@ -93,6 +97,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'long-son',
+    fame: 1,
     art: 'buddha-pagoda',
     lat: 12.2513,
     lng: 109.1806,
@@ -101,6 +106,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'cathedral',
+    fame: 1,
     art: 'cathedral',
     lat: 12.2468,
     lng: 109.1881,
@@ -109,6 +115,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'tram-huong',
+    fame: 1,
     art: 'lotus-tower',
     lat: 12.2406,
     lng: 109.1969,
@@ -117,6 +124,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'dam-market',
+    fame: 1,
     art: 'dome-market',
     lat: 12.2553,
     lng: 109.1941,
@@ -125,6 +133,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'yersin',
+    fame: 2,
     art: 'villa',
     lat: 12.2509,
     lng: 109.1961,
@@ -133,6 +142,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'oceanography',
+    fame: 2,
     art: 'aquarium',
     lat: 12.208,
     lng: 109.2139,
@@ -141,6 +151,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'bao-dai',
+    fame: 2,
     art: 'villa-hill',
     lat: 12.2103,
     lng: 109.2154,
@@ -149,6 +160,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'mud-bath',
+    fame: 2,
     art: 'hot-spring',
     lat: 12.2704,
     lng: 109.177,
@@ -157,6 +169,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'vinpearl',
+    fame: 1,
     art: 'ferris-island',
     lat: 12.219,
     lng: 109.2395,
@@ -165,6 +178,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'cable-car',
+    fame: 2,
     art: 'cable-car',
     lat: 12.2028,
     lng: 109.2173,
@@ -173,6 +187,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-mieu',
+    fame: 2,
     art: 'hon-mieu',
     lat: 12.1907,
     lng: 109.2249,
@@ -181,6 +196,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-tam',
+    fame: 3,
     art: 'hon-tam',
     lat: 12.1765,
     lng: 109.2436,
@@ -189,6 +205,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-mot',
+    fame: 3,
     art: 'hon-mot',
     lat: 12.1773,
     lng: 109.2743,
@@ -197,6 +214,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-mun',
+    fame: 2,
     art: 'island-dive',
     lat: 12.1675,
     lng: 109.3025,
@@ -205,6 +223,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'monkey-island',
+    fame: 2,
     art: 'island-monkey',
     lat: 12.3598,
     lng: 109.2136,
@@ -213,6 +232,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'ba-ho',
+    fame: 2,
     art: 'waterfall',
     lat: 12.3822,
     lng: 109.1329,
@@ -221,6 +241,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'do-theatre',
+    fame: 2,
     art: 'do-theatre',
     lat: 12.30059,
     lng: 109.23734,
@@ -229,6 +250,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'co-tien',
+    fame: 2,
     art: 'co-tien',
     lat: 12.29409,
     lng: 109.20756,
@@ -238,6 +260,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'truc-lam',
+    fame: 2,
     art: 'zen-peak',
     lat: 12.22762,
     lng: 109.13005,
@@ -247,6 +270,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'dong-bo',
+    fame: 1,
     art: 'dong-bo',
     lat: 12.16366,
     lng: 109.14332,
@@ -256,6 +280,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-ro',
+    fame: 1,
     art: 'hon-ro',
     lat: 12.1925,
     lng: 109.18448,

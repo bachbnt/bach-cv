@@ -21,6 +21,7 @@ import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
 import { STOP_COLORS } from '@/skins/travel/config';
 import { placeStops } from '@/skins/travel/map/route';
+import type { SightId } from '@/skins/travel/map/sights';
 import type { MapStop } from '@/skins/travel/map/types';
 
 type CareerStop = RouteStop<Doc<'experience'>, Doc<'education'>>;
@@ -41,6 +42,9 @@ interface TravelContextValue {
   touring: boolean;
   startTour: () => void;
   stopTour: () => void;
+  /** the sight whose card is open on the map; `fly` is set when it was picked in the list, so the camera goes there */
+  sight: { id: SightId; fly: boolean } | null;
+  showSight: (id: SightId | null, fly?: boolean) => void;
   /** the CV window */
   cvOpen: boolean;
   openCv: () => void;
@@ -66,6 +70,9 @@ export function TravelProvider({ children }: { children: ReactNode }) {
   const { lang } = useLang();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [touring, setTouring] = useState(false);
+  const [sight, setSight] = useState<{ id: SightId; fly: boolean } | null>(
+    null,
+  );
   const [cvOpen, setCvOpen] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
@@ -111,9 +118,13 @@ export function TravelProvider({ children }: { children: ReactNode }) {
     (id: string | null) => {
       stopTour();
       setSelectedId(id);
+      setSight(null);
     },
     [stopTour],
   );
+  const showSight = useCallback((id: SightId | null, fly = false) => {
+    setSight(id ? { id, fly } : null);
+  }, []);
   const startTour = useCallback(() => {
     window.clearTimeout(timer.current);
     setTouring(true);
@@ -138,6 +149,8 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       touring,
       startTour,
       stopTour,
+      sight,
+      showSight,
       cvOpen,
       openCv: () => setCvOpen(true),
       closeCv: () => setCvOpen(false),
@@ -150,6 +163,8 @@ export function TravelProvider({ children }: { children: ReactNode }) {
       touring,
       startTour,
       stopTour,
+      sight,
+      showSight,
       cvOpen,
       experience,
       education,

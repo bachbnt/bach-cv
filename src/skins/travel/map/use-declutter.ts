@@ -7,6 +7,7 @@
 import { useEffect, type RefObject } from 'react';
 import {
   cardSide,
+  maxFame,
   placeTags,
   sideOf,
   SIDES,
@@ -103,6 +104,7 @@ export function useDeclutter(
             tag,
             id,
             rank: Number(sprite.dataset.rank ?? 0),
+            fame: Number(sprite.dataset.fame ?? 3),
             anchor: { x: anchor.left, y: anchor.top },
             artTop: art ? art.top + art.height * (1 - crown) : anchor.top,
             size: { w: tag.offsetWidth, h: tag.offsetHeight },
@@ -115,19 +117,23 @@ export function useDeclutter(
           '.tl-pin-head, .tl-pin[data-on] .tl-pin-label, .tl-pin-flag, .tl-traveller-badge',
         ),
       ].map(boxOf);
+      const known = maxFame(z);
       const placed = placeTags(
-        sights.filter(({ anchor }) =>
-          inside({ x: anchor.x - 200, y: anchor.y - 100, w: 400, h: 200 }),
+        sights.filter(
+          ({ anchor, fame }) =>
+            fame <= known &&
+            inside({ x: anchor.x - 200, y: anchor.y - 100, w: 400, h: 200 }),
         ),
         obstacles,
         z,
         sc,
       );
-      for (const { sprite, tag, id, prefer } of sights) {
+      for (const { sprite, tag, id, prefer, fame } of sights) {
         const side = placed.get(id);
         for (const s of SIDES) sprite.classList.remove(`tl-tag-${s}`);
         sprite.classList.add(`tl-tag-${side ?? prefer}`);
-        tag.classList.toggle('tl-off', side === null);
+        // a name that is not well known enough for this zoom is left out, like one that has no free side
+        tag.classList.toggle('tl-off', side === null || fame > known);
       }
     }, SETTLE_MS);
     return () => window.clearTimeout(timer);

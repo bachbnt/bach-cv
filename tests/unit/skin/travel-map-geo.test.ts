@@ -23,6 +23,7 @@ import { ROTATION, toWorld, worldOf } from '@/skins/travel/map/iso';
 import {
   MAIN_PLACES,
   placeStops,
+  tripPath,
   pointAt,
   roadBetween,
   ROUTE_LENGTH,
@@ -355,5 +356,42 @@ describe('the coast road and the stations', () => {
     expect(Math.hypot(last.x - theatre.x, last.y - theatre.y)).toBeLessThan(
       200,
     );
+  });
+
+  it('has a way to every stop from the one before it, along the road, and from the south end for the first', () => {
+    const placed = placeStops([
+      { id: 'a', side: false },
+      { id: 'b', side: false },
+      { id: 'side', side: true },
+      { id: 'c', side: false },
+    ]);
+    const first = tripPath(null, placed[0]);
+    expect(first[0]).toEqual({ x: pointAt(0).x, y: pointAt(0).y });
+    expect(first.at(-1)).toMatchObject({
+      x: placed[0].at.x,
+      y: placed[0].at.y,
+    });
+    const second = tripPath(placed[0], placed[1]);
+    expect(second[0]).toMatchObject({ x: placed[0].at.x, y: placed[0].at.y });
+    expect(second.at(-1)).toMatchObject({
+      x: placed[1].at.x,
+      y: placed[1].at.y,
+    });
+    // the side trip is reached by the spur, and left by it
+    const toSide = tripPath(placed[1], placed[2]);
+    expect(toSide.at(-1)).toMatchObject({
+      x: placed[2].at.x,
+      y: placed[2].at.y,
+    });
+    const fromSide = tripPath(placed[2], placed[3]);
+    expect(fromSide[0]).toMatchObject({ x: placed[2].at.x, y: placed[2].at.y });
+    expect(fromSide[1]).toMatchObject({
+      x: placed[2].from.x,
+      y: placed[2].from.y,
+    });
+    expect(fromSide.at(-1)).toMatchObject({
+      x: placed[3].at.x,
+      y: placed[3].at.y,
+    });
   });
 });

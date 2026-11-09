@@ -8,20 +8,11 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { toWorld } from '@/skins/travel/map/iso';
 import {
-  roadBetween,
   ROUTE_LENGTH,
+  tripPath,
   type PlacedStop,
 } from '@/skins/travel/map/route';
 import type { Plane } from '@/skins/travel/map/projection';
-
-/** The way from one stop to the next along the real road: the road to where the side trip leaves it, then the spur. */
-function tripPath(from: PlacedStop, to: PlacedStop): Plane[] {
-  const out: Plane[] = [];
-  if (from.side) out.push(from.at, from.from);
-  out.push(...roadBetween(from.t, to.t));
-  if (to.side) out.push(to.at);
-  return out.length > 1 ? out : [from.at, to.at];
-}
 
 const MS_PER_KM = 260;
 

@@ -181,3 +181,15 @@ export function placeStops(stops: readonly StopSlot[]): PlacedStop[] {
   }
   return placed;
 }
+
+/**
+ * The way to a stop along the real road, from the stop before it (from the south end of the road for the first one): the spur back to the
+ * road when the stop before is a side trip, the road itself, then the spur out to the stop when it is a side trip.
+ */
+export function tripPath(from: PlacedStop | null, to: PlacedStop): Plane[] {
+  const out: Plane[] = [];
+  if (from?.side) out.push(from.at, from.from);
+  out.push(...roadBetween(from?.t ?? 0, to.t));
+  if (to.side) out.push(to.at);
+  return out.length > 1 ? out : [from?.at ?? pointAt(0), to.at];
+}
