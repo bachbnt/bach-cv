@@ -5,9 +5,7 @@
 'use client';
 
 import { PanelBottomOpen } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import {
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -39,7 +37,6 @@ import { BottomNav } from '@/skins/trade/shell/bottom-nav';
 import { ChartSlot } from '@/skins/trade/shell/chart-slot';
 import { IconRail } from '@/skins/trade/shell/icon-rail';
 import { RangeBar } from '@/skins/trade/shell/range-bar';
-import { revealById } from '@/skins/trade/shell/reveal';
 import { Splitter } from '@/skins/trade/shell/splitter';
 import { TickerTape } from '@/skins/trade/shell/ticker-tape';
 import { Toolbar } from '@/skins/trade/shell/toolbar';
@@ -92,8 +89,14 @@ function Terminal({
   children: ReactNode;
 }) {
   const [range, setRange] = useState<RangeKey>(DEFAULT_RANGE);
-  const router = useRouter();
-  const { showJob, openSearch, layout: saved, setLayout, setDock } = useTrade();
+  const {
+    showJob,
+    showDegree,
+    openSearch,
+    layout: saved,
+    setLayout,
+    setDock,
+  } = useTrade();
   const words = useCopy(tradeShellCopy).panelBar;
   const resize = useCopy(tradeShellCopy).resize;
   const wide = useWide();
@@ -133,10 +136,6 @@ function Terminal({
   const easeTimer = useRef<number | undefined>(undefined);
   // The grid tracks animate (layout, not transform) only for a move by a key or a reset, never while dragging, and not for reduced
   // motion. The timer is kept so a second move restarts it and leaving the page cancels it.
-  const openDegree = useCallback(() => {
-    router.push('/resume#tv-education');
-    revealById('tv-education');
-  }, [router]);
   const ease = () => {
     if (reduced) return;
     window.clearTimeout(easeTimer.current);
@@ -184,7 +183,7 @@ function Terminal({
           <ChartSlot
             range={range}
             onOpenJob={showJob}
-            onOpenDegree={openDegree}
+            onOpenDegree={showDegree}
           />
         </div>
       </div>

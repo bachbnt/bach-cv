@@ -112,7 +112,7 @@ export function ChartScene({
   view: View;
   chartView: ChartView;
   onOpenJob: (id: string) => void;
-  onOpenDegree: () => void;
+  onOpenDegree: (id: string) => void;
 }) {
   const copy = useCopy(tradeChartCopy);
   // the tag of the last price says what the Certificates page says of its newest one

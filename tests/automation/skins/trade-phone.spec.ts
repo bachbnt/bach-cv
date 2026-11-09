@@ -206,7 +206,20 @@ for (const size of [
         );
       }, selector);
 
-    test('each mark opens its own job or the education, which stops under the toolbar and not behind it', async ({
+    /** The row of the degree called `name`, measured against the bottom of the toolbar. */
+    const underDegree = (page: Page, name: string) =>
+      page.evaluate((title) => {
+        const row = [...document.querySelectorAll('[data-testid=degree]')].find(
+          (r) => r.querySelector('h3')?.textContent === title,
+        );
+        const bar = document.querySelector('[data-tv-toolbar]');
+        if (!row || !bar) return null;
+        return Math.round(
+          row.getBoundingClientRect().top - bar.getBoundingClientRect().bottom,
+        );
+      }, name);
+
+    test('each mark opens its own job or its own degree, which stops under the toolbar and not behind it', async ({
       page,
     }) => {
       await gotoSkin(page, '/');
@@ -221,16 +234,16 @@ for (const size of [
         const label = labels[i];
         // a plain click is refused when another control lies over the centre of the mark: the hit area of a neighbour used to
         await page.getByRole('button', { name: label }).click();
-        await expect(page).toHaveURL(/\/resume(#tv-education)?$/);
-        const degree = /(Bachelor|Master) of Science/.test(label);
-        const target = degree
-          ? '#tv-education'
-          : '[data-job][data-active="true"]';
+        await expect(page).toHaveURL(/\/resume$/);
+        const degree = /(Bachelor|Master) of Science/.exec(label)?.[0];
         if (degree) {
-          await expect(page.locator('#tv-education')).toBeVisible();
+          // the row of THAT degree, not the start of the education
+          await expect(
+            page.locator('[data-testid=degree]', { hasText: degree }),
+          ).toBeVisible();
         } else {
           const company = /at (.+?)\. Show/.exec(label)![1];
-          const row = page.locator(target);
+          const row = page.locator('[data-job][data-active="true"]');
           await expect(row).toHaveCount(1);
           await expect(row).toContainText(company);
         }
@@ -238,7 +251,9 @@ for (const size of [
         await expect
           .poll(
             async () => {
-              const v = await under(page, target);
+              const v = degree
+                ? await underDegree(page, degree)
+                : await under(page, '[data-job][data-active="true"]');
               return v !== null && v >= 0 && v < 48;
             },
             { timeout: 8000 },

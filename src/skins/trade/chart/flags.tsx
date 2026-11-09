@@ -12,6 +12,8 @@ export interface FlagView {
   kind: 'job' | 'degree';
   id: string;
   current: boolean;
+  /** it opens its row on Resume; with that page off it only tells what it is (the tip), and does nothing when pressed */
+  openable: boolean;
   x: number;
   y: number;
   /** the flag is inside the plot (one outside stays mounted, so its drop-in does not play again, but is hidden) */
@@ -51,11 +53,18 @@ export const FlagsLayer = memo(function FlagsLayer({
   return (
     <>
       {flags.map((flag, k) => {
-        const { kind, id, current, x, y, inside, above, label, tip } = flag;
+        const { kind, id, current, openable, x, y, inside, above, label, tip } =
+          flag;
         const degree = kind === 'degree';
-        const tone = degree
-          ? 'bg-tv-violet before:border-b-tv-violet hover:bg-tv-violet/85 active:bg-tv-violet/85'
-          : 'bg-tv-accent before:border-b-tv-accent hover:bg-tv-accent-hover active:bg-tv-accent-hover';
+        const colour = degree
+          ? 'bg-tv-violet before:border-b-tv-violet'
+          : 'bg-tv-accent before:border-b-tv-accent';
+        // a flag that opens something answers the pointer; one that only tells what it is does not look pressable
+        const tone = !openable
+          ? `${colour} cursor-default`
+          : degree
+            ? `${colour} cursor-pointer hover:bg-tv-violet/85 active:scale-90 active:bg-tv-violet/85`
+            : `${colour} cursor-pointer hover:bg-tv-accent-hover active:scale-90 active:bg-tv-accent-hover`;
         return (
           <div
             key={`${kind}:${id}`}
@@ -69,11 +78,12 @@ export const FlagsLayer = memo(function FlagsLayer({
               type='button'
               {...(degree ? { 'data-degree': id } : { 'data-marker': id })}
               aria-label={label}
+              aria-disabled={openable ? undefined : true}
               onClick={() => onOpen(flag)}
               style={{
                 animationDelay: intro ? `${900 + k * 140}ms` : undefined,
               }}
-              className={`tv-chart-flag group/marker pointer-events-auto absolute grid h-[18px] min-w-5 -translate-x-1/2 cursor-pointer place-items-center rounded-[3px] text-[11px] transition-[background-color,scale] duration-100 active:scale-90 leading-none font-bold text-white before:absolute before:-top-1.5 before:left-1/2 before:-ml-[5px] before:border-x-[5px] before:border-b-[6px] before:border-x-transparent before:content-[""] after:absolute after:-inset-x-0.5 after:-inset-y-3.5 after:content-[""] ${tone}`}
+              className={`tv-chart-flag group/marker pointer-events-auto absolute grid h-[18px] min-w-5 -translate-x-1/2 place-items-center rounded-[3px] text-[11px] transition-[background-color,scale] duration-100 leading-none font-bold text-white before:absolute before:-top-1.5 before:left-1/2 before:-ml-[5px] before:border-x-[5px] before:border-b-[6px] before:border-x-transparent before:content-[""] after:absolute after:-inset-x-0.5 after:-inset-y-3.5 after:content-[""] ${tone}`}
             >
               {degree ? (
                 <GraduationCap aria-hidden='true' className='size-3.5' />

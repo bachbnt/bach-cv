@@ -51,9 +51,10 @@ export function DataCorporateActions() {
         {degrees.map((degree, index) => (
           <li
             key={degree.id}
+            id={`tv-degree-${degree.id}`}
             data-testid='degree'
             style={cssVars({ '--i': index })}
-            className='flex animate-tv-slide-in flex-col gap-3 border-b border-tv-line px-3.5 py-3 transition-colors [animation-delay:calc(var(--i)*70ms)] hover:bg-tv-hover/40 min-[901px]:flex-row min-[901px]:items-start'
+            className='flex scroll-mt-3 animate-tv-slide-in flex-col gap-3 border-b border-tv-line px-3.5 py-3 transition-colors [animation-delay:calc(var(--i)*70ms)] hover:bg-tv-hover/40 min-[901px]:flex-row min-[901px]:items-start'
           >
             {degree.logo && (
               <DataMedia

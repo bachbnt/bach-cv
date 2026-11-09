@@ -14,7 +14,10 @@ import { DataCorporateActions } from '@/skins/trade/blocks/data-corporate-action
 import { DataMediaHost } from '@/skins/trade/blocks/data-media';
 import { DataResumeSkeleton } from '@/skins/trade/blocks/data-resume-skeleton';
 import { DataSkills } from '@/skins/trade/blocks/data-skills';
-import { useReveal } from '@/skins/trade/blocks/data-use-reveal';
+import {
+  useReveal,
+  useRevealDegree,
+} from '@/skins/trade/blocks/data-use-reveal';
 import { DownloadCvButton } from '@/skins/trade/shell/download-cv-button';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvPanel } from '@/skins/trade/ui/tv-panel';
@@ -38,6 +41,9 @@ export function DataResumeView() {
   }, [loaded]);
 
   const reveal = useReveal(jobs);
+  // the rows of the education are there once the degrees have arrived too: a flag of a degree waits for both
+  const degrees = useContentQuery('education');
+  useRevealDegree(loaded && !degrees.isPending);
   const jump = [
     ['tv-experience', copy.experience.title],
     ['tv-events', resume.events.title],

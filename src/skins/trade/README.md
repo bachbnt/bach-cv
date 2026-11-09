@@ -71,7 +71,7 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
   while it goes on), a briefcase in the job blue marks a past job and a star the current one, so the kinds are told apart by glyph and colour.
   The chart still starts at the first job (March 2020): a degree whose mark falls before the first candle or after the last is not drawn
   (`onChart`; it is not moved to the nearest bar) and stays reachable from Resume, the search and the watchlist. A mark is a button with a tip
-  (degree, major, school, period) that opens `#tv-education` on Resume (`shell/reveal.ts` scrolls there once the page has loaded); flags on
+  (degree, major, school, period) that opens its own row of the education on Resume (`TradeProvider.showDegree`; `useRevealDegree` waits for the jobs and the degrees and the animations around the row, then scrolls to its top). With the Resume page off (coming soon or hidden) the flags only show their tip: they are `aria-disabled` and open nothing; flags on
   one bar sit side by side. The legend adds the degree in progress (`MSc · University of Science`, `shortDegree` is imported from
   `lib/derive/short-degree`, the one Standard and Dev use) beside the job, and the replay shows and announces the marks as the playhead passes them. The years in software are counted from the
   jobs only (`lib/derive/career-years.ts`).

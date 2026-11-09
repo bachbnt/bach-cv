@@ -48,7 +48,7 @@ export function ChartBody({
   height: number;
   initialRange: RangeKey;
   onOpenJob: (id: string) => void;
-  onOpenDegree: () => void;
+  onOpenDegree: (id: string) => void;
 }) {
   const reduced = useReducedMotion();
   // the interval the visitor asked for, and the one on screen: they differ only until the window has been moved to the new bars

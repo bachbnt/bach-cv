@@ -132,23 +132,47 @@ test.describe('the education on the chart', () => {
     await expect(masterTip).toContainText('Jun 2023');
   });
 
-  test('a click on the flag goes to the education on the Resume page, and so does Enter', async ({
+  test('a click on a flag goes to the row of that degree on the Resume page, and so does Enter', async ({
     page,
   }) => {
     await ready(page);
+    // the row of a degree, measured from the top of the page panel: it is the top of the scrolled list, not the start of Education
+    const rowTop = (name: string) =>
+      page.evaluate((title) => {
+        const row = [...document.querySelectorAll('[data-testid=degree]')].find(
+          (r) => r.querySelector('h3')?.textContent === title,
+        );
+        const main = document.querySelector('main');
+        return row && main
+          ? Math.round(
+              row.getBoundingClientRect().top -
+                main.getBoundingClientRect().top,
+            )
+          : null;
+      }, name);
+    const atTop = (name: string) =>
+      expect
+        .poll(
+          async () => {
+            const top = await rowTop(name);
+            return top !== null && top >= 0 && top < 100;
+          },
+          { timeout: 8000 },
+        )
+        .toBe(true);
+
     await caps(page).first().click();
-    await expect(page).toHaveURL(/\/resume#tv-education$/);
-    await expect(
-      page.getByRole('heading', { name: 'Education' }),
-    ).toBeInViewport();
+    await expect(page).toHaveURL(/\/resume$/);
+    await atTop('Bachelor of Science');
+    // the other degree is not what it stopped at
+    expect(await rowTop('Master of Science')).toBeLessThan(0);
     await page.goBack();
     await expect(chart(page)).toHaveAttribute('data-candles', /^[1-9]/);
     await caps(page).nth(1).focus();
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/\/resume#tv-education$/);
-    await expect(
-      page.getByRole('heading', { name: 'Education' }),
-    ).toBeInViewport();
+    await expect(page).toHaveURL(/\/resume$/);
+    await atTop('Master of Science');
+    expect(await rowTop('Bachelor of Science')).toBeGreaterThan(100);
   });
 
   test('the legend tells the degree in progress beside the job, and nothing when none is', async ({
@@ -336,11 +360,83 @@ test.describe('on a phone', () => {
     }
     // a tap on a flag opens the education
     await caps(page).first().tap();
-    await expect(page).toHaveURL(/\/resume#tv-education$/);
+    await expect(page).toHaveURL(/\/resume$/);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
   });
+});
+
+test.describe('with the page panel turned off in Layout', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  // Resume is already the page, so no page change brings the panel back: the flag itself must
+  for (const [kind, flag] of [
+    ['a degree', (page: Page) => caps(page).nth(1)],
+    ['a job', (page: Page) => jobs(page).first()],
+  ] as const) {
+    test(`${kind} flag brings the panel back and shows its row`, async ({
+      page,
+    }) => {
+      await page.addInitScript(() =>
+        localStorage.setItem(
+          'bach-cv-trade-layout',
+          JSON.stringify({
+            watchlist: true,
+            panel: false,
+            tools: true,
+            tape: true,
+            split: null,
+            side: null,
+          }),
+        ),
+      );
+      await ready(page, '/resume');
+      await expect(page.getByTestId('degree').first()).toBeHidden();
+      await flag(page).click();
+      const row =
+        kind === 'a degree'
+          ? page.getByTestId('degree').filter({ hasText: 'Master of Science' })
+          : page.locator('[data-job][data-active="true"]');
+      await expect(row).toBeInViewport({ timeout: 8000 });
+    });
+  }
+});
+
+for (const mode of ['soon', 'hidden'] as const) {
+  test.describe(`with the Resume page ${mode}`, () => {
+    test(`the flags only tell what they are: no link to a page that is ${mode}`, async ({
+      page,
+    }) => {
+      await mockFirestore(page, { 'site/live': { pages: { resume: mode } } });
+      await ready(page);
+      const flags = page.locator('button.tv-chart-flag');
+      await expect(flags).toHaveCount(6);
+      for (const flag of await flags.all()) {
+        await expect(flag).toHaveAttribute('aria-disabled', 'true');
+        // the name says what it is, not that it opens a page
+        await expect(flag).not.toHaveAttribute('aria-label', /Resume page/);
+      }
+      // the tip is still there
+      await caps(page).nth(1).hover();
+      await expect(
+        caps(page).nth(1).locator('span[aria-hidden]').last(),
+      ).toContainText('Master of Science');
+      // a press does nothing (`force`: Playwright would wait for an aria-disabled button to be enabled)
+      await caps(page).nth(1).click({ force: true });
+      await jobs(page).first().click({ force: true });
+      await page.waitForTimeout(400);
+      await expect(page).toHaveURL(/\/$/);
+    });
+  });
+}
+
+test('with Resume on, every flag opens something', async ({ page }) => {
+  await ready(page);
+  const flags = page.locator('button.tv-chart-flag');
+  await expect(flags).toHaveCount(6);
+  for (const flag of await flags.all())
+    await expect(flag).not.toHaveAttribute('aria-disabled', /.+/);
 });

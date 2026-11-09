@@ -282,6 +282,21 @@ test.describe('the watchlist', () => {
     );
   });
 
+  test('Roles with the Resume page off still tells the jobs, with no button and no hint to open them', async ({
+    page,
+  }) => {
+    await mockFirestore(page, { 'site/live': { pages: { resume: 'soon' } } });
+    await gotoSkin(page, '/');
+    const aside = watchlist(page);
+    await aside.getByRole('tab', { name: 'Roles' }).click();
+    const panel = aside.getByRole('tabpanel');
+    await expect(panel.getByText('MoMo').first()).toBeVisible();
+    await expect(panel.getByText('Current')).toBeVisible();
+    await expect(panel.getByRole('button')).toHaveCount(0);
+    await expect(panel.getByText(/Open a role/)).toHaveCount(0);
+    await expect(page).toHaveURL(/\/$/);
+  });
+
   test('the tabs work with the arrow keys', async ({ page }) => {
     await gotoSkin(page, '/');
     await page.getByRole('tab', { name: 'Pages' }).focus();

@@ -6,6 +6,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { fill } from '@/lib/chat/fill';
+import { useLive } from '@/hooks/use-live';
 import {
   type Candle,
   type CareerEntry,
@@ -69,9 +70,11 @@ export function useChartFlags({
   lang: Lang;
   words: FlagWords;
   onOpenJob: (id: string) => void;
-  onOpenDegree: () => void;
+  onOpenDegree: (id: string) => void;
 }) {
   const { ts, price, layout } = frame;
+  // a flag opens a row of Resume: with that page off (coming soon or hidden) it would end on a screen that says so, so it only tells what it is
+  const openable = useLive().pages.resume === 'on';
   const items = useMemo<ChartFlag[]>(
     () => [
       ...markers.map((marker): ChartFlag => ({
@@ -128,6 +131,7 @@ export function useChartFlags({
           (isLineType(type) ? price.y(k.c) : price.y(k.l)) + 12,
         );
         const common = {
+          openable,
           x,
           y,
           inside: ts.x(item.index) >= 0 && ts.x(item.index) <= layout.plotWidth,
@@ -142,10 +146,12 @@ export function useChartFlags({
               kind: 'degree' as const,
               id: study.id,
               current: false,
-              label: fill(words.openDegree, {
-                degree: study.degree,
-                school: study.school,
-              }),
+              label: openable
+                ? fill(words.openDegree, {
+                    degree: study.degree,
+                    school: study.school,
+                  })
+                : [study.degree, study.school].join(', '),
               tip: [study.degree, study.major, study.school, period],
             },
           ];
@@ -158,10 +164,12 @@ export function useChartFlags({
             kind: 'job' as const,
             id: marker.id,
             current: marker.current,
-            label: fill(words.openJob, {
-              role: marker.role,
-              company: marker.company,
-            }),
+            label: openable
+              ? fill(words.openJob, {
+                  role: marker.role,
+                  company: marker.company,
+                })
+              : [marker.role, marker.company].join(', '),
             tip: [
               marker.company,
               marker.role,
@@ -182,11 +190,15 @@ export function useChartFlags({
       lang,
       words.openDegree,
       words.openJob,
+      openable,
     ],
   );
   const openFlag = useCallback(
-    (flag: FlagView) =>
-      flag.kind === 'job' ? onOpenJob(flag.id) : onOpenDegree(),
+    (flag: FlagView) => {
+      if (!flag.openable) return;
+      if (flag.kind === 'job') onOpenJob(flag.id);
+      else onOpenDegree(flag.id);
+    },
     [onOpenJob, onOpenDegree],
   );
   return { items, flags, openFlag };

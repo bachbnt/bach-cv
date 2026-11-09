@@ -35,7 +35,7 @@ export function CareerChart({
   /** a flag was activated: show that job on the Resume page */
   onOpenJob: (id: string) => void;
   /** a graduation flag was activated: show the education on the Resume page */
-  onOpenDegree: () => void;
+  onOpenDegree: (id: string) => void;
 }) {
   const query = useContentQuery('experience');
   const schooling = useContentQuery('education');
