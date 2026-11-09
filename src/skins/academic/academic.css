@@ -31,9 +31,8 @@ html[data-skin='academic'] {
   --ac-sheet-accent: #b3261e;
   --ac-sheet-link: #1b4fa8;
   --ac-sheet-rule: #b7b09b;
-  --ac-sticky: #efd868;
-  --ac-sticky-hi: #f8e784;
-  --ac-sticky-ink: #2b2a1e;
+  /* the metal of a paper clip */
+  --ac-clip: #7b8494;
   --ac-tape: rgba(226, 208, 158, 0.78);
   --ac-polaroid: #f3efe2;
   /* the white of a photograph on paper, the grey of the desk it lies on, the shade of the corner of a sheet and the pencil of its rulings */
@@ -271,12 +270,52 @@ html[data-skin='academic']:not(.dark) .ac-paper {
 .ac-paper:not(.absolute, .fixed, .sticky) {
   position: relative;
 }
-/* a sticky note: yellow, with its own ink (said here, after .ac-paper, because a utility cannot beat it) */
+/* a note: a sheet of squared paper from a spiral pad (holes along its left edge, a red margin line) held by a paper clip, its first line gone over
+   with a highlighter pen. The holes are cut in the sheet with a mask, which would cut a shadow, so the shadow is on the wrapper (which is the
+   paper: it keeps the ink of paper, and the wind lifts it). Said here, after .ac-paper, because a utility cannot beat it. */
 .ac-paper.ac-sticky {
-  --ac-ink: var(--ac-sticky-ink);
-  --ac-mute: var(--ac-sticky-ink);
-  color: var(--ac-sticky-ink);
-  background: linear-gradient(172deg, var(--ac-sticky-hi), var(--ac-sticky));
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 8px 7px rgba(20, 28, 36, 0.28))
+    drop-shadow(0 1px 1px rgba(20, 28, 36, 0.3));
+}
+.ac-sticky-sheet {
+  position: relative;
+  --ac-grid: rgba(60, 110, 200, 0.16);
+  background:
+    linear-gradient(90deg, var(--ac-grid) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(var(--ac-grid) 1px, transparent 1px) 0 0 / 22px 22px,
+    var(--ac-paper-grain),
+    linear-gradient(
+      172deg,
+      var(--ac-sheet),
+      color-mix(in srgb, var(--ac-sheet) 90%, var(--ac-paper-shade))
+    );
+  -webkit-mask: radial-gradient(circle 7px at 24px 22px, transparent 98%, #000)
+    top / 100% 44px repeat-y;
+  mask: radial-gradient(circle 7px at 24px 22px, transparent 98%, #000) top /
+    100% 44px repeat-y;
+}
+.ac-sticky-sheet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 44px;
+  width: 2px;
+  background: rgba(214, 70, 60, 0.55);
+}
+.ac-sticky-sheet > :first-child::first-line {
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    var(--ac-hit) 40% 86%,
+    transparent 86%
+  );
+}
+.ac-clip {
+  color: var(--ac-clip);
+  filter: drop-shadow(0 1px 1px rgba(20, 28, 36, 0.35));
 }
 /* ruled like an index card, with a red margin line */
 .ac-ruled {

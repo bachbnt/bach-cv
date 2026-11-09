@@ -30,12 +30,33 @@ test.describe('what an audit of the board found', () => {
     expect(box && viewport && box.y + box.height <= viewport.height).toBe(true);
   });
 
-  test('a sticky note is yellow', async ({ page }) => {
+  test('a note is squared paper from a spiral pad, held by a paper clip, with a highlighter pen over its first line', async ({
+    page,
+  }) => {
     await gotoSkin(page, '/services');
     const note = page.locator('.ac-sticky').first();
     await expect(note).toBeVisible();
-    // a yellow gradient, not the cream of paper
-    await expect(note).toHaveCSS('background-image', /rgb\(248, 231, 132\)/);
+    // the shadow is on the paper; the holes of the spiral are cut in the sheet inside it, which is squared, not yellow
+    await expect(note).toHaveCSS('filter', /drop-shadow/);
+    const sheet = note.locator('.ac-sticky-sheet');
+    expect(
+      await sheet.evaluate((el) => getComputedStyle(el).maskImage),
+    ).toMatch(/radial-gradient/);
+    const background = await sheet.evaluate(
+      (el) => getComputedStyle(el).backgroundImage,
+    );
+    expect(background).toMatch(/linear-gradient/);
+    expect(background).not.toMatch(/rgb\(248, 231, 132\)/);
+    // the clip is decoration
+    await expect(note.locator('svg.ac-clip')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    );
+    // the pen: the first line of the text has the marker colour behind it
+    const marked = await sheet
+      .locator(':scope > :first-child')
+      .evaluate((el) => getComputedStyle(el, '::first-line').backgroundImage);
+    expect(marked).toMatch(/linear-gradient/);
   });
 
   for (const width of [390, 320]) {
