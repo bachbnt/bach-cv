@@ -25,7 +25,7 @@ export function Rail({ page }: { page: PageKey | null }) {
   return (
     <nav
       aria-label={trip.pagesLabel}
-      className='tl-rail z-25 flex items-center justify-around border-tl-line bg-tl-panel backdrop-blur-[12px] max-md:order-3 max-md:border-t max-md:px-1 max-md:py-1 md:flex-col md:justify-start md:gap-1.5 md:border-r md:py-3'
+      className='tl-rail z-25 flex items-center justify-around border-tl-line bg-tl-panel max-md:order-3 max-md:border-t max-md:px-1 max-md:py-1 md:flex-col md:justify-start md:gap-1.5 md:border-r md:py-3'
     >
       {navItems(pages).map(({ page: key, soon }) => {
         const Icon = PAGE_META[key].icon;

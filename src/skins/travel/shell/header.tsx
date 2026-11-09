@@ -36,7 +36,7 @@ export function Header() {
   const { openCv } = useTravel();
   const headline = localize(shell, lang).headline;
   return (
-    <header className='tl-header relative z-30 flex md:col-span-2 items-center gap-2 border-b border-tl-line bg-tl-panel px-3 backdrop-blur-[12px] md:gap-3 md:px-4'>
+    <header className='tl-header relative z-30 flex md:col-span-2 items-center gap-2 border-b border-tl-line bg-tl-panel px-3 md:gap-3 md:px-4'>
       <Link
         href='/'
         aria-label={fill(common.homeLink, { name: shell.name })}

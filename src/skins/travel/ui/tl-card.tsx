@@ -11,7 +11,7 @@ export function TlCard({ className, ...props }: ComponentProps<'div'>) {
     <div
       data-slot='tl-card'
       className={cn(
-        'rounded-3xl border border-tl-line bg-tl-panel shadow-tl-card backdrop-blur-[14px]',
+        'rounded-3xl border border-tl-line bg-tl-panel shadow-tl-card',
         className,
       )}
       {...props}

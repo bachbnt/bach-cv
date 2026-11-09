@@ -91,4 +91,35 @@ describe('the CSS of the Travel skin', () => {
       /prefers-reduced-motion: reduce\)[\s\S]*animation: none !important/,
     );
   });
+
+  it('animates only what the compositor moves, so the idle map does not make the main thread draw a frame at every refresh', () => {
+    // transform, opacity and the individual transform properties; a box-shadow, a margin, an offset or a stroke offset is repainted by
+    // the main thread at every frame
+    const ok = new Set([
+      'transform',
+      'opacity',
+      'translate',
+      'scale',
+      'rotate',
+    ]);
+    const heavy: string[] = [];
+    for (const file of FILES)
+      postcss
+        .parse(readFileSync(file, 'utf8'))
+        .walkAtRules(/keyframes$/, (frames) => {
+          frames.walkDecls((decl) => {
+            if (!ok.has(decl.prop))
+              heavy.push(`${frames.params}: ${decl.prop}`);
+          });
+        });
+    // the only one left is the falling water, which runs only when the map is zoomed in (`.tl-close`)
+    expect(heavy).toEqual(['tl-fall: stroke-dashoffset']);
+    const loose = rules().filter(
+      (rule) =>
+        /(^|[\s,])\.tl-fall(\s|,|$)/.test(rule.selector) &&
+        !rule.selector.includes('.tl-close') &&
+        rule.nodes.some((n) => n.type === 'decl' && n.prop === 'animation'),
+    );
+    expect(loose.map((r) => r.selector)).toEqual([]);
+  });
 });

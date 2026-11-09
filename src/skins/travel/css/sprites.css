@@ -38,6 +38,9 @@
 }
 .tl-fall {
   stroke-dasharray: 5 7;
+}
+/* a stroke-dashoffset is not moved by the compositor and keeps the main thread drawing at every frame: the water falls only where it can be seen (zoomed in) */
+.tl-close .tl-fall {
   animation: tl-fall 1.1s linear infinite;
 }
 @keyframes tl-fall {

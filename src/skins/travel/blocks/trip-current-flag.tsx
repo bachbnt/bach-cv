@@ -21,7 +21,7 @@ export function TripCurrentFlag({
     >
       <i
         aria-hidden='true'
-        className='tl-live size-1.5 rounded-full bg-tl-on-coral'
+        className='tl-live relative size-1.5 rounded-full bg-tl-on-coral'
       />
       {children}
     </span>

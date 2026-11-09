@@ -40,7 +40,7 @@ export function TlPanel({
       aria-labelledby={labelledBy}
       data-tall={tall || undefined}
       className={cn(
-        'tl-panel tl-rise pointer-events-auto absolute right-0 bottom-0 left-0 flex min-h-0 flex-col overflow-hidden rounded-t-[26px] border border-tl-line bg-tl-panel shadow-tl-card backdrop-blur-[16px] transition-[height] duration-300 max-md:h-[46%] max-md:data-[tall]:h-[88%] md:absolute md:right-auto md:bottom-auto md:left-auto md:h-auto md:rounded-3xl',
+        'tl-panel tl-rise pointer-events-auto absolute right-0 bottom-0 left-0 flex min-h-0 flex-col overflow-hidden rounded-t-[26px] border border-tl-line bg-tl-panel shadow-tl-card transition-[height] duration-300 max-md:h-[46%] max-md:data-[tall]:h-[88%] md:absolute md:right-auto md:bottom-auto md:left-auto md:h-auto md:rounded-3xl',
         SIDE[side],
         className,
       )}

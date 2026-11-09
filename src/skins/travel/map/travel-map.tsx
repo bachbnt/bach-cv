@@ -43,6 +43,9 @@ import { useCamera } from '@/skins/travel/map/use-camera';
 import { usePaused } from '@/skins/travel/map/use-paused';
 import { useSize } from '@/skins/travel/map/use-size';
 
+/** From this zoom on, the details that are too small to see from afar (a waterfall) are animated. */
+const CLOSE_ZOOM = 0.7;
+
 /** The route as a dashed line on the ground, from the first stop to the last (the same road the traveller rides). */
 const [A, B, C, D] = GROUND_MATRIX;
 const GROUND = `matrix(${A} ${B} ${C} ${D} ${WORLD_OFFSET.x} ${WORLD_OFFSET.y})`;
@@ -126,11 +129,8 @@ export function TravelMap({
     },
     [stops, size, free],
   );
-  const { camera, flying, dragging, set, handlers } = useCamera(
-    stage,
-    size,
-    target(focus),
-  );
+  const { camera, flying, dragging, moving, restZoom, set, handlers } =
+    useCamera(stage, size, target(focus));
 
   // a new focus (another page, another stop) makes the camera fly there
   const focusKey = JSON.stringify(focus);
@@ -166,6 +166,8 @@ export function TravelMap({
         'tl-map',
         paused && 'tl-paused',
         dragging && 'tl-dragging',
+        moving && 'tl-moving',
+        camera.z >= CLOSE_ZOOM && 'tl-close',
         className,
       )}
       {...handlers}
@@ -181,7 +183,8 @@ export function TravelMap({
             width: WORLD.width,
             height: WORLD.height,
             transform: cameraTransform(camera, size),
-            '--tl-sc': spriteScale(camera.z),
+            // while the camera is dragged or zoomed by hand the sprites keep their size: resizing all of them at every wheel step is what made zooming slow
+            '--tl-sc': spriteScale(moving ? restZoom : camera.z),
           } as CSSProperties
         }
       >

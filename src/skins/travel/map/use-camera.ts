@@ -22,6 +22,8 @@ import {
 } from '@/skins/travel/map/camera';
 
 const FLY_MS = 800;
+/** How long after the last drag, wheel or key step the map still counts as moving (and keeps one raster instead of painting at each step). */
+const SETTLE_MS = 220;
 const PAN_KEY = 90;
 
 /**
@@ -38,7 +40,11 @@ export function useCamera(
   const camera = useMemo(() => clampCamera(raw, size), [raw, size]);
   const [flying, setFlying] = useState(false);
   const [dragging, setDragging] = useState(false);
+  const [moving, setMoving] = useState(false);
+  // the zoom the sprites were last sized for: it only follows the camera when a drag, wheel turn or key step has ended
+  const [restZoom, setRestZoom] = useState(camera.z);
   const timer = useRef<number | undefined>(undefined);
+  const settle = useRef<number | undefined>(undefined);
   const live = useRef({ camera, size });
   useEffect(() => {
     live.current = { camera, size };
@@ -47,15 +53,38 @@ export function useCamera(
   const pinch = useRef<{ dist: number } | null>(null);
   const moved = useRef(0);
 
-  const set = useCallback((next: Camera, fly: boolean) => {
+  /** `byHand`: a drag, wheel turn, pinch or key step, which keeps the sprites' size until it ends; any other move is final at once. */
+  const move = useCallback((next: Camera, fly: boolean, byHand: boolean) => {
     window.clearTimeout(timer.current);
     setFlying(fly);
-    setCamera(clampCamera(next, live.current.size));
+    const clamped = clampCamera(next, live.current.size);
+    setCamera(clamped);
     if (fly)
       timer.current = window.setTimeout(() => setFlying(false), FLY_MS + 60);
+    window.clearTimeout(settle.current);
+    if (!byHand) {
+      setMoving(false);
+      setRestZoom(clamped.z);
+      return;
+    }
+    setMoving(true);
+    settle.current = window.setTimeout(() => {
+      setMoving(false);
+      setRestZoom(live.current.camera.z);
+    }, SETTLE_MS);
   }, []);
+  const set = useCallback(
+    (next: Camera, fly: boolean) => move(next, fly, false),
+    [move],
+  );
 
-  useEffect(() => () => window.clearTimeout(timer.current), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(timer.current);
+      window.clearTimeout(settle.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     const element = stage.current;
@@ -64,7 +93,7 @@ export function useCamera(
       event.preventDefault();
       const rect = element.getBoundingClientRect();
       const { camera: now, size: box } = live.current;
-      set(
+      move(
         zoomAt(
           now,
           box,
@@ -73,11 +102,12 @@ export function useCamera(
           event.clientY - rect.top,
         ),
         false,
+        true,
       );
     };
     element.addEventListener('wheel', onWheel, { passive: false });
     return () => element.removeEventListener('wheel', onWheel);
-  }, [stage, set]);
+  }, [stage, move]);
 
   const onPointerDown = (event: ReactPointerEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest('button, a')) return;
@@ -103,7 +133,7 @@ export function useCamera(
       const [a, b] = [...pointers.current.values()];
       const dist = Math.hypot(a.x - b.x, a.y - b.y);
       const rect = event.currentTarget.getBoundingClientRect();
-      set(
+      move(
         zoomAt(
           now,
           box,
@@ -112,6 +142,7 @@ export function useCamera(
           (a.y + b.y) / 2 - rect.top,
         ),
         false,
+        true,
       );
       pinch.current = { dist };
       return;
@@ -119,7 +150,11 @@ export function useCamera(
     const dx = next.x - last.x;
     const dy = next.y - last.y;
     moved.current += Math.abs(dx) + Math.abs(dy);
-    set({ ...now, cx: now.cx - dx / now.z, cy: now.cy - dy / now.z }, false);
+    move(
+      { ...now, cx: now.cx - dx / now.z, cy: now.cy - dy / now.z },
+      false,
+      true,
+    );
   };
   const onPointerUp = (event: ReactPointerEvent<HTMLElement>) => {
     pointers.current.delete(event.pointerId);
@@ -142,13 +177,15 @@ export function useCamera(
     const next = moves[event.key];
     if (!next) return;
     event.preventDefault();
-    set(next, false);
+    move(next, false, true);
   };
 
   return {
     camera,
     flying,
     dragging,
+    moving,
+    restZoom,
     set,
     handlers: {
       onPointerDown,

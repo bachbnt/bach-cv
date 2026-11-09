@@ -105,7 +105,7 @@ export function TravelChat() {
     return isOpen ? (
       <div
         // the height leaves the header, the map controls at the top right and the edge of the map free
-        className='tl-rise fixed right-4 bottom-7 z-40 flex h-[min(560px,calc(100dvh-60px-28px-220px))] w-[min(380px,calc(100vw-116px))] flex-col overflow-hidden rounded-3xl border border-tl-line bg-tl-panel shadow-tl-pop backdrop-blur-[16px]'
+        className='tl-rise fixed right-4 bottom-7 z-40 flex h-[min(560px,calc(100dvh-60px-28px-220px))] w-[min(380px,calc(100vw-116px))] flex-col overflow-hidden rounded-3xl border border-tl-line bg-tl-panel shadow-tl-pop'
       >
         {panel(true, 'h-full')}
       </div>

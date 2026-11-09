@@ -220,7 +220,7 @@ export function ChatPanel({
               <>
                 <span
                   aria-hidden='true'
-                  className='tl-live size-2 rounded-full bg-tl-teal'
+                  className='tl-live relative size-2 rounded-full bg-tl-teal'
                 />
                 <span className='font-bold'>{copy.online}</span>
                 <span aria-hidden='true'>·</span>

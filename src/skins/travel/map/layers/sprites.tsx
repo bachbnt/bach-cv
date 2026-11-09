@@ -79,7 +79,8 @@ export const Sprites = memo(function Sprites({ words }: { words: Words }) {
           {
             left: CABLE.a.x,
             top: CABLE.a.y - 30,
-            '--tl-path': `path('M0 0 L${CABLE.b.x - CABLE.a.x} ${CABLE.b.y - CABLE.a.y - 16}')`,
+            '--tl-dx': `${CABLE.b.x - CABLE.a.x}px`,
+            '--tl-dy': `${CABLE.b.y - CABLE.a.y - 16}px`,
           } as CSSProperties
         }
       />

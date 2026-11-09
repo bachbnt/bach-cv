@@ -29,6 +29,11 @@
 .tl-view.tl-fly {
   transition: transform 0.8s cubic-bezier(0.3, 0.7, 0.2, 1);
 }
+/* while the camera moves the map is one layer that only moves (and scales), not painted again at every step; it is crisp again at rest */
+.tl-moving .tl-view,
+.tl-view.tl-fly {
+  will-change: transform;
+}
 
 /* ---- sky */
 .tl-sun,
@@ -66,6 +71,10 @@
   background: #fff;
   opacity: 0.85;
   animation: tl-twinkle 3s ease-in-out infinite alternate;
+}
+/* by day the stars are invisible: they do not need to twinkle (46 animated layers) */
+html[data-skin='travel']:not(.dark) .tl-stars i {
+  animation: none;
 }
 @keyframes tl-twinkle {
   from {
@@ -256,23 +265,25 @@
   transform-origin: 0 0;
   top: -40px;
 }
+/* the boat drifts and bobs by its anchor (a div): the same animation on the drawing (an svg root) was not done by the compositor, so the main thread drew a
+   frame 60 times a second */
+.tl-boat {
+  animation: tl-bob var(--tl-dur, 28s) ease-in-out infinite alternate;
+}
 .tl-boat > * {
   transform: translate(-50%, -100%) scale(var(--tl-sc));
   transform-origin: 50% 100%;
   translate: none;
-  animation: tl-bob var(--tl-dur, 28s) ease-in-out infinite alternate;
 }
 @keyframes tl-bob {
   from {
-    margin-left: -30px;
-    margin-top: 0;
+    translate: -30px 0;
   }
   50% {
-    margin-top: 5px;
+    translate: 2px 5px;
   }
   to {
-    margin-left: 34px;
-    margin-top: -3px;
+    translate: 34px -3px;
   }
 }
 .tl-cable-line {
@@ -293,17 +304,15 @@
   border-radius: 4px 4px 7px 7px;
   background: var(--tl-coral);
   box-shadow: 0 0 0 2px var(--tl-solid);
-  offset-path: var(--tl-path);
-  offset-rotate: 0deg;
   animation: tl-gondola 24s ease-in-out infinite alternate;
   pointer-events: none;
 }
 @keyframes tl-gondola {
   from {
-    offset-distance: 0%;
+    translate: 0 0;
   }
   to {
-    offset-distance: 100%;
+    translate: var(--tl-dx) var(--tl-dy);
   }
 }
 
@@ -368,7 +377,6 @@
   white-space: nowrap;
   text-align: left;
   background: var(--tl-panel);
-  backdrop-filter: blur(6px);
   border-radius: 12px;
   border-left: 4px solid var(--tl-pc);
   padding: 6px 10px 6px 11px;
@@ -424,6 +432,7 @@
   box-shadow: 0 8px 18px -6px var(--tl-coral);
 }
 .tl-pin-flag i {
+  position: relative;
   width: 9px;
   height: 9px;
   border-radius: 50%;
@@ -509,7 +518,6 @@
   place-items: center;
   background: var(--tl-panel);
   box-shadow: var(--tl-shadow);
-  backdrop-filter: blur(10px);
   color: var(--tl-ink);
 }
 .tl-compass svg {
@@ -520,7 +528,6 @@
   display: flex;
   flex-direction: column;
   background: var(--tl-panel);
-  backdrop-filter: blur(10px);
   border-radius: 16px;
   box-shadow: var(--tl-shadow);
   overflow: hidden;
