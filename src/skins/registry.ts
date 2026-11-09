@@ -12,6 +12,7 @@ type Loader = () => Promise<{ default: SkinDefinition }>;
 export const SKIN_LOADERS: Record<Exclude<SkinId, 'standard'>, Loader> = {
   dev: () => import('@/skins/dev/skin'),
   trade: () => import('@/skins/trade/skin'),
+  academic: () => import('@/skins/academic/skin'),
   travel: () => import('@/skins/travel/skin'),
 };
 

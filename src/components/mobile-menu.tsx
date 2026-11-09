@@ -180,7 +180,7 @@ export function MobileMenu({
           )}
 
           {SKIN_IDS.length > 1 && (
-            // the label sits above a grid of three columns: three names fit a narrow phone in one row, six make two even rows
+            // the label sits above a grid: three names fit a narrow phone in one row and six make two even rows of three, four make two of two
             <div className='mt-3.5 border-t pt-3.5'>
               <p className='mb-2 text-[13px] font-semibold text-muted-foreground'>
                 {skins.label}
@@ -188,7 +188,10 @@ export function MobileMenu({
               <div
                 role='group'
                 aria-label={skins.label}
-                className='grid grid-cols-3 gap-1 rounded-xl bg-background p-[3px]'
+                className={cn(
+                  'grid gap-1 rounded-xl bg-background p-[3px]',
+                  SKIN_IDS.length % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2',
+                )}
               >
                 {SKIN_IDS.map((id) => (
                   <button

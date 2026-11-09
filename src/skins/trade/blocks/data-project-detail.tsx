@@ -6,7 +6,10 @@
 
 import { ImageIcon } from 'lucide-react';
 import { ProjectCover } from '@/components/projects/project-cover';
-import { skillsOf } from '@/components/projects/project-helpers';
+import {
+  screenshotsLabel,
+  skillsOf,
+} from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import type { Doc } from '@/lib/content/schema';
@@ -15,7 +18,6 @@ import { useCopy } from '@/lib/i18n/copy';
 import { DataKind } from '@/skins/trade/blocks/data-kind';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
-import { screenshotsLabel } from '@/skins/trade/blocks/screenshots-label';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 
 /**

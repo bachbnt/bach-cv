@@ -1,0 +1,100 @@
+/*
+ * The eraser that changes one page for another (`shell/eraser-wipe.tsx`). The old page is a copy of what was on screen (`.ac-ghost`), the eraser
+ * and the haze of dust lie over it (`.ac-wipe`); everything is removed when the wipe ends. Colours are the palette tokens of academic.css.
+ */
+.ac-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ac-wipe[hidden] {
+  display: none;
+}
+.ac-haze {
+  position: absolute;
+  inset: 0;
+  background: var(--ac-wipe);
+}
+.ac-eraser {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  transform-origin: 50% 50%;
+}
+.ac-eraser-felt {
+  position: absolute;
+  inset: 0;
+  border-radius: 17px;
+  background:
+    radial-gradient(
+      ellipse 40% 60% at 22% 85%,
+      rgba(255, 255, 255, 0.55),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 30% 50% at 70% 90%,
+      rgba(255, 255, 255, 0.4),
+      transparent 70%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.06) 0 1px,
+      transparent 1px 4px
+    ),
+    var(--ac-er-felt);
+  box-shadow:
+    0 18px 22px -6px rgba(0, 0, 0, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1.5px rgba(0, 0, 0, 0.3);
+}
+.ac-eraser-top {
+  position: absolute;
+  inset: 5px 9px 15px 7px;
+  border-radius: 13px 11px 12px 14px;
+  background:
+    repeating-linear-gradient(
+      88deg,
+      rgba(0, 0, 0, 0.05) 0 2px,
+      transparent 2px 9px
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--ac-er-top) 76%, #fff),
+      var(--ac-er-top) 42%,
+      var(--ac-er-front)
+    );
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -4px 6px rgba(0, 0, 0, 0.28),
+    0 3px 5px rgba(0, 0, 0, 0.35);
+}
+.ac-eraser-top::after {
+  content: '';
+  position: absolute;
+  inset: 24%;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.13);
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* the copy of the old page: where it was on screen, above the board and the ledge, below the eraser; it cannot be reached or clicked */
+.ac-ghost {
+  position: fixed;
+  z-index: 24;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* while an eraser wipes, the page change is not also faded by the browser: a view transition shows still pictures of the two pages, and
+   the wipe is drawn live on the real page */
+html[data-skin='academic'][data-ac-wipe]::view-transition-group(*),
+html[data-skin='academic'][data-ac-wipe]::view-transition-old(*),
+html[data-skin='academic'][data-ac-wipe]::view-transition-new(*) {
+  animation: none;
+}
