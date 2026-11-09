@@ -17,13 +17,12 @@ import {
   roundedLine,
 } from '@/skins/moba/world/geometry';
 import {
-  NAV,
-  pathLength,
-  pointAtDistance,
+  isWalkable,
+  nearestWalkable,
   routeTo,
   slide,
-  snapToGraph,
-} from '@/skins/moba/world/nav';
+} from '@/skins/moba/world/ground';
+import { pathLength, pointAtDistance } from '@/skins/moba/world/nav';
 import { STATIONS, stationOfPage } from '@/skins/moba/world/stations';
 import { PAGES } from '@/lib/content/schema';
 
@@ -99,12 +98,28 @@ describe('the geometry of the map', () => {
   });
 });
 
-describe('the navigation graph', () => {
-  it('lets the champion walk from the fountain to every station, and ends the walk on it', () => {
+describe('the ground of the arena', () => {
+  const stays = (path: { x: number; y: number }[]) => {
+    for (let i = 1; i < path.length; i += 1) {
+      const steps = Math.ceil(dist(path[i - 1], path[i]) / 10);
+      for (let k = 0; k <= steps; k += 1) {
+        const t = steps === 0 ? 0 : k / steps;
+        const p = {
+          x: path[i - 1].x + (path[i].x - path[i - 1].x) * t,
+          y: path[i - 1].y + (path[i].y - path[i - 1].y) * t,
+        };
+        if (!isWalkable(p)) return false;
+      }
+    }
+    return true;
+  };
+
+  it('lets the champion walk from the fountain to every station on walkable ground, and ends the walk on it', () => {
     for (const station of STATIONS) {
+      expect(isWalkable(station.at)).toBe(true);
       const path = routeTo(BLUE_BASE, station.at);
       expect(path.length).toBeGreaterThan(0);
-      expect(Number.isFinite(pathLength(path))).toBe(true);
+      expect(stays(path)).toBe(true);
       expect(dist(path[path.length - 1], station.at)).toBeLessThan(1);
     }
   });
@@ -115,19 +130,44 @@ describe('the navigation graph', () => {
     expect(stationOfPage('projects').id).toBe('dragon');
   });
 
-  it('walks along the lanes, not across the jungle: a walk is never much shorter than the lanes allow', () => {
-    const straight = dist(BLUE_BASE, RED_BASE);
-    const path = routeTo(BLUE_BASE, RED_BASE);
-    expect(pathLength(path)).toBeGreaterThanOrEqual(straight - 1);
-    // the mid lane is the shortest way across, so the walk stays near the straight line
-    expect(pathLength(path)).toBeLessThan(straight * 1.2);
+  it('is open: the lanes, the river, the jungle and the bases are walkable, the canopy is not', () => {
+    expect(isWalkable({ x: 118, y: 500 })).toBe(true); // top lane
+    expect(isWalkable({ x: 450, y: 450 })).toBe(true); // river
+    expect(isWalkable({ x: 310, y: 640 })).toBe(true); // west jungle
+    expect(isWalkable({ x: 890, y: 560 })).toBe(true); // north jungle
+    expect(isWalkable(BLUE_BASE)).toBe(true);
+    expect(isWalkable({ x: 20, y: 600 })).toBe(false); // the wall beyond the top lane
+    expect(isWalkable({ x: 300, y: 200 })).toBe(false); // the canopy between lane, river and jungle
+    expect(isWalkable({ x: -5, y: 5 })).toBe(false);
   });
 
-  it('snaps a point off the lanes to the nearest lane', () => {
-    const spot = snapToGraph({ x: 600, y: 640 });
-    expect(dist(spot.at, { x: 600, y: 640 })).toBeLessThan(40);
-    const onGraph = NAV.nodes.some((n) => dist(n, spot.at) < 40);
-    expect(onGraph).toBe(true);
+  it('goes straight to the baron pit through the river or the jungle, not around by the lanes', () => {
+    const baron = stationOfPage('projects').at;
+    const from = { x: 600, y: 600 };
+    const target = { x: 330, y: 330 };
+    expect(dist(baron, target)).toBeGreaterThan(0);
+    const path = routeTo(from, target);
+    expect(stays(path)).toBe(true);
+    // the river runs from the centre to the pit: the walk is the straight line, give or take the bends of the river
+    expect(pathLength(path)).toBeLessThan(dist(from, target) * 1.1);
+  });
+
+  it('cuts across the jungle from the fountain to the baron pit, much shorter than the way by the lanes', () => {
+    const from = BLUE_BASE;
+    const to = { x: 330, y: 330 };
+    const path = routeTo(from, to);
+    expect(stays(path)).toBe(true);
+    expect(pathLength(path)).toBeLessThan(dist(from, to) * 1.35);
+  });
+
+  it('walks to the nearest walkable place when the target is on the canopy', () => {
+    const wall = { x: 20, y: 600 };
+    const near = nearestWalkable(wall);
+    expect(isWalkable(near)).toBe(true);
+    expect(dist(near, wall)).toBeLessThan(120);
+    const path = routeTo(BLUE_BASE, wall);
+    expect(isWalkable(path[path.length - 1])).toBe(true);
+    expect(nearestWalkable({ x: 118, y: 500 })).toEqual({ x: 118, y: 500 });
   });
 
   it('finds the point after a distance of a path, and stops at its end', () => {
@@ -142,12 +182,15 @@ describe('the navigation graph', () => {
     expect(pointAtDistance(path, -3)).toEqual({ x: 0, y: 0 });
   });
 
-  it('slides along a lane when walked by hand, and stays still when pushed across it', () => {
-    const start = { x: 118, y: 500 };
-    const up = slide(start, { x: 0, y: -8 });
-    expect(up.y).toBeLessThan(start.y);
-    expect(Math.abs(up.x - 118)).toBeLessThan(1);
-    const across = slide(start, { x: -8, y: 0 });
-    expect(Math.abs(across.y - start.y)).toBeLessThan(1);
+  it('walks by hand into the jungle, slides along a wall, and stops in a corner', () => {
+    const inLane = { x: 160, y: 500 };
+    const east = slide(inLane, { x: 8, y: 0 });
+    expect(east.x).toBeGreaterThan(inLane.x);
+    // at the edge of the top lane, pushed into the wall and up the lane: it slides up
+    const edge = { x: 60, y: 500 };
+    const slid = slide(edge, { x: -8, y: -8 });
+    expect(slid.x).toBe(edge.x);
+    expect(slid.y).toBeLessThan(edge.y);
+    expect(slide(edge, { x: -8, y: 0 })).toEqual(edge);
   });
 });

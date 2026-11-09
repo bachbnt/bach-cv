@@ -56,7 +56,7 @@ describe('the CSS of the Moba skin', () => {
   it('names its palette with --mb-, never with the names of shadcn tokens', () => {
     const palette = rules()
       .filter((r) =>
-        /^html\[data-skin='moba'\](:not\(\.dark\))?$/.test(r.selector),
+        /^html\[data-skin='moba'\](\[data-theme='light'\])?$/.test(r.selector),
       )
       .flatMap((r) =>
         r.nodes.filter((n): n is postcss.Declaration => n.type === 'decl'),
@@ -80,7 +80,7 @@ describe('the CSS of the Moba skin', () => {
           r.nodes.filter((n): n is postcss.Declaration => n.type === 'decl'),
         )
         .map((d) => d.prop);
-    const day = declared("html[data-skin='moba']:not(.dark)");
+    const day = declared("html[data-skin='moba'][data-theme='light']");
     for (const name of [
       '--mb-bg',
       '--mb-panel',

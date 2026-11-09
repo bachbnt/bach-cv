@@ -6,7 +6,7 @@ import { memo } from 'react';
 import { refOf } from '@/skins/moba/map/art-ids';
 import { CLEARINGS } from '@/skins/moba/world/decor';
 import { LANE_IDS, LANES, RIVER, WORLD } from '@/skins/moba/world/geometry';
-import { NAV } from '@/skins/moba/world/nav';
+import { TRAILS } from '@/skins/moba/world/nav';
 import { blobPath, smoothOpen } from '@/skins/moba/world/shapes';
 
 /** The ground: the canopy that fills the walls, the clearings of the jungle, the river, the lanes and the trails. */
@@ -18,7 +18,7 @@ export const TerrainLayer = memo(function TerrainLayer({
   full: boolean;
 }) {
   const river = smoothOpen(RIVER);
-  const trails = NAV.trails.slice(1);
+  const trails = TRAILS;
   return (
     <g>
       <rect width={WORLD} height={WORLD} fill={refOf(p, 'void')} />

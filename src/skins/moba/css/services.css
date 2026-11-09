@@ -56,7 +56,7 @@
   background: linear-gradient(160deg, var(--mb-gold), var(--mb-gold-lo));
   clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0 50%);
 }
-html[data-skin='moba']:not(.dark) .mb-emblem-badge {
+html[data-skin='moba'][data-theme='light'] .mb-emblem-badge {
   color: #fff8e6;
 }
 
@@ -111,6 +111,6 @@ html[data-skin='moba']:not(.dark) .mb-emblem-badge {
 .mb-svc-title {
   color: var(--mb-title);
 }
-html[data-skin='moba']:not(.dark) .mb-svc-title {
+html[data-skin='moba'][data-theme='light'] .mb-svc-title {
   color: var(--mb-gold-ink);
 }

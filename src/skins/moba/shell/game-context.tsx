@@ -25,9 +25,10 @@ import {
   scaleFor,
   type View,
 } from '@/skins/moba/world/camera';
+import { cellsAround } from '@/skins/moba/world/abilities';
 import { careerStops, type CareerStop } from '@/skins/moba/world/career-stops';
 import { WORLD, dist, type Pt } from '@/skins/moba/world/geometry';
-import { routeTo } from '@/skins/moba/world/nav';
+import { nearestWalkable, routeTo } from '@/skins/moba/world/ground';
 import {
   STATIONS,
   stationById,
@@ -97,6 +98,10 @@ interface GameValue {
   clearFocus: () => void;
   ability: number | null;
   setAbility: (index: number | null) => void;
+  /** where the champion is now, in map units (read when a cast or a ping starts: it is not state, a walk would render every frame) */
+  getPosition: () => Pt;
+  /** clears the fog of war within `radius` map units of `at` */
+  reveal: (at: Pt, radius: number) => void;
 }
 
 const GameContext = createContext<GameValue | null>(null);
@@ -217,6 +222,20 @@ export function GameProvider({
     live.current.flushed = performance.now();
     setExplored([...seen.current].map(centreOf));
   }, []);
+
+  const getPosition = useCallback(() => walker.pos, [walker]);
+
+  const reveal = useCallback(
+    (at: Pt, radius: number) => {
+      for (const key of cellsAround(at, radius, CELL))
+        if (!seen.current.has(key)) {
+          seen.current.add(key);
+          dirty.current = true;
+        }
+      flushExplored();
+    },
+    [flushExplored],
+  );
 
   const bookkeep = useCallback(() => {
     const pos = walker.pos;
@@ -366,7 +385,10 @@ export function GameProvider({
     },
     [walkTo],
   );
-  const walkToPoint = useCallback((at: Pt) => walkTo(at, null), [walkTo]);
+  const walkToPoint = useCallback(
+    (at: Pt) => walkTo(nearestWalkable(at), null),
+    [walkTo],
+  );
   const walkToStop = useCallback(
     (stop: CareerStop<Job>) =>
       walkTo(stop.at, {
@@ -496,6 +518,8 @@ export function GameProvider({
       clearFocus: () => setFocus(null),
       ability,
       setAbility,
+      getPosition,
+      reveal,
     }),
     [
       current,
@@ -522,6 +546,8 @@ export function GameProvider({
       explored,
       focus,
       ability,
+      getPosition,
+      reveal,
     ],
   );
 

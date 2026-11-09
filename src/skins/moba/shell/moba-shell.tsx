@@ -9,6 +9,7 @@ import { DocumentTitle } from '@/components/document-title';
 import type { PageKey } from '@/lib/content/schema';
 import { MapStage } from '@/skins/moba/map/map-stage';
 import { ChampionBar } from '@/skins/moba/shell/champion-bar';
+import { FxProvider } from '@/skins/moba/shell/fx-context';
 import {
   GameProvider,
   useAttach,
@@ -18,6 +19,7 @@ import { MenuDrawer } from '@/skins/moba/shell/menu-drawer';
 import { OverlayProvider } from '@/skins/moba/shell/overlay-context';
 import { Overlays } from '@/skins/moba/shell/overlays';
 import { PagePanel } from '@/skins/moba/shell/page-panel';
+import { PingWheel } from '@/skins/moba/shell/ping-wheel';
 import { PlacesList } from '@/skins/moba/shell/places-list';
 import { TopBar } from '@/skins/moba/shell/top-bar';
 import { useHotkeys } from '@/skins/moba/shell/use-hotkeys';
@@ -51,6 +53,7 @@ function Arena({ children }: { children: ReactNode }) {
         minimapOpen={minimapOpen}
         onToggleMinimap={() => setMinimapOpen((open) => !open)}
       />
+      <PingWheel />
       <MenuDrawer open={menuOpen} onOpenChange={setMenuOpen} />
       <Overlays />
     </MbRoot>
@@ -71,7 +74,9 @@ export function MobaShell({
   return (
     <OverlayProvider>
       <GameProvider page={page}>
-        <Arena>{children}</Arena>
+        <FxProvider>
+          <Arena>{children}</Arena>
+        </FxProvider>
       </GameProvider>
     </OverlayProvider>
   );

@@ -1,7 +1,8 @@
 /*
  * The look of the Moba skin: the site as an in-game arena (a top-down map, a HUD and the pages as panels). Every class has the prefix mb-
  * and every rule is scoped to .mb-root (or to html[data-skin='moba'] for the palette, so portals see it). Dark ("night") is the base
- * and the light theme ("day") is `html:not(.dark)`. Names of the palette all start with --mb-, so they cannot clash with the shadcn
+ * and the light theme ("day") only applies when the visitor chose Light (`[data-theme='light']`): a visitor who follows the system sees the night
+ * arena, which is the look of the game. Names of the palette all start with --mb-, so they cannot clash with the shadcn
  * tokens or with another skin.
  */
 html[data-skin='moba'] {
@@ -58,7 +59,7 @@ html[data-skin='moba'] {
     var(--font-public-sans), ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', Roboto, sans-serif;
 }
-html[data-skin='moba']:not(.dark) {
+html[data-skin='moba'][data-theme='light'] {
   --mb-void: #e9dfc4;
   --mb-bg: #f1e9d3;
   --mb-panel: #f8f2e2;
@@ -153,7 +154,7 @@ html[data-skin='moba'] {
   --tile: color-mix(in srgb, var(--mb-teal) 70%, #031a1a);
   font-family: var(--mb-font);
 }
-html[data-skin='moba']:not(.dark) {
+html[data-skin='moba'][data-theme='light'] {
   --primary-foreground: #fff8e6;
   --night: #16262d;
   --night-foreground: #c9d6d3;
@@ -173,7 +174,7 @@ html[data-skin='moba']:not(.dark) {
   /* the HUD is fixed to the window; the stage never scrolls (the page panel does) */
   color-scheme: dark;
 }
-html[data-skin='moba']:not(.dark) .mb-root {
+html[data-skin='moba'][data-theme='light'] .mb-root {
   color-scheme: light;
 }
 .mb-root :focus-visible {

@@ -46,7 +46,7 @@
   );
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
 }
-html[data-skin='moba']:not(.dark) .mb-btn-gold {
+html[data-skin='moba'][data-theme='light'] .mb-btn-gold {
   color: #fff8e6;
   background: linear-gradient(
     180deg,

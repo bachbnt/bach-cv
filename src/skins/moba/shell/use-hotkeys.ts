@@ -7,7 +7,14 @@
 import { useEffect, useRef } from 'react';
 import { useChat } from '@/components/chat/chat-provider';
 import { useLive } from '@/hooks/use-live';
-import { ABILITY_KEYS, PAGE_BY_KEY, SPELL_KEYS } from '@/skins/moba/config';
+import {
+  ABILITY_KEYS,
+  PAGE_BY_KEY,
+  PING_KEY,
+  SPELL_KEYS,
+} from '@/skins/moba/config';
+import { SKILL_COLORS } from '@/components/skills/skill-icons';
+import { useFx } from '@/skins/moba/shell/fx-context';
 import { useGame } from '@/skins/moba/shell/game-context';
 import { useOverlays } from '@/skins/moba/shell/overlay-context';
 import type { useHudData } from '@/skins/moba/shell/use-hud-data';
@@ -34,11 +41,13 @@ export function useHotkeys(
   toggleMinimap: () => void,
 ) {
   const game = useGame();
+  const fx = useFx();
   const overlays = useOverlays();
   const chat = useChat();
   const live = useLive();
   const latest = useRef({
     game,
+    fx,
     overlays,
     chat,
     features: live.features,
@@ -48,6 +57,7 @@ export function useHotkeys(
   useEffect(() => {
     latest.current = {
       game,
+      fx,
       overlays,
       chat,
       features: live.features,
@@ -65,6 +75,7 @@ export function useHotkeys(
       if (document.querySelector('[role="dialog"]:not([data-mb-chat])')) return;
       const {
         game: g,
+        fx: f,
         overlays: o,
         chat: c,
         features,
@@ -84,7 +95,8 @@ export function useHotkeys(
       }
       if (event.repeat) return;
       if (event.key === 'Escape') {
-        if (g.ability !== null) g.setAbility(null);
+        if (f.wheel) f.closeWheel();
+        else if (g.ability !== null) g.setAbility(null);
         else if (c.isOpen) c.closeChat();
         else if (g.panelOpen) g.setPanelOpen(false);
         return;
@@ -98,7 +110,13 @@ export function useHotkeys(
 
       const slot = ABILITY_KEYS.indexOf(key as (typeof ABILITY_KEYS)[number]);
       if (slot >= 0) {
-        if (d.key[slot]) g.setAbility(g.ability === slot ? null : slot);
+        const skill = d.key[slot];
+        if (skill) f.pressSkill(slot, SKILL_COLORS[skill.icon]);
+        return;
+      }
+      if (key === PING_KEY) {
+        if (f.wheel) f.closeWheel();
+        else f.openWheel();
         return;
       }
       if (key === SPELL_KEYS.connect) {
@@ -118,6 +136,8 @@ export function useHotkeys(
       } else if (PAGE_BY_KEY[key]) g.goToPage(PAGE_BY_KEY[key]);
     };
     const up = (event: KeyboardEvent) => {
+      if (event.key.toUpperCase() === PING_KEY)
+        latest.current.fx.releaseWheel();
       const arrow = ARROWS[event.key];
       if (arrow) latest.current.game.steer(arrow, false);
     };

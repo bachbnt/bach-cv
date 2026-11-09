@@ -86,8 +86,8 @@ of the map that opens as a panel over it (Home the fountain, Resume the mid lane
 current role, Projects the pits, Certificates the shrine and the inventory slots, Services the shop, Payment the vault, About the lore
 stone). The champion bar shows real counts only, each with a visible name. **The real navigation is the list of places** (a `nav` named
 `Main` with a link for every page); the map, the minimap and the keys are shortcuts, and Tab and Enter are never taken. The palette is
-`--mb-*` (dark "night" and light "day"), classes carry the prefix `mb-`, and frames have cut corners (`clip-path`), so a popover is never
+`--mb-*` (dark "night", and light "day" only when the visitor chose Light), the key skills Q W E R are cast toward the pointer and
+**V** opens a ping wheel (decoration; each ping does something real: mark, walk there, recall, open the chat), classes carry the prefix `mb-`, and frames have cut corners (`clip-path`), so a popover is never
 a child of one.
-
 
 A new skin follows the skill `.claude/skills/build-skin` (read its SKILL.md first).

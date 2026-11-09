@@ -16,6 +16,8 @@ import { jobBadge } from '@/lib/derive/job-badge';
 import { monthsUsed } from '@/lib/derive/skill-use';
 import { useCopy } from '@/lib/i18n/copy';
 import { ABILITY_KEYS } from '@/skins/moba/config';
+import { AbilityCooldown } from '@/skins/moba/shell/ability-cooldown';
+import { useFx } from '@/skins/moba/shell/fx-context';
 import { useGame } from '@/skins/moba/shell/game-context';
 import type { useHudData } from '@/skins/moba/shell/use-hud-data';
 import { MbButton } from '@/skins/moba/ui/mb-button';
@@ -74,6 +76,7 @@ function AbilityCard({ data, index }: { data: Data; index: number }) {
 export function HudAbilities({ data }: { data: Data }) {
   const copy = useCopy(mobaCopy).hud;
   const { ability, setAbility, showJob } = useGame();
+  const { pressSkill, cooling } = useFx();
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -114,7 +117,9 @@ export function HudAbilities({ data }: { data: Data }) {
       {ABILITY_KEYS.map((key, i) => {
         const skill = data.key[i];
         const open = ability === i;
-        const color = skill ? SKILL_COLORS[skill.icon] : undefined;
+        const color = skill
+          ? (SKILL_COLORS[skill.icon] ?? 'var(--mb-gold-hi)')
+          : undefined;
         const share = skill
           ? careerShare(
               monthsUsed(skill.id, data.jobs, data.now),
@@ -128,6 +133,7 @@ export function HudAbilities({ data }: { data: Data }) {
               type='button'
               className='mb-slot size-[52px] max-[1099px]:size-[44px] max-[899px]:size-[40px] max-[719px]:size-11'
               data-empty={skill ? undefined : ''}
+              data-cooling={cooling[i] ? '' : undefined}
               disabled={!skill}
               aria-expanded={open}
               aria-keyshortcuts={key}
@@ -137,7 +143,7 @@ export function HudAbilities({ data }: { data: Data }) {
                   : `${copy.abilities} ${key}`
               }
               style={color ? ({ '--c': color } as CSSProperties) : undefined}
-              onClick={() => setAbility(open ? null : i)}
+              onClick={() => color && pressSkill(i, color)}
             >
               <span className='mb-slot-in text-[color-mix(in_srgb,var(--c,var(--mb-gold-hi))_55%,#fff)]'>
                 {skill && (
@@ -148,6 +154,7 @@ export function HudAbilities({ data }: { data: Data }) {
                   />
                 )}
               </span>
+              <AbilityCooldown slot={i} />
               <span
                 className='mb-ring'
                 style={{ '--p': Math.round(share * 100) } as CSSProperties}

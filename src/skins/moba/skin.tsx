@@ -16,6 +16,7 @@ import { MbNotFound } from '@/skins/moba/ui/mb-not-found';
 import '@/skins/moba/moba.css';
 import '@/skins/moba/css/map.css';
 import '@/skins/moba/css/ui.css';
+import '@/skins/moba/css/fx.css';
 import '@/skins/moba/css/hud.css';
 import '@/skins/moba/css/panel.css';
 import '@/skins/moba/css/states.css';

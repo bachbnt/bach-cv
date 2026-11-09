@@ -4,7 +4,7 @@
 .mb-pay-title {
   color: var(--mb-title);
 }
-html[data-skin='moba']:not(.dark) .mb-pay-title {
+html[data-skin='moba'][data-theme='light'] .mb-pay-title {
   color: var(--mb-gold-ink);
 }
 

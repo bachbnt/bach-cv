@@ -11,7 +11,7 @@
     0 1px 0 color-mix(in srgb, var(--mb-gold-hi) 14%, transparent),
     0 8px 18px rgb(0 0 0 / 0.28);
 }
-html[data-skin='moba']:not(.dark) .mb-top {
+html[data-skin='moba'][data-theme='light'] .mb-top {
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--mb-panel) 96%, transparent),
@@ -126,7 +126,7 @@ html[data-skin='moba']:not(.dark) .mb-top {
     inset 0 3px 0 color-mix(in srgb, var(--mb-gold-lo) 50%, transparent),
     0 -10px 24px rgb(0 0 0 / 0.35);
 }
-html[data-skin='moba']:not(.dark) .mb-hud {
+html[data-skin='moba'][data-theme='light'] .mb-hud {
   background: linear-gradient(180deg, var(--mb-panel), var(--mb-bg));
 }
 .mb-badge {

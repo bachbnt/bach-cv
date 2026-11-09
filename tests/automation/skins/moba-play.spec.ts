@@ -40,6 +40,31 @@ test.describe('walking the arena', () => {
     ).toHaveAttribute('aria-current', 'page');
   });
 
+  test('walks straight across the jungle to the baron pit, not around by the lanes', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const start = await where(page);
+    // the baron pit is at 27.5 % of the map on both axes
+    const goal = { x: 27.5, y: 27.5 };
+    await page.locator('[data-minimap-station="baron"]').click();
+    let farthest = 0;
+    for (let i = 0; i < 40 && !/\/projects$/.test(page.url()); i += 1) {
+      const at = await where(page);
+      // the distance of the champion from the straight line start to goal
+      const dx = goal.x - start.x;
+      const dy = goal.y - start.y;
+      const off =
+        Math.abs(dx * (start.y - at.y) - dy * (start.x - at.x)) /
+        Math.hypot(dx, dy);
+      farthest = Math.max(farthest, off);
+      await page.waitForTimeout(80);
+    }
+    await expect(page).toHaveURL(/\/projects$/, { timeout: 15_000 });
+    // by the lanes the walk bends out by far more than a tenth of the map
+    expect(farthest).toBeLessThan(6);
+  });
+
   test('a click on the map between places walks there and leaves the page folded', async ({
     page,
   }) => {

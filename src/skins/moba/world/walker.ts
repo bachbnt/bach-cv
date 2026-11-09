@@ -3,7 +3,8 @@
  */
 
 import { WORLD, dist, type Pt } from '@/skins/moba/world/geometry';
-import { pathLength, pointAtDistance, slide } from '@/skins/moba/world/nav';
+import { slide } from '@/skins/moba/world/ground';
+import { pathLength, pointAtDistance } from '@/skins/moba/world/nav';
 
 /** Map units per second. */
 export const SPEED = 520;

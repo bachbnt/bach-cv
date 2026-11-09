@@ -10,7 +10,7 @@ import {
   worldAt,
 } from '@/skins/moba/world/camera';
 import { WORLD, dist } from '@/skins/moba/world/geometry';
-import { routeTo } from '@/skins/moba/world/nav';
+import { routeTo } from '@/skins/moba/world/ground';
 import { stationOfPage } from '@/skins/moba/world/stations';
 import { SPEED, Walker } from '@/skins/moba/world/walker';
 

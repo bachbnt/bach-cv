@@ -9,6 +9,7 @@ import { mobaCopy } from '@/content/copy/moba';
 import { useCopy } from '@/lib/i18n/copy';
 import {
   ABILITY_KEYS,
+  PING_KEY,
   PLACE,
   PLACE_ORDER,
   SPELL_KEYS,
@@ -27,6 +28,8 @@ export function KeysDialog() {
     { keys: ['↑', '↓', '←', '→'], label: copy.keys.move },
     { keys: ['?'], label: copy.keys.keysList },
     { keys: ABILITY_KEYS.slice(), label: copy.keys.skills },
+    { keys: [PING_KEY], label: copy.keys.ping },
+    { keys: ['Alt'], label: copy.keys.altClick },
     { keys: [SPELL_KEYS.connect], label: copy.keys.connect },
     { keys: [SPELL_KEYS.chat], label: copy.keys.chat },
     { keys: [SPELL_KEYS.cv], label: copy.keys.cv },

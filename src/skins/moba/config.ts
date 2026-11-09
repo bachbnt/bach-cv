@@ -31,6 +31,9 @@ export const PLACE_ORDER: readonly PageKey[] = PAGES;
 /** The four key skills are the keys Q W E R, as in the game. */
 export const ABILITY_KEYS = ['Q', 'W', 'E', 'R'] as const;
 
+/** Hold it to open the ping wheel and let go on a ping; a quick press leaves the wheel open. */
+export const PING_KEY = 'V';
+
 /** The key that does something other than open a place. */
 export const SPELL_KEYS = { connect: 'D', chat: 'F', cv: '4' } as const;
 
