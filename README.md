@@ -58,7 +58,7 @@ The Home page of each skin, in the dark and in the light theme.
   Trade is a chart terminal with its own interface for every page (the career as a working chart with chart types, indicators,
   drawing tools and a bar replay; a symbol search, a ticker tape and a watchlist; a screener, financials and a calendar for the data pages).
   Travel is a 2.5D trip map of Nha Trang drawn from OpenStreetMap data (© OpenStreetMap contributors, ODbL): the stops are the real roles, the pages are parts of the trip (see `src/skins/travel/README.md`).
-  The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`, `?skin=trade`, `?skin=travel`) and the URL does not change. A skin is loaded only when it is chosen,
+  The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`, `?skin=trade`, `?skin=academic`, `?skin=travel`) and the URL does not change. A skin is loaded only when it is chosen,
   so Standard visitors download none of its scripts (its styles share the one Tailwind build: the main stylesheet is about 40 KB gzip, it was about 20 KB before skins). See `.ai/skins.md` and the README of each skin in `src/skins/<id>/`.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
   lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). The tinted head of each page also lights up softly under the
