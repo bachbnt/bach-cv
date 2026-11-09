@@ -12,9 +12,9 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { ProjectEntry } from '@/skins/academic/blocks/project-entry';
 import { ProjectList } from '@/skins/academic/blocks/project-list';
 import { useOpenScreenshots } from '@/skins/academic/blocks/use-open-screenshots';
+import { ProjectSkeleton } from '@/skins/academic/blocks/project-skeleton';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 
 /** Featured projects (by rank), then every project with the kind filter. The same two parts as Standard. */
 export function ProjectsContent() {
@@ -36,13 +36,7 @@ export function ProjectsContent() {
       count={projects.length}
       empty='projects'
       subject='projects'
-      skeleton={
-        <div className='grid gap-6'>
-          {[0, 1, 2].map((i) => (
-            <AcSkeleton key={i} className='h-[190px]' />
-          ))}
-        </div>
-      }
+      skeleton={<ProjectSkeleton />}
       className='mt-6'
     >
       {featured.length > 0 && (

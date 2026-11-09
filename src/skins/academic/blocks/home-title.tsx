@@ -36,7 +36,8 @@ export function HomeTitle() {
         current && (
           <>
             <span className='ac-line inline-block pb-1.5 font-ac-chalk text-[28px]/[1.1] [--ul:currentColor] [--ac-line-h:8px] [--ac-line-y:0px]'>
-              ∴ {mine.currentRole}
+              <span aria-hidden='true'>∴ </span>
+              {mine.currentRole}
             </span>
             <AcNoteCap>
               {current.role}, {current.company}

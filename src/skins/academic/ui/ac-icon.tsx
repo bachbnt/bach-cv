@@ -18,7 +18,9 @@ const PATHS: Record<
   | 'arrowRight'
   | 'chevronDown'
   | 'chevronLeft'
-  | 'chevronRight',
+  | 'chevronRight'
+  | 'check'
+  | 'pin',
   ReactNode
 > = {
   // an arrow going down into a tray
@@ -66,6 +68,17 @@ const PATHS: Record<
   ),
   chevronRight: (
     <path d='M8.8 5.4 C10.8 8 13 10 15.4 12 C13 14 10.8 16 8.6 18.6' />
+  ),
+  // a tick that starts small and ends long
+  check: (
+    <path d='M4.8 12.8 C7 14.8 8.5 16.4 9.9 18.4 C12.8 13.6 16 9.2 19.8 5.8' />
+  ),
+  // a map pin: a drop with a ring in it
+  pin: (
+    <>
+      <path d='M12 21.2 C8.2 16.8 5.5 13.5 5.6 9.8 C5.7 6.2 8.4 3.5 12 3.5 C15.6 3.5 18.3 6.2 18.4 9.8 C18.5 13.5 15.8 16.8 12 21.2 Z' />
+      <path d='M12 7.8 C13.3 7.8 14.2 8.8 14.2 10 C14.2 11.2 13.2 12.2 12 12.2 C10.8 12.2 9.8 11.2 9.8 10 C9.8 8.8 10.7 7.8 12 7.8 Z' />
+    </>
   ),
   // an arrow leaving towards the upper right
   external: (

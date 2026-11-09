@@ -17,7 +17,7 @@ const paperVariants = cva('', {
         'ac-paper ac-pin rotate-[-0.5deg] rounded-[2px] px-8 pt-[30px] pb-4',
       card: 'ac-paper ac-ruled ac-tape rounded-[2px] py-7 pr-7 pl-10 even:-rotate-[0.55deg] odd:rotate-[0.45deg]',
       sticky:
-        'ac-paper max-w-[460px] rotate-[1.2deg] rounded-[1px_1px_18px_1px] bg-[linear-gradient(172deg,#f8e784,#efd868)] px-[22px] py-[18px] font-ac-note text-[21px]/[1.4] text-[#2b2a1e]',
+        'ac-paper ac-sticky max-w-[460px] rotate-[1.2deg] rounded-[1px_1px_18px_1px] px-[22px] py-[18px] font-ac-note text-[21px]/[1.4]',
     },
   },
   defaultVariants: { kind: 'pinned' },

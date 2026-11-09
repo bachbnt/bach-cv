@@ -69,8 +69,12 @@ export function AcMenu({
               closeOnClick
               onPointerEnter={() => onPreview?.(item.value)}
               onFocus={() => onPreview?.(item.value)}
-              className='min-h-9 rounded-[2px] py-1.5 pr-9 pl-2.5 font-ac-note text-[18px]/[1.2] text-ac-ink focus:bg-ac-link/10 data-checked:bg-[linear-gradient(180deg,transparent_38%,rgb(255_207_51/0.55)_38%_76%,transparent_76%)]'
+              className='group/item min-h-9 rounded-[2px] py-1.5 pr-9 pl-2.5 [&>[data-slot=dropdown-menu-radio-item-indicator]]:hidden font-ac-note text-[18px]/[1.2] text-ac-ink focus:bg-ac-link/10 data-checked:bg-[linear-gradient(180deg,transparent_38%,rgb(255_207_51/0.55)_38%_76%,transparent_76%)]'
             >
+              <AcIcon
+                name='check'
+                className='absolute top-1/2 right-2.5 hidden size-5 -translate-y-1/2 text-ac-accent group-data-checked/item:block'
+              />
               <span className='flex flex-col'>
                 {item.label}
                 {item.hint && (

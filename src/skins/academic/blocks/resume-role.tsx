@@ -53,7 +53,12 @@ export function ResumeRole({
         />
       )}
       <AcNoteBig>{lengthLabel(jobLength(job, now), words)}</AcNoteBig>
-      {current && <AcNoteCap>∴ {copy.current}</AcNoteCap>}
+      {current && (
+        <AcNoteCap>
+          <span aria-hidden='true'>∴ </span>
+          {copy.current}
+        </AcNoteCap>
+      )}
     </>
   );
 

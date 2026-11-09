@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import type { ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 /**
@@ -12,12 +12,12 @@ import { cn } from '@/lib/utils';
 export function HomeCol({
   className,
   children,
-}: {
-  className?: string;
+  ...props
+}: Omit<ComponentProps<'div'>, 'children'> & {
   children: ReactNode;
 }) {
   return (
-    <div className={cn('min-w-0 min-[900px]:pr-[308px]', className)}>
+    <div className={cn('min-w-0 min-[900px]:pr-[308px]', className)} {...props}>
       {children}
     </div>
   );

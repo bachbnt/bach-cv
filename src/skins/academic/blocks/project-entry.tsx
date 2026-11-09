@@ -143,7 +143,7 @@ export function ProjectEntry({
                     href={link.url}
                     target={external ? '_blank' : undefined}
                     rel={external ? 'noopener noreferrer' : undefined}
-                    className='text-ac-link underline decoration-[1.6px] underline-offset-[3px]'
+                    className='text-ac-link underline decoration-[1.6px] underline-offset-[3px] pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center'
                   >
                     {linkLabel(link, copy.links)}
                     {external && (

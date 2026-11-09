@@ -32,7 +32,9 @@ html[data-skin='academic'] {
   --ac-sheet-accent: #b3261e;
   --ac-sheet-link: #1b4fa8;
   --ac-sheet-rule: #b7b09b;
-  --ac-sticky: #f1e07a;
+  --ac-sticky: #efd868;
+  --ac-sticky-hi: #f8e784;
+  --ac-sticky-ink: #2b2a1e;
   --ac-tape: rgba(226, 208, 158, 0.78);
   --ac-polaroid: #f3efe2;
   /* the frame of the board, the ledge below it, the eraser and the dust it leaves */
@@ -200,7 +202,7 @@ html[data-skin='academic']:not(.dark) .ac-root {
 }
 
 /* a hand-drawn line: one wavy stroke, drawn once as a mask and used under headings and the open tab */
-.ac-line {
+.ac-line:not(.absolute, .fixed, .sticky) {
   position: relative;
 }
 .ac-line::after {
@@ -236,7 +238,6 @@ html[data-skin='academic']:not(.dark) .ac-root {
   --ac-md: #865100;
   --ul: var(--ac-sheet-accent);
   --ac-glow: none;
-  position: relative;
   color: var(--ac-sheet-ink);
   background:
     var(--ac-paper-grain),
@@ -251,6 +252,17 @@ html[data-skin='academic']:not(.dark) .ac-paper {
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.1),
     0 8px 18px rgba(30, 40, 50, 0.28);
+}
+/* paper is a positioning context (its tape and pin hang off it) unless a utility has already placed it (the toast is fixed) */
+.ac-paper:not(.absolute, .fixed, .sticky) {
+  position: relative;
+}
+/* a sticky note: yellow, with its own ink (said here, after .ac-paper, because a utility cannot beat it) */
+.ac-paper.ac-sticky {
+  --ac-ink: var(--ac-sticky-ink);
+  --ac-mute: var(--ac-sticky-ink);
+  color: var(--ac-sticky-ink);
+  background: linear-gradient(172deg, var(--ac-sticky-hi), var(--ac-sticky));
 }
 /* ruled like an index card, with a red margin line */
 .ac-ruled {
@@ -313,6 +325,15 @@ html[data-skin='academic']:not(.dark) .ac-paper {
   outline: 2px dashed var(--ac-accent);
   outline-offset: 3px;
   border-radius: 3px;
+}
+/* the tabs scroll sideways on a phone, which clips a ring drawn outside them: theirs is drawn inside */
+.ac-toc-link:focus-visible {
+  outline-offset: -4px;
+}
+/* a page that scrolls to a control that has the focus keeps it clear of the ledge below */
+html[data-skin='academic'] {
+  scroll-padding-bottom: 96px;
+  scroll-padding-top: 24px;
 }
 /* a line you write on (the chat, the contact form) shows the focus by its underline turning to the accent colour and thickening, not by a box (that box,
    with its offset, made the field look padded and taller than the button beside it) and not by a fill (the chat has the focus as soon as it opens, so the
@@ -382,6 +403,8 @@ html[data-skin='academic']::view-transition-new(.ac-vt-in) {
 
 /* ---- the ledge under the board: the front face and the top face of a wooden (dark) or aluminium (light) shelf, the dust that has fallen on it */
 .ac-ledge {
+  /* the dust may not widen a narrow page (the shadow below the ledge still falls out of it) */
+  overflow-x: clip;
   --ac-wood: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='60'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .55' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .06 0 0 0 0 .02 0 0 0 1.6 -.45'/%3E%3C/filter%3E%3Crect width='400' height='60' filter='url(%23w)'/%3E%3C/svg%3E");
   position: absolute;
   inset: 0;

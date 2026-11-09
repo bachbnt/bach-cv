@@ -16,7 +16,7 @@ export const acButtonVariants = cva(
   {
     variants: {
       variant: {
-        pen: 'border-ac-link font-ac-note text-[19px] font-bold text-ac-link hover:bg-ac-link/15',
+        pen: 'border-ac-link font-ac-note text-[18px] font-bold text-ac-link hover:bg-ac-link/15',
         quiet:
           'border-ac-rule font-ac-note text-[18px] text-ac-ink hover:border-ac-mute hover:bg-ac-faint',
       },

@@ -6,7 +6,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { academicCopy } from '@/content/copy/academic';
 import { commonCopy } from '@/content/copy/common';
 import { useLive } from '@/hooks/use-live';
@@ -18,6 +18,9 @@ import { PAGE_META, pageOfPath } from '@/lib/pages';
 import { neighbours, shownPages } from '@/skins/academic/config';
 import { useWipeCapture } from '@/skins/academic/shell/use-eraser-wipe';
 import { AcIcon } from '@/skins/academic/ui/ac-icon';
+
+/** How long a page that a key asked for stays the place the next key goes on from (a wipe and a route that has to compile take a moment). */
+const ASKED_MS = 1500;
 
 /** Keys that are typed into something never turn a page. */
 const typing = (target: EventTarget | null) =>
@@ -35,6 +38,8 @@ export function Pager({ page }: { page: PageKey }) {
   const live = useLive();
   const router = useRouter();
   const captureWipe = useWipeCapture();
+  // the page a key has already asked for: pressed again at once, the next key goes on from it (the address and the page on show are late during a wipe)
+  const asked = useRef<{ page: PageKey; at: number } | null>(null);
   const shown = shownPages(live);
   const { previous, next, index } = neighbours(page, shown);
   const label = (key: PageKey) =>
@@ -51,9 +56,13 @@ export function Pager({ page }: { page: PageKey }) {
         return;
       if (typing(event.target) || document.querySelector('[role="dialog"]'))
         return;
-      // the page the address says, not the one on show: for a moment after a page change (the eraser is wiping) they differ
+      // the page asked for last, or else the one the address says (not the one on show: for a moment after a page change they differ)
       const around = neighbours(
-        pageOfPath(window.location.pathname) ?? page,
+        (asked.current && Date.now() - asked.current.at < ASKED_MS
+          ? asked.current.page
+          : null) ??
+          pageOfPath(window.location.pathname) ??
+          page,
         shownPages({ pages: live.pages }),
       );
       const target =
@@ -65,6 +74,7 @@ export function Pager({ page }: { page: PageKey }) {
       if (target && live.pages[target] !== 'soon') {
         // the eraser needs a copy of this page before the next one is rendered
         captureWipe();
+        asked.current = { page: target, at: Date.now() };
         router.push(PAGE_META[target].href);
       }
     };
@@ -72,11 +82,16 @@ export function Pager({ page }: { page: PageKey }) {
     return () => document.removeEventListener('keydown', onKey);
   }, [page, router, live.pages, captureWipe]);
 
+  // the page asked for has arrived (or another way was taken): a key goes on from where the visitor is
+  useEffect(() => {
+    if (asked.current?.page === page) asked.current = null;
+  }, [page]);
+
   const link = (key: PageKey, side: 'previous' | 'next') => (
     <Link
       href={PAGE_META[key].href}
       aria-label={fill(copy.pager[side], { page: label(key) })}
-      className='inline-flex items-baseline gap-2 font-ac-note text-[19px] text-ac-link no-underline hover:underline hover:underline-offset-[3px]'
+      className='inline-flex items-baseline gap-2 font-ac-note text-[19px] text-ac-link no-underline pointer-coarse:min-h-11 pointer-coarse:items-center hover:underline hover:underline-offset-[3px]'
     >
       {side === 'previous' && (
         <AcIcon name='arrowLeft' className='self-center' />

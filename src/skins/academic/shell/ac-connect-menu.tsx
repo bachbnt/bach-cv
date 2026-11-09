@@ -4,7 +4,6 @@
 
 'use client';
 
-import { MapPin } from 'lucide-react';
 import { BrandIcon, brandColor, brandName } from '@/components/brand-icon';
 import {
   Popover,
@@ -129,7 +128,7 @@ export function AcConnectMenu() {
 
         {profile?.location && (
           <p className='mx-1 mt-3 flex items-center gap-2 border-t-2 border-dashed border-ac-rule pt-3 text-[15px] text-ac-mute'>
-            <MapPin aria-hidden='true' className='size-4' />
+            <AcIcon name='pin' className='size-4' />
             {profile.location}
           </p>
         )}

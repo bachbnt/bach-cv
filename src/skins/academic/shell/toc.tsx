@@ -54,7 +54,7 @@ export function Toc({ page }: { page: PageKey }) {
             </>
           );
           const cls = cn(
-            'ac-line relative flex items-baseline gap-2 py-[11px] pr-2.5 pb-3.5 font-ac-note text-[19px]/[1.2] whitespace-nowrap text-ac-mute no-underline transition-colors hover:text-ac-ink',
+            'ac-line ac-toc-link relative flex items-baseline gap-2 py-[11px] pr-2.5 pb-3.5 font-ac-note text-[19px]/[1.2] whitespace-nowrap text-ac-mute no-underline transition-colors hover:text-ac-ink',
             current &&
               'text-ac-ink [--ac-line-y:3px] [--ac-line-h:7px] after:right-2.5 after:left-0',
             !current && 'after:hidden',

@@ -106,7 +106,7 @@
 .ac-root .ac-bar-ongoing::after {
   content: '';
   position: absolute;
-  right: -14px;
+  right: -10px;
   top: 50%;
   width: 9px;
   height: 9px;
