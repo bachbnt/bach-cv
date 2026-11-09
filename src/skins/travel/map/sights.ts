@@ -196,7 +196,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-tam',
-    fame: 3,
+    fame: 2,
     art: 'hon-tam',
     lat: 12.1765,
     lng: 109.2436,
@@ -205,7 +205,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-mot',
-    fame: 3,
+    fame: 2,
     art: 'hon-mot',
     lat: 12.1773,
     lng: 109.2743,
@@ -270,7 +270,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'dong-bo',
-    fame: 1,
+    fame: 2,
     art: 'dong-bo',
     lat: 12.16366,
     lng: 109.14332,
@@ -280,7 +280,7 @@ export const SIGHTS: readonly Sight[] = [
   },
   {
     id: 'hon-ro',
-    fame: 1,
+    fame: 2,
     art: 'hon-ro',
     lat: 12.1925,
     lng: 109.18448,
