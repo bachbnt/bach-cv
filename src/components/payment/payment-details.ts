@@ -2,6 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
+import { KINDS } from '@/lib/derive/payment-kinds';
 import type { Payment } from '@/lib/content/schema';
 
 type Method = Pick<Payment, 'name' | 'holder' | 'account'>;
@@ -45,8 +46,6 @@ export const splitMethods = <T extends { highlight: number | null }>(
 
 type Kind = Payment['kind'];
 export type PaymentFilter = 'all' | Kind;
-
-const KINDS = ['bank', 'wallet'] as const satisfies readonly Kind[];
 
 /**
  * What the payment page shows of the methods under a filter, the same in every skin: the featured ones, the others, the ones that have a

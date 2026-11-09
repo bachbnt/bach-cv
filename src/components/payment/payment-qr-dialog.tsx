@@ -5,37 +5,12 @@
 'use client';
 
 import { Copy, Download } from 'lucide-react';
-import { qrFileName } from '@/components/payment/payment-details';
+import { saveQr } from '@/components/payment/save-qr';
 import { Lightbox } from '@/components/lightbox/lightbox';
 import { Button } from '@/components/ui/button';
 import { paymentCopy } from '@/content/copy/payment';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
-
-/** Saves the QR image, or opens it in a new tab when the browser blocks the download (for example no CORS). */
-async function saveQr(
-  method: Doc<'payments'>,
-  say: (message: string) => void,
-  toast: { qrSaved: string; qrOpened: string },
-) {
-  try {
-    const res = await fetch(method.qr);
-    if (!res.ok) throw new Error(String(res.status));
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = qrFileName(method.name, blob.type, method.qr);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    say(toast.qrSaved);
-  } catch {
-    window.open(method.qr, '_blank', 'noopener');
-    say(toast.qrOpened);
-  }
-}
 
 /** The QR zoom dialog: the QR on a white card, the account details, copy and save, and prev/next across methods. */
 export function PaymentQrDialog({

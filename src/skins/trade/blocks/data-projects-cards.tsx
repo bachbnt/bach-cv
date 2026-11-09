@@ -7,7 +7,10 @@
 import { ImageIcon } from 'lucide-react';
 import type { RefObject } from 'react';
 import { ProjectCover } from '@/components/projects/project-cover';
-import { skillsOf } from '@/components/projects/project-helpers';
+import {
+  screenshotsLabel,
+  skillsOf,
+} from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import type { Doc } from '@/lib/content/schema';
@@ -18,7 +21,6 @@ import { DataKind } from '@/skins/trade/blocks/data-kind';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import type { Density } from '@/skins/trade/blocks/data-projects-model';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
-import { screenshotsLabel } from '@/skins/trade/blocks/screenshots-label';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { cssVars } from '@/skins/trade/ui/css-vars';
 

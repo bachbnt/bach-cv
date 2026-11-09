@@ -6,7 +6,10 @@
 
 import { ChevronRight, ImageIcon } from 'lucide-react';
 import { useId, type ReactNode } from 'react';
-import { skillsOf } from '@/components/projects/project-helpers';
+import {
+  screenshotsLabel,
+  skillsOf,
+} from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import type { Doc } from '@/lib/content/schema';
@@ -22,7 +25,6 @@ import { DataKind } from '@/skins/trade/blocks/data-kind';
 import { DataProjectDetail } from '@/skins/trade/blocks/data-project-detail';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
-import { screenshotsLabel } from '@/skins/trade/blocks/screenshots-label';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { cssVars } from '@/skins/trade/ui/css-vars';
 import { Thumbnail } from '@/skins/trade/blocks/data-project-thumbnail';

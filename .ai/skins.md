@@ -79,4 +79,12 @@ watchlist (pages, skills with a sparkline of the years they were used, roles), a
 calendar for Certificates, a symbol profile for About, an order ticket for Services and a deposit page for Payment. Prefix `tv-`, colours
 `tv-*`. The chart is its own lazy chunk; the watchlist counts are read from the cache only.
 
+## The Academic skin
+
+See `src/skins/academic/README.md`. A chalkboard (dark) or a whiteboard (light) with an annotated manuscript pinned to it: the tabs keep the Standard
+names with the term of a manuscript (`§ Results`) as a small kicker, every page has a margin ruled on the right whose notes only say what is
+derived from real data, paper (the abstract, the reviewers' cards, a sticky note, the chat slip, every dialog) is pinned or taped to the board,
+tallies draw the years a skill was used (`lib/derive/tally.ts`, years only), and an eraser along an arc wipes one page for the next (two mask
+layers, no wipe with reduced motion). Prefix `ac-`, colours `ac-*`, fonts through `next/font` with Vietnamese fallbacks.
+
 A new skin follows the skill `.claude/skills/build-skin` (read its SKILL.md first).

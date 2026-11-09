@@ -4,12 +4,12 @@
 
 'use client';
 
+import { screenshotsLabel } from '@/components/projects/project-helpers';
 import { ProjectCover } from '@/components/projects/project-cover';
 import { projectsCopy } from '@/content/copy/projects';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import { screenshotsLabel } from '@/skins/trade/blocks/screenshots-label';
 
 export function Thumbnail({
   project,

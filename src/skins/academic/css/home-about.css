@@ -1,0 +1,127 @@
+/*
+ * The pieces of the Home and About pages that utilities do not say: the guide lines, the baseline and the shaded bars of Figure 1 (the
+ * timeline of roles and studies), drawn by hand with masks and hatching. Classes have the prefix ac-tl; rules are scoped to .ac-root.
+ */
+
+/* guide lines every two years, chalked dotted, and a hand-drawn baseline with an arrow: one overlay behind the rows */
+.ac-root .ac-tl-grid {
+  position: absolute;
+  left: var(--lw);
+  right: 0;
+  top: 28px;
+  bottom: 0;
+  pointer-events: none;
+  list-style: none;
+}
+.ac-root .ac-tl-gl {
+  position: absolute;
+  top: 0;
+  bottom: 6px;
+  width: 0;
+  border-left: 2.2px dotted var(--ac-rule);
+  opacity: 0.75;
+}
+.ac-root .ac-tl-grid::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  right: -12px;
+  bottom: -1px;
+  height: 8px;
+  background: var(--ac-mute);
+  -webkit-mask: var(--ac-wave) center / 100% 100% no-repeat;
+  mask: var(--ac-wave) center / 100% 100% no-repeat;
+}
+.ac-root .ac-tl-grid::before {
+  content: '';
+  position: absolute;
+  right: -14px;
+  bottom: -3px;
+  width: 10px;
+  height: 10px;
+  border-top: 2.4px solid var(--ac-mute);
+  border-right: 2.4px solid var(--ac-mute);
+  transform: rotate(45deg) skew(-6deg, -6deg);
+  border-radius: 1px;
+}
+
+/* a tick under a year, drawn as a short stroke */
+.ac-root .ac-tl-tick::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 2px;
+  height: 7px;
+  margin-left: -1px;
+  background: var(--ac-mute);
+  border-radius: 2px;
+  transform: rotate(var(--tr, 3deg));
+}
+.ac-root .ac-tl-tick:nth-child(2n)::after {
+  --tr: -4deg;
+}
+
+/* the bars are shaded in by hand: marker hatching inside an uneven outline, each one a hair off true */
+.ac-root .ac-bar {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  transform: rotate(var(--j, -0.5deg));
+}
+.ac-root li:nth-child(3n) > .ac-bar-row .ac-bar {
+  --j: 0.6deg;
+}
+.ac-root li:nth-child(3n + 1) > .ac-bar-row .ac-bar {
+  --j: -0.3deg;
+}
+.ac-root .ac-bar-full {
+  border: 2.4px solid var(--ac-b1);
+  border-radius: 9px 4px 10px 5px / 5px 9px 4px 10px;
+  background:
+    repeating-linear-gradient(
+      -62deg,
+      var(--ac-b1) 0 2.4px,
+      transparent 2.4px 6px
+    ),
+    color-mix(in srgb, var(--ac-b1) 22%, transparent);
+}
+.ac-root .ac-bar-part {
+  min-width: 14px;
+  border: 2.4px dashed var(--ac-b2);
+  border-radius: 6px 10px 5px 9px / 9px 5px 10px 6px;
+  background: repeating-linear-gradient(
+    58deg,
+    color-mix(in srgb, var(--ac-b2) 85%, transparent) 0 2px,
+    transparent 2px 6px
+  );
+}
+.ac-root .ac-bar-edu {
+  border: 2.4px solid var(--ac-b3);
+  border-radius: 5px 9px 6px 10px / 10px 6px 9px 5px;
+  background:
+    radial-gradient(circle, var(--ac-b3) 1.3px, transparent 1.9px) 0 0 / 7px 7px,
+    color-mix(in srgb, var(--ac-b3) 12%, transparent);
+}
+.ac-root .ac-bar-ongoing::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -5px;
+  border-top: 2.6px solid var(--ac-accent);
+  border-right: 2.6px solid var(--ac-accent);
+  transform: rotate(45deg);
+}
+@media (hover: hover) {
+  .ac-root .ac-tl-row:hover .ac-bar {
+    filter: brightness(1.18);
+  }
+}
+@media (max-width: 760px) {
+  .ac-root .ac-tl-grid {
+    display: none;
+  }
+}

@@ -1,0 +1,46 @@
+/* The theme colours of the `academic` skin as utilities. Their values are defined once on html[data-skin='academic'] in
+   skins/academic/academic.css (dark is the chalkboard, light is the whiteboard). globals.css imports this file: one Tailwind build
+   for Standard and every skin. */
+@theme inline {
+  /* the board and what is written on it */
+  --color-ac-board: var(--ac-board);
+  --color-ac-panel: var(--ac-panel);
+  --color-ac-ink: var(--ac-ink);
+  --color-ac-mute: var(--ac-mute);
+  --color-ac-rule: var(--ac-rule);
+  --color-ac-faint: var(--ac-faint);
+  --color-ac-accent: var(--ac-accent);
+  --color-ac-link: var(--ac-link);
+  --color-ac-hit: var(--ac-hit);
+  --color-ac-field: var(--ac-field);
+  /* the three bar colours of the timeline, and the colours of the margin notes (chalk or marker) */
+  --color-ac-b1: var(--ac-b1);
+  --color-ac-b2: var(--ac-b2);
+  --color-ac-b3: var(--ac-b3);
+  --color-ac-ma: var(--ac-ma);
+  --color-ac-mb: var(--ac-mb);
+  --color-ac-mc: var(--ac-mc);
+  --color-ac-md: var(--ac-md);
+  /* paper pinned to the board keeps its own ink, in both themes */
+  --color-ac-sheet: var(--ac-sheet);
+  --color-ac-sheet-ink: var(--ac-sheet-ink);
+  --color-ac-sheet-mute: var(--ac-sheet-mute);
+  --color-ac-sheet-accent: var(--ac-sheet-accent);
+  --color-ac-sheet-link: var(--ac-sheet-link);
+  --color-ac-sheet-rule: var(--ac-sheet-rule);
+  --color-ac-sticky: var(--ac-sticky);
+  --color-ac-tape: var(--ac-tape);
+  --color-ac-polaroid: var(--ac-polaroid);
+
+  --font-ac-serif: var(--ac-serif);
+  --font-ac-note: var(--ac-note);
+  --font-ac-chalk: var(--ac-chalk);
+
+  /* what lies on the board casts a shadow; a menu or a dialog a bigger one */
+  --shadow-ac-paper:
+    0 1px 0 rgb(255 255 255 / 0.5) inset, 0 9px 22px rgb(0 0 0 / 0.4),
+    0 2px 3px rgb(0 0 0 / 0.3);
+  --shadow-ac-pop: 0 12px 26px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.3);
+  --shadow-ac-dialog:
+    0 22px 50px rgb(0 0 0 / 0.55), 0 3px 6px rgb(0 0 0 / 0.35);
+}
