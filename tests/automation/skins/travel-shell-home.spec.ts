@@ -226,3 +226,30 @@ test.describe('the cards over the map', () => {
     }
   }
 });
+
+test.describe('the words of every page', () => {
+  for (const lang of ['en', 'vi']) {
+    for (const path of [
+      '/',
+      '/resume',
+      '/projects',
+      '/certificates',
+      '/services',
+      '/payment',
+      '/about',
+    ]) {
+      test(`${path} leaves no {slot} of the copy unfilled in ${lang}`, async ({
+        page,
+      }) => {
+        await page.addInitScript(
+          (code) => localStorage.setItem('bach-cv-lang', code),
+          lang,
+        );
+        await gotoSkin(page, path);
+        await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+        // a sentence with the years in it must say them (`useYearsText`), as Standard does
+        await expect(page.locator('body')).not.toContainText(/\{[a-zA-Z]+\}/);
+      });
+    }
+  }
+});
