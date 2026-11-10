@@ -79,4 +79,47 @@ describe('the keyframes of the Trade skin', () => {
     );
     expect(dead).toEqual([]);
   });
+
+  it('never animates box-shadow, size, position, spacing, colour or filter: they repaint or reflow every frame', () => {
+    const heavy =
+      /^(box-shadow|text-shadow|filter|backdrop-filter|width|height|top|left|right|bottom|inset|margin|padding|border|background|color|outline)/;
+    const found: string[] = [];
+    for (const file of CSS_FILES)
+      postcss
+        .parse(readFileSync(file, 'utf8'))
+        .walkAtRules(/keyframes$/, (rule) =>
+          rule.walkDecls((decl) => {
+            if (heavy.test(decl.prop))
+              found.push(`${rule.params}: ${decl.prop}`);
+          }),
+        );
+    expect(found).toEqual([]);
+  });
+
+  it('draws the ring of the live dot on a pseudo-element that only scales and fades', () => {
+    const css = readFileSync(`${DIR}/trade.css`, 'utf8');
+    const root = postcss.parse(css);
+    const ring = new Set<string>();
+    root.walkAtRules('keyframes', (rule) => {
+      if (rule.params !== 'tv-ring') return;
+      rule.walkDecls((decl) => {
+        ring.add(decl.prop);
+      });
+    });
+    expect([...ring].sort()).toEqual(['opacity', 'transform']);
+    let dotAnimates = false;
+    let ringAnimates = false;
+    root.walkRules((rule) => {
+      if (/keyframes$/.test((rule.parent as postcss.AtRule)?.name ?? ''))
+        return;
+      const animation = rule.nodes.some(
+        (n) => n.type === 'decl' && n.prop === 'animation',
+      );
+      if (rule.selector === '.tv-live' && animation) dotAnimates = true;
+      if (rule.selector === '.tv-live::after' && animation) ringAnimates = true;
+    });
+    // the dot itself stands still: the animation is on its ::after, so the dot keeps its size and nothing repaints
+    expect(dotAnimates).toBe(false);
+    expect(ringAnimates).toBe(true);
+  });
 });

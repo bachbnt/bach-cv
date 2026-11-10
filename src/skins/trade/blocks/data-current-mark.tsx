@@ -18,7 +18,7 @@ export function DataCurrentMark() {
       <span
         ref={gate}
         aria-hidden='true'
-        className='tv-live size-1.5 rounded-full bg-tv-up'
+        className='tv-live size-1.5 rounded-full bg-tv-up [--tv-ring-to:3.3333]'
       />
       {experience.current}
     </TvChip>

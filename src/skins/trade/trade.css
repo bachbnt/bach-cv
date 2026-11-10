@@ -137,17 +137,33 @@ html[data-skin='trade'] {
   max-width: 100%;
 }
 
-/* the live dot next to the legend of the chart sends out a ring now and then (the decoration of a ticking market) */
+/* the live dot next to the legend of the chart sends out a ring now and then (the decoration of a ticking market). The ring is the ::after of
+   the dot: a disc of the dot's own colour, scaled from the dot out to 7 px around it and faded, so only transform and opacity
+   move (a box-shadow would repaint every frame). The disc is the colour of the dot, so over the dot it cannot be seen. `--tv-ring-to` is the
+   scale that reaches 7 px around the dot: (size + 14) / size, 2.75 for the 8 px dot of the legend; a dot of another size sets its own.
+   At rest (reduced motion, `animation: none`) the ring is not there. */
 .tv-live {
+  position: relative;
+}
+.tv-live::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--tv-up);
+  opacity: 0;
+  pointer-events: none;
   animation: tv-ring 2s infinite;
 }
 @keyframes tv-ring {
   0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--tv-up) 55%, transparent);
+    opacity: 0.55;
+    transform: scale(1);
   }
   70%,
   100% {
-    box-shadow: 0 0 0 7px transparent;
+    opacity: 0;
+    transform: scale(var(--tv-ring-to, 2.75));
   }
 }
 @keyframes tv-shimmer {

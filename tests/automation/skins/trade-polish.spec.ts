@@ -45,11 +45,16 @@ const keyboardFocus = async (page: Page, control: Locator) => {
   await expect(control).toBeFocused();
 };
 
-const style = (locator: Locator, props: string[]) =>
-  locator.evaluate((el, names) => {
-    const s = getComputedStyle(el);
-    return Object.fromEntries(names.map((n) => [n, s.getPropertyValue(n)]));
-  }, props);
+const style = (locator: Locator, props: string[], pseudo?: string) =>
+  locator.evaluate(
+    (el, [names, pseudoElement]) => {
+      const s = getComputedStyle(el, pseudoElement || null);
+      return Object.fromEntries(
+        (names as string[]).map((n) => [n, s.getPropertyValue(n)]),
+      );
+    },
+    [props, pseudo ?? ''] as const,
+  );
 
 test.describe('the live tick of the chart', () => {
   test('waits while the tab is in the background and goes on when it is back', async ({
@@ -107,9 +112,15 @@ test.describe('the live tick of the chart', () => {
     await ready(page);
     const dot = page.locator('.tv-live').first();
     await expect(dot).toBeAttached();
-    expect(
-      (await style(dot, ['animation-play-state']))['animation-play-state'],
-    ).toBe('running');
+    // the ring is the ::after of the dot (it only scales and fades); the dot itself does not animate and keeps its size
+    expect(await animations(dot)).toContain('tv-ring');
+    expect((await style(dot, ['animation-name']))['animation-name']).toBe(
+      'none',
+    );
+    expect((await style(dot, ['width', 'height'])).width).toBe('8px');
+    const ring = (p: Page) =>
+      style(p.locator('.tv-live').first(), ['animation-play-state'], '::after');
+    expect((await ring(page))['animation-play-state']).toBe('running');
     await page.evaluate(() => {
       Object.defineProperty(document, 'visibilityState', {
         configurable: true,
@@ -118,9 +129,7 @@ test.describe('the live tick of the chart', () => {
       document.dispatchEvent(new Event('visibilitychange'));
     });
     await expect(page.locator('.tv-root')).toHaveAttribute('data-hidden', '');
-    expect(
-      (await style(dot, ['animation-play-state']))['animation-play-state'],
-    ).toBe('paused');
+    expect((await ring(page))['animation-play-state']).toBe('paused');
   });
 });
 
