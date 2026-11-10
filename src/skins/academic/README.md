@@ -60,7 +60,7 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
 `shell/use-eraser-wipe.ts` copies the page that is on screen when the visitor chooses another (a click on a link of the skin or an arrow key,
 `shell/pager.tsx`), and when the new page has mounted an eraser crosses the board along an arc around a pivot below it (about 0.6 s), leaving a
 hazy swath where the old page is gone; then the swath swells to the corners (about 0.7 s, 1.2 s in all). The old page is the copy, fixed over the
-board, inert and `aria-hidden` (class `ac-ghost`, no ids), and the new page is masked in behind the eraser. Each board needs only two mask layers
+board, inert and `aria-hidden` (class `ac-ghost`, no ids), and the new page is masked in over the same soft edge that the old one fades out by (the two masks are halves of each other, with a short soft edge and no bare strip between them: a strip, or a long soft edge, hid the top edge and the tape of a photo for a moment as the swath passed it). Each board needs only two mask layers
 (a radial-gradient ring around the pivot and a conic-gradient sector: a row of many gradients janked), so a frame takes the 16.7 ms of the display.
 The arithmetic is pure and tested (`shell/wipe-geometry.ts`, `tests/unit/skin/academic-wipe.test.ts`). No wipe on the first render, with
 reduced motion, for an anchor jump, for back/forward of the browser (they fall back to the foundation's fade, `ac-vt-in` / `ac-vt-out`), or when

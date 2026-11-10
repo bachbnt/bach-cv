@@ -10,14 +10,16 @@
 
 const DEG = 180 / Math.PI;
 
-/** The timing: the whole wipe, when the eraser has crossed, when the swath starts to swell (a little before the eraser has left). */
+/** The timing: the whole wipe, when the eraser has crossed, when the swath starts to swell (while the eraser is still crossing, so a tall photo is not left with its top edge and tape hidden for long). */
 export const WIPE = {
   ms: 1200,
   sweepEnd: 0.5,
-  swellStart: 0.42,
-  /** the soft edge of the swath, in px, and of the end of the sector, in degrees */
-  soft: 34,
+  swellStart: 0.3,
+  /** the soft edge of the swath on the two pages, in px (short: a soft edge hides the top of a photo and its tape while the eraser passes), and of the end of the sector, in degrees */
+  soft: 14,
   sectorSoft: 7,
+  /** the soft edge of the haze of dust, in px: the dust is soft, the pages are not */
+  hazeSoft: 54,
 } as const;
 
 interface WipeGeometry {
@@ -36,8 +38,6 @@ interface WipeGeometry {
   /** the half width of the swath the eraser leaves, and the one that covers the whole board */
   r0: number;
   rMax: number;
-  /** a bare strip between the old page and the new one, so the two never overlap */
-  gap: number;
 }
 
 const clamp = (value: number, min: number, max: number) =>
@@ -63,7 +63,6 @@ export function wipeGeometry(width: number, height: number): WipeGeometry {
   ]) {
     far = Math.max(far, Math.hypot(x - cx, y - cy));
   }
-  const gap = WIPE.soft + 4;
   return {
     cx,
     cy,
@@ -73,9 +72,8 @@ export function wipeGeometry(width: number, height: number): WipeGeometry {
     fromDeg: phi0 * DEG + 90,
     eraserW,
     eraserH,
-    r0: eraserH / 2 + 18,
-    rMax: Math.max(rho, far - rho) + WIPE.soft + gap + 24,
-    gap,
+    r0: eraserH / 2 + 54,
+    rMax: Math.max(rho, far - rho) + WIPE.soft * 2 + 24,
   };
 }
 
@@ -83,7 +81,7 @@ interface WipeFrame {
   /** the half width of the swath where the old page is gone, and where the new one shows */
   radius: number;
   newRadius: number;
-  /** how far round the circle each board is cut, in degrees (the new one trails the eraser by its own length) */
+  /** how far round the circle each board is cut, in degrees (the same for both: the new page takes the place of the old as it fades) */
   oldSectorDeg: number;
   newSectorDeg: number;
   /** the haze of dust on the swath: it settles as the swath swells */
@@ -100,15 +98,16 @@ export function wipeFrame(geometry: WipeGeometry, progress: number): WipeFrame {
   // the eraser eases in and out; the swath swells with a smoothstep
   const lead = (0.5 - 0.5 * Math.cos(Math.PI * crossed)) * geometry.sweepDeg;
   const swell = swelled * swelled * (3 - 2 * swelled);
+  const oldSectorDeg = lead + swell * (360 - lead);
   const radius = geometry.r0 + swell * (geometry.rMax - geometry.r0);
-  const lag = (geometry.eraserW / geometry.rho) * DEG * (1 - swell);
-  const trail = Math.max(0, lead - lag);
   const phi = geometry.phi0 + lead / DEG;
   return {
     radius,
-    newRadius: Math.max(0, radius - geometry.gap),
-    oldSectorDeg: lead + swell * (360 - lead),
-    newSectorDeg: trail + swell * (360 - trail),
+    // the soft edge of the old page fades out between `radius` and `radius + soft`; the new page fades in over the same band, so each sheet,
+    // photo and tape appears whole as the old one goes, with no bare strip that would hide the top of a photo for a moment
+    newRadius: radius + WIPE.soft,
+    oldSectorDeg,
+    newSectorDeg: oldSectorDeg,
     hazeOpacity: 0.5 * Math.max(0, 1 - swelled * 3),
     eraser: {
       x: geometry.cx + geometry.rho * Math.cos(phi) - geometry.eraserW / 2,
@@ -189,18 +188,12 @@ export function oldBoardMask(
   };
 }
 
-/** The new page: seen only inside the swath, a little behind the eraser; nothing while the swath is too narrow to hold it. */
+/** The new page: the other half of the old page's mask, so it is seen exactly where the old one has been wiped, fading in as that fades out. */
 export function newBoardMask(
   geometry: WipeGeometry,
   frame: WipeFrame,
   origin: MaskOrigin,
 ): BoardMask {
-  if (frame.newRadius <= WIPE.soft) {
-    return {
-      layers: ['linear-gradient(transparent, transparent)'],
-      composite: 'intersect',
-    };
-  }
   return {
     layers: [
       ring(geometry, origin, frame.newRadius, 'band', WIPE.soft),
@@ -218,7 +211,7 @@ export function hazeMask(
 ): BoardMask {
   return {
     layers: [
-      ring(geometry, origin, frame.radius, 'band', WIPE.soft * 1.6),
+      ring(geometry, origin, frame.radius, 'band', WIPE.hazeSoft),
       sector(geometry, origin, frame.oldSectorDeg, 'swept'),
     ],
     composite: 'intersect',

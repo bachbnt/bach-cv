@@ -97,22 +97,14 @@ describe('the frames of the wipe', () => {
     }
   });
 
-  it('keeps the new page behind the eraser, never ahead of it', () => {
+  it('shows the new page exactly where the old one is wiped: the same turn, and its soft edge is the other half of the old one', () => {
     const g = wipeGeometry(1280, 860);
     for (let i = 0; i <= 100; i += 1) {
       const f = wipeFrame(g, i / 100);
-      expect(f.newSectorDeg).toBeLessThanOrEqual(f.oldSectorDeg + 1e-9);
-    }
-  });
-
-  it('keeps a bare strip between the old page and the new one', () => {
-    const g = wipeGeometry(1280, 860);
-    for (let i = 0; i <= 100; i += 1) {
-      const f = wipeFrame(g, i / 100);
-      expect(f.radius - f.newRadius).toBeGreaterThanOrEqual(
-        Math.min(g.gap, f.radius),
-      );
-      expect(g.gap).toBeGreaterThan(WIPE.soft);
+      expect(f.newSectorDeg).toBe(f.oldSectorDeg);
+      // the old page fades out between `radius` and `radius + soft`: the new one fades in over that band, so no strip of bare board
+      // is left to hide the top edge and the tape of a photo while the eraser passes
+      expect(f.newRadius).toBe(f.radius + WIPE.soft);
     }
   });
 
@@ -149,13 +141,6 @@ describe('the masks', () => {
     expect(oldBoardMask(g, f, origin).composite).toBe('add');
     expect(newBoardMask(g, f, origin).composite).toBe('intersect');
     expect(hazeMask(g, f, origin).composite).toBe('intersect');
-  });
-
-  it('hide the new page while the swath is too narrow to hold it', () => {
-    const f = wipeFrame(g, 0);
-    expect(newBoardMask(g, f, origin).layers).toEqual([
-      'linear-gradient(transparent, transparent)',
-    ]);
   });
 
   it('never write NaN or Infinity', () => {

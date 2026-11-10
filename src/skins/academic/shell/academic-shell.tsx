@@ -70,11 +70,16 @@ export function AcademicShell({
                 exit='ac-vt-out'
                 default='none'
               >
+                {/* the eraser masks this box and clips the copy of it, and a mask cuts what sticks out of its box: the tape of a photo and its
+                    tilted corner stick out of the page. So the box is 24px larger on every side (the margin takes the room back: the page
+                    does not move), and nothing the page draws is cut while the eraser is on it. Sideways only where there is room for it. */}
                 <div
                   ref={pageRef}
-                  className='ac-reveal relative min-[900px]:before:pointer-events-none min-[900px]:before:absolute min-[900px]:before:top-0 min-[900px]:before:bottom-0 min-[900px]:before:left-[calc(100%-262px-12px)] min-[900px]:before:w-0.5 min-[900px]:before:bg-[repeating-linear-gradient(to_bottom,var(--ac-faint)_0_12px,transparent_12px_19px)] min-[900px]:before:content-[""]'
+                  className='ac-reveal -my-6 py-6 min-[761px]:-mx-6 min-[761px]:px-6'
                 >
-                  {children}
+                  <div className='relative min-[900px]:before:pointer-events-none min-[900px]:before:absolute min-[900px]:before:top-0 min-[900px]:before:bottom-0 min-[900px]:before:left-[calc(100%-262px-12px)] min-[900px]:before:w-0.5 min-[900px]:before:bg-[repeating-linear-gradient(to_bottom,var(--ac-faint)_0_12px,transparent_12px_19px)] min-[900px]:before:content-[""]'>
+                    {children}
+                  </div>
                 </div>
               </ViewTransition>
               <Pager page={current} />
