@@ -5,7 +5,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** The number shown while it counts: ease-out from 0, so it slows as it arrives. */
 export const countAt = (target: number, progress: number): number =>

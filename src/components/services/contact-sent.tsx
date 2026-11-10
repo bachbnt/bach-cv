@@ -8,7 +8,7 @@ import { Check } from 'lucide-react';
 import type { Ref } from 'react';
 import { servicesCopy } from '@/content/copy/services';
 import { useCopy } from '@/lib/i18n/copy';
-import { fill } from '@/components/services/message-form';
+import { fill } from '@/lib/chat/fill';
 
 /** Shown in place of the form once the message is sent. The heading takes focus so screen readers land on it. */
 export function ContactSent({

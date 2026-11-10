@@ -73,7 +73,10 @@ export function TitleBar({
   };
 
   return (
-    <div className='flex h-[30px] items-center gap-3 border-b border-line bg-chrome-2 px-3 font-sans text-[12.5px] leading-[normal] text-mute'>
+    <div
+      data-slot='dev-title-bar'
+      className='flex h-[30px] items-center gap-3 border-b border-line bg-chrome-2 px-3 font-sans text-[12.5px] leading-[normal] text-mute'
+    >
       <button
         type='button'
         className='group/nav pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-x-1.5 pointer-coarse:after:-inset-y-2.5 pointer-coarse:after:content-[""] -ml-1 hidden h-[26px] w-[34px] cursor-pointer place-items-center rounded-[6px] bg-transparent text-ink transition-colors duration-150 hover:bg-hov max-[900px]:inline-grid'

@@ -65,7 +65,7 @@ import { CHART_CONTROLS_ID } from '@/skins/trade/shell/toolbar';
 import { useDocumentHidden } from '@/hooks/use-document-hidden';
 import { useOnceTrue } from '@/hooks/use-once-true';
 import { useOnScreen } from '@/skins/trade/shell/use-on-screen';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 const IndicatorsDialog = dynamic(
   () => import('@/skins/trade/chart/indicators-dialog'),

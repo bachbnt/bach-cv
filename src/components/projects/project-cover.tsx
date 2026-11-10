@@ -5,12 +5,12 @@
 'use client';
 
 import Image from 'next/image';
-import { fillCopy } from '@/components/projects/project-helpers';
 import { initialsOf } from '@/lib/derive/initials';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 import { cn } from 'cn';
+import { fill } from '@/lib/chat/fill';
 
 const TILE: Record<Doc<'skills'>['category'], string> = {
   mobile: 'bg-mobile text-mobile-foreground',
@@ -37,7 +37,7 @@ export function ProjectCover({
     return (
       <Image
         src={project.cover}
-        alt={fillCopy(copy.coverAlt, { name: project.name })}
+        alt={fill(copy.coverAlt, { name: project.name })}
         width={640}
         height={520}
         className={cn(

@@ -2,9 +2,10 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { fillCopy, linkLabel } from '@/components/projects/project-helpers';
+import { linkLabel } from '@/components/projects/project-helpers';
 import type { Doc } from '@/lib/content/schema';
 import type { ViewerItem } from '@/skins/academic/shell/overlay-context';
+import { fill } from '@/lib/chat/fill';
 
 /** The words the pictures of a project need (the Standard copy of the page plus the one line of the skin). */
 interface ScreenshotWords {
@@ -33,12 +34,12 @@ export function screenshotItems(
   return project.images.map((src, index) => ({
     src,
     title: project.name,
-    subtitle: fillCopy(words.screenshotOf, {
+    subtitle: fill(words.screenshotOf, {
       kind: words.kinds[project.kind],
       current: index + 1,
       total,
     }),
-    caption: fillCopy(words.dialog.alt, {
+    caption: fill(words.dialog.alt, {
       name: project.name,
       current: index + 1,
     }),

@@ -7,13 +7,13 @@ import { servicesCopy } from '@/content/copy/services';
 import {
   applyTopic,
   counterText,
-  fill,
   invalidAnnouncement,
   invalidFields,
   toPayload,
   validateForm,
   warnAt,
 } from '@/components/services/message-form';
+import { fill } from '@/lib/chat/fill';
 
 const limits = { nameMax: 100, messageMax: 1000 };
 const en = servicesCopy.en;

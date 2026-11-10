@@ -7,7 +7,7 @@
 import { Check } from 'lucide-react';
 import type { Ref } from 'react';
 import { useChat } from '@/components/chat/chat-provider';
-import { fill, type FormLimits } from '@/components/services/message-form';
+import { type FormLimits } from '@/components/services/message-form';
 import type { useContactForm } from '@/components/services/use-contact-form';
 import { servicesCopy } from '@/content/copy/services';
 import { travelPostcardsCopy } from '@/content/copy/travel-postcards';
@@ -15,6 +15,7 @@ import { useLive } from '@/hooks/use-live';
 import { useCopy } from '@/lib/i18n/copy';
 import { BookingForm } from '@/skins/travel/blocks/booking-form';
 import { TlKicker } from '@/skins/travel/ui/tl-kicker';
+import { fill } from '@/lib/chat/fill';
 
 /** Shown in place of the form once the message is sent: a "booked" stamp, the thanks, and a way to write another. The heading takes focus so screen readers land on it. */
 function BookedNote({

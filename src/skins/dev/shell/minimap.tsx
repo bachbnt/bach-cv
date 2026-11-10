@@ -5,6 +5,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { prefersReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** How many grey lines the minimap draws. */
 const LINES = 140;
@@ -50,16 +51,30 @@ export function Minimap() {
     const thumb = slider.current;
     if (!box || !thumb) return;
 
+    // CSS hides the minimap under 1180px and in Zen mode: nothing is measured while it has no box
+    const shown = () => box.getClientRects().length > 0;
     const place = () => {
+      if (!shown()) return;
       const { thumbHeight, range, travel } = measure(box);
       thumb.style.height = `${thumbHeight}px`;
       thumb.style.transform = `translateY(${Math.min(1, window.scrollY / range) * travel}px)`;
     };
+    // scrolling and resizing fire many times per frame: the slider is placed once per frame
+    let frame = 0;
+    const schedule = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        place();
+      });
+    };
     place();
-    window.addEventListener('scroll', place, { passive: true });
-    window.addEventListener('resize', place);
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    // the page changing size, and the minimap itself appearing (back from under 1180px or from Zen mode) or changing height
     const observer = new ResizeObserver(place);
     observer.observe(document.body);
+    observer.observe(box);
 
     // the page position for the slider top at `top` pixels from the top of the track
     const scrollFor = (top: number) => {
@@ -86,9 +101,7 @@ export function Minimap() {
       }
       window.scrollTo({
         top: scrollFor(event.clientY - track.top - thumbHeight / 2),
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
       });
     };
     const onMove = (event: PointerEvent) => {
@@ -112,8 +125,9 @@ export function Minimap() {
     box.addEventListener('pointercancel', onEnd);
     box.addEventListener('lostpointercapture', onEnd);
     return () => {
-      window.removeEventListener('scroll', place);
-      window.removeEventListener('resize', place);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      cancelAnimationFrame(frame);
       observer.disconnect();
       box.removeEventListener('pointerdown', onDown);
       box.removeEventListener('pointermove', onMove);

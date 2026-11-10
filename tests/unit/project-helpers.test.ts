@@ -5,12 +5,12 @@
 import { describe, expect, it } from 'vitest';
 import { projectsCopy } from '@/content/copy/projects';
 import {
-  fillCopy,
   kindsPresent,
   linkLabel,
   skillsOf,
 } from '@/components/projects/project-helpers';
 import type { Doc } from '@/lib/content/schema';
+import { fill } from '@/lib/chat/fill';
 
 const en = projectsCopy.en.links;
 const vi = projectsCopy.vi.links;
@@ -89,15 +89,15 @@ describe('linkLabel', () => {
   });
 });
 
-describe('fillCopy', () => {
+describe('fill', () => {
   it('fills the slots and leaves unknown ones', () => {
-    expect(
-      fillCopy(projectsCopy.en.dialog.counter, { current: 2, total: 6 }),
-    ).toBe('2 of 6');
-    expect(
-      fillCopy(projectsCopy.vi.dialog.counter, { current: 2, total: 6 }),
-    ).toBe('2 / 6');
-    expect(fillCopy('{name} {x}', { name: 'A' })).toBe('A {x}');
+    expect(fill(projectsCopy.en.dialog.counter, { current: 2, total: 6 })).toBe(
+      '2 of 6',
+    );
+    expect(fill(projectsCopy.vi.dialog.counter, { current: 2, total: 6 })).toBe(
+      '2 / 6',
+    );
+    expect(fill('{name} {x}', { name: 'A' })).toBe('A {x}');
   });
 });
 

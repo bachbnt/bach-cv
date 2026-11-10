@@ -5,10 +5,10 @@
 'use client';
 
 import { useState } from 'react';
-import { fillCopy } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import { TvViewer } from '@/skins/trade/shell/overlay-viewer';
+import { fill } from '@/lib/chat/fill';
 
 /**
  * The screenshots of a project in the picture viewer: previous and next (also the arrow keys, wrapping around), the counter, a strip
@@ -46,14 +46,14 @@ export function TvScreenshots({
       closeLabel={copy.dialog.close}
       image={{
         src: current,
-        alt: fillCopy(copy.dialog.alt, { name, current: index + 1 }),
+        alt: fill(copy.dialog.alt, { name, current: index + 1 }),
         width: 900,
         height: 1600,
       }}
       thumbnails={{
         items: images.map((src, i) => ({
           src,
-          label: fillCopy(copy.dialog.thumbnail, { current: i + 1 }),
+          label: fill(copy.dialog.thumbnail, { current: i + 1 }),
         })),
         current: index,
         onSelect: setIndex,
@@ -66,7 +66,7 @@ export function TvScreenshots({
               onNext: () => go(1),
               prevLabel: copy.dialog.previous,
               nextLabel: copy.dialog.next,
-              counter: fillCopy(copy.dialog.counter, {
+              counter: fill(copy.dialog.counter, {
                 current: index + 1,
                 total,
               }),

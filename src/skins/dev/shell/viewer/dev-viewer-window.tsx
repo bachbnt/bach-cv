@@ -6,7 +6,7 @@
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { useState, type KeyboardEvent, type MouseEvent } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
+import { copyToClipboard } from '@/lib/copy-to-clipboard';
 import { DialogDescription } from '@/components/ui/dialog';
 import { devOverlaysCopy } from '@/content/copy/dev-overlays';
 import { fill } from '@/lib/chat/fill';

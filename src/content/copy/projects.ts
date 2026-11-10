@@ -4,7 +4,7 @@
 
 import { defineCopy } from '@/lib/i18n/define-copy';
 
-// Interface copy for the Projects page. `{name}`, `{count}`, `{current}` and `{total}` are filled in by `fillCopy`.
+// Interface copy for the Projects page. `{name}`, `{count}`, `{current}` and `{total}` are filled in by `fill`.
 export const projectsCopy = defineCopy(
   {
     title: 'Projects',

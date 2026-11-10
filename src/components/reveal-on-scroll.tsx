@@ -5,6 +5,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { prefersReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** Elements that fade up when they scroll into view (the selector list from the design mockup). */
 const SELECTOR = [
@@ -21,7 +22,7 @@ const SELECTOR = [
  */
 export function RevealOnScroll() {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (prefersReducedMotion()) return;
 
     const seen = new WeakSet<Element>();
     const io = new IntersectionObserver(

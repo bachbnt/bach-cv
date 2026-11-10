@@ -6,10 +6,10 @@
 
 import { Check } from 'lucide-react';
 import type { Ref } from 'react';
-import { fill } from '@/components/services/message-form';
 import { servicesCopy } from '@/content/copy/services';
 import { useCopy } from '@/lib/i18n/copy';
 import { TvButton } from '@/skins/trade/ui/tv-button';
+import { fill } from '@/lib/chat/fill';
 
 /** The ticket after the message is sent: a check that pops in, "Message sent" (which takes focus) and the way to send another. */
 export function DeskTicketSent({

@@ -302,6 +302,8 @@ test.describe('Payment as the ticket counter', () => {
   });
 
   test('announces the loading while the methods are read', async ({ page }) => {
+    await servePayments(page, allOn());
+    // the route added last runs first: it holds the request, then hands it to `servePayments`
     await page.route('**/firestore.googleapis.com/**', async (route) => {
       const request = route.request();
       if (
@@ -311,7 +313,6 @@ test.describe('Payment as the ticket counter', () => {
         await new Promise((resolve) => setTimeout(resolve, 3000));
       return route.fallback();
     });
-    await servePayments(page, allOn());
     await gotoSkin(page, '/payment');
     await expect(page.getByRole('status', { name: 'Loading' })).toBeVisible();
     await expect(

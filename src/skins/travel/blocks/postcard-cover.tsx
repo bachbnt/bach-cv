@@ -6,7 +6,6 @@
 
 import { Camera } from 'lucide-react';
 import Image from 'next/image';
-import { fillCopy } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { initialsOf } from '@/lib/derive/initials';
 import type { Doc } from '@/lib/content/schema';
@@ -17,6 +16,7 @@ import {
   STOP_OF_CATEGORY,
   stopClass,
 } from '@/skins/travel/blocks/postcard-model';
+import { fill } from '@/lib/chat/fill';
 
 /** The picture of a postcard: the project's cover, or (when it has none) a drawn view tinted by the category of its first technology, with the initials. */
 function CoverView({
@@ -31,7 +31,7 @@ function CoverView({
     return (
       <Image
         src={project.cover}
-        alt={fillCopy(copy.coverAlt, { name: project.name })}
+        alt={fill(copy.coverAlt, { name: project.name })}
         fill
         sizes='(max-width: 767px) 100vw, 260px'
         className='object-cover object-top'

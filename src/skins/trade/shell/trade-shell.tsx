@@ -45,7 +45,7 @@ import { TradeProvider, useTrade } from '@/skins/trade/shell/trade-context';
 import { TradeOverlays } from '@/skins/trade/shell/trade-overlays';
 import { useDocumentHidden } from '@/hooks/use-document-hidden';
 import { useSearchHotkey } from '@/skins/trade/shell/use-search-hotkey';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { useScrollToPage } from '@/skins/trade/shell/use-scroll-to-page';
 import { useStickyOffset } from '@/skins/trade/shell/use-sticky-offset';
 import { useViewportHeight } from '@/skins/trade/shell/use-viewport-height';

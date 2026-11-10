@@ -5,7 +5,7 @@
 'use client';
 
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** The curve of the skin's own arrivals (`--ease-tv-out`): a script cannot read the variable. */
 const EASING = 'cubic-bezier(0.2, 0.7, 0.2, 1)';

@@ -6,7 +6,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { fillCopy, skillsOf } from '@/components/projects/project-helpers';
+import { skillsOf } from '@/components/projects/project-helpers';
 import { initialsOf } from '@/lib/derive/initials';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { projectsCopy } from '@/content/copy/projects';
@@ -25,6 +25,7 @@ import { ShellWidget } from '@/skins/trade/ui/shell-widget';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
+import { fill } from '@/lib/chat/fill';
 
 /** How many technologies an idea card names before it says how many more there are. */
 const TECH_SHOWN = 5;
@@ -79,7 +80,7 @@ function IdeaCard({
         {project.cover ? (
           <Image
             src={project.cover}
-            alt={fillCopy(copy.coverAlt, { name: project.name })}
+            alt={fill(copy.coverAlt, { name: project.name })}
             fill
             sizes='(min-width: 1100px) 320px, 100vw'
             className='object-cover object-top transition-transform duration-300 ease-tv-out group-hover/idea:scale-105'

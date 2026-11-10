@@ -19,7 +19,6 @@ import type { Doc } from '@/lib/content/schema';
 import { useSendMessage } from '@/lib/query/use-send-message';
 import {
   applyTopic,
-  fill,
   invalidAnnouncement,
   invalidFields,
   toPayload,
@@ -28,13 +27,19 @@ import {
   type FieldName,
   type FormLimits,
 } from './message-form';
+import { fill } from '@/lib/chat/fill';
 
 export type FormStatus = 'idle' | 'sending' | 'failed' | 'sent';
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/** Design review: `?form=error` forces the failure state, as in the mockup. */
-const forcedFailure = () => /[?&]form=error/.test(window.location.search);
+/**
+ * Design review: `?form=error` forces the failure state, as in the mockup. Only in development and in the tests: a production build
+ * does not contain the check, so a visitor cannot make the form look broken with a link.
+ */
+const forcedFailure = () =>
+  process.env.NODE_ENV !== 'production' &&
+  /[?&]form=error/.test(window.location.search);
 
 /**
  * State and behaviour of the contact form: topic chips that write the starting text, validation,

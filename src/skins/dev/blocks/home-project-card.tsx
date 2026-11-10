@@ -6,7 +6,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { fillCopy, skillsOf } from '@/components/projects/project-helpers';
+import { skillsOf } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import type { Doc } from '@/lib/content/schema';
 import { projectHref } from '@/lib/derive/home-lists';
@@ -14,6 +14,7 @@ import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { DevChip } from '@/skins/dev/ui/dev-chip';
+import { fill } from '@/lib/chat/fill';
 
 /** the card is a link, so it carries the look of a `DevCard` itself */
 const CARD =
@@ -45,7 +46,7 @@ export function HomeProjectCard({
         {project.cover ? (
           <Image
             src={project.cover}
-            alt={fillCopy(projectsText.coverAlt, {
+            alt={fill(projectsText.coverAlt, {
               name: project.name,
             })}
             fill

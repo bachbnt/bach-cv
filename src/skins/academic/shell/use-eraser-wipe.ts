@@ -25,6 +25,7 @@ import {
   wipeGeometry,
   type BoardMask,
 } from '@/skins/academic/shell/wipe-geometry';
+import { prefersReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** How long a copy of the old page waits for the page change it was taken for. */
 const STALE_MS = 1500;
@@ -52,9 +53,6 @@ const MASK_PROPERTIES = [
   'mask-composite',
   '-webkit-mask-composite',
 ];
-
-const prefersReducedMotion = () =>
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** Writes a mask on an element (both spellings: the prefixed one is the one older browsers know). */
 function applyMask(element: HTMLElement, mask: BoardMask) {

@@ -94,7 +94,7 @@ for (const size of SIZES) {
         await expect(button.last()).toBeVisible();
       }
       const status = page
-        .locator('div.bg-status')
+        .locator('[data-slot="dev-status-bar"]')
         .first()
         .getByRole('button', { name: /Output|Terminal/ });
       expect(await status.count()).toBe(2);
@@ -104,7 +104,7 @@ for (const size of SIZES) {
       }
       // the project name is in the title bar on a phone too, whole and between the files button and the menus
       const name = await page.evaluate(() => {
-        const bar = document.querySelector('.bg-chrome-2')!;
+        const bar = document.querySelector('[data-slot="dev-title-bar"]')!;
         const pill = [...bar.querySelectorAll('div')].find(
           (d) => d.textContent?.trim() === 'bachbntdev',
         );

@@ -67,32 +67,17 @@ export async function sendChat(
     ? AbortSignal.any([options.signal, timeout])
     : timeout;
 
-  const post = async (provider?: string): Promise<Response> => {
-    try {
-      return await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // no provider: the Worker tries its enabled ones in order (Workers AI first, Gemini as the fallback)
-        body: JSON.stringify(provider ? { provider, ...body } : body),
-        signal,
-      });
-    } catch {
-      throw new ChatError('network');
-    }
-  };
-
-  let response = await post();
-  // A Worker deployed before `provider` became optional rejects a request without it. Ask Gemini by name once, so the
-  // site keeps working whichever of the Worker and the site is deployed first. Remove when every Worker is current.
-  if (response.status === 400) {
-    const code = errorSchema.safeParse(
-      await response
-        .clone()
-        .json()
-        .catch(() => ({})),
-    );
-    if (code.success && code.data.error === 'invalid_request')
-      response = await post('gemini');
+  let response: Response;
+  try {
+    response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // no provider: the Worker tries its enabled ones in order (Workers AI first, Gemini as the fallback)
+      body: JSON.stringify(body),
+      signal,
+    });
+  } catch {
+    throw new ChatError('network');
   }
 
   if (!response.ok) {

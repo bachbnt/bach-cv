@@ -40,6 +40,35 @@ html[data-skin='academic'] {
   --ac-stage: #8a7f63;
   --ac-paper-shade: #b9a77a;
   --ac-ruling: rgba(70, 110, 180, 0.25);
+  /* sticks of chalk and markers on the ledge: physical things, the same in both themes (the chalk shows on the board, the markers on the whiteboard) */
+  --ac-chalk-white: #f1efe4;
+  --ac-chalk-pink: #f0a3b8;
+  --ac-chalk-blue: #8ec5f0;
+  --ac-chalk-yellow: #f0d36a;
+  --ac-marker-blue: #1b4fa8;
+  --ac-marker-red: #bd2519;
+  --ac-marker-green: #16703a;
+  /* the white body and the edge of a marker, the light and the shade painted on chalk, markers and the eraser */
+  --ac-marker-body: #f4f5f2;
+  --ac-marker-edge: #9aa2a7;
+  --ac-shade-light: #fff;
+  --ac-shade-dark: #000;
+  /* the paper slip on the ledge that opens the chat: ruled paper with a red margin, its shadow and the shadow of its tape; the shadow of the line of words on the ledge */
+  --ac-slip-top: #f7f3e6;
+  --ac-slip-bottom: #ebe5d2;
+  --ac-slip-line: rgba(60, 100, 170, 0.22);
+  --ac-slip-margin: rgba(190, 50, 40, 0.5);
+  --ac-slip-shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 4px 7px rgba(0, 0, 0, 0.42);
+  --ac-slip-tape-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  --ac-ledge-text-shadow:
+    0 -1px 0 rgba(0, 0, 0, 0.65), 0 1px 0 rgba(255, 255, 255, 0.08);
+  /* the viewer: the desk the photographs lie on (a light inner shade), the tape on a photograph, a small photograph, and the one that is chosen (the yellow of a highlighter around it) */
+  --ac-stage-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.09), inset 0 3px 10px rgba(0, 0, 0, 0.14);
+  --ac-tape-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --ac-thumb-shadow: 0 2px 5px rgba(0, 0, 0, 0.32);
+  --ac-thumb-on-shadow:
+    0 0 0 5px rgba(255, 207, 51, 0.7), 0 2px 5px rgba(0, 0, 0, 0.32);
   /* the frame of the board, the ledge below it, the eraser and the dust it leaves */
   --ac-frame-1: #8f6a46;
   --ac-frame-2: #5a3d26;

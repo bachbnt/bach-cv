@@ -5,7 +5,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
+import { copyToClipboard } from '@/lib/copy-to-clipboard';
 import {
   paymentView,
   stepMethodId,

@@ -6,12 +6,12 @@
 
 import { cva } from 'class-variance-authority';
 import Image from 'next/image';
-import { fillCopy } from '@/components/projects/project-helpers';
 import { initialsOf } from '@/lib/derive/initials';
 import { projectsCopy } from '@/content/copy/projects';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { COVER_IMAGE } from '@/skins/dev/blocks/cover-styles';
+import { fill } from '@/lib/chat/fill';
 
 const SIZES = '(max-width: 900px) 100vw, 360px';
 
@@ -47,7 +47,7 @@ export function ProjectCoverArt({
     return (
       <Image
         src={project.cover}
-        alt={fillCopy(copy.coverAlt, { name: project.name })}
+        alt={fill(copy.coverAlt, { name: project.name })}
         fill
         sizes={SIZES}
         loading='lazy'

@@ -23,7 +23,8 @@ import { DevOverlayProvider } from '@/skins/dev/shell/dev-overlay-context';
 import { LogSources } from '@/skins/dev/shell/devlog/log-sources';
 import { DevOverlays } from '@/skins/dev/shell/dev-overlays';
 import { DevToast } from '@/skins/dev/shell/dev-toast';
-import { EditorFrame, type Caret } from '@/skins/dev/shell/editor-frame';
+import { createCaretStore } from '@/skins/dev/shell/caret-store';
+import { EditorFrame } from '@/skins/dev/shell/editor-frame';
 import { Explorer } from '@/skins/dev/shell/explorer';
 import { Minimap } from '@/skins/dev/shell/minimap';
 import { TabBar } from '@/skins/dev/shell/tab-bar';
@@ -45,7 +46,8 @@ export function DevShell({
 }) {
   const current: PageKey = page ?? 'home';
   const [ui, setUi] = useDevUi();
-  const [caret, setCaret] = useState<Caret>({ line: 1, column: 1 });
+  // the caret of the status bar lives outside React state, so a click in the editor does not render the whole shell
+  const [caret] = useState(createCaretStore);
   const [accountOpen, setAccountOpen] = useState(false);
   // Zen mode (the yellow light): the chrome around the page is hidden, only the title bar and the page stay; Esc leaves it
   const [zen, setZen] = useState(false);
@@ -110,7 +112,7 @@ export function DevShell({
           <TabBar page={current} />
           <Crumbs page={current} />
         </header>
-        <div className='dv-ide flex items-start'>
+        <div data-slot='dev-ide' className='flex items-start'>
           <ActivityBar
             explorerOpen={ui.explorer}
             onToggleExplorer={() => setUi({ explorer: !ui.explorer })}
@@ -127,7 +129,7 @@ export function DevShell({
               setAccountOpen(true);
             }}
           />
-          <EditorFrame onCaret={setCaret}>
+          <EditorFrame onCaret={caret.set}>
             {/* a page change: the page fades out and the next one rises in, the window around it stays (classes in dev.css) */}
             <ViewTransition
               key={current}

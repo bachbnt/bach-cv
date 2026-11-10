@@ -7,7 +7,7 @@
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import Image from 'next/image';
 import { useEffect, useRef, type KeyboardEvent } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
+import { copyToClipboard } from '@/lib/copy-to-clipboard';
 import {
   Dialog,
   DialogDescription,
@@ -113,7 +113,7 @@ function AcViewerSheet({
             {copy.description}
           </DialogDescription>
 
-          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 bg-ac-stage/20 px-2 py-[22px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.09),inset_0_3px_10px_rgba(0,0,0,0.14)] [grid-template-areas:'prev_photo_next'] max-[720px]:grid-cols-2 max-[720px]:gap-y-3 max-[720px]:py-[18px] max-[720px]:[grid-template-areas:'photo_photo'_'prev_next']">
+          <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 bg-ac-stage/20 px-2 py-[22px] shadow-(--ac-stage-shadow) [grid-template-areas:'prev_photo_next'] max-[720px]:grid-cols-2 max-[720px]:gap-y-3 max-[720px]:py-[18px] max-[720px]:[grid-template-areas:'photo_photo'_'prev_next']">
             {single ? (
               <span className='[grid-area:prev] max-[720px]:hidden' />
             ) : (
@@ -137,11 +137,11 @@ function AcViewerSheet({
             >
               <span
                 aria-hidden='true'
-                className='absolute -top-2.5 -left-3.5 h-5 w-[58px] -rotate-[36deg] bg-ac-tape shadow-[0_1px_2px_rgba(0,0,0,0.25)]'
+                className='absolute -top-2.5 -left-3.5 h-5 w-[58px] -rotate-[36deg] bg-ac-tape shadow-(--ac-tape-shadow)'
               />
               <span
                 aria-hidden='true'
-                className='absolute -top-2.5 -right-3.5 h-5 w-[58px] rotate-[32deg] bg-ac-tape shadow-[0_1px_2px_rgba(0,0,0,0.25)]'
+                className='absolute -top-2.5 -right-3.5 h-5 w-[58px] rotate-[32deg] bg-ac-tape shadow-(--ac-tape-shadow)'
               />
               <Image
                 key={item.src}
@@ -192,7 +192,7 @@ function AcViewerSheet({
                   aria-label={fill(copy.goTo, { current: i + 1, total })}
                   aria-current={i === index}
                   onClick={() => setViewerIndex(i)}
-                  className='relative size-[58px] shrink-0 cursor-pointer bg-ac-photo-paper p-[3px] opacity-80 shadow-[0_2px_5px_rgba(0,0,0,0.32)] transition-opacity nth-[3n+1]:-rotate-[1.4deg] nth-[3n]:rotate-[1.6deg] aria-current:opacity-100 aria-current:outline-[2.5px] aria-current:outline-offset-1 aria-current:outline-ac-link aria-current:shadow-[0_0_0_5px_rgba(255,207,51,0.7),0_2px_5px_rgba(0,0,0,0.32)] pointer-coarse:size-12 hover:opacity-100'
+                  className='relative size-[58px] shrink-0 cursor-pointer bg-ac-photo-paper p-[3px] opacity-80 shadow-(--ac-thumb-shadow) transition-opacity nth-[3n+1]:-rotate-[1.4deg] nth-[3n]:rotate-[1.6deg] aria-current:opacity-100 aria-current:outline-[2.5px] aria-current:outline-offset-1 aria-current:outline-ac-link aria-current:shadow-(--ac-thumb-on-shadow) pointer-coarse:size-12 hover:opacity-100'
                 >
                   <span className='relative block size-full overflow-hidden'>
                     <Image

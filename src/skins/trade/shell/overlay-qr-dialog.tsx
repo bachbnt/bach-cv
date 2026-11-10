@@ -6,7 +6,7 @@
 
 import { CopyCheck, Download } from 'lucide-react';
 import { useState, type KeyboardEvent } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
+import { copyToClipboard } from '@/lib/copy-to-clipboard';
 import { summaryOf } from '@/components/payment/payment-details';
 import { saveQr } from '@/components/payment/save-qr';
 import { tradeOverlayCopy } from '@/content/copy/trade-overlay';

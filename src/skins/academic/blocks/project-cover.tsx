@@ -5,13 +5,13 @@
 'use client';
 
 import Image from 'next/image';
-import { fillCopy } from '@/components/projects/project-helpers';
 import { academicProjectsCopy } from '@/content/copy/academic-projects';
 import { projectsCopy } from '@/content/copy/projects';
 import { initialsOf } from '@/lib/derive/initials';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
+import { fill } from '@/lib/chat/fill';
 
 /** The tile that stands in for a missing cover, tinted by the category of the first technology (chalk colours). */
 const TILE: Record<Doc<'skills'>['category'], string> = {
@@ -53,7 +53,7 @@ export function ProjectCover({
         {project.cover ? (
           <Image
             src={project.cover}
-            alt={fillCopy(copy.coverAlt, { name: project.name })}
+            alt={fill(copy.coverAlt, { name: project.name })}
             fill
             sizes='(min-width: 900px) 184px, 320px'
             className='object-cover object-top'
@@ -81,7 +81,7 @@ export function ProjectCover({
       </div>
       <figcaption className='mt-2 font-ac-note text-[16px]/[1.25] text-ac-mute'>
         <b className='font-normal text-ac-md'>
-          {fillCopy(own.figure, { n: number })}
+          {fill(own.figure, { n: number })}
         </b>{' '}
         {project.name}
       </figcaption>

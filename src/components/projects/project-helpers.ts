@@ -4,6 +4,7 @@
 
 import type { TagTone } from '@/components/tag';
 import type { Doc, ProjectLink } from '@/lib/content/schema';
+import { fill } from '@/lib/chat/fill';
 
 const hostOf = (url: string) => {
   try {
@@ -32,15 +33,6 @@ export const linkLabel = (
   if (host === 'play.google.com') return names.googlePlay;
   return link.kind === 'other' && link.label ? link.label : names[link.kind];
 };
-
-/** Puts values into the `{name}` slots of a copy string. */
-export const fillCopy = (
-  template: string,
-  values: Record<string, string | number>,
-) =>
-  template.replace(/\{(\w+)\}/g, (slot, key: string) =>
-    key in values ? String(values[key]) : slot,
-  );
 
 /** The order of the filter chips, as on the mockup. */
 export const KIND_ORDER = [
@@ -72,6 +64,4 @@ export const screenshotsLabel = (
   count: number,
   words: { screenshotsOne: string; screenshotsMany: string },
 ) =>
-  count === 1
-    ? words.screenshotsOne
-    : fillCopy(words.screenshotsMany, { count });
+  count === 1 ? words.screenshotsOne : fill(words.screenshotsMany, { count });

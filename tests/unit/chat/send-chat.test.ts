@@ -42,17 +42,6 @@ describe('sendChat', () => {
     expect(sent).not.toHaveProperty('systemPrompt');
   });
 
-  it('asks Gemini by name once when an older Worker insists on a provider', async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce(answer(400, { error: 'invalid_request' }))
-      .mockResolvedValueOnce(answer(200, { text: 'From Gemini' }));
-    vi.stubGlobal('fetch', fetchMock);
-    expect(await sendChat(body, options)).toBe('From Gemini');
-    expect(sentBodies(fetchMock)).toHaveLength(2);
-    expect(sentBodies(fetchMock)[1].provider).toBe('gemini');
-  });
-
   it('does not retry other errors', async () => {
     const fetchMock = vi.fn(async () =>
       answer(429, { error: 'rate_limit_day' }),
@@ -64,13 +53,13 @@ describe('sendChat', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
-  it('gives up after the one retry', async () => {
+  it('does not retry a request the Worker refuses as invalid', async () => {
     const fetchMock = vi.fn(async () =>
       answer(400, { error: 'invalid_request' }),
     );
     vi.stubGlobal('fetch', fetchMock);
     await expect(sendChat(body, options)).rejects.toBeInstanceOf(ChatError);
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it('is unavailable without a Worker', async () => {

@@ -26,7 +26,7 @@ import {
   retargetView,
 } from '@/skins/trade/chart/view';
 import { weeksOf, type RangeKey } from '@/skins/trade/config';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** What stays the same while the chart is on screen: the window (zoom and pan), the replay clock and the link to the buttons outside. */
 export function ChartBody({

@@ -7,7 +7,7 @@
 import { useEffect, useState } from 'react';
 import type { Doc } from '@/lib/content/schema';
 import { scrollWhenSettled } from '@/skins/trade/blocks/data-scroll-settled';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { useTrade } from '@/skins/trade/shell/trade-context';
 
 /**

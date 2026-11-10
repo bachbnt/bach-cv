@@ -210,7 +210,7 @@ test.describe('the screens of the Dev skin for the states of the site', () => {
       page.getByRole('link', { name: 'bachbnt@gmail.com' }),
     ).toBeVisible();
     await expect(page.getByRole('navigation', { name: 'Main' })).toHaveCount(0);
-    await expect(page.locator('.dv-ide')).toHaveCount(0);
+    await expect(page.locator('[data-slot="dev-ide"]')).toHaveCount(0);
   });
 
   test('the maintenance and the 404 screens are in Vietnamese', async ({

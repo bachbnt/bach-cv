@@ -18,6 +18,7 @@ import { ServiceList } from '@/skins/academic/blocks/service-list';
 import { AcNoteBig, AcNoteCap, AcRow } from '@/skins/academic/ui/ac-note';
 import { AcPage } from '@/skins/academic/ui/ac-page';
 import { AcPageHead } from '@/skins/academic/ui/ac-page-head';
+import { prefersReducedMotion } from '@/hooks/use-reduced-motion';
 
 /**
  * Services in the Academic skin: the proposal. The services are its work packages and the contact form is the way to answer it. The form is
@@ -38,9 +39,7 @@ export function ServicesPage() {
       else messageRef.current?.focus();
       document.getElementById('contact-cta')?.scrollIntoView({
         block: 'start',
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
       });
     },
     [topicId, selectTopic, messageRef],

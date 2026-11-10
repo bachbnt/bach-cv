@@ -7,6 +7,7 @@
 import {
   useEffect,
   useRef,
+  memo,
   useState,
   type MouseEvent,
   type PointerEvent,
@@ -16,6 +17,7 @@ import { commonCopy } from '@/content/copy/common';
 import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
+import type { Caret } from '@/skins/dev/shell/caret-store';
 
 /** The height of a line of the editor (`h-6` on a line number). */
 const LINE = 24;
@@ -24,10 +26,25 @@ const TOP = 8;
 /** The width of a character in the editor font, to turn a click position into a column. */
 const CHAR = 8.1;
 
-export interface Caret {
-  line: number;
-  column: number;
-}
+/** One number of the gutter. Memoized: when the pointer changes line only the two numbers whose `lit` changed render again, not all of them. */
+const LineNumber = memo(function LineNumber({
+  n,
+  lit,
+}: {
+  n: number;
+  lit: boolean;
+}) {
+  return (
+    <span
+      className={cn(
+        'block h-6 transition-colors duration-[120ms]',
+        lit && 'text-ink',
+      )}
+    >
+      {n}
+    </span>
+  );
+});
 
 /**
  * The editor area: line numbers in the gutter, the page as the content. The number of the line under the pointer is lit; a click
@@ -101,19 +118,12 @@ export function EditorFrame({
       onClick={onClick}
     >
       <div
+        data-slot='dev-gutter'
         className='pointer-events-none absolute top-0 bottom-0 left-0 w-[58px] overflow-hidden bg-editor pt-2 pr-3.5 text-right font-code text-[13px]/6 text-dim select-none max-[900px]:hidden'
         aria-hidden='true'
       >
         {Array.from({ length: lines }, (_, i) => (
-          <span
-            key={i}
-            className={cn(
-              'block h-6 transition-colors duration-[120ms]',
-              hover === i + 1 && 'text-ink',
-            )}
-          >
-            {i + 1}
-          </span>
+          <LineNumber key={i} n={i + 1} lit={hover === i + 1} />
         ))}
       </div>
       <main className='relative z-1 max-w-[1120px]' ref={wrap}>

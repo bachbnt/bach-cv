@@ -5,20 +5,14 @@
 'use client';
 
 import { Info } from 'lucide-react';
-import {
-  startTransition,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  ViewTransition,
-} from 'react';
+import { startTransition, ViewTransition } from 'react';
 import { DataState } from '@/components/data-state';
 import { PaymentEmpty } from '@/components/payment/payment-empty';
 import { PaymentFeature } from '@/components/payment/payment-feature';
 import { PaymentQrDialog } from '@/components/payment/payment-qr-dialog';
 import { PaymentRow } from '@/components/payment/payment-row';
 import { PaymentToast } from '@/components/payment/payment-toast';
+import { useToast } from '@/hooks/use-toast';
 import { usePaymentMethods } from '@/components/payment/use-payment-methods';
 import { Skeleton } from '@/components/ui/skeleton';
 import { paymentCopy } from '@/content/copy/payment';
@@ -26,8 +20,6 @@ import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
-
-const TOAST_MS = 2000;
 
 /**
  * The payment methods. They are read at run time only (the Firestore rules return the visible ones),
@@ -54,31 +46,7 @@ export function PaymentList() {
 /** Highlighted methods first, then "More ways to pay" with a bank/wallet filter. */
 function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
   const copy = useCopy(paymentCopy);
-  const [toast, setToast] = useState({ message: '', visible: false });
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const nudge = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  useEffect(
-    () => () => {
-      clearTimeout(timer.current);
-      clearTimeout(nudge.current);
-    },
-    [],
-  );
-
-  /** Clears the text first so a repeated message is announced again. */
-  const say = useCallback((message: string) => {
-    clearTimeout(timer.current);
-    clearTimeout(nudge.current);
-    setToast({ message: '', visible: false });
-    nudge.current = setTimeout(() => {
-      setToast({ message, visible: true });
-      timer.current = setTimeout(
-        () => setToast((t) => ({ ...t, visible: false })),
-        TOAST_MS,
-      );
-    }, 20);
-  }, []);
+  const { toast, say } = useToast();
 
   const {
     featured,

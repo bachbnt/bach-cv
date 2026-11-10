@@ -6,16 +6,14 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from 'react';
 import type { TagTone } from '@/components/tag';
 import { emit } from '@/skins/dev/shell/devlog/store';
+import { useToast, type ToastState } from '@/hooks/use-toast';
 
 /** A chip under a picture. */
 interface ViewerTag {
@@ -56,42 +54,17 @@ interface OverlayContextValue {
   closeCv: () => void;
   /** a short message at the bottom of the window (`Number copied`); a repeated message is announced again */
   say: (message: string) => void;
-  toast: { message: string; visible: boolean };
 }
 
 const OverlayContext = createContext<OverlayContextValue | null>(null);
-
-const TOAST_MS = 2000;
+/** The toast has a context of its own: it changes three times at every `say`, and only the toast itself needs to follow it. */
+const ToastContext = createContext<ToastState>({ message: '', visible: false });
 
 /** What the pages of the Dev skin share to open things above the page: the picture viewer, the CV window and the toast. */
 export function DevOverlayProvider({ children }: { children: ReactNode }) {
   const [viewer, setViewer] = useState<OverlayContextValue['viewer']>(null);
   const [cvOpen, setCvOpen] = useState(false);
-  const [toast, setToast] = useState({ message: '', visible: false });
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const nudge = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  useEffect(
-    () => () => {
-      clearTimeout(timer.current);
-      clearTimeout(nudge.current);
-    },
-    [],
-  );
-
-  const say = useCallback((message: string) => {
-    clearTimeout(timer.current);
-    clearTimeout(nudge.current);
-    // the text is cleared first so that the same message twice is read out twice
-    setToast({ message: '', visible: false });
-    nudge.current = setTimeout(() => {
-      setToast({ message, visible: true });
-      timer.current = setTimeout(
-        () => setToast((t) => ({ ...t, visible: false })),
-        TOAST_MS,
-      );
-    }, 20);
-  }, []);
+  const { toast, say } = useToast();
 
   const value = useMemo<OverlayContextValue>(
     () => ({
@@ -109,13 +82,14 @@ export function DevOverlayProvider({ children }: { children: ReactNode }) {
       },
       closeCv: () => setCvOpen(false),
       say,
-      toast,
     }),
-    [viewer, cvOpen, say, toast],
+    [viewer, cvOpen, say],
   );
 
   return (
-    <OverlayContext.Provider value={value}>{children}</OverlayContext.Provider>
+    <OverlayContext.Provider value={value}>
+      <ToastContext.Provider value={toast}>{children}</ToastContext.Provider>
+    </OverlayContext.Provider>
   );
 }
 
@@ -125,4 +99,9 @@ export function useDevOverlays(): OverlayContextValue {
     throw new Error('useDevOverlays must be used inside <DevOverlayProvider>');
   }
   return value;
+}
+
+/** The toast at the bottom of the window: its text and whether it shows. */
+export function useDevToast(): ToastState {
+  return useContext(ToastContext);
 }

@@ -15,7 +15,7 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { FilterChip } from '@/skins/travel/blocks/filter-chip';
 import { Postcard } from '@/skins/travel/blocks/postcard';
 import { useScreenshotsDialog } from '@/skins/travel/blocks/use-screenshots-dialog';
-import { useReducedMotion } from '@/skins/travel/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
 import { TlKicker } from '@/skins/travel/ui/tl-kicker';

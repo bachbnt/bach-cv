@@ -6,14 +6,12 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 /** One picture of the viewer: a project screenshot, a certificate or a payment QR code. */
 export interface ViewerItem {
@@ -51,37 +49,11 @@ interface OverlayContextValue {
 
 const OverlayContext = createContext<OverlayContextValue | null>(null);
 
-const TOAST_MS = 2000;
-
 /** What the pages of the Academic skin share to open things above the page: the viewer, the CV sheet and the toast. */
 export function AcOverlayProvider({ children }: { children: ReactNode }) {
   const [viewer, setViewer] = useState<OverlayContextValue['viewer']>(null);
   const [cvOpen, setCvOpen] = useState(false);
-  const [toast, setToast] = useState({ message: '', visible: false });
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const nudge = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  useEffect(
-    () => () => {
-      clearTimeout(timer.current);
-      clearTimeout(nudge.current);
-    },
-    [],
-  );
-
-  const say = useCallback((message: string) => {
-    clearTimeout(timer.current);
-    clearTimeout(nudge.current);
-    // the text is cleared first so that the same message twice is read out twice
-    setToast({ message: '', visible: false });
-    nudge.current = setTimeout(() => {
-      setToast({ message, visible: true });
-      timer.current = setTimeout(
-        () => setToast((t) => ({ ...t, visible: false })),
-        TOAST_MS,
-      );
-    }, 20);
-  }, []);
+  const { toast, say } = useToast();
 
   const value = useMemo<OverlayContextValue>(
     () => ({

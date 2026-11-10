@@ -16,7 +16,7 @@ import { PaymentFilterChip } from '@/skins/travel/blocks/payment-filter-chip';
 import { PaymentTicket } from '@/skins/travel/blocks/payment-ticket';
 import { PaymentTicketRow } from '@/skins/travel/blocks/payment-ticket-row';
 import { PaymentToast } from '@/skins/travel/blocks/payment-toast';
-import { usePaymentToast } from '@/skins/travel/blocks/use-payment-toast';
+import { useToast } from '@/hooks/use-toast';
 import { STOP_COLORS } from '@/skins/travel/config';
 import { TlButtonLink } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
@@ -69,7 +69,7 @@ export function PaymentDesk() {
 /** The highlighted methods first as tickets of the windows, then "More ways to pay" as smaller tickets with a bank/wallet filter. */
 function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
   const copy = useCopy(paymentCopy);
-  const { toast, say } = usePaymentToast();
+  const { toast, say } = useToast();
   const {
     featured,
     rest,

@@ -7,7 +7,6 @@
 import { servicesCopy } from '@/content/copy/services';
 import { tradeDeskCopy } from '@/content/copy/trade-desk';
 import type { Doc } from '@/lib/content/schema';
-import { fill } from '@/components/services/message-form';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
@@ -16,6 +15,7 @@ import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvServiceArt } from '@/skins/trade/ui/tv-service-art';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
+import { fill } from '@/lib/chat/fill';
 
 /**
  * The broker catalogue: each service is a row with its drawing of the skin (`TvServiceArt`, chosen by the `art` of the service), name and description, and a Trade action that picks the service as the topic of

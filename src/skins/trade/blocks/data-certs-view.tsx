@@ -26,7 +26,7 @@ import { useCertPreview } from '@/skins/trade/blocks/data-cert-preview';
 import { DataSegmented } from '@/skins/trade/blocks/data-segmented';
 import { useFlip } from '@/skins/trade/blocks/data-use-flip';
 import { useSkillMap } from '@/skins/trade/blocks/use-skill-map';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvPanel } from '@/skins/trade/ui/tv-panel';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';

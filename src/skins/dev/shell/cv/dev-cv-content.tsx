@@ -26,6 +26,7 @@ import {
 } from '@/skins/dev/shell/window-chrome';
 import { DevStateNotice } from '@/skins/dev/ui/dev-state-notice';
 import { DevButton } from '@/skins/dev/ui/dev-button';
+import { prefersReducedMotion } from '@/hooks/use-reduced-motion';
 
 /** The bar and the sheets of the CV window. It is mounted only while the window is open, so the data is read on demand. */
 export function DevCvContent({
@@ -49,9 +50,7 @@ export function DevCvContent({
   const scrollToTop = () =>
     body.current?.querySelector('[role="region"]')?.scrollTo({
       top: 0,
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ? 'auto'
-        : 'smooth',
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
     });
 
   return (

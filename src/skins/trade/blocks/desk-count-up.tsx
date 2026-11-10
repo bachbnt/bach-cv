@@ -6,7 +6,7 @@
 
 import { useInViewOnce } from '@/skins/trade/blocks/desk-use-in-view';
 import { useCountUp } from '@/skins/trade/shell/use-count-up';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 /**
  * A real number that counts up from 0 the first time it is seen (once). With reduced motion it is shown at once. The animated digits are

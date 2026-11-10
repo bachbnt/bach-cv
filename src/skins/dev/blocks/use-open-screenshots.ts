@@ -5,7 +5,6 @@
 'use client';
 
 import {
-  fillCopy,
   linkLabel,
   skillsOf,
   toneOf,
@@ -15,6 +14,7 @@ import { devProjectsPaymentCopy } from '@/content/copy/dev-projects-payment';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
+import { fill } from '@/lib/chat/fill';
 
 /** Returns the function that opens a project's screenshots in the picture viewer, starting at the first. */
 export function useOpenScreenshots(skills: Map<string, Doc<'skills'>>) {
@@ -35,8 +35,8 @@ export function useOpenScreenshots(skills: Map<string, Doc<'skills'>>) {
       project.images.map((src, i) => ({
         src,
         title: project.name,
-        subtitle: `${copy.kinds[project.kind]} · ${fillCopy(dev.screenshotOf, { current: i + 1, total })}`,
-        caption: fillCopy(copy.dialog.alt, {
+        subtitle: `${copy.kinds[project.kind]} · ${fill(dev.screenshotOf, { current: i + 1, total })}`,
+        caption: fill(copy.dialog.alt, {
           name: project.name,
           current: i + 1,
         }),

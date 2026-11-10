@@ -4,6 +4,7 @@
 
 import { messageSchema, type Lang } from '@/lib/content/schema';
 import type { ServicesCopy } from '@/content/copy/services';
+import { fill } from '@/lib/chat/fill';
 
 export type FieldName = 'name' | 'email' | 'message';
 export type FieldErrors = Partial<Record<FieldName, string>>;
@@ -19,13 +20,6 @@ export interface FormLimits {
   nameMax: number;
   messageMax: number;
 }
-
-/** Fills `{placeholders}` in a copy string. */
-export const fill = (
-  template: string,
-  values: Record<string, string | number>,
-) =>
-  template.replace(/\{(\w+)\}/g, (_, key: string) => String(values[key] ?? ''));
 
 /** The counter turns to a warning at 90% of the limit. */
 export const warnAt = (max: number) => Math.floor(max * 0.9);

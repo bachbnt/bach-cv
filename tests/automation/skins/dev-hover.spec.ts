@@ -216,6 +216,78 @@ test.describe('the minimap', () => {
     expect(moved.y).toBeGreaterThan(thumb.y + 40);
   });
 
+  /** Where the slider should be for the page's scroll: its height from the viewport share, its top in proportion to the scroll. */
+  const sliderFollows = async (page: Page) => {
+    const [y, range, viewport, doc] = await page.evaluate(() => [
+      window.scrollY,
+      document.documentElement.scrollHeight - window.innerHeight,
+      window.innerHeight,
+      document.documentElement.scrollHeight,
+    ]);
+    const track = (await minimap(page).boundingBox())!;
+    const thumb = (await slider(page).boundingBox())!;
+    const height = Math.max(
+      28,
+      Math.min(track.height, (viewport / doc) * track.height),
+    );
+    const top = Math.min(1, y / Math.max(1, range)) * (track.height - height);
+    return {
+      heightError: Math.abs(thumb.height - height),
+      topError: Math.abs(thumb.y - track.y - top),
+    };
+  };
+
+  test('the slider follows the scroll of the page, and again after the minimap was away', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 800 });
+    await gotoSkin(page, '/');
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    const scrollTo = (top: number) =>
+      page.evaluate(
+        (y) => window.scrollTo({ top: y, behavior: 'instant' }),
+        top,
+      );
+    const follows = async () => {
+      await expect
+        .poll(async () => (await sliderFollows(page)).topError)
+        .toBeLessThan(1.5);
+      expect((await sliderFollows(page)).heightError).toBeLessThan(1.5);
+    };
+    await follows();
+    expect((await slider(page).boundingBox())!.height).toBeLessThan(
+      (await minimap(page).boundingBox())!.height,
+    );
+    await scrollTo(400);
+    await follows();
+    await scrollTo(100000);
+    await follows();
+    // at the very bottom the slider rests on the bottom of the track
+    const track = (await minimap(page).boundingBox())!;
+    const thumb = (await slider(page).boundingBox())!;
+    expect(
+      Math.abs(track.y + track.height - (thumb.y + thumb.height)),
+    ).toBeLessThan(1.5);
+    await scrollTo(0);
+    await follows();
+
+    // while the minimap is hidden (under 1180px) the page scrolls; when it is back the slider is where the page is
+    await page.setViewportSize({ width: 1100, height: 800 });
+    await expect(minimap(page)).toBeHidden();
+    await scrollTo(300);
+    await page.setViewportSize({ width: 1440, height: 800 });
+    await expect(minimap(page)).toBeVisible();
+    await follows();
+
+    // the same for Zen mode, which hides it with CSS and changes the height of the track
+    await page.getByRole('button', { name: 'Zen mode', exact: true }).click();
+    await expect(minimap(page)).toBeHidden();
+    await scrollTo(600);
+    await page.keyboard.press('Escape');
+    await expect(minimap(page)).toBeVisible();
+    await follows();
+  });
+
   test('jumps when the track is clicked, so that the slider is centred there', async ({
     page,
   }) => {
@@ -264,5 +336,59 @@ test.describe('the minimap', () => {
     expect(hit).toBe(true);
     await page.setViewportSize({ width: 1100, height: 800 });
     await expect(minimap(page)).toBeHidden();
+  });
+});
+
+test.describe('the line numbers and the caret of the editor', () => {
+  const gutter = (page: Page) => page.locator('[data-slot="dev-gutter"]');
+  const numberColor = (page: Page, n: number) =>
+    gutter(page)
+      .locator('span')
+      .nth(n - 1)
+      .evaluate((el) => getComputedStyle(el).color);
+
+  test('light the number of the line under the pointer, only that one', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 800 });
+    await gotoSkin(page, '/');
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(gutter(page)).toBeVisible();
+    expect(await gutter(page).locator('span').count()).toBeGreaterThan(20);
+    const box = (await gutter(page).boundingBox())!;
+    const x = box.x + box.width + 4;
+    const atLine = (n: number) => box.y + 8 + 24 * (n - 1) + 12;
+    // the colour of a number nobody points at
+    const rest = await settled(() => numberColor(page, 9));
+    await page.mouse.move(x, atLine(4));
+    await expect.poll(() => numberColor(page, 4)).not.toBe(rest);
+    await page.mouse.move(x, atLine(7));
+    await expect.poll(() => numberColor(page, 7)).not.toBe(rest);
+    await expect.poll(() => numberColor(page, 4)).toBe(rest);
+    expect(await numberColor(page, 9)).toBe(rest);
+    expect(await numberColor(page, 1)).toBe(rest);
+    // leaving the editor puts every number back
+    await page.mouse.move(5, 5);
+    await expect.poll(() => numberColor(page, 7)).toBe(rest);
+  });
+
+  test('a click on the page moves the Ln and Col of the status bar', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 800 });
+    await gotoSkin(page, '/');
+    const heading = page.getByRole('heading', { level: 1 });
+    await expect(heading).toBeVisible();
+    const status = page.getByText(/^Ln \d+, Col \d+$/);
+    await expect(status).toHaveText('Ln 1, Col 1');
+    const main = (await page.locator('main').boundingBox())!;
+    const gutterBox = (await gutter(page).boundingBox())!;
+    const h = (await heading.boundingBox())!;
+    const clickX = h.x + 50;
+    const clickY = h.y + 5;
+    await page.mouse.click(clickX, clickY);
+    const line = Math.floor((clickY - gutterBox.y - 8) / 24) + 1;
+    const column = Math.floor((clickX - main.x) / 8.1) + 1;
+    await expect(status).toHaveText(`Ln ${line}, Col ${column}`);
   });
 });

@@ -24,7 +24,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { fill } from '@/lib/chat/fill';
 import { TripCurrentFlag } from '@/skins/travel/blocks/trip-current-flag';
-import { useReducedMotion } from '@/skins/travel/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { useTravel, type TripStop } from '@/skins/travel/shell/travel-context';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlChip } from '@/skins/travel/ui/tl-chip';

@@ -18,7 +18,7 @@ import { OutputLog } from '@/skins/dev/shell/devlog/output-log';
 import { ProblemsList } from '@/skins/dev/shell/devlog/problems-list';
 import { clearEntries } from '@/skins/dev/shell/devlog/store';
 import { useDevLog } from '@/skins/dev/shell/devlog/use-devlog';
-import type { Caret } from '@/skins/dev/shell/editor-frame';
+import { useCaret, type CaretStore } from '@/skins/dev/shell/caret-store';
 import { DevTerminal } from '@/skins/dev/shell/terminal/dev-terminal';
 import { useBumps } from '@/skins/dev/shell/use-bumps';
 import type { DevTool, DevUi } from '@/skins/dev/shell/use-dev-ui';
@@ -39,6 +39,17 @@ const STATUS_ITEM =
 /** What the status bar only decorates (project, branch, sync, language, formatter, bell): it gives way on a phone, so the buttons stay in reach. */
 const DECOR = 'max-[640px]:hidden';
 
+/** The `Ln 1, Col 1` of the status bar: the one part of the shell that follows the caret. */
+function CaretText({ store }: { store: CaretStore }) {
+  const copy = useCopy(devCopy);
+  const caret = useCaret(store);
+  return (
+    <>
+      {copy.status.line} {caret.line}, {copy.status.column} {caret.column}
+    </>
+  );
+}
+
 /** The bottom of the editor: the panel (Problems, Output, Terminal) when a tool is open, and the status bar. */
 export function BottomBar({
   page,
@@ -50,7 +61,8 @@ export function BottomBar({
   page: PageKey;
   ui: DevUi;
   onChange: (patch: Partial<DevUi>) => void;
-  caret: Caret;
+  /** where the caret of the editor is (only the line and column text re-renders when it moves) */
+  caret: CaretStore;
   /** opens the Connect palette (the `connect` command of the terminal) */
   onOpenConnect: () => void;
 }) {
@@ -136,7 +148,10 @@ export function BottomBar({
           }}
         />
       </div>
-      <div className='flex h-[22px] items-center overflow-hidden bg-status font-sans text-[12px] leading-[normal] whitespace-nowrap text-white'>
+      <div
+        data-slot='dev-status-bar'
+        className='flex h-[22px] items-center overflow-hidden bg-status font-sans text-[12px] leading-[normal] whitespace-nowrap text-white'
+      >
         <span className={cn(STATUS_ITEM, DECOR)} aria-hidden='true'>
           <DevIcon name='remote' className='size-3.5' />
           {DEV_PROJECT}
@@ -204,7 +219,7 @@ export function BottomBar({
         </button>
         <span className='flex-1' />
         <span className={cn(STATUS_ITEM, 'max-[900px]:hidden')}>
-          {copy.status.line} {caret.line}, {copy.status.column} {caret.column}
+          <CaretText store={caret} />
         </span>
         <span className={cn(STATUS_ITEM, 'max-[900px]:hidden')}>
           {copy.status.spaces}: 4

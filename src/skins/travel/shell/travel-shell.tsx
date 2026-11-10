@@ -17,7 +17,7 @@ import { Rail } from '@/skins/travel/shell/rail';
 import { TravelOverlays } from '@/skins/travel/shell/travel-overlays';
 import { TravelProvider, useTravel } from '@/skins/travel/shell/travel-context';
 import { TlRoot } from '@/skins/travel/ui/tl-root';
-import { useReducedMotion } from '@/skins/travel/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 /**
  * The frame of the Travel skin: a trip map of Nha Trang. The header on top, the pages as tabs (a rail, or a bar on a phone), and the

@@ -13,7 +13,7 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { useInViewOnce } from '@/skins/trade/blocks/desk-use-in-view';
 import { DeskSection } from '@/skins/trade/blocks/desk-section';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 

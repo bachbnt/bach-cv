@@ -15,7 +15,7 @@ import {
   ZOOM_SETTLED,
 } from '@/skins/trade/chart/wheel-zoom';
 import { panView, zoomView, type View } from '@/skins/trade/chart/view';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 
 /**
  * The wheel needs a listener that may call preventDefault, which React's own wheel handlers cannot. It only QUEUES what the wheel

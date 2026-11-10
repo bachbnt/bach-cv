@@ -21,7 +21,7 @@ import {
 } from '@/skins/trade/blocks/desk-payment-row';
 import { DeskSection } from '@/skins/trade/blocks/desk-section';
 import { DeskSnackbar } from '@/skins/trade/blocks/desk-snackbar';
-import { useDeskSnackbar } from '@/skins/trade/blocks/use-desk-snackbar';
+import { useToast } from '@/hooks/use-toast';
 import { TvChartSkeleton } from '@/skins/trade/ui/tv-chart-skeleton';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvLink } from '@/skins/trade/ui/tv-button';
@@ -67,7 +67,7 @@ export function DeskPayment() {
 function DeskMethods({ methods }: { methods: Doc<'payments'>[] }) {
   const copy = useCopy(paymentCopy);
   const desk = useCopy(tradeDeskCopy).payment;
-  const { snack, say } = useDeskSnackbar();
+  const { toast: snack, say } = useToast();
 
   const {
     featured,

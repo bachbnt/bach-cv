@@ -5,11 +5,11 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
+import { useDevToast } from '@/skins/dev/shell/dev-overlay-context';
 
 /** The short message at the bottom of the window (`Number copied`). It is a live region, so it is read out. */
 export function DevToast() {
-  const { toast } = useDevOverlays();
+  const toast = useDevToast();
   return (
     <div
       className={cn(

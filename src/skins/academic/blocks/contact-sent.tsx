@@ -5,10 +5,10 @@
 'use client';
 
 import type { Ref } from 'react';
-import { fill } from '@/components/services/message-form';
 import { servicesCopy } from '@/content/copy/services';
 import { useCopy } from '@/lib/i18n/copy';
 import { AcButton } from '@/skins/academic/ui/ac-button';
+import { fill } from '@/lib/chat/fill';
 
 /** Shown in place of the form once the message is sent: a check drawn in a circle. The heading takes the focus so screen readers land on it. */
 export function ContactSent({

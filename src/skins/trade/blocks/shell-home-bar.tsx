@@ -7,7 +7,7 @@
 import { tradeCopy } from '@/content/copy/trade';
 import { useCopy } from '@/lib/i18n/copy';
 import { useFeaturedProjects } from '@/skins/trade/blocks/home-featured';
-import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
+import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 
 /** The sections of Home in the order they come, and the id each one has. */
