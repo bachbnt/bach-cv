@@ -6,6 +6,7 @@
 
 import { Play, Square } from 'lucide-react';
 import Image from 'next/image';
+import type { CSSProperties } from 'react';
 import { homeCopy } from '@/content/copy/home';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { localize } from '@/lib/content/schema';
@@ -19,6 +20,10 @@ import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 
 export const HOME_TITLE_ID = 'tl-home-title';
+
+/** The turn of a part of the card as it arrives: the lines rise one after another, the facts and the button pop in after them. */
+const turn = (ms: number): CSSProperties => ({ animationDelay: `${ms}ms` });
+const pop = (ms: number) => ({ '--dl': `${ms}ms` }) as CSSProperties;
 
 /** The first card of the trip: who travels (the owner's photo), the Standard title and intro, two facts and the button that starts the tour of the stops. */
 export function HomeHero() {
@@ -35,7 +40,7 @@ export function HomeHero() {
     <header className='flex flex-col gap-3'>
       <div className='flex items-center gap-3.5'>
         {shell.avatar && (
-          <span className='relative size-16 flex-none overflow-hidden rounded-full border-[3px] border-tl-solid shadow-tl-avatar'>
+          <span className='tl-portrait-in relative size-16 flex-none overflow-hidden rounded-full border-[3px] border-tl-solid shadow-tl-avatar'>
             <Image
               src={shell.avatar}
               alt={`${shell.name} reading a book`}
@@ -46,26 +51,38 @@ export function HomeHero() {
             />
           </span>
         )}
-        <div className='min-w-0'>
+        <div className='tl-rise min-w-0' style={turn(120)}>
           <TlKicker>{localize(shell, lang).headline}</TlKicker>
           <p className='m-0 text-[28px]/[1.05] font-extrabold tracking-[-0.5px]'>
             {shell.name}
           </p>
         </div>
       </div>
-      <h1 id={HOME_TITLE_ID} className='m-0 text-[19px]/[1.25] font-extrabold'>
+      <h1
+        id={HOME_TITLE_ID}
+        className='tl-rise m-0 text-[19px]/[1.25] font-extrabold'
+        style={turn(220)}
+      >
         {copy.title}
       </h1>
-      <p className='m-0 text-tl-muted'>{intro}</p>
+      <p className='tl-rise m-0 text-tl-muted' style={turn(300)}>
+        {intro}
+      </p>
       <ul className='m-0 flex list-none flex-wrap gap-2 p-0'>
         {years !== null && (
-          <li className='min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'>
+          <li
+            className='tl-chip-in min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'
+            style={pop(420)}
+          >
             <b className='block text-[22px]/[1.1]'>{years}</b>
             <span className='text-xs font-semibold'>{words.yearsLabel}</span>
           </li>
         )}
         {stops.length > 0 && (
-          <li className='min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'>
+          <li
+            className='tl-chip-in min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'
+            style={pop(500)}
+          >
             <b className='block text-[22px]/[1.1]'>{stops.length}</b>
             <span className='text-xs font-semibold'>{words.stopsLabel}</span>
           </li>
@@ -77,7 +94,8 @@ export function HomeHero() {
             variant='solid'
             aria-pressed={touring}
             onClick={touring ? stopTour : startTour}
-            className='flex-none'
+            className='tl-chip-in flex-none'
+            style={pop(620)}
           >
             {touring ? (
               <Square aria-hidden='true' />
