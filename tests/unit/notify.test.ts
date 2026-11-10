@@ -3,7 +3,7 @@
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { notifyEndpoint, notifyMessage } from '@/lib/notify';
+import { notifyBody, notifyEndpoint, notifyMessage } from '@/lib/notify';
 
 const input = {
   name: 'Ada Lovelace',
@@ -41,7 +41,7 @@ describe('notifyMessage', () => {
   it('posts the message to the Worker without waiting', () => {
     const fetchMock = vi.fn(async () => new Response('{}'));
     vi.stubGlobal('fetch', fetchMock);
-    notifyMessage(input, 'https://x.workers.dev/chat');
+    notifyMessage(input, 'https://x.workers.dev/chat', '');
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0] as unknown as [
       string,
@@ -57,9 +57,28 @@ describe('notifyMessage', () => {
       throw new Error('offline');
     });
     vi.stubGlobal('fetch', fetchMock);
-    notifyMessage(input, '');
+    notifyMessage(input, '', 'site-key');
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(() => notifyMessage(input, 'https://x.workers.dev')).not.toThrow();
+    expect(() =>
+      notifyMessage(input, 'https://x.workers.dev', ''),
+    ).not.toThrow();
     await Promise.resolve();
+  });
+});
+
+describe('notifyBody', () => {
+  it('is the message, and adds the Turnstile token only when there is one', () => {
+    expect(notifyBody(input)).toEqual(input);
+    expect(notifyBody(input, null)).toEqual(input);
+    expect(notifyBody(input, '')).not.toHaveProperty('turnstileToken');
+    expect(notifyBody(input, 'tok')).toEqual({
+      ...input,
+      turnstileToken: 'tok',
+    });
+  });
+
+  it('sends only the fields of the message, not anything else on the object', () => {
+    const extra = { ...input, createdAt: 'now' } as typeof input;
+    expect(Object.keys(notifyBody(extra))).not.toContain('createdAt');
   });
 });

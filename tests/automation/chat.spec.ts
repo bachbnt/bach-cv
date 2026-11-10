@@ -67,8 +67,9 @@ test('a question goes to the Worker with the site content and the answer is show
   expect(received[0].messages).toEqual([
     { role: 'user', content: 'Who are you?' },
   ]);
-  expect(received[0].systemPrompt).toContain('FPT Software');
-  expect(received[0].systemPrompt.length).toBeLessThanOrEqual(8000);
+  // the Worker builds the system prompt from the site content: the browser only says the language
+  expect(received[0]).toMatchObject({ lang: 'en' });
+  expect(received[0]).not.toHaveProperty('systemPrompt');
 
   // the second question carries the first answer, as the model's turn
   await box.fill('And now?');
@@ -337,7 +338,7 @@ test.describe('Vietnamese', () => {
       panel.getByText('Mình dẫn dắt một nhóm 5 người.'),
     ).toBeVisible();
     expect(received[0].messages[0].content).toBe('Bạn làm gì tại FPT?');
-    expect(received[0].systemPrompt).toContain('answer in Vietnamese');
+    expect(received[0]).toMatchObject({ lang: 'vi' });
   });
 
   test('an error note is in Vietnamese', async ({ page }) => {

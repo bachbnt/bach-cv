@@ -12,6 +12,20 @@ export interface KvLike {
   ): Promise<void>;
 }
 
+/** The reasons a request is refused by the limiter. Anything else that goes wrong in it (a KV error, a spent write quota) is not one of these. */
+export type RateLimitCode =
+  | 'rate_limit_unavailable'
+  | 'rate_limit_minute'
+  | 'rate_limit_hour'
+  | 'rate_limit_day';
+
+/** A refusal by the limiter, as opposed to a failure of the limiter: the caller may tell the visitor its `code`. */
+export class RateLimitError extends Error {
+  constructor(public code: RateLimitCode) {
+    super(code);
+  }
+}
+
 export interface RateLimitEnv {
   CHAT_RATE_LIMIT?: KvLike;
   RATE_LIMIT_PER_DAY?: string;
@@ -31,7 +45,7 @@ export const enforceRateLimit = async (
 ): Promise<void> => {
   if (!env.CHAT_RATE_LIMIT) {
     if (env.REQUIRE_RATE_LIMIT === 'true')
-      throw new Error('rate_limit_unavailable');
+      throw new RateLimitError('rate_limit_unavailable');
     return;
   }
 
@@ -53,10 +67,10 @@ export const enforceRateLimit = async (
   const dayCount = Number.parseInt(dayRaw ?? '0', 10);
 
   if (minuteCount >= perMinute) {
-    throw new Error('rate_limit_minute');
+    throw new RateLimitError('rate_limit_minute');
   }
   if (dayCount >= perDay) {
-    throw new Error('rate_limit_day');
+    throw new RateLimitError('rate_limit_day');
   }
 
   await Promise.all([
@@ -78,7 +92,7 @@ export const enforceNotifyLimit = async (
   ip: string,
 ): Promise<void> => {
   const kv = env.CHAT_RATE_LIMIT;
-  if (!kv) throw new Error('rate_limit_unavailable');
+  if (!kv) throw new RateLimitError('rate_limit_unavailable');
   const perHour = parseLimit(env.NOTIFY_PER_HOUR, 5);
   const perDay = parseLimit(env.NOTIFY_PER_DAY, 40);
   const now = Date.now();
@@ -90,8 +104,8 @@ export const enforceNotifyLimit = async (
   ]);
   const hour = Number.parseInt(hourRaw ?? '0', 10);
   const day = Number.parseInt(dayRaw ?? '0', 10);
-  if (hour >= perHour) throw new Error('rate_limit_hour');
-  if (day >= perDay) throw new Error('rate_limit_day');
+  if (hour >= perHour) throw new RateLimitError('rate_limit_hour');
+  if (day >= perDay) throw new RateLimitError('rate_limit_day');
   await Promise.all([
     kv.put(hourKey, String(hour + 1), { expirationTtl: 7_200 }),
     kv.put(dayKey, String(day + 1), { expirationTtl: 90_000 }),

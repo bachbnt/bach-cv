@@ -7,6 +7,8 @@ const port = Number(process.env.PW_PORT) || 3100;
 process.env.NEXT_PUBLIC_CHAT_PROXY_URL = 'http://localhost:9999/chat';
 // App Check (reCAPTCHA) must not call Google from a test: a key in `.env.local` would turn it on
 process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY = '';
+// the same for Turnstile: the key of `.env.local` would load the widget from Cloudflare in every test
+process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY = '';
 
 export default defineConfig({
   testDir: 'tests/automation',

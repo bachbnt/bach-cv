@@ -12,7 +12,9 @@ import {
   type Shell,
 } from '@/lib/content/schema';
 import { issuedNewestFirst, newestFirst } from '@/lib/derive/recency';
-import { WORKER_LIMITS } from './chat-api';
+
+/** The longest system prompt: whole lines are dropped from the end of the CV to fit. */
+export const SYSTEM_PROMPT_LIMIT = 8000;
 
 /** What the assistant may know. Payments are left out on purpose: bank details are never sent to a model. */
 export interface ChatContext {
@@ -151,13 +153,13 @@ const REPLY_LANGUAGE: Record<Lang, string> = {
 };
 
 /**
- * The system prompt for the Worker, in the visitor's language. It is capped at the Worker's limit (8000 characters), dropping whole
+ * The system prompt, in the visitor's language. The Worker builds it (the browser only says which language). It is capped at 8000 characters, dropping whole
  * lines from the end, so a long CV degrades gracefully instead of the request being refused.
  */
 export const buildSystemPrompt = (
   rawContext: ChatContext,
   lang: Lang = 'en',
-  limit: number = WORKER_LIMITS.systemPromptLength,
+  limit: number = SYSTEM_PROMPT_LIMIT,
 ): string => {
   const context = localizeContext(rawContext, lang);
   const name = context.profile?.fullName || context.shell.name;

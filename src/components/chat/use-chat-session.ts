@@ -4,7 +4,6 @@
 
 'use client';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   CHAT_PROXY_URL,
@@ -17,18 +16,15 @@ import {
   toWireMessages,
   type ChatEntry,
 } from '@/lib/chat/messages';
-import { buildSystemPrompt, type ChatContext } from '@/lib/chat/system-prompt';
-import { shell } from '@/lib/content/shell';
 import { useLang } from '@/lib/i18n/language';
-import { contentQueryOptions, profileQueryOptions } from '@/lib/query/options';
 
 let counter = 0;
 const nextId = () => `m${++counter}`;
 
 /**
  * The conversation: what was said, what is being waited for, and the limits.
- * The site content that the assistant answers from is read through the shared query cache the first
- * time it is needed (`warmUp` when the panel opens, or on the first question), never on page load.
+ * The assistant answers from the site content, which the Worker reads and turns into the system prompt: the browser only says the
+ * language.
  */
 export function useChatSession({
   maxUserMessages,
@@ -37,7 +33,6 @@ export function useChatSession({
   maxUserMessages: number;
   maxInputLength: number;
 }) {
-  const queryClient = useQueryClient();
   const { lang } = useLang();
   const [entries, setEntries] = useState<ChatEntry[]>([]);
   const [isSending, setSending] = useState(false);
@@ -50,55 +45,6 @@ export function useChatSession({
 
   useEffect(() => () => abort.current?.abort(), []);
 
-  const warmUp = useCallback(() => {
-    void queryClient.prefetchQuery(profileQueryOptions());
-    for (const name of [
-      'skills',
-      'experience',
-      'education',
-      'projects',
-      'certificates',
-      'services',
-      'contacts',
-    ] as const) {
-      void queryClient.prefetchQuery(contentQueryOptions(name));
-    }
-  }, [queryClient]);
-
-  const loadContext = useCallback(async (): Promise<ChatContext> => {
-    const read = <T>(promise: Promise<T>) => promise.catch(() => undefined);
-    const [
-      profile,
-      skills,
-      experience,
-      education,
-      projects,
-      certificates,
-      services,
-      contacts,
-    ] = await Promise.all([
-      read(queryClient.ensureQueryData(profileQueryOptions())),
-      read(queryClient.ensureQueryData(contentQueryOptions('skills'))),
-      read(queryClient.ensureQueryData(contentQueryOptions('experience'))),
-      read(queryClient.ensureQueryData(contentQueryOptions('education'))),
-      read(queryClient.ensureQueryData(contentQueryOptions('projects'))),
-      read(queryClient.ensureQueryData(contentQueryOptions('certificates'))),
-      read(queryClient.ensureQueryData(contentQueryOptions('services'))),
-      read(queryClient.ensureQueryData(contentQueryOptions('contacts'))),
-    ]);
-    return {
-      shell,
-      profile,
-      skills,
-      experience,
-      education,
-      projects,
-      certificates,
-      services,
-      contacts,
-    };
-  }, [queryClient]);
-
   /** Asks the Worker about `history` (which already ends with the visitor's question) and appends the outcome. */
   const ask = useCallback(
     async (history: ChatEntry[]) => {
@@ -107,9 +53,8 @@ export function useChatSession({
       const controller = new AbortController();
       abort.current = controller;
       try {
-        const systemPrompt = buildSystemPrompt(await loadContext(), lang);
         const text = await sendChat(
-          { messages: toWireMessages(history), systemPrompt },
+          { messages: toWireMessages(history), lang },
           { signal: controller.signal },
         );
         setEntries((prev) => [
@@ -131,7 +76,7 @@ export function useChatSession({
         setSending(false);
       }
     },
-    [lang, loadContext],
+    [lang],
   );
 
   /** Returns true when the text was accepted (so the caller can clear its input). */
@@ -168,6 +113,5 @@ export function useChatSession({
     isLimitReached,
     send,
     retry,
-    warmUp,
   };
 }

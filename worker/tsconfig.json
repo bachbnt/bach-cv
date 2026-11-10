@@ -12,7 +12,12 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "@/*": ["../src/*"],
+      "zod": ["./node_modules/zod"]
+    }
   },
   "include": ["src/**/*.ts"]
 }

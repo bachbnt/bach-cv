@@ -446,6 +446,19 @@ export type Doc<N extends CollectionName> = z.output<
   (typeof COLLECTIONS)[N]
 > & { id: string };
 
+/**
+ * One stored document read as its schema, with its id; `null` when it does not parse (one malformed document must not take a page
+ * down). The browser (Firestore lite) and the Worker (Firestore REST) both read collections through it.
+ */
+export const parseDoc = <N extends CollectionName>(
+  name: N,
+  id: string,
+  data: unknown,
+): Doc<N> | null => {
+  const parsed = COLLECTIONS[name].safeParse(data);
+  return parsed.success ? ({ ...(parsed.data as object), id } as Doc<N>) : null;
+};
+
 /** Every content collection as arrays. Used by the integrity check, the seed and the SQL loader. */
 export interface Content {
   skills: Doc<'skills'>[];

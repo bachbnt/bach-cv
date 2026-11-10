@@ -10,9 +10,11 @@ import {
   HttpError,
   type AiBinding,
 } from './providers';
+import { getSystemPrompt, type PromptEnv } from './prompt';
 import {
   enforceNotifyLimit,
   enforceRateLimit,
+  RateLimitError,
   type RateLimitEnv,
 } from './rateLimit';
 import {
@@ -23,8 +25,9 @@ import {
   type ChatProvider,
   type NotifyRequest,
 } from './schema';
+import { verifyTurnstile } from './turnstile';
 
-export interface Env extends RateLimitEnv {
+export interface Env extends RateLimitEnv, PromptEnv {
   /** Workers AI, bound in wrangler.toml (`[ai]`). No key: it runs on the account's free daily allowance. */
   AI?: AiBinding;
   GEMINI_API_KEY?: string;
@@ -48,6 +51,11 @@ export interface Env extends RateLimitEnv {
   NOTIFY_FROM?: string;
   NOTIFY_PER_HOUR?: string;
   NOTIFY_PER_DAY?: string;
+  /**
+   * Cloudflare Turnstile secret (optional). When it is set `/notify` needs a valid `turnstileToken`; without it nothing changes.
+   * Set with `wrangler secret put TURNSTILE_SECRET`.
+   */
+  TURNSTILE_SECRET?: string;
 }
 
 /** Anyone who can reach the worker can pick the provider, so only the configured ones are served, in this order. */
@@ -135,14 +143,18 @@ const handleChat = async (
   try {
     await enforceRateLimit(env, ip);
   } catch (error) {
-    const message = (error as Error).message;
-    return json(
-      { error: message },
-      {
-        status: message === 'rate_limit_unavailable' ? 503 : 429,
-        headers: cors,
-      },
-    );
+    if (error instanceof RateLimitError) {
+      return json(
+        { error: error.code },
+        {
+          status: error.code === 'rate_limit_unavailable' ? 503 : 429,
+          headers: cors,
+        },
+      );
+    }
+    // The limiter itself failed (for example the KV write quota is spent). Chat fails open, so one KV problem does not
+    // stop it for everybody; the provider allowance and the answer cap still bound the cost. Nothing is sent to the visitor.
+    console.error('rate_limit_error', error);
   }
 
   let payload: unknown;
@@ -160,7 +172,7 @@ const handleChat = async (
     );
   }
 
-  const { provider, messages, systemPrompt } = parsed.data;
+  const { provider, messages, lang } = parsed.data;
   const enabled = enabledProviders(env);
   if (provider && !enabled.includes(provider)) {
     return json(
@@ -177,6 +189,8 @@ const handleChat = async (
       { status: 403, headers: cors },
     );
   }
+  // built here from the public site content, never taken from the request
+  const systemPrompt = await getSystemPrompt(env, lang);
   let failure: HttpError | undefined;
   for (const candidate of order) {
     try {
@@ -189,9 +203,12 @@ const handleChat = async (
           : new HttpError(502, 'upstream_error');
     }
   }
+  // two answers only: the provider is out of allowance (the visitor may try later) or it failed; what a provider said, or that a key
+  // is missing, stays in the Worker
+  const limited = failure?.status === 429;
   return json(
-    { error: failure?.message ?? 'upstream_error' },
-    { status: failure?.status ?? 502, headers: cors },
+    { error: limited ? 'rate_limit' : 'upstream_error' },
+    { status: limited ? 429 : 502, headers: cors },
   );
 };
 
@@ -253,15 +270,35 @@ const handleNotify = async (
     return json({ error: 'invalid_request' }, { status: 400, headers: cors });
   }
 
-  try {
-    await enforceNotifyLimit(
-      env,
-      request.headers.get('CF-Connecting-IP') ?? 'unknown',
+  const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+
+  // Before the limits, so a script without a token cannot use up the per-day cap for the real visitors.
+  if (env.TURNSTILE_SECRET) {
+    const human = await verifyTurnstile(
+      env.TURNSTILE_SECRET,
+      parsed.data.turnstileToken,
+      ip,
     );
+    if (!human) {
+      return json(
+        { error: 'turnstile_failed' },
+        { status: 403, headers: cors },
+      );
+    }
+  }
+
+  try {
+    await enforceNotifyLimit(env, ip);
   } catch (error) {
+    if (error instanceof RateLimitError) {
+      return json({ error: error.code }, { status: 429, headers: cors });
+    }
+    // The limiter failed, so the limits cannot be trusted: send nothing (fail closed). The message is already in Firestore and the
+    // visitor sees no difference, so the answer is still ok.
+    console.error('rate_limit_error', error);
     return json(
-      { error: (error as Error).message },
-      { status: 429, headers: cors },
+      { ok: true, sent: false, reason: 'rate_limit_error' },
+      { headers: cors },
     );
   }
 
@@ -314,6 +351,7 @@ export default {
           ok: true,
           rateLimit: Boolean(env.CHAT_RATE_LIMIT),
           providers: enabledProviders(env),
+          turnstile: Boolean(env.TURNSTILE_SECRET),
           notify: Boolean(
             env.RESEND_API_KEY &&
             recipientsOf(env.NOTIFY_TO).length > 0 &&

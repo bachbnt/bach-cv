@@ -64,3 +64,7 @@ Worker code lives in `worker/src` and stays deployable by Wrangler.
 Keep provider-specific HTTP details inside `worker/src/providers.ts`.
 Keep request validation in `worker/src/schema.ts`.
 Keep rate limiting in `worker/src/rateLimit.ts`.
+Keep the Firestore REST reads and their decoder in `worker/src/firestore.ts`, the system prompt (cache, fallback) in `worker/src/prompt.ts`,
+and the Turnstile check in `worker/src/turnstile.ts`. The Worker imports the site's schemas and `buildSystemPrompt` from `src` through the
+`@/` path in `worker/tsconfig.json`; never copy them. Code reachable from the Worker (`lib/content/schema.ts`, `lib/chat/system-prompt.ts`,
+`lib/format.ts`, `lib/derive/recency.ts`, `lib/derive/career-months.ts`) must not import Next.js, React or browser APIs.

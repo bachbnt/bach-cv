@@ -52,6 +52,15 @@ const person = {
   description: shell.seoDescription,
 };
 
+/** Where the owner's photo comes from, when it is not this site: the connection is opened while the page is still being read, not when the photo is asked for (it is the biggest thing on the first screen). */
+const imageOrigin = (() => {
+  try {
+    return new URL(shell.avatar).origin;
+  } catch {
+    return null;
+  }
+})();
+
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
@@ -60,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       suppressHydrationWarning
     >
       <head>
+        {imageOrigin && <link rel='preconnect' href={imageOrigin} />}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <script dangerouslySetInnerHTML={{ __html: SKIN_SCRIPT }} />
       </head>

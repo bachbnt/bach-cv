@@ -7,7 +7,7 @@ import { ChatError, sendChat } from '@/lib/chat/chat-api';
 
 const body = {
   messages: [{ role: 'user' as const, content: 'Hi' }],
-  systemPrompt: 'Be brief.',
+  lang: 'en' as const,
 };
 const options = { proxyUrl: 'https://x.workers.dev' };
 
@@ -31,6 +31,15 @@ describe('sendChat', () => {
     expect(await sendChat(body, options)).toBe('Hello');
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(sentBodies(fetchMock)[0]).not.toHaveProperty('provider');
+  });
+
+  it('sends the language and no system prompt: the Worker builds it', async () => {
+    const fetchMock = vi.fn(async () => answer(200, { text: 'Hello' }));
+    vi.stubGlobal('fetch', fetchMock);
+    await sendChat({ ...body, lang: 'vi' }, options);
+    const sent = sentBodies(fetchMock)[0];
+    expect(sent.lang).toBe('vi');
+    expect(sent).not.toHaveProperty('systemPrompt');
   });
 
   it('asks Gemini by name once when an older Worker insists on a provider', async () => {

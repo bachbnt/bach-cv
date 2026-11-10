@@ -3,6 +3,7 @@
  */
 
 import { z } from 'zod';
+import type { Lang } from '@/lib/content/schema';
 
 /** The Worker URL (see worker/README.md). Empty means the assistant is switched off. */
 export const CHAT_PROXY_URL = process.env.NEXT_PUBLIC_CHAT_PROXY_URL ?? '';
@@ -11,7 +12,6 @@ export const CHAT_PROXY_URL = process.env.NEXT_PUBLIC_CHAT_PROXY_URL ?? '';
 export const WORKER_LIMITS = {
   messages: 40,
   contentLength: 2000,
-  systemPromptLength: 8000,
 } as const;
 
 const TIMEOUT_MS = 40_000;
@@ -56,7 +56,7 @@ export const errorKindOf = (status: number, code: string | undefined) => {
 
 /** Sends the conversation through the Worker and returns the reply text. Throws `ChatError`. */
 export async function sendChat(
-  body: { messages: WireMessage[]; systemPrompt: string },
+  body: { messages: WireMessage[]; lang: Lang },
   options: { proxyUrl?: string; signal?: AbortSignal } = {},
 ): Promise<string> {
   const endpoint = chatEndpoint(options.proxyUrl ?? CHAT_PROXY_URL);

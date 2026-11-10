@@ -17,9 +17,9 @@ import {
 import { enableAppCheck } from './app-check.ts';
 import type { ContentRepository } from './repository.ts';
 import {
-  COLLECTIONS,
   liveSchema,
   messageSchema,
+  parseDoc,
   profileSchema,
   settingsSchema,
   type CollectionName,
@@ -74,10 +74,9 @@ export const createFirestoreLiteRepository = (): ContentRepository => {
       );
       const docs: Doc<N>[] = [];
       for (const d of snap.docs) {
-        const parsed = COLLECTIONS[name].safeParse(d.data());
         // one malformed document must not take the whole page down
-        if (parsed.success)
-          docs.push({ ...(parsed.data as object), id: d.id } as Doc<N>);
+        const item = parseDoc(name, d.id, d.data());
+        if (item) docs.push(item);
       }
       return docs;
     },
