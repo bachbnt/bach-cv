@@ -39,6 +39,12 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
    about its top edge, held by the tape or the pin, then it settles), the contact form too: `AcPaper` has it by default, the photos and the
    cards that are not an `AcPaper` carry the class. Not for the paper of a window, a menu or the toast (it is not pinned to the board), only
    where there is a hover, never with reduced motion.
+   **Arrival.** A sheet or a photo of a page is pinned on when it comes into view (it drops from a little above, tilted, and settles; on a phone it
+   only drops, because a tilt would push its corners out of the screen and the page would scroll sideways), and a chalk heading is underlined from
+   the left (`shell/use-ac-reveal.ts` marks them with `data-reveal` and `data-in`, `css/reveal.css` does the rest). Only `opacity`, `translate`,
+   `rotate` and `scale`; it waits for `prefers-reduced-motion: no-preference`, so nothing is hidden otherwise; the copy of the old page that the
+   eraser wipes (`.ac-ghost`) does not play it again; the tape and the pin have no entrance of their own (one that came later was seen missing while
+   the eraser uncovered the photo). `academic-reveal.spec.ts` and `academic-css-keyframes.test.ts`.
 8. **The line of rights** of Standard's footer (`© {year} {name}. {rights}`, `commonCopy.footer.rights`, the year from `useNow()`) is written in chalk at the
    foot of the board, centred under the turn of the page and above the ledge (`shell/footer.tsx`). The ledge sticks to the bottom of the window and
    comes to rest after it at the end of the page, so the line never lies under the ledge or the chat slip; at 320, 390 and 1440 px, in both themes and
@@ -69,7 +75,7 @@ frame when the copy is taken (no measurement on a device was made).
 skin.tsx            SkinDefinition: Frame (AcademicShell) + one component for each page + NotFound + Maintenance
 academic.css        the palette (dark = chalkboard, light = whiteboard), the shadcn tokens, the board and its frame, paper, tape, pins, the hand-drawn line,
                     the ledge, keyframes and reduced motion
-css/<area>.css      pseudo-element decoration of an area (home-about, overlays, wipe), imported by the component that needs it
+css/<area>.css      pseudo-element decoration of an area (home-about, overlays, wipe) and what arrives on a page (reveal), imported by the component that needs it
 fonts.ts            next/font declarations (preload false, so they load only with the skin)
 shell/              the frame: header (language, skin, theme, Connect, CV), contents (tabs), pager, ledge with the chat slip, the overlays host
                     (viewer, chat, CV sheet, toast), the eraser wipe

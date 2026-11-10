@@ -1,0 +1,70 @@
+/*
+ * What arrives on a page of the board (`shell/use-ac-reveal.ts` marks it). A sheet of paper is pinned on: it drops from a little above, tilted,
+ * and settles, its tape and pin with it (they are part of the sheet; a tape that came later was seen missing while the eraser uncovered it). A heading in chalk comes in and its line is drawn under it from the left. Each is waiting (`data-reveal`,
+ * no `data-in` yet) until it is in view. All of it is `opacity`, `translate`, `rotate` and `scale`, which the compositor does; none of it moves
+ * the layout. The old page the eraser wipes (`.ac-ghost`) is a copy and must not play it again.
+ *
+ * It is an animation, not a transition, on purpose: unlayered CSS beats utilities, so a `transition` list here would replace the hover
+ * transitions of a sheet (the wind), and a fill that kept its last frame would beat them too. `backwards` holds the first frame during the delay only.
+ * The sheets of a list come one after another (`--i`, set by the hook).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .ac-reveal [data-reveal]:not([data-in], .ac-ghost *) {
+    opacity: 0;
+  }
+
+  .ac-reveal [data-reveal='paper'][data-in]:not(.ac-ghost *) {
+    animation: ac-pin 0.55s cubic-bezier(0.2, 0.8, 0.25, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
+  /* a phone: a sheet is as wide as the screen, and a tilt or a scale would push its corners out of it and make the page scroll sideways for the
+     first half second, so it only drops */
+  @media (max-width: 760px) {
+    .ac-reveal [data-reveal='paper'][data-in]:not(.ac-ghost *) {
+      animation-name: ac-drop;
+    }
+  }
+
+  .ac-reveal [data-reveal='line'][data-in]:not(.ac-ghost *) {
+    animation: ac-chalk-in 0.4s ease-out backwards;
+    animation-delay: calc(var(--i, 0) * 60ms);
+  }
+  .ac-reveal [data-reveal='line'][data-in]:not(.ac-ghost *)::after {
+    transform-origin: 0 50%;
+    animation: ac-chalk-line 0.6s cubic-bezier(0.35, 0.1, 0.25, 1) backwards;
+    animation-delay: calc(var(--i, 0) * 60ms + 200ms);
+  }
+}
+
+@keyframes ac-pin {
+  from {
+    opacity: 0;
+    translate: 0 -18px;
+    rotate: -3deg;
+    scale: 1.04;
+  }
+  60% {
+    opacity: 1;
+    translate: 0 2px;
+    rotate: 0.5deg;
+    scale: 1;
+  }
+}
+@keyframes ac-drop {
+  from {
+    opacity: 0;
+    translate: 0 -14px;
+  }
+}
+@keyframes ac-chalk-in {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+@keyframes ac-chalk-line {
+  from {
+    opacity: 0;
+    scale: 0 1;
+  }
+}

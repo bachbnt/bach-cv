@@ -20,7 +20,9 @@ import {
   useEraserWipe,
   WipeCaptureContext,
 } from '@/skins/academic/shell/use-eraser-wipe';
+import { useAcReveal } from '@/skins/academic/shell/use-ac-reveal';
 import { AcRoot } from '@/skins/academic/ui/ac-root';
+import '@/skins/academic/css/reveal.css';
 
 /**
  * The frame of the Academic skin: a board in a frame with the header and the contents on top, the page in the middle with its margin ruled on the
@@ -39,6 +41,8 @@ export function AcademicShell({
   const pageRef = useRef<HTMLDivElement>(null);
   const wipeRef = useRef<HTMLDivElement>(null);
   const captureWipe = useEraserWipe(current, pageRef, wipeRef);
+  // the sheets are pinned on and the chalk headings underlined as they come into view (see `use-ac-reveal.ts`)
+  useAcReveal(pageRef, current);
   return (
     <AcOverlayProvider>
       <WipeCaptureContext value={captureWipe}>
@@ -68,7 +72,7 @@ export function AcademicShell({
               >
                 <div
                   ref={pageRef}
-                  className='relative min-[900px]:before:pointer-events-none min-[900px]:before:absolute min-[900px]:before:top-0 min-[900px]:before:bottom-0 min-[900px]:before:left-[calc(100%-262px-12px)] min-[900px]:before:w-0.5 min-[900px]:before:bg-[repeating-linear-gradient(to_bottom,var(--ac-faint)_0_12px,transparent_12px_19px)] min-[900px]:before:content-[""]'
+                  className='ac-reveal relative min-[900px]:before:pointer-events-none min-[900px]:before:absolute min-[900px]:before:top-0 min-[900px]:before:bottom-0 min-[900px]:before:left-[calc(100%-262px-12px)] min-[900px]:before:w-0.5 min-[900px]:before:bg-[repeating-linear-gradient(to_bottom,var(--ac-faint)_0_12px,transparent_12px_19px)] min-[900px]:before:content-[""]'
                 >
                   {children}
                 </div>
