@@ -5,9 +5,11 @@ import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { cn } from 'cn';
 
 import { Button } from '@/components/ui/button';
+import { useTabTrap } from '@/hooks/use-tab-trap';
 import { XIcon } from 'lucide-react';
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
+  useTabTrap();
   return <DialogPrimitive.Root data-slot='dialog' {...props} />;
 }
 

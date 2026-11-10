@@ -57,7 +57,7 @@ export function Toolbar() {
         id={CHART_CONTROLS_ID}
         role='group'
         aria-label={words.chartControls}
-        className='flex min-w-0 items-center gap-0.5 empty:hidden max-[1100px]:order-last max-[1100px]:min-h-11 max-[1100px]:basis-full max-[1100px]:overflow-x-auto max-[1100px]:border-t max-[1100px]:border-tv-line'
+        className='flex min-w-0 items-center gap-0.5 min-[1101px]:empty:hidden max-[1100px]:order-last max-[1100px]:min-h-11 max-[1100px]:basis-full max-[1100px]:overflow-x-auto max-[1100px]:border-t max-[1100px]:border-tv-line'
       />
       <span className='flex-1' />
       <LayoutMenu />

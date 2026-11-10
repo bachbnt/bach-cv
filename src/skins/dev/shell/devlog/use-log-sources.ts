@@ -67,6 +67,18 @@ function useQueryLog() {
     if (!scanned) {
       scanned = true;
       for (const query of cache.getAll()) {
+        // the tries that failed before this mounted (the skin loads after the data on a slow machine): a query that gave up has one
+        // failure more than it has retries, one that is trying again has all of them
+        const failures = query.state.fetchFailureCount;
+        const missed =
+          query.state.fetchStatus === 'fetching'
+            ? failures
+            : query.state.status === 'error'
+              ? failures - 1
+              : 0;
+        for (let attempt = 1; attempt <= missed; attempt += 1) {
+          emit({ kind: 'query-retry', key: query.queryKey, attempt });
+        }
         if (
           query.state.status === 'success' &&
           query.state.fetchStatus !== 'fetching'
