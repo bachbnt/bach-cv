@@ -17,7 +17,7 @@ const TARGETS = [
 ] as const;
 
 /**
- * Marks the sheets and the chalk headings of the page with `data-reveal` and, once one is in view, with `data-in` (`css/reveal.css` does the
+ * Marks the sheets and the chalk headings of the page with `data-reveal` and, once one is in view, with `data-in` (empty: it plays its entrance; `still`: the eraser is wiping, so it does not) (`css/reveal.css` does the
  * rest). A sheet is marked before the first paint, so it never shows for a frame before it arrives; what comes after the mount (the content is
  * read from Firestore) is picked up as it appears. `page` is the page on show: the wrapper is a new element for each page.
  */
@@ -30,7 +30,14 @@ export function useAcReveal(root: RefObject<HTMLElement | null>, page: string) {
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          entry.target.setAttribute('data-in', '');
+          // a page that the eraser is uncovering is already arriving: its sheets are shown as they are (`still`), or the eraser would
+          // uncover them half way through their own entrance, pale, tilted and without their tape
+          entry.target.setAttribute(
+            'data-in',
+            document.documentElement.hasAttribute('data-ac-wipe')
+              ? 'still'
+              : '',
+          );
           io.unobserve(entry.target);
         }
       },

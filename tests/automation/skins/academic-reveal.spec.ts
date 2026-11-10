@@ -14,8 +14,10 @@ test.beforeEach(async ({ page }) => {
   await mockImages(page);
 });
 
-const sheets = (page: Page) => page.locator('[data-reveal="paper"]');
-const headings = (page: Page) => page.locator('[data-reveal="line"]');
+// the live page: the copy of the old page that the eraser wipes (`.ac-ghost`) is left out
+const LIVE = '.ac-reveal:not(.ac-ghost)';
+const sheets = (page: Page) => page.locator(`${LIVE} [data-reveal="paper"]`);
+const headings = (page: Page) => page.locator(`${LIVE} [data-reveal="line"]`);
 const animationOf = (page: Page, selector: string, pseudo?: string) =>
   page
     .locator(selector)
@@ -73,14 +75,39 @@ test.describe('what arrives on a page of the board', () => {
     expect(inside).toBe(0);
   });
 
-  test('the next page arrives the same way', async ({ page }) => {
+  test('a page that the eraser uncovers is shown as it is: its sheets play no entrance, so none is seen half way, pale and tilted', async ({
+    page,
+  }) => {
     await gotoSkin(page, '/projects');
     await expect(sheets(page).first()).toHaveAttribute('data-in', '');
     await page.getByRole('link', { name: 'Certificates' }).first().click();
     await expect(page).toHaveURL(/\/certificates$/);
-    await expect(sheets(page).first()).toHaveAttribute('data-in', '');
-    await animationsSettled(page);
+    await expect(sheets(page).first()).toHaveAttribute('data-in', 'still');
+    expect(await animationOf(page, `${LIVE} [data-reveal="paper"]`)).toBe(
+      'none',
+    );
+    expect(
+      await animationOf(page, `${LIVE} [data-reveal="line"]`, '::after'),
+    ).toBe('none');
+    // and at no moment is a sheet that is in view less than whole
     await expect(sheets(page).first()).toHaveCSS('opacity', '1');
+    await animationsSettled(page);
+  });
+
+  test('a sheet scrolled to after the eraser has passed still plays its entrance', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/projects');
+    await page.getByRole('link', { name: 'Resume' }).first().click();
+    await expect(page).toHaveURL(/\/resume$/);
+    // the eraser is drawn frame by frame, not by a CSS animation: it is over when the page stops being marked as wiped
+    await expect(page.locator('html')).not.toHaveAttribute('data-ac-wipe');
+    const last = sheets(page).last();
+    await last.scrollIntoViewIfNeeded();
+    await expect(last).toHaveAttribute('data-in', '');
+    expect(
+      await last.evaluate((el) => getComputedStyle(el).animationName),
+    ).not.toBe('none');
   });
 
   test('the tape of a photo comes with the photo: it has no entrance of its own, so it is never missing while the eraser uncovers it', async ({
@@ -106,10 +133,12 @@ test.describe('what arrives on a page of the board', () => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await gotoSkin(page, '/projects');
     await expect(sheets(page).first()).toHaveCSS('opacity', '1');
-    expect(await animationOf(page, '[data-reveal="paper"]')).toBe('none');
-    expect(await animationOf(page, '[data-reveal="line"]', '::after')).toBe(
+    expect(await animationOf(page, `${LIVE} [data-reveal="paper"]`)).toBe(
       'none',
     );
+    expect(
+      await animationOf(page, `${LIVE} [data-reveal="line"]`, '::after'),
+    ).toBe('none');
     await expect(headings(page).first()).toHaveCSS('opacity', '1');
   });
 
