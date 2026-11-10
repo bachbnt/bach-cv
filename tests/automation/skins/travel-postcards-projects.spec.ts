@@ -5,6 +5,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
+import { animationsSettled } from '../support/animations';
 import { gotoSkin, useSkin } from '../support/skin';
 
 test.beforeEach(async ({ page }) => {
@@ -141,6 +142,8 @@ test.describe('the postcards', () => {
     page,
   }) => {
     await gotoSkin(page, '/projects');
+    await expect(card(page, 'Beli Coffee')).toBeVisible();
+    await animationsSettled(page);
     const photo = card(page, 'Beli Coffee')
       .locator('div.relative > div')
       .first();
@@ -226,6 +229,8 @@ test.describe('the postcards', () => {
   test('the arrows move the strip sideways', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await gotoSkin(page, '/projects');
+    await expect(cards(page).first()).toBeVisible();
+    await animationsSettled(page);
     const strip = page.getByRole('list', { name: 'Postcards' });
     const left = () => strip.evaluate((el) => el.scrollLeft);
     expect(await left()).toBe(0);
@@ -353,6 +358,7 @@ test.describe('layout and motion', () => {
       await page.setViewportSize({ width, height: 800 });
       await gotoSkin(page, '/projects');
       await expect(cards(page).first()).toBeVisible();
+      await animationsSettled(page);
       const overflow = await page.evaluate(() => {
         const panel = document.querySelector('.tl-panel > div');
         return {

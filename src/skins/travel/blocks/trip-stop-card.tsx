@@ -63,7 +63,7 @@ export function TripStopCard({
     <article
       aria-label={map.name}
       style={{ '--tl-pc': `var(--tl-stop-${map.color})` } as CSSProperties}
-      className='rounded-2xl border border-tl-line border-t-[5px] border-t-[var(--tl-pc)] bg-tl-panel-2 p-4'
+      className='tl-guide-open rounded-2xl border border-tl-line border-t-[5px] border-t-[var(--tl-pc)] bg-tl-panel-2 p-4'
     >
       <TlKicker className='text-[var(--tl-pc)]'>{kicker}</TlKicker>
       {career.type === 'job' ? (

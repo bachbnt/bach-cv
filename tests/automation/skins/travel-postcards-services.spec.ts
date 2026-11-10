@@ -5,6 +5,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
+import { animationsSettled } from '../support/animations';
 import { gotoSkin, useSkin } from '../support/skin';
 import { mockNotify } from '../support/worker';
 
@@ -515,6 +516,7 @@ test.describe('on a touch screen', () => {
   }) => {
     await gotoSkin(page, '/services');
     await expect(topics(page)).toHaveCount(5);
+    await animationsSettled(page);
     const heights = async (selector: string) =>
       page
         .locator(selector)

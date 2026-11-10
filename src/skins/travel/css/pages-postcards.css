@@ -67,3 +67,41 @@
     box-shadow: var(--tl-shadow);
   }
 }
+
+/* Projects, the postcards: they are dealt onto the table, each one flying in from the right edge and settling with its own tilt (`--dl` is
+   its turn). Services, the tours: each one drops open from its top edge like a line of a departure board. */
+@keyframes tl-deal {
+  from {
+    opacity: 0;
+    translate: 110px -16px;
+    rotate: 9deg;
+  }
+}
+.tl-deal {
+  animation: tl-deal 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.15) var(--dl, 0s)
+    backwards;
+}
+@keyframes tl-flap {
+  from {
+    opacity: 0;
+    transform: perspective(520px) rotateX(-88deg);
+  }
+}
+.tl-flap {
+  transform-origin: 50% 0;
+  animation: tl-flap 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1) var(--dl, 0s)
+    backwards;
+}
+/* on a phone the postcards are a column inside the sheet: they are dealt from below, not from the side, so the sheet never grows a sideways scroll */
+@media (max-width: 767px) {
+  .tl-deal {
+    animation-name: tl-deal-up;
+  }
+}
+@keyframes tl-deal-up {
+  from {
+    opacity: 0;
+    translate: 0 36px;
+    rotate: 4deg;
+  }
+}

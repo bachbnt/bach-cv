@@ -4,6 +4,7 @@
 
 'use client';
 
+import type { CSSProperties } from 'react';
 import { servicesCopy } from '@/content/copy/services';
 import { useLive } from '@/hooks/use-live';
 import type { Doc } from '@/lib/content/schema';
@@ -33,8 +34,12 @@ export function TourList({
       aria-label={copy.list.label}
       className='m-0 grid grid-cols-1 list-none gap-2 p-0'
     >
-      {services.map((service) => (
-        <li key={service.id}>
+      {services.map((service, i) => (
+        <li
+          key={service.id}
+          className='tl-flap'
+          style={{ '--dl': `${Math.min(i, 6) * 100}ms` } as CSSProperties}
+        >
           <TourCard
             service={service}
             chosen={service.id === topicId}

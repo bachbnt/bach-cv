@@ -32,10 +32,14 @@ export function TripStopList({
   return (
     <ol
       aria-label={words.stopsLabel}
-      className='relative m-0 list-none p-0 before:absolute before:top-5 before:bottom-5 before:left-[21px] before:border-l-[3px] before:border-dotted before:border-tl-coral before:opacity-60 before:content-[""]'
+      className='tl-road-draw relative m-0 list-none p-0 before:absolute before:top-5 before:bottom-5 before:left-[21px] before:border-l-[3px] before:border-dotted before:border-tl-coral before:opacity-60 before:content-[""]'
     >
-      {stops.map(({ career, map }) => (
-        <li key={map.id}>
+      {stops.map(({ career, map }, i) => (
+        <li
+          key={map.id}
+          className='tl-stop-in'
+          style={{ '--dl': `${200 + Math.min(i, 8) * 110}ms` } as CSSProperties}
+        >
           <button
             type='button'
             aria-current={selectedId === map.id ? 'true' : undefined}
@@ -52,7 +56,7 @@ export function TripStopList({
             <span
               aria-hidden='true'
               className={cn(
-                'z-[1] grid flex-none place-items-center rounded-full border-[3px] border-tl-solid bg-[var(--tl-pc)] text-white shadow-[0_0_0_2px_var(--tl-pc)]',
+                'tl-node-in z-[1] grid flex-none place-items-center rounded-full border-[3px] border-tl-solid bg-[var(--tl-pc)] text-white shadow-[0_0_0_2px_var(--tl-pc)]',
                 career.side ? 'size-[22px]' : 'size-7',
               )}
             >

@@ -38,3 +38,44 @@
   animation: tl-photo-in 0.7s cubic-bezier(0.2, 1.2, 0.4, 1) var(--dl, 0s)
     backwards;
 }
+
+/* Resume, the route: the dotted road is drawn from the top while the stops light up along it one by one (`--dl` is the turn of each), and the
+   guidebook of a stop opens like a book that is lifted from its top edge. Only transform properties and opacity. */
+@keyframes tl-road-draw {
+  from {
+    transform: scaleY(0);
+  }
+}
+.tl-road-draw::before {
+  transform-origin: 50% 0;
+  animation: tl-road-draw 1s ease-out backwards;
+}
+@keyframes tl-stop-in {
+  from {
+    opacity: 0;
+    translate: -14px 0;
+  }
+}
+.tl-stop-in {
+  animation: tl-stop-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) var(--dl, 0s)
+    backwards;
+}
+@keyframes tl-node-in {
+  from {
+    scale: 0;
+  }
+}
+.tl-node-in {
+  animation: tl-node-in 0.4s cubic-bezier(0.2, 1.8, 0.4, 1)
+    calc(var(--dl, 0s) + 0.12s) backwards;
+}
+@keyframes tl-guide-open {
+  from {
+    opacity: 0;
+    transform: perspective(800px) rotateX(-55deg);
+  }
+}
+.tl-guide-open {
+  transform-origin: 50% 0;
+  animation: tl-guide-open 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.1) backwards;
+}

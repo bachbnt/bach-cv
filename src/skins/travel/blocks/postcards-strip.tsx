@@ -5,7 +5,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type CSSProperties } from 'react';
 import { kindsPresent } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
 import { travelPostcardsCopy } from '@/content/copy/travel-postcards';
@@ -142,12 +142,20 @@ export function PostcardsStrip() {
         >
           {shown.map((project, index) => (
             <li key={project.id} className='snap-start md:flex md:flex-none'>
-              <Postcard
-                project={project}
-                skills={skills}
-                index={index}
-                onOpenScreenshots={openScreenshots}
-              />
+              {/* the card is dealt inside the item: a moved item would move the place the strip snaps to, and the strip would start scrolled */}
+              <div
+                className='tl-deal md:flex'
+                style={
+                  { '--dl': `${Math.min(index, 6) * 110}ms` } as CSSProperties
+                }
+              >
+                <Postcard
+                  project={project}
+                  skills={skills}
+                  index={index}
+                  onOpenScreenshots={openScreenshots}
+                />
+              </div>
             </li>
           ))}
         </ul>

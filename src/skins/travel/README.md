@@ -59,7 +59,8 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   shows when its pin is pointed at or focused, or for the stop that is open; the pin keeps its accessible name. The traveller (the
   owner's photo in a pin) rides along the same road with the Web Animations API.
 - **Camera.** Drag, wheel, pinch, arrow keys, `+` and `-`; buttons for zoom and "show the whole trip"; the page and the open stop decide
-  where it flies (`config.ts`, `PAGE_FOCUS`). Animations pause when the map is off screen, the tab is hidden or the visitor asked for
+  where it flies (`config.ts`, `PAGE_FOCUS`). From stop to stop the camera rides with the traveller along the same road for the same time
+  (`map/use-ride.ts`, `rideOf` of `map/route.ts`) and the tour waits for each ride to end; a hand on the map ends the ride where it is. Animations pause when the map is off screen, the tab is hidden or the visitor asked for
   less motion.
 
 ## The frame and the windows
@@ -75,6 +76,22 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   dashed edge, grouped as in Standard.
 - **About** is put together as you watch (`tl-portrait-in`, `tl-chip-in`, `tl-photo-in`): the portrait is stamped on, the specialties pop in one by
   one and the photos drop on the table. Only transform properties and opacity move, and reduced motion shows the final page.
+
+## How a page arrives
+
+Every page has an entrance of its own, in the voice of its metaphor, played once when it opens (Only transform properties and opacity move,
+nothing loops, and reduced motion shows the final page): Home is put together piece by piece (portrait stamped on, facts pop in), Resume draws
+the dotted road while the stops light up and the guidebook of a stop opens like a book, Projects are dealt onto the table like postcards (from
+below on a phone), Certificates are stamped, Services drop open like the lines of a departure board, Payment prints a ticket from the slot of the
+counter, About stamps the portrait and drops the photos. The turn of each part is the custom property `--dl`. A test that measures a box waits
+for the animations first (`tests/automation/support/animations.ts`).
+
+## Memory on a phone
+
+The map is 6678 by 3998 units. The camera transform is flat (`translate`, not `translate3d`) so the world is not on a layer of its own at rest,
+`will-change` is given only while it moves, the loops stop (`animation: none`, never `paused`, which keeps the layer) when the whole map is on
+screen, and on a touch screen the waves and the foam are left out. Measured at 390 by 844 with a scale of 3: 34 layers and about 160 MB at rest
+(it was 130 layers and about 3 GB, which killed the tab on an iPhone). `travel-css.test.ts` keeps the rule.
 
 ## Files
 
