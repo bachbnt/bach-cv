@@ -55,7 +55,15 @@ export function Splitter({
   const vertical = orientation === 'vertical';
   const clamp = (size: number) => Math.min(max, Math.max(min, size));
 
-  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+  useEffect(
+    () => () => {
+      cancelAnimationFrame(frame.current);
+      // unmounted in the middle of a drag (the window got narrower, the chat docked): the page gets its cursor and its selection back
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+    },
+    [],
+  );
 
   const coordinate = (event: PointerEvent) =>
     vertical ? event.clientX : event.clientY;

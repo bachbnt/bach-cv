@@ -32,15 +32,12 @@ export function ActivityBar({
 }) {
   const copy = useCopy(devCopy);
   const connectMenu = useLive().features.connectMenu;
-  const decor: { name: CodiconName; label: string; badge?: number }[] = [
-    { name: 'search', label: copy.activity.search },
-    {
-      name: 'source-control',
-      label: copy.activity.sourceControl,
-      badge: GIT_PENDING,
-    },
-    { name: 'debug-alt', label: copy.activity.runDebug },
-    { name: 'extensions', label: copy.activity.extensions },
+  // the lights of an editor's activity bar that do nothing here: the shapes of the real thing, with no words
+  const decor: { name: CodiconName; badge?: number }[] = [
+    { name: 'search' },
+    { name: 'source-control', badge: GIT_PENDING },
+    { name: 'debug-alt' },
+    { name: 'extensions' },
   ];
 
   return (
@@ -63,9 +60,9 @@ export function ActivityBar({
           key={item.name}
           type='button'
           className={BUTTON}
-          tabIndex={-1}
-          aria-label={item.label}
-          title={item.label}
+          // decoration, like the status bar: nothing here does anything, so it is not offered to a screen reader or to the keyboard
+          inert
+          aria-hidden='true'
         >
           <DevIcon name={item.name} className='size-6' />
           {item.badge !== undefined && (

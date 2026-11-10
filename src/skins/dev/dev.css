@@ -49,17 +49,18 @@ html[data-skin='dev']:not(.dark) {
   --fg: #1f2328;
   --head: #0b0d0f;
   --dv-muted: #57606a;
-  --dim: #6e7781;
+  /* AA (4.5:1) on the chrome (#f6f8fa) and the second chrome (#eaeef2): the GitHub grey was 4.3 and 3.9 */
+  --dim: #59636e;
   --kw: #cf222e;
   --str: #0a3069;
   --num: #0550ae;
   --fn: #8250df;
   --field: #953800;
-  --cmt: #6e7781;
+  --cmt: #59636e;
   --sel: #ddf4ff;
   --hover: #0000000a;
   --and: #1a7f37;
-  --dv-accent: #1a7f37;
+  --dv-accent: #187434;
   --red: #cf222e;
   --blue: #0969da;
   --yellow: #9a6700;

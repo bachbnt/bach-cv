@@ -64,8 +64,11 @@ export function DevShell({
   useEffect(() => {
     if (!zen) return;
     const onKey = (event: KeyboardEvent) => {
-      // a window that is open (the chat, a viewer, the palette) takes Esc first
-      if (event.key === 'Escape' && !document.querySelector('[role="dialog"]'))
+      // a window or a menu that is open (the chat, a viewer, the palette, a title bar menu) takes Esc first
+      if (
+        event.key === 'Escape' &&
+        !document.querySelector('[role="dialog"], [role="menu"]')
+      )
         setZen(false);
     };
     document.addEventListener('keydown', onKey);

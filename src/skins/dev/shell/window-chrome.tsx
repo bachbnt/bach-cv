@@ -21,7 +21,7 @@ export const windowPopupClass = (maximized: boolean) =>
 
 /** A hit area around each light for a finger (the lights are 12px). */
 export const touchDots =
-  'pointer-coarse:gap-4 pointer-coarse:[&>i]:before:absolute pointer-coarse:[&>i]:before:-inset-2 pointer-coarse:[&>i]:before:content-[""]';
+  'pointer-coarse:gap-4 pointer-coarse:[&>:is(i,button)]:before:absolute pointer-coarse:[&>:is(i,button)]:before:-inset-2 pointer-coarse:[&>:is(i,button)]:before:content-[""]';
 
 /** The three lights of a window above the page; the green one is not offered on a phone, where the window is always full screen. */
 export function DevWindowDots({

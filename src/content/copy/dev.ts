@@ -22,10 +22,6 @@ export const devCopy = defineCopy(
     account: 'Account',
     activity: {
       label: 'Activity bar',
-      search: 'Search',
-      sourceControl: 'Source Control',
-      runDebug: 'Run and Debug',
-      extensions: 'Extensions',
       manage: 'Manage',
     },
     outline: 'Outline',
@@ -73,10 +69,6 @@ export const devCopy = defineCopy(
     account: 'Tài khoản',
     activity: {
       label: 'Thanh hoạt động',
-      search: 'Tìm kiếm',
-      sourceControl: 'Source Control',
-      runDebug: 'Chạy và gỡ lỗi',
-      extensions: 'Tiện ích mở rộng',
       manage: 'Quản lý',
     },
     outline: 'Outline',

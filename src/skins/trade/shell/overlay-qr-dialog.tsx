@@ -7,7 +7,8 @@
 import { CopyCheck, Download } from 'lucide-react';
 import { useState, type KeyboardEvent } from 'react';
 import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
-import { qrFileName, summaryOf } from '@/components/payment/payment-details';
+import { summaryOf } from '@/components/payment/payment-details';
+import { saveQr } from '@/components/payment/save-qr';
 import { tradeOverlayCopy } from '@/content/copy/trade-overlay';
 import { paymentCopy } from '@/content/copy/payment';
 import type { Doc } from '@/lib/content/schema';
@@ -23,31 +24,6 @@ import { TvZoomTools } from '@/skins/trade/shell/overlay-zoom-tools';
 import { TvButton } from '@/skins/trade/ui/tv-button';
 import { TvCopyIcon } from '@/skins/trade/ui/tv-copy-icon';
 import { useCopyFeedback } from '@/skins/trade/ui/use-copy-feedback';
-
-/** Saves the QR image, or opens it in a new tab when the browser blocks the download (for example no CORS). */
-async function saveQr(
-  method: Doc<'payments'>,
-  say: (message: string) => void,
-  toast: { qrSaved: string; qrOpened: string },
-) {
-  try {
-    const res = await fetch(method.qr);
-    if (!res.ok) throw new Error(String(res.status));
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = qrFileName(method.name, blob.type, method.qr);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    say(toast.qrSaved);
-  } catch {
-    window.open(method.qr, '_blank', 'noopener');
-    say(toast.qrOpened);
-  }
-}
 
 /**
  * The QR window of Payment, in the family of the picture viewer: the same toolbar (zoom, then Copy number, Copy all details and Save QR,
