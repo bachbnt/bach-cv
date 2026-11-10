@@ -43,10 +43,13 @@ The Home page of each skin, in the dark and in the light theme.
   explanatory card, and when a read fails it shows the same card with a Try again button. All of it goes through one component
   (`DataState`) and one copy file (`src/content/copy/states.ts`), so every page behaves the same way.
 - **Security headers.** `firebase.json` sends HSTS, `X-Frame-Options`, a Content-Security-Policy and more. The policy allows only this
-  site, Firestore, the chat Worker and https images; it was tested against the real pages, the CV dialog and the PDF download.
+  site, Firestore, the chat Worker, Cloudflare Turnstile and https images; it was tested against the real pages, the CV dialog and the PDF download.
   Adding another origin (for example a new API) means adding it to the policy.
 - **BB Bot.** A chat widget backed by a Cloudflare Worker. Workers AI answers first (free, no API key); Gemini is the fallback when the
-  free daily allowance is spent. Keys stay in the Worker. The same Worker emails the owner when a contact-form message is saved (Resend).
+  free daily allowance is spent. Keys stay in the Worker. The browser sends only the conversation and the language: the Worker builds the
+  system prompt itself from the public site content, so a caller cannot give the model instructions of their own. The panel is loaded when the
+  chat is first opened. The same Worker emails the owner when a contact-form message is saved (Resend), and with a Cloudflare Turnstile
+  secret set it asks for an invisible Turnstile token first (see `worker/README.md`).
 - **Search and sharing.** Every page has its own title, description, canonical link and social preview in its static HTML, plus a
   schema.org `Person`, a sitemap and `robots.txt` (`src/lib/seo.ts`). The browser tab title follows the visitor's language.
 - **Light and dark.** A Theme menu in the header (System, Light, Dark; also in the phone menu) remembers the choice and follows the
@@ -57,9 +60,10 @@ The Home page of each skin, in the dark and in the light theme.
   Its three window lights work: red goes back to Standard, yellow is Zen mode, green is full screen.
   Trade is a chart terminal with its own interface for every page (the career as a working chart with chart types, indicators,
   drawing tools and a bar replay; a symbol search, a ticker tape and a watchlist; a screener, financials and a calendar for the data pages).
+  Academic is a chalkboard (dark) or whiteboard (light) with an annotated manuscript pinned to it (see `src/skins/academic/README.md`).
   Travel is a 2.5D trip map of Nha Trang drawn from OpenStreetMap data (© OpenStreetMap contributors, ODbL): the stops are the real roles, the pages are parts of the trip (see `src/skins/travel/README.md`).
   The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`, `?skin=trade`, `?skin=academic`, `?skin=travel`) and the URL does not change. A skin is loaded only when it is chosen,
-  so Standard visitors download none of its scripts (its styles share the one Tailwind build: the main stylesheet is about 40 KB gzip, it was about 20 KB before skins). See `.ai/skins.md` and the README of each skin in `src/skins/<id>/`.
+  so Standard visitors download none of its scripts (its styles share the one Tailwind build: the main stylesheet is about 54 KB gzip, it was about 20 KB before skins). See `.ai/skins.md` and the README of each skin in `src/skins/<id>/`.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
   lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). The tinted head of each page also lights up softly under the
   mouse (class `band-glow`). Only for a mouse, and off for "reduce motion".
@@ -174,9 +178,13 @@ src/lib/content         the data contract (schema.ts), repository interface, Fir
 src/lib/query           TanStack Query keys, options and hooks
 src/lib/i18n            language state and the copy helpers
 src/lib/theme           theme provider and the no-flash script
+src/lib/derive          pure derivations shared by every skin (years, current job, stops, lists of Home...), each with a unit test
+src/lib/skin            the skin ids, the choice of the visitor and the loader of the lazy skin chunks
+src/hooks               hooks shared by the skins (live switches, now, clipboard, chat settings...)
+src/skins               one folder for each skin besides Standard (dev, trade, academic, travel), each with its own README
 src/lib/seo.ts          page metadata        src/lib/notify.ts   email request after a message        src/lib/content/app-check.ts   App Check
 tests/unit              Vitest        tests/automation   Playwright        tests/fixtures   Firestore snapshot for tests
-scripts/                Firestore backup, restore and test-fixture sync; scripts/docs builds the design documents
+scripts/                Firestore backup, restore and test-fixture sync; scripts/docs builds the design documents; scripts/travel builds the map data
 worker/                 Cloudflare Worker: chat with provider fallback, email notification, KV limits (see worker/README.md)
 docs/                   data-design.html, detail-design.html (npm run docs) and schema.sql
 .ai/, .claude/skills    working rules and installed skills (Next.js, frontend design, shadcn, Firebase, Vercel, Cloudflare; see SOURCES.md)
@@ -188,7 +196,13 @@ docs/                   data-design.html, detail-design.html (npm run docs) and 
 npm run build
 npx firebase-tools deploy --only hosting      # the site
 npx firebase-tools deploy --only firestore:rules   # the rules (changes production)
+(cd worker && npx wrangler deploy)            # the chat and email Worker
 ```
+
+Deploy the **Worker first** when its contract changes (the chat request, the checks of `/notify`): an old site works against a new Worker,
+but a new site against an old Worker is refused. Variables that start with `NEXT_PUBLIC_` (the chat proxy address, the App Check and Turnstile
+site keys) are read **at build time**, so they must be set in the environment of `npm run build` (see `.env.example`); the secrets live in the
+Worker (`wrangler secret put`, see `worker/README.md`).
 
 Work happens on `dev` and is merged into `master`. CI (`.github/workflows/main.yml`) builds and deploys hosting when a commit on
 `master` contains `[build]`; otherwise deploy by hand with the command above.

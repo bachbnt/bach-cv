@@ -4,6 +4,7 @@
 
 import { expect, test, type Locator } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
+import { pageSettled } from './support/animations';
 
 test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
@@ -72,7 +73,7 @@ test('a timeline runs down the roles: a dot for each, the current one filled and
   // the dot sits in the gap between the date and the text, and the first dot is level with the company name
   const dot = dots.first();
   await dot.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(1400);
+  await pageSettled(page);
   const geometry = await page.evaluate(() => {
     const row = document.querySelector('main article')!;
     const date = row.querySelector('p')!.getBoundingClientRect();
@@ -139,7 +140,7 @@ test('the logo of a role zooms in a little when the row is hovered', async ({
   await page.goto('/resume');
   const row = page.locator('main article').nth(1);
   await row.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(1500);
+  await pageSettled(page);
   const image = row.locator('img').first();
   expect(await image.evaluate((el) => getComputedStyle(el).scale)).toMatch(
     /^(none|1)$/,

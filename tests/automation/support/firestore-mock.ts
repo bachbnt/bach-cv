@@ -124,3 +124,36 @@ export async function mockFirestore(
     return json({ writeResults: [{ updateTime: stamp }], commitTime: stamp });
   });
 }
+
+/**
+ * Makes the reads of one collection come back `'empty'` or as an `'error'` (a 500), or makes every read wait `delay` ms (to see a loading
+ * state). Call it after `mockFirestore`: the reads of the other collections go on to that mock.
+ */
+export async function interceptCollection(
+  page: Page,
+  collection: string,
+  answer: 'empty' | 'error' | { delay: number },
+) {
+  await page.route('**/firestore.googleapis.com/**', async (route) => {
+    const request = route.request();
+    if (typeof answer === 'object') {
+      await new Promise((resolve) => setTimeout(resolve, answer.delay));
+      return route.fallback();
+    }
+    const mine =
+      request.url().includes(':runQuery') &&
+      (request.postData() ?? '').includes(`"collectionId":"${collection}"`);
+    if (!mine) return route.fallback();
+    return answer === 'error'
+      ? route.fulfill({
+          status: 500,
+          contentType: 'application/json',
+          body: '{"error":{"code":500,"status":"INTERNAL"}}',
+        })
+      : route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
+        });
+  });
+}

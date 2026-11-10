@@ -1,6 +1,6 @@
 ---
 name: build-skin
-description: Build, extend or finish a skin of the site in src/skins/<id>/ (the ids so far are standard, dev, trade, stream, moba, travel), from a design/skins/*.html mock or from a brief. Use when asked to "make / implement / build / finish a skin", to turn a mock into a real skin, to add a feature to every skin, or to review a skin against the project's skin rules.
+description: Build, extend or finish a skin of the site in src/skins/<id>/ (the ids so far are standard, dev, trade, academic, travel, and stream and moba on their own branches), from a design/skins/*.html mock or from a brief. Use when asked to "make / implement / build / finish a skin", to turn a mock into a real skin, to add a feature to every skin, or to review a skin against the project's skin rules.
 ---
 
 # Build a skin
@@ -9,14 +9,15 @@ A skin changes how the content is presented, never the content. **Same informati
 **look**, not a spec of content: its titles, numbers and names are placeholders. Content, copy and behaviour come from Standard; layout,
 components and interaction are the skin's own. Reply in Vietnamese.
 
-| Id         | State                                                   | What it is                                               | Details                |
-| ---------- | ------------------------------------------------------- | -------------------------------------------------------- | ---------------------- |
-| `standard` | the site itself (`app/**`, `components/**`)             | the default look                                         | -                      |
-| `dev`      | on `dev`, the model of a window-like skin               | code editor (`src/skins/dev/README.md`)                  | -                      |
-| `trade`    | on `dev`, the model of a skin with a real engine inside | chart terminal                                           | `references/trade.md`  |
-| `stream`   | branch `feat/stream-skin` (based on an older `dev`)     | video platform: watch page, Shorts, live chat, Live page | `references/stream.md` |
-| `moba`     | branch `feat/moba-skin`                                 | arena map you walk, pages are stations of the map        | `references/moba.md`   |
-| `travel`   | branch `feat/travel-skin`                               | 2.5D trip map of Nha Trang from OpenStreetMap            | `references/travel.md` |
+| Id         | State                                                   | What it is                                               | Details                                              |
+| ---------- | ------------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------- |
+| `standard` | the site itself (`app/**`, `components/**`)             | the default look                                         | -                                                    |
+| `dev`      | on `dev`, the model of a window-like skin               | code editor (`src/skins/dev/README.md`)                  | -                                                    |
+| `trade`    | on `dev`, the model of a skin with a real engine inside | chart terminal                                           | `references/trade.md`                                |
+| `academic` | on `dev`                                                | chalkboard / whiteboard with a pinned manuscript         | `src/skins/academic/README.md`                       |
+| `stream`   | branch `feat/stream-skin` (based on an older `dev`)     | video platform: watch page, Shorts, live chat, Live page | `references/stream.md`                               |
+| `moba`     | branch `feat/moba-skin`                                 | arena map you walk, pages are stations of the map        | `references/moba.md`                                 |
+| `travel`   | on `dev`                                                | 2.5D trip map of Nha Trang from OpenStreetMap            | `references/travel.md`, `src/skins/travel/README.md` |
 
 No id: ask which one. One skin per run.
 

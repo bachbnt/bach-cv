@@ -4,6 +4,7 @@
 
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
+import { pageSettled } from './support/animations';
 
 test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
@@ -98,7 +99,7 @@ test('the dark theme does not leave dark text on a dark surface (cards, tags, di
   await page.addInitScript(() => localStorage.setItem('bach-cv-theme', 'dark'));
   for (const path of ['/', '/about', '/resume', '/projects', '/certificates']) {
     await page.goto(path);
-    await page.waitForTimeout(1200);
+    await pageSettled(page);
     const bad = await page.evaluate(() => {
       const lum = (c: string) => {
         const m = c.match(/[\d.]+/g)?.map(Number) ?? [];

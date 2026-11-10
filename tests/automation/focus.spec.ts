@@ -4,6 +4,7 @@
 
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
+import { pageSettled } from './support/animations';
 
 test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
@@ -37,7 +38,7 @@ for (const path of ['/', '/certificates', '/projects', '/services']) {
     page,
   }) => {
     await page.goto(path);
-    await page.waitForTimeout(1500);
+    await pageSettled(page);
     expect(await withoutFocusRing(page, 24)).toEqual([]);
   });
 }

@@ -4,6 +4,7 @@
 
 import { expect, test, type Locator } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
+import { pageSettled } from './support/animations';
 
 test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
@@ -165,7 +166,7 @@ for (const [name, path, selector] of [
     const card = page.locator(selector);
     await card.scrollIntoViewIfNeeded();
     // let the entrance finish, and its stagger delay with it
-    await page.waitForTimeout(1800);
+    await pageSettled(page);
 
     const resting = await lifted(card);
     expect(resting.translate === 'none' || resting.translate === '0px').toBe(
