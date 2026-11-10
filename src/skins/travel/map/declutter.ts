@@ -14,7 +14,7 @@ export type Side = 'left' | 'right' | 'below' | 'above';
 /** The sides a tag may take: the order they are tried in after its own. */
 export const SIDES: readonly Side[] = ['below', 'left', 'right', 'above'];
 
-/** How far a tag stands from the sight's anchor, in the map's own pixels (see `.tl-name` in css/map.css). */
+/** How far a tag stands from the sight's anchor, in the map's own pixels (see `.tl-name` in css/tags.css). */
 const BELOW_GAP = 4;
 const SIDE_GAP = 10;
 const SIDE_LIFT = 40;

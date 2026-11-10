@@ -1,0 +1,158 @@
+/* Travel skin: sights. The sprites that stand on the map: the drawings, the boats, the cable car and the card of a sight. Prefix tl-, hover only inside @media (hover: hover). */
+/* ---- sprites: they stand on their point and keep a readable size at every zoom */
+.tl-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.tl-sprite > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.tl-art {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  /* the new size is taken once the camera has stopped, and a drawing that is pointed at (or whose card is open) rises and swells with a small
+     overshoot: `translate` and `scale` are their own properties, apart from the `transform` that sizes it, so the compositor does both */
+  transition:
+    transform 0.2s ease-out,
+    translate 0.32s cubic-bezier(0.3, 1.6, 0.5, 1),
+    scale 0.32s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.tl-art svg {
+  display: block;
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+}
+/* the boat drifts and bobs by its anchor (a div): the same animation on the drawing (an svg root) was not done by the compositor, so the main thread drew a
+   frame 60 times a second */
+.tl-boat {
+  animation: tl-bob var(--tl-dur, 28s) ease-in-out infinite alternate;
+}
+.tl-boat > * {
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  translate: none;
+  /* the sprites take their new size once the camera has stopped: they grow into it instead of jumping (that jump was seen as a flicker) */
+  transition: transform 0.2s ease-out;
+}
+@keyframes tl-bob {
+  from {
+    translate: -30px 0;
+  }
+  50% {
+    translate: 2px 5px;
+  }
+  to {
+    translate: 34px -3px;
+  }
+}
+/* the cable car is on the top layer of the map but the pins: its cabins cross over the mountains and the names, where they were hidden behind them */
+.tl-cable-line {
+  pointer-events: none;
+  z-index: 8590;
+}
+.tl-cable-line line {
+  stroke: var(--tl-ink);
+  stroke-width: 1.6;
+  stroke-dasharray: 3 4;
+  opacity: 0.6;
+}
+.tl-gondola {
+  z-index: 8600;
+  width: 0;
+  height: 0;
+  animation: tl-gondola 24s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+/* the other cabin starts at the far end and comes the other way */
+.tl-gondola-back {
+  animation-direction: alternate-reverse;
+}
+/* the cabin hangs from the cable and grows with the other sprites; the animation moves the box, so this transform stays apart */
+.tl-gondola-in {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, 0) scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  transition: transform 0.2s ease-out;
+}
+.tl-gondola-in svg {
+  display: block;
+}
+@keyframes tl-gondola {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: var(--tl-dx) var(--tl-dy);
+  }
+}
+
+/* a drawing pointed at (or with its card open) rises a little and swells (the transition is on `.tl-art`) */
+.tl-sight[data-hot] .tl-art {
+  translate: 0 -8px;
+  scale: 1.05;
+}
+@media (hover: hover) {
+  .tl-hit:hover + .tl-art {
+    translate: 0 -8px;
+    scale: 1.05;
+  }
+}
+/* where the pointer finds a sight: the middle and lower part of its drawing, not the empty corners of its box */
+.tl-hit {
+  left: 0;
+  top: 0;
+  width: calc(96px * var(--tl-art, 1));
+  height: calc(104px * var(--tl-art, 1));
+  border-radius: 46% 46% 30% 30%;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  pointer-events: auto;
+  cursor: pointer;
+}
+/* the card of a sight, in the layer of the names: over its drawing, with the name tag giving way */
+.tl-info-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  width: 224px;
+  margin: 0;
+  padding: 8px 12px 9px;
+  transform: translate(
+      -50%,
+      calc(
+        -160px * var(--tl-crown, 0.88) * var(--tl-art, 1) * var(--tl-sc) -
+          100% * var(--tl-sc) - 8px
+      )
+    )
+    scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  border-radius: 14px;
+  background: var(--tl-panel);
+  color: var(--tl-ink);
+  box-shadow: var(--tl-shadow);
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: none;
+  animation: tl-lit-in 0.2s ease-out;
+}
+.tl-info-card b {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.tl-info-card span {
+  color: var(--tl-muted);
+}

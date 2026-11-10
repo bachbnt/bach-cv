@@ -1,0 +1,52 @@
+/* Travel skin: tags. The name tags of the sights (their layer, the sides that use-declutter.ts picks). Prefix tl-, hover only inside @media (hover: hover). */
+.tl-name {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  transform: translateX(-50%) scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  translate: none;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--tl-ink);
+  background: var(--tl-panel);
+  padding: 2px 8px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.2s ease-out,
+    opacity 0.15s;
+}
+/* a tag that would lie on a card of a stop or on a better-known tag is left out (see use-declutter.ts) */
+.tl-name.tl-off {
+  opacity: 0;
+}
+.tl-tag-left .tl-name {
+  transform: translateX(calc(-100% - 10px)) scale(var(--tl-sc));
+  transform-origin: 100% 0;
+  top: -40px;
+}
+.tl-tag-above .tl-name {
+  /* over the top of what is drawn (the box is 160 px times the sight's size, `--tl-crown` the part of it that is drawn, set by use-declutter.ts) */
+  transform: translate(
+      -50%,
+      calc(
+        -160px * var(--tl-crown, 0.88) * var(--tl-art) * var(--tl-sc) - 100% *
+          var(--tl-sc) - 6px
+      )
+    )
+    scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  top: 0;
+}
+.tl-tag-right .tl-name {
+  transform: translateX(10px) scale(var(--tl-sc));
+  transform-origin: 0 0;
+  top: -40px;
+}
+[data-label][data-info] .tl-name {
+  opacity: 0;
+}

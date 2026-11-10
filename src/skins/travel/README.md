@@ -110,7 +110,12 @@ screen, and on a touch screen the waves and the foam are left out. Measured at 3
 skin.tsx            the SkinDefinition
 config.ts           pages (icon, route), camera focus of each page, stop colours
 travel.css          palette on html[data-skin='travel'] (night base, day `:not(.dark)`), shadcn tokens, base rules
-css/                map.css (the map), then one file for each area
+css/                one file for each area, imported in this order by skin.tsx (the order is the cascade: the later one wins at equal specificity):
+                      map.css (the stage, the world, the route, the hint, the controls, the credit), sky.css (sun, moon, stars, clouds, birds),
+                      ground.css (the crests of the waves, the foam, the lights of the windows), sights.css (the drawings, the boats, the cable
+                      car, the hit areas, the card of a sight), tags.css (the name tags and their sides), pins.css (the pins of the stops, the
+                      traveller), still.css (paused, the whole map on screen, a touch screen: last of the map files, it overrides their loops),
+                      sprites.css (the loops inside the drawings), overlays.css, pages-trip.css, pages-postcards.css, pages-desk.css
 map/                geo (generated), projection, iso, route, sights, camera, the map component and its layers, sprites/
 shell/              the frame: header, rail, menus, context (trip stops, CV window), overlays
 ui/                 tl-root, tl-button, tl-kicker, tl-chip, tl-panel (card or sheet), tl-page, data states, status screens

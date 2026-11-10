@@ -1,0 +1,46 @@
+/* Travel skin: still. What stands still: paused, the whole map on screen and a touch screen. Last of the map files, so it overrides the loops of the others. Prefix tl-, hover only inside @media (hover: hover). */
+/* ---- paused: off screen or hidden */
+.tl-paused *,
+.tl-paused *::before,
+.tl-paused *::after {
+  animation-play-state: paused !important;
+}
+
+/*
+ * Zoomed all the way out the whole map is on screen: every layer is in view, the layer of waves is as big as the map, and each loop
+ * that ends wakes the main thread. Nothing that moves there can be seen, so it stands still and the waves are not drawn. The animated
+ * parts are named one by one: a universal selector (and its pseudo-elements) is matched against every element at each style update.
+ */
+.tl-whole
+  :is(
+    .tl-boat,
+    .tl-gondola,
+    .tl-flag,
+    .tl-steam,
+    .tl-wheel,
+    .tl-pod,
+    .tl-dive,
+    .tl-bubble,
+    .tl-shore
+  ) {
+  /* `none`, not `paused`: a paused animation still keeps the element on a layer of its own, and the shore is a layer as big as the map */
+  animation: none;
+}
+.tl-whole .tl-waves {
+  display: none;
+}
+/* a phone (a touch screen) cannot keep two layers as big as the map alive: the crests of the waves and the breathing of the foam are left out
+   there at every zoom, as they are when the whole map is on screen. A page of this skin once got the tab killed on an iPhone (too much memory). */
+@media (pointer: coarse) {
+  .tl-waves {
+    display: none;
+  }
+  .tl-stars i,
+  .tl-cloud,
+  .tl-bird {
+    animation: none;
+  }
+  .tl-shore {
+    animation: none;
+  }
+}

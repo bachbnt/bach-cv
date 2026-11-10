@@ -141,6 +141,26 @@ describe('the CSS of the Travel skin', () => {
     expect(stopped).toHaveLength(2);
   });
 
+  it('imports every CSS file of the folder, with still.css after the files whose loops it stops (at equal specificity the later rule wins)', () => {
+    const imported = [
+      ...readFileSync(`${DIR}/skin.tsx`, 'utf8').matchAll(
+        /import '@\/skins\/travel\/css\/([\w-]+\.css)';/g,
+      ),
+    ].map((m) => m[1]);
+    expect([...imported].sort()).toEqual(
+      readdirSync(`${DIR}/css`)
+        .filter((name) => name.endsWith('.css'))
+        .sort(),
+    );
+    const at = (name: string) => imported.indexOf(name);
+    // the touch-screen rules set `animation: none` on the clouds, birds, stars and foam of sky.css and ground.css
+    for (const earlier of ['sky.css', 'ground.css', 'sights.css'])
+      expect(at('still.css'), earlier).toBeGreaterThan(at(earlier));
+    // the pins are sprites too: `.tl-sprite > *` of sights.css comes first, `.tl-pin > *` and `.tl-pin-flag` of pins.css override it
+    expect(at('pins.css')).toBeGreaterThan(at('sights.css'));
+    expect(at('tags.css')).toBeGreaterThan(at('sights.css'));
+  });
+
   it('keeps the state classes of the map for ancestors only, so no other rule can style the map itself through them', () => {
     // a state class that is also a drawing class resized the whole map once (`tl-far` is the far mountains of the sky)
     const states = ['tl-paused', 'tl-moving', 'tl-close', 'tl-whole'];

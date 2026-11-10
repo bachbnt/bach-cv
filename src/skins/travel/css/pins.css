@@ -1,0 +1,204 @@
+/* Travel skin: pins. The pins of the stops and the traveller. Prefix tl-, hover only inside @media (hover: hover). */
+/* ---- pins of the stops */
+.tl-pin {
+  pointer-events: none;
+}
+.tl-pin > * {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: none;
+  transform-origin: 0 0;
+}
+.tl-pin-btn {
+  pointer-events: auto;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  display: block;
+  padding-bottom: 12px;
+  cursor: pointer;
+  transition:
+    scale 0.25s cubic-bezier(0.3, 1.5, 0.5, 1),
+    transform 0.2s ease-out;
+}
+.tl-pin-head {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 6px;
+  border-radius: 50% 50% 50% 8px;
+  transform: rotate(-45deg);
+  background: var(--tl-pc);
+  border: 3px solid #fff;
+  box-shadow:
+    0 8px 16px -4px rgba(0, 0, 0, 0.4),
+    inset 0 -4px 0 rgba(0, 0, 0, 0.14);
+  color: #fff;
+}
+.tl-pin-head svg {
+  transform: rotate(45deg);
+  width: 22px;
+  height: 22px;
+}
+.tl-pin-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--tl-pc);
+  border: 3px solid #fff;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+/* the card of a stop (its name and period) is shown when the pin is pointed at or has the focus, or when its stop is the one that is open: the
+   map already holds a name for every sight, and the cards of all the stops covered them. The pin keeps its accessible name. */
+.tl-pin-label {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-out;
+  position: absolute;
+  left: calc(50% + 34px);
+  bottom: 18px;
+  white-space: nowrap;
+  text-align: left;
+  background: var(--tl-panel);
+  border-radius: 12px;
+  border-left: 4px solid var(--tl-pc);
+  padding: 6px 10px 6px 11px;
+  box-shadow: var(--tl-shadow);
+  color: var(--tl-ink);
+}
+.tl-pin-label b {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.15;
+  /* a long name (a school) is cut inside its pin label instead of making the label wider than the map */
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-pin-label small {
+  display: block;
+  font-size: 10.5px;
+  color: var(--tl-muted);
+  margin-top: 1px;
+}
+.tl-pin-left .tl-pin-label {
+  left: auto;
+  right: calc(50% + 34px);
+  border-left: 0;
+  border-right: 4px solid var(--tl-pc);
+  text-align: right;
+}
+.tl-pin[data-on] .tl-pin-label,
+.tl-pin-btn:focus-visible .tl-pin-label {
+  opacity: 1;
+}
+.tl-pin[data-on] .tl-pin-btn {
+  scale: 1.14;
+}
+.tl-root .tl-pin-btn:focus-visible {
+  outline: none;
+}
+.tl-pin-btn:focus-visible .tl-pin-head {
+  outline: 3px solid var(--tl-coral);
+  outline-offset: 3px;
+}
+@media (hover: hover) {
+  .tl-pin:hover .tl-pin-label {
+    opacity: 1;
+  }
+  /* the pin pointed at, and its card, stand over the others */
+  .tl-pin:hover {
+    z-index: 30000 !important;
+  }
+  .tl-pin-btn:hover {
+    scale: 1.14;
+  }
+}
+/* under the pin, where nothing of the map stands over it (above, it lay on the cards and drawings of the places around) */
+.tl-pin-flag {
+  transform: translate(-50%, 0) translateY(10px) scale(var(--tl-sc));
+  transform-origin: 50% 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--tl-coral);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  box-shadow: 0 8px 18px -6px var(--tl-coral);
+  /* the new size is taken once the camera has stopped: it grows into it instead of jumping */
+  transition: transform 0.2s ease-out;
+}
+.tl-pin-flag i {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* ---- the traveller */
+.tl-traveller {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.tl-traveller-in {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -100%) scale(var(--tl-sc));
+  transform-origin: 50% 100%;
+  /* the new size is taken once the camera has stopped: it grows into it instead of jumping */
+  transition: transform 0.2s ease-out;
+}
+.tl-traveller-badge {
+  display: block;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  overflow: hidden;
+  box-shadow:
+    0 8px 16px -4px rgba(0, 0, 0, 0.4),
+    0 0 0 3px var(--tl-coral);
+  background: var(--tl-coral);
+}
+.tl-traveller-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tl-traveller-tag {
+  position: absolute;
+  left: 50%;
+  top: -26px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff;
+  color: #c13a28;
+  padding: 2px 8px;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.tl-moving .tl-traveller-tag {
+  opacity: 1;
+}
