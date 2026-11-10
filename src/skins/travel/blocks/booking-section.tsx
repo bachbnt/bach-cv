@@ -34,7 +34,7 @@ function BookedNote({
     <div className='flex flex-col items-start gap-2.5 py-1'>
       <span
         aria-hidden='true'
-        className='tl-stamp grid size-14 [--r:-8deg] place-items-center rounded-full border-[3px] border-double border-tl-teal text-tl-teal'
+        className='tl-stamp grid size-14 [--r:-8deg] place-items-center text-tl-teal'
       >
         <Check className='size-7' strokeWidth={2.6} />
       </span>

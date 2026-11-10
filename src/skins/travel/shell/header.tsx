@@ -20,7 +20,7 @@ import { localize } from '@/lib/content/schema';
 import { ConnectMenu } from '@/skins/travel/shell/connect-menu';
 import { LanguageMenu, SkinMenu, ThemeMenu } from '@/skins/travel/shell/menus';
 import { useTravel } from '@/skins/travel/shell/travel-context';
-import { TlButton } from '@/skins/travel/ui/tl-button';
+import { HEADER_ICON, TlButton } from '@/skins/travel/ui/tl-button';
 
 export const CHAT_TRIGGER_ID = 'tl-chat-trigger';
 export const CV_TRIGGER_ID = 'tl-cv-trigger';
@@ -36,16 +36,16 @@ export function Header() {
   const { openCv } = useTravel();
   const headline = localize(shell, lang).headline;
   return (
-    <header className='tl-header relative z-30 flex items-center gap-2 border-b border-tl-line bg-tl-panel px-3 md:col-span-2 md:gap-3 md:px-4'>
+    <header className='tl-header relative z-30 flex items-center gap-2 border-b border-tl-line bg-tl-panel px-3 max-md:min-[360px]:gap-1.5 max-md:min-[360px]:px-2.5 max-[359px]:gap-1 max-[359px]:px-2 md:col-span-2 md:gap-3 md:px-4'>
       <Link
         href='/'
         aria-label={fill(common.homeLink, { name: shell.name })}
-        className='flex min-w-0 items-center gap-2.5 rounded-xl'
+        className='flex min-w-0 items-center gap-2.5 rounded-xl max-md:flex-none'
       >
         {/* the owner's mark as a stamp stuck on the bar */}
         <span
           aria-hidden='true'
-          className='grid size-10 flex-none -rotate-3 place-items-center rounded-[5px] border-2 border-dashed border-tl-coral/60 bg-tl-solid shadow-tl-card'
+          className='grid size-10 flex-none -rotate-3 place-items-center max-md:min-[360px]:size-8 max-[359px]:size-7 rounded-[5px] border-2 border-dashed border-tl-coral/60 bg-tl-solid shadow-tl-card'
         >
           <Image
             src='/logo.png'
@@ -53,7 +53,7 @@ export function Header() {
             width={30}
             height={28}
             priority
-            className='h-auto w-[26px]'
+            className='h-auto w-[26px] max-md:w-5'
           />
         </span>
         <span className='flex min-w-0 flex-col max-sm:hidden'>
@@ -74,7 +74,7 @@ export function Header() {
           aria-haspopup='dialog'
           onClick={openCv}
           aria-label={common.downloadCv}
-          className='max-md:size-10 max-md:px-0'
+          className={HEADER_ICON}
         >
           <Download aria-hidden='true' />
           <span className='max-md:hidden'>{common.downloadCv}</span>
@@ -86,7 +86,7 @@ export function Header() {
           variant='ghost'
           onClick={openChat}
           aria-label={chat.askButton}
-          className='max-md:size-10 max-md:px-0'
+          className={HEADER_ICON}
         >
           <MessageCircle aria-hidden='true' />
           <span className='max-lg:hidden'>{chat.askButton}</span>

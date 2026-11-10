@@ -73,11 +73,6 @@
     var(--tl-solid) 34px 40px
   );
 }
-.tl-stamp {
-  border: 2px dashed color-mix(in srgb, var(--tl-coral) 60%, transparent);
-  border-radius: 4px;
-  box-shadow: 0 6px 12px -6px color-mix(in srgb, var(--tl-ink) 35%, transparent);
-}
 
 /* the BB Bot, the travel guide: the head of the card has the contour lines of a map around its corner, the conversation is a dashed
    route that runs down the left (each answer of the guide is a stop on it, and it scrolls with the messages), the visitor's lines are

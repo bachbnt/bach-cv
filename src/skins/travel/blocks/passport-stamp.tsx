@@ -46,7 +46,7 @@ function RubberStamp({
       className={cn(
         latest ? '[--tl-pc:var(--tl-coral)]' : stopClass(stopOfIndex(index)),
         stampTurnClass(index),
-        'tl-stamp relative grid size-[88px] flex-none place-items-center rounded-full border-[3px] border-double border-[var(--tl-pc)] bg-[radial-gradient(circle,color-mix(in_srgb,var(--tl-pc)_10%,transparent),transparent_70%)] p-2.5 text-center text-[var(--tl-pc)] before:absolute before:inset-1.5 before:rounded-full before:border-[1.5px] before:border-[var(--tl-pc)] before:opacity-70 before:content-[""]',
+        'tl-stamp relative grid size-[88px] flex-none place-items-center bg-[radial-gradient(circle,color-mix(in_srgb,var(--tl-pc)_10%,transparent),transparent_70%)] p-2.5 text-center text-[var(--tl-pc)] before:absolute before:inset-1.5 before:rounded-full before:border-[1.5px] before:border-[var(--tl-pc)] before:opacity-70 before:content-[""]',
       )}
     >
       <span className='block text-[9px] leading-[1.15] font-extrabold tracking-[0.6px] uppercase'>

@@ -39,7 +39,9 @@
   }
 }
 
-/* a stamp lands on the page: it arrives large and settles, one after another (`--dl` is its turn) */
+/* a stamp (the owner's photo on the Connect postcard, a certificate, the booking mark) is stuck on the page with the dashed edge of a postage
+   stamp, and lands on it: it arrives large and settles, one after another (`--dl` is its turn). Said once, here: a second rule for the same
+   class in another file decided the look of all three by the order the files load in. */
 @keyframes tl-stamp-in {
   from {
     transform: rotate(var(--r)) scale(2.2);
@@ -47,6 +49,9 @@
   }
 }
 .tl-stamp {
+  border: 2px dashed color-mix(in srgb, var(--tl-coral) 60%, transparent);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px -6px color-mix(in srgb, var(--tl-ink) 35%, transparent);
   transform: rotate(var(--r, 0deg));
   animation: tl-stamp-in 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) var(--dl, 0s) both;
 }

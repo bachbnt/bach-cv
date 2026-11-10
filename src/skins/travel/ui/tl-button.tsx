@@ -35,6 +35,14 @@ export const tlButton = cva(
 
 type Variants = VariantProps<typeof tlButton>;
 
+/**
+ * The size of a control of the header on a phone: a round icon, 44 px on a touch screen (40 px when the screen is under 360 px, where six
+ * of them and the logo do not fit otherwise; two ranges that do not overlap, so no rule depends on the order of the CSS). Said in width and height both, so a touch screen's least height does not turn the circle
+ * into an oval, and `flex-none` in the bar so the row never squeezes it.
+ */
+export const HEADER_ICON =
+  'flex-none max-md:size-10 max-md:px-0 max-md:min-[360px]:pointer-coarse:min-h-11 max-md:min-[360px]:pointer-coarse:min-w-11 max-[359px]:pointer-coarse:min-h-10 max-[359px]:pointer-coarse:min-w-10';
+
 /** A `<button>` of the skin; `type` is `button` unless the caller says otherwise. */
 export function TlButton({
   variant,

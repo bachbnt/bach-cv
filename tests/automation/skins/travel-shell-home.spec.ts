@@ -253,3 +253,37 @@ test.describe('the words of every page', () => {
     }
   }
 });
+
+test.describe('the header on a phone', () => {
+  test.use({ hasTouch: true, isMobile: true });
+
+  for (const width of [320, 360, 390]) {
+    test(`at ${width} px its controls are round, all inside the screen, and as big as a finger needs`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await gotoSkin(page, '/');
+      const boxes = await page
+        .locator('header.tl-header button')
+        .evaluateAll((els) =>
+          els.map((el) => {
+            const r = el.getBoundingClientRect();
+            return { w: r.width, h: r.height, right: r.right };
+          }),
+        );
+      expect(boxes).toHaveLength(6);
+      for (const box of boxes) {
+        // a circle: a touch screen's least height must not turn it into an oval, and the row must not squeeze it
+        expect(Math.abs(box.w - box.h)).toBeLessThan(0.5);
+        // 44 px, or 40 px under 360 px where six of them and the logo would not fit
+        expect(box.w).toBeGreaterThanOrEqual(width >= 360 ? 44 : 40);
+        expect(box.right).toBeLessThanOrEqual(width);
+      }
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth - window.innerWidth,
+        ),
+      ).toBeLessThanOrEqual(0);
+    });
+  }
+});

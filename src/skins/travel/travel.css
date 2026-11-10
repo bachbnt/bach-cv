@@ -260,26 +260,8 @@ html[data-skin='travel'] {
     transform: translateX(100%);
   }
 }
-@keyframes tl-hop-slow {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
 .tl-spin-slow {
   animation: tl-spin 5s linear infinite;
-}
-@keyframes tl-hop {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
 }
 @keyframes tl-spin {
   to {

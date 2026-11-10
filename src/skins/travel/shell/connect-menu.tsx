@@ -25,7 +25,8 @@ import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
-import { TlButton } from '@/skins/travel/ui/tl-button';
+import { cn } from '@/lib/utils';
+import { HEADER_ICON, TlButton } from '@/skins/travel/ui/tl-button';
 
 /**
  * Connect, a postcard: the same email (with Copy and Copied), the same links by group and the same place as the Standard Connect menu,
@@ -50,7 +51,7 @@ export function ConnectMenu() {
           <TlButton
             variant='ghost'
             aria-label={text.button}
-            className='data-popup-open:bg-tl-chip max-md:size-10 max-md:px-0'
+            className={cn('data-popup-open:bg-tl-chip', HEADER_ICON)}
           />
         }
       >

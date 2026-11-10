@@ -254,7 +254,14 @@ export function TravelMap({
       onPointerLeave={() => setHover(null)}
       onPointerDownCapture={endRide}
       onWheelCapture={endRide}
-      onKeyDownCapture={endRide}
+      onKeyDownCapture={(event) => {
+        // the keys that move the camera (as in `useCamera`); Tab or a letter leaves the ride alone
+        if (
+          event.target === event.currentTarget &&
+          /^(Arrow|[+=-])/.test(event.key)
+        )
+          endRide();
+      }}
       {...handlers}
     >
       <p id='tl-map-help' className='sr-only'>

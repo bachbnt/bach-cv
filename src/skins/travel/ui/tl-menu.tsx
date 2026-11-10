@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { HEADER_ICON } from '@/skins/travel/ui/tl-button';
 
 interface TlMenuItem {
   value: string;
@@ -49,6 +50,7 @@ export function TlMenu({
         aria-label={label}
         className={cn(
           'inline-flex h-10 cursor-pointer items-center justify-center gap-1.5 rounded-full bg-tl-chip text-[13px] font-bold text-tl-chip-ink transition-transform hover:-translate-y-px data-popup-open:bg-tl-coral data-popup-open:text-tl-on-coral pointer-coarse:min-h-11 [&_svg]:size-[18px]',
+          HEADER_ICON,
           current ? 'px-3.5' : 'w-10',
         )}
       >

@@ -104,7 +104,6 @@ export const experienceProjectSchema = z.object({
   /** optional link to a document in `projects` */
   projectId: z.union([slugSchema, z.literal('')]).default(''),
 });
-export type ExperienceProject = z.output<typeof experienceProjectSchema>;
 
 export const experienceSchema = z.object({
   ...flags,
