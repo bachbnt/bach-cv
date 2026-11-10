@@ -56,7 +56,8 @@ export function DataState({
   if (query.isPending)
     return <LoadingBlock className={className}>{skeleton}</LoadingBlock>;
 
-  if (query.isError)
+  // a background refetch that failed keeps the data it had: only a block with nothing to show is an error
+  if (query.isError && count === 0)
     return (
       <StateNotice
         kind='error'

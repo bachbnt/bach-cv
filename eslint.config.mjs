@@ -9,6 +9,10 @@ export default defineConfig([
   prettier,
   globalIgnores([
     '.next/**',
+    // the other builds and runs of the tests (`.next-build`, `.next-cv`) and the local mockups
+    '.next-*/**',
+    'test-results*/**',
+    'design/**',
     'out/**',
     'build/**',
     'next-env.d.ts',

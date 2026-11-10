@@ -5,6 +5,8 @@ const port = Number(process.env.PW_PORT) || 3100;
 
 // the chat tests talk to a stubbed proxy on this address
 process.env.NEXT_PUBLIC_CHAT_PROXY_URL = 'http://localhost:9999/chat';
+// App Check (reCAPTCHA) must not call Google from a test: a key in `.env.local` would turn it on
+process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY = '';
 
 export default defineConfig({
   testDir: 'tests/automation',

@@ -4,7 +4,6 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ConnectMenu } from '@/components/connect-menu';
@@ -15,21 +14,18 @@ import { useCopy } from '@/lib/i18n/copy';
 import { MobileMenu } from '@/components/mobile-menu';
 import { SkinSwitch } from '@/components/skin-switch';
 import { ThemeSwitch } from '@/components/theme-switch';
-import { liveSchema, type PageKey } from '@/lib/content/schema';
+import { useLive } from '@/hooks/use-live';
+import type { PageKey } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { NAV_PAGES, PAGE_META } from '@/lib/pages';
-import { liveQueryOptions } from '@/lib/query/options';
 import { cn } from 'cn';
 import { shownPages } from '@/lib/derive/shown-pages';
-
-/** Until the switches arrive (or if they cannot be read) every page is on: the site fails open. */
-const DEFAULT_LIVE = liveSchema.parse({});
 
 const navLink =
   'border-b-2 border-transparent py-2 text-[15px] font-medium hover:border-brand-ink aria-[current=page]:border-page';
 
 export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
-  const { data: live = DEFAULT_LIVE } = useQuery(liveQueryOptions());
+  const live = useLive();
   const copy = useCopy(commonCopy);
 
   return (

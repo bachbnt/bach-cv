@@ -48,6 +48,12 @@ serviceAccount*.json
 # Backups of the Firestore data: payment details and visitors' emails
 /backup/
 
+# Local mockups of the skins (HTML, screenshots): never published, the repo is public
+/design/
+
+# Scratch specs written while looking at something
+zz-*
+
 # AI tooling: local settings and downloaded copies of third-party skill repositories
 /.claude/settings.local.json
 /agent-skills-main/

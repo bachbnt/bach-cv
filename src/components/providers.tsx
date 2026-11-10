@@ -39,7 +39,10 @@ export function Providers({ children }: { children: ReactNode }) {
     () =>
       new QueryClient({
         // gcTime must cover the persisted maxAge, or the cache is dropped before it can be restored
-        defaultOptions: { queries: { gcTime: ONE_DAY, retry: 1 } },
+        // only `site/live` refetches when the tab gets the focus back (it says so itself); the content is read again when it is stale and a page needs it
+        defaultOptions: {
+          queries: { gcTime: ONE_DAY, retry: 1, refetchOnWindowFocus: false },
+        },
       }),
   );
   const [persister] = useState<Persister>(() =>

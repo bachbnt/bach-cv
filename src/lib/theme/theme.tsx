@@ -10,6 +10,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -42,6 +43,8 @@ const systemPrefersDark = (): boolean =>
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('system');
   const [systemDark, setSystemDark] = useState(false);
+  // the first render knows nothing of the saved choice; until it has been read the class the layout script put on <html> is left alone
+  const read = useRef(false);
 
   useEffect(() => {
     let saved: string | null = null;
@@ -51,6 +54,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       // storage blocked: follow the system
     }
     const choice = isTheme(saved) ? saved : 'system';
+    read.current = true;
     document.documentElement.setAttribute('data-theme', choice);
     /* eslint-disable react-hooks/set-state-in-effect -- reading the saved choice must wait for the browser */
     setThemeState(choice);
@@ -66,6 +70,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const resolved = theme === 'system' ? (systemDark ? 'dark' : 'light') : theme;
 
   useEffect(() => {
+    if (!read.current) return;
     document.documentElement.classList.toggle('dark', resolved === 'dark');
   }, [resolved]);
 
