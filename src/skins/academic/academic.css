@@ -377,7 +377,6 @@ html[data-skin='academic']:not(.dark) .ac-paper {
 .ac-scope :focus-visible {
   outline: 2px dashed var(--ac-accent);
   outline-offset: 3px;
-  border-radius: 3px;
 }
 /* the tabs scroll sideways on a phone, which clips a ring drawn outside them: theirs is drawn inside */
 .ac-toc-link:focus-visible {

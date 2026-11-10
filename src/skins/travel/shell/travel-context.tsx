@@ -18,6 +18,7 @@ import { routeStops, type RouteStop } from '@/lib/derive/route-stops';
 import type { Doc } from '@/lib/content/schema';
 import { formatPeriod } from '@/lib/format';
 import { useLang } from '@/lib/i18n/language';
+import { useNow } from '@/hooks/use-now';
 import { useContentQuery } from '@/lib/query/use-content';
 import { STOP_COLORS } from '@/skins/travel/config';
 import { placeStops, rideOf } from '@/skins/travel/map/route';
@@ -68,6 +69,7 @@ export function TravelProvider({ children }: { children: ReactNode }) {
   const experience = useContentQuery('experience');
   const education = useContentQuery('education');
   const { lang } = useLang();
+  const now = useNow();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [touring, setTouring] = useState(false);
   const [sight, setSight] = useState<{ id: SightId; fly: boolean } | null>(
@@ -77,11 +79,7 @@ export function TravelProvider({ children }: { children: ReactNode }) {
   const timer = useRef<number | undefined>(undefined);
 
   const stops = useMemo<TripStop[]>(() => {
-    const career = routeStops(
-      experience.data ?? [],
-      education.data ?? [],
-      new Date(),
-    );
+    const career = routeStops(experience.data ?? [], education.data ?? [], now);
     const placed = placeStops(career);
     return career.flatMap((stop, i) => {
       const where = placed[i];
@@ -108,7 +106,7 @@ export function TravelProvider({ children }: { children: ReactNode }) {
         },
       ];
     });
-  }, [experience.data, education.data, lang]);
+  }, [experience.data, education.data, lang, now]);
 
   const stopTour = useCallback(() => {
     window.clearTimeout(timer.current);

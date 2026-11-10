@@ -73,7 +73,6 @@ export function ResumePage() {
               </section>
               {open && (
                 <TripStopCard
-                  key={open.map.id}
                   stop={open}
                   index={index}
                   total={stops.length}

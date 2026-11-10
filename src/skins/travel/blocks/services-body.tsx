@@ -4,14 +4,12 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useContactForm } from '@/components/services/use-contact-form';
 import { servicesCopy } from '@/content/copy/services';
 import { travelPostcardsCopy } from '@/content/copy/travel-postcards';
 import { useLive } from '@/hooks/use-live';
-import { settingsSchema } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
-import { settingsQueryOptions } from '@/lib/query/options';
+import { useContactLimits } from '@/hooks/use-contact-limits';
 import { BookingSection } from '@/skins/travel/blocks/booking-section';
 import { TourList } from '@/skins/travel/blocks/tour-list';
 import { TlKicker } from '@/skins/travel/ui/tl-kicker';
@@ -19,16 +17,12 @@ import { TlKicker } from '@/skins/travel/ui/tl-kicker';
 /** The id of the page's heading: the panel is named by it. */
 export const SERVICES_TITLE_ID = 'tl-services-title';
 
-/** Until the settings arrive the form uses the schema defaults. */
-const DEFAULT_LIMITS = settingsSchema.parse({}).contactForm;
-
 /** The Services page body: the tours on top (they pick the topic) and the booking form under them, both driven by one `useContactForm`. */
 export function ServicesBody() {
   const copy = useCopy(servicesCopy);
   const words = useCopy(travelPostcardsCopy).tours;
   const { features } = useLive();
-  const { data: settings } = useQuery(settingsQueryOptions());
-  const limits = settings?.contactForm ?? DEFAULT_LIMITS;
+  const limits = useContactLimits();
   const form = useContactForm(limits);
 
   return (

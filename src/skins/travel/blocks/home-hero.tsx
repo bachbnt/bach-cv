@@ -43,7 +43,7 @@ export function HomeHero() {
           <span className='tl-portrait-in relative size-16 flex-none overflow-hidden rounded-full border-[3px] border-tl-solid shadow-tl-avatar'>
             <Image
               src={shell.avatar}
-              alt={`${shell.name} reading a book`}
+              alt={fill(copy.avatarAlt, { name: shell.name })}
               fill
               sizes='64px'
               priority

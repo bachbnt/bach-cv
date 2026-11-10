@@ -4,7 +4,6 @@
 
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useChat } from '@/components/chat/chat-provider';
 import { useChatSession } from '@/components/chat/use-chat-session';
@@ -14,15 +13,11 @@ import { chatCopy } from '@/content/copy/chat';
 import { useLive } from '@/hooks/use-live';
 import { fill } from '@/lib/chat/fill';
 import { resolveSuggestions } from '@/lib/chat/suggestions';
-import { settingsSchema } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
-import { settingsQueryOptions } from '@/lib/query/options';
+import { useChatSettings } from '@/hooks/use-chat-settings';
 import { CHAT_TRIGGER_ID } from '@/skins/travel/shell/header';
 import { ChatPanel } from '@/skins/travel/shell/overlay-chat-panel';
 import { useWide } from '@/skins/travel/shell/overlay-use-wide';
-
-/** Until `site/settings` arrives (or if it cannot be read) the defaults of the schema apply. */
-const DEFAULT_CHAT = settingsSchema.parse({}).chat;
 
 /**
  * The BB Bot of the Travel skin: the Standard conversation (`useChatSession`: the same limits, errors and Try again), shown as a card
@@ -38,11 +33,7 @@ export function TravelChat() {
   const inset = useKeyboardInset(isOpen && !wide);
 
   // the settings are read when the chat first opens, not on page load
-  const { data: settings } = useQuery({
-    ...settingsQueryOptions(),
-    enabled: isOpen,
-  });
-  const chat = settings?.chat ?? DEFAULT_CHAT;
+  const chat = useChatSettings(isOpen);
   const session = useChatSession({
     maxUserMessages: chat.maxUserMessages,
     maxInputLength: chat.maxInputLength,

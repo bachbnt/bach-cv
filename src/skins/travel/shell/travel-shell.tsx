@@ -48,9 +48,13 @@ function Frame({
   page: PageKey | null;
   children: ReactNode;
 }) {
-  const { stops, selectedId, select, sight, showSight } = useTravel();
+  const { stops, selectedId, select, sight, showSight, stopTour } = useTravel();
   const router = useRouter();
   useEffect(() => showSight(null), [page, showSight]);
+  // the tour is started and stopped on Home: leaving it ends it, or the card of another page would go on stepping by itself
+  useEffect(() => {
+    if (page !== 'home') stopTour();
+  }, [page, stopTour]);
   const reduced = useReducedMotion();
   const routeOn = ROUTE_PAGES.includes(page);
   const mapStops = useMemo(() => stops.map((s) => s.map), [stops]);

@@ -18,16 +18,6 @@ export const travelShellCopy = defineCopy(
       payment: 'Payment',
       about: 'About',
     },
-    /** the short second name of a page on the rail, in the voice of a trip (decoration beside the real label) */
-    metaphor: {
-      home: 'Trip map',
-      resume: 'Route',
-      projects: 'Postcards',
-      certificates: 'Passport',
-      services: 'Tours',
-      payment: 'Tickets',
-      about: 'Traveller',
-    },
     pagesLabel: 'Pages of the trip',
     panel: {
       expand: 'Show the whole panel',
@@ -35,15 +25,12 @@ export const travelShellCopy = defineCopy(
       close: 'Close',
     },
     states: {
-      loadingTitle: 'Packing the map',
-      loadingBody: 'Setting off from the south of the beach.',
       error: 'Lost signal',
       empty: 'No stops yet',
       offTheMap: 'Off the map',
       soon: 'Road works ahead',
       maintenance: 'Road closed',
     },
-    credits: 'Map data © OpenStreetMap contributors',
   },
   {
     brandTagline: 'Hành trình sự nghiệp quanh Nha Trang',
@@ -56,15 +43,6 @@ export const travelShellCopy = defineCopy(
       payment: 'Thanh toán',
       about: 'Giới thiệu',
     },
-    metaphor: {
-      home: 'Bản đồ',
-      resume: 'Lộ trình',
-      projects: 'Bưu thiếp',
-      certificates: 'Hộ chiếu',
-      services: 'Tour',
-      payment: 'Vé',
-      about: 'Lữ khách',
-    },
     pagesLabel: 'Các trang của chuyến đi',
     panel: {
       expand: 'Mở rộng bảng',
@@ -72,14 +50,11 @@ export const travelShellCopy = defineCopy(
       close: 'Đóng',
     },
     states: {
-      loadingTitle: 'Đang gấp bản đồ',
-      loadingBody: 'Xuất phát từ phía nam bãi biển.',
       error: 'Mất sóng',
       empty: 'Chưa có điểm dừng',
       offTheMap: 'Ngoài bản đồ',
       soon: 'Đường đang thi công',
       maintenance: 'Đường đang đóng',
     },
-    credits: 'Dữ liệu bản đồ © những người đóng góp OpenStreetMap',
   },
 );

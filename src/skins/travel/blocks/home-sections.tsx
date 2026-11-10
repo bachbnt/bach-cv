@@ -13,10 +13,11 @@ import { chatCopy } from '@/content/copy/chat';
 import { homeBuildCopy } from '@/content/copy/home-build';
 import { homeCopy } from '@/content/copy/home';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
+import { statesCopy } from '@/content/copy/states';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { skillsOf } from '@/components/projects/project-helpers';
 import { useLive } from '@/hooks/use-live';
-import { highlighted } from '@/lib/derive/highlighted';
+import { featuredProjects } from '@/lib/derive/home-lists';
 import { stripSkills } from '@/lib/derive/skill-strip';
 import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
@@ -168,10 +169,11 @@ export function HomeWork() {
 /** The featured projects of Standard (at most three, in rank order) as small postcards that lead to the Projects page. */
 export function HomeFeatured() {
   const copy = useCopy(homeProjectsCopy);
+  const states = useCopy(statesCopy);
   const query = useContentQuery('projects');
   const { data: skillList = [] } = useContentQuery('skills');
   const byId = new Map(skillList.map((s) => [s.id, s]));
-  const shown = highlighted(query.data ?? []).slice(0, 3);
+  const shown = featuredProjects(query.data ?? []);
   // featured projects are an extra: with none (or if they fail to load) the block is left out, as in Standard
   if (query.isError || (!query.isPending && !shown.length)) return null;
   return (
@@ -189,7 +191,7 @@ export function HomeFeatured() {
         </Link>
       </div>
       {query.isPending ? (
-        <div role='status' aria-busy='true' aria-label='Loading'>
+        <div role='status' aria-busy='true' aria-label={states.loading}>
           <TlRowsSkeleton count={2} />
         </div>
       ) : (

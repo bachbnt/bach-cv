@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useGoBack } from '@/hooks/use-go-back';
 import { commonCopy } from '@/content/copy/common';
 import { travelShellCopy } from '@/content/copy/travel-shell';
 import { useCopy } from '@/lib/i18n/copy';
@@ -16,7 +16,7 @@ import { TlPanel } from '@/skins/travel/ui/tl-panel';
 export function TlStatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
   const copy = useCopy(commonCopy);
   const trip = useCopy(travelShellCopy).states;
-  const router = useRouter();
+  const goBack = useGoBack();
   const text = copy.status[variant];
   return (
     <TlPanel side='left' labelledBy='tl-status-title'>
@@ -43,7 +43,7 @@ export function TlStatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
           <TlButtonLink variant='solid' href='/'>
             {copy.status.home}
           </TlButtonLink>
-          <TlButton variant='ghost' onClick={() => router.back()}>
+          <TlButton variant='ghost' onClick={goBack}>
             {copy.status.back}
           </TlButton>
         </div>

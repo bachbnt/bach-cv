@@ -14,7 +14,7 @@ import {
   EyeOff,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { resumeCopy } from '@/content/copy/resume';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { useSkills } from '@/components/skills/use-skills';
@@ -24,7 +24,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { fill } from '@/lib/chat/fill';
 import { TripCurrentFlag } from '@/skins/travel/blocks/trip-current-flag';
-import type { TripStop } from '@/skins/travel/shell/travel-context';
+import { useReducedMotion } from '@/skins/travel/shell/use-reduced-motion';
+import { useTravel, type TripStop } from '@/skins/travel/shell/travel-context';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlChip } from '@/skins/travel/ui/tl-chip';
 import { TlKicker } from '@/skins/travel/ui/tl-kicker';
@@ -51,16 +52,46 @@ export function TripStopCard({
   const { byId } = useSkills();
   const [open, setOpen] = useState(false);
   const { career, map } = stop;
+  const { stops } = useTravel();
+  const reduced = useReducedMotion();
+  const card = useRef<HTMLElement>(null);
+  // the card is not rebuilt for every stop (a focused Previous or Next button would be lost, and the keyboard would start again from the
+  // top of the page): its state starts again and the book is opened again, by hand
+  const [shownFor, setShownFor] = useState(map.id);
+  if (shownFor !== map.id) {
+    setShownFor(map.id);
+    setOpen(false);
+  }
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    if (reduced) return;
+    card.current?.animate(
+      [
+        { opacity: 0, transform: 'perspective(800px) rotateX(-55deg)' },
+        { opacity: 1, transform: 'none' },
+      ],
+      { duration: 600, easing: 'cubic-bezier(0.2, 0.9, 0.3, 1.1)' },
+    );
+  }, [map.id, reduced]);
+  // the stops of the main road are numbered from 1, in the order of the career; the school and the side trips have a name of their own
+  const number = stops
+    .slice(0, index + 1)
+    .filter((s) => !s.career.side && s.career.type === 'job').length;
   const kicker = career.current
     ? words.destination
     : career.type === 'school'
       ? words.trailhead
       : career.side
         ? words.sideTrip
-        : fill(words.stop, { n: String(index) });
+        : fill(words.stop, { n: String(number) });
 
   return (
     <article
+      ref={card}
       aria-label={map.name}
       style={{ '--tl-pc': `var(--tl-stop-${map.color})` } as CSSProperties}
       className='tl-guide-open rounded-2xl border border-tl-line border-t-[5px] border-t-[var(--tl-pc)] bg-tl-panel-2 p-4'

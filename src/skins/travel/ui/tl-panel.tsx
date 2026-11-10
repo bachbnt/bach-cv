@@ -50,7 +50,7 @@ export function TlPanel({
         aria-expanded={tall}
         aria-label={tall ? words.collapse : words.expand}
         onClick={() => setTall((v) => !v)}
-        className='flex w-full flex-none cursor-pointer items-center justify-center gap-1 pt-2 pb-1 md:hidden'
+        className='flex min-h-11 w-full flex-none cursor-pointer items-center justify-center gap-1 pt-2 pb-1 md:hidden'
       >
         <i
           aria-hidden='true'

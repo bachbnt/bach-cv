@@ -72,7 +72,7 @@ export function TlDialogShell({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
-        <DialogOverlay className='bg-tl-sky-1/55 duration-200 supports-backdrop-filter:backdrop-blur-[3px] motion-reduce:animate-none' />
+        <DialogOverlay className='bg-tl-sky-1/55 duration-200 motion-reduce:animate-none' />
         <DialogPrimitive.Popup
           data-slot='tl-dialog'
           finalFocus={finalFocus}

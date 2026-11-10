@@ -17,7 +17,6 @@ export const travelTripCopy = defineCopy(
       stopsLabel: 'stops on the route',
       destination: 'Destination',
       showOnMap: 'Show on the map',
-      luggage: 'In the luggage',
     },
     resume: {
       itinerary: 'Itinerary',
@@ -32,7 +31,6 @@ export const travelTripCopy = defineCopy(
       previous: 'Previous stop',
       next: 'Next stop',
       stopsLabel: 'Stops of the trip',
-      logoAlt: '{name}',
     },
     about: {
       passport: 'Travel passport',
@@ -54,7 +52,6 @@ export const travelTripCopy = defineCopy(
       stopsLabel: 'điểm dừng trên lộ trình',
       destination: 'Điểm đến',
       showOnMap: 'Xem trên bản đồ',
-      luggage: 'Trong hành lý',
     },
     resume: {
       itinerary: 'Lịch trình',
@@ -69,7 +66,6 @@ export const travelTripCopy = defineCopy(
       previous: 'Điểm dừng trước',
       next: 'Điểm dừng sau',
       stopsLabel: 'Các điểm dừng của chuyến đi',
-      logoAlt: '{name}',
     },
     about: {
       passport: 'Hộ chiếu du lịch',

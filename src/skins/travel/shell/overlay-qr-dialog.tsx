@@ -14,7 +14,7 @@ import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { TlNavTools } from '@/skins/travel/shell/overlay-nav-tools';
-import { saveQr } from '@/skins/travel/shell/overlay-save-qr';
+import { saveQr } from '@/components/payment/save-qr';
 import { TlToolButton } from '@/skins/travel/shell/overlay-tool-button';
 import { TlToolbar } from '@/skins/travel/shell/overlay-toolbar';
 import { PICTURE_ZOOMS, zoomFromKey } from '@/skins/travel/shell/overlay-tools';

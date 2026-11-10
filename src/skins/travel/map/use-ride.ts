@@ -12,6 +12,7 @@ import {
   type RefObject,
 } from 'react';
 import {
+  cameraFromMatrix,
   cameraTransform,
   clampCamera,
   type Camera,
@@ -34,6 +35,7 @@ export function useRide({
   size,
   aimAt,
   reduced,
+  flying,
   set,
 }: {
   view: RefObject<HTMLElement | null>;
@@ -43,34 +45,36 @@ export function useRide({
   /** the camera that shows a world point in the free part of the view */
   aimAt: (world: { x: number; y: number }, zoom: number) => Camera;
   reduced: boolean;
+  /** the camera is moving by a CSS transition (a fly) */
+  flying: boolean;
   set: (camera: Camera, fly: boolean) => void;
 }) {
   const [riding, setRiding] = useState(false);
   const animation = useRef<Animation | null>(null);
   const live = useRef({ camera, size });
+  const flyingNow = useRef(flying);
   useEffect(() => {
     live.current = { camera, size };
+    flyingNow.current = flying;
   });
 
-  /** Ends a ride where the camera is now and returns that camera. */
+  /**
+   * Ends a ride, or a fly that is still running, where the camera is now and returns that camera. Only a transform the browser is moving
+   * has a middle the state does not know: it is read from the matrix of the box, and the state takes it.
+   */
   const endRide = useCallback((): Camera => {
     const { camera: shown, size: box } = live.current;
     const element = view.current;
     const running = animation.current;
-    if (!running || !element) return shown;
+    if (!element || (!running && !flyingNow.current)) return shown;
     const matrix = new DOMMatrix(getComputedStyle(element).transform);
-    running.cancel();
-    animation.current = null;
-    setRiding(false);
+    if (running) {
+      running.cancel();
+      animation.current = null;
+      setRiding(false);
+    }
     if (!(matrix.a > 0)) return shown;
-    const here = clampCamera(
-      {
-        cx: (box.w / 2 - matrix.e) / matrix.a,
-        cy: (box.h / 2 - matrix.f) / matrix.a,
-        z: matrix.a,
-      },
-      box,
-    );
+    const here = clampCamera(cameraFromMatrix(matrix, box), box);
     set(here, false);
     return here;
   }, [view, set]);

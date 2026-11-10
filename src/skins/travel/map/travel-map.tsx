@@ -179,6 +179,7 @@ export function TravelMap({
     size,
     aimAt,
     reduced,
+    flying,
     set,
   });
   useEffect(() => {

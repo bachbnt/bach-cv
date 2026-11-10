@@ -194,6 +194,33 @@ export function tripPath(from: PlacedStop | null, to: PlacedStop): Plane[] {
   return out.length > 1 ? out : [from?.at ?? pointAt(0), to.at];
 }
 
+/** Two stops on the same spot (a stop built again, with the same place, when the language changes is not a move). */
+export const samePlace = (a: PlacedStop, b: PlacedStop): boolean =>
+  a === b || (a.t === b.t && a.at.x === b.at.x && a.at.y === b.at.y);
+
+/** A stop that is only a place on the road: where the traveller is when a ride is cut short, so the next ride starts from there. */
+export function restingAt(at: Plane): PlacedStop {
+  const { t, point } = roadPointNear(at);
+  return { id: '', side: false, t, at: point, from: point };
+}
+
+/** Where a ride is when `progress` (0 to 1, after its easing) of its way is done. */
+export function positionAt(ride: Ride, progress: number): Plane {
+  const { points } = ride;
+  const last = points[points.length - 1];
+  if (progress >= last.offset) return last.at;
+  let i = 1;
+  while (i < points.length - 1 && points[i].offset < progress) i += 1;
+  const a = points[i - 1];
+  const b = points[i];
+  const span = b.offset - a.offset || 1;
+  const k = Math.min(1, Math.max(0, (progress - a.offset) / span));
+  return {
+    x: a.at.x + (b.at.x - a.at.x) * k,
+    y: a.at.y + (b.at.y - a.at.y) * k,
+  };
+}
+
 /** A ride along the road: the points of the way with how far along its length each one is (0 to 1), and how long it takes. */
 export interface Ride {
   points: { at: Plane; offset: number }[];

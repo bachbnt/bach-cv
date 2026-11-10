@@ -7,7 +7,13 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { toWorld } from '@/skins/travel/map/iso';
-import { rideOf, type PlacedStop } from '@/skins/travel/map/route';
+import {
+  positionAt,
+  restingAt,
+  rideOf,
+  samePlace,
+  type PlacedStop,
+} from '@/skins/travel/map/route';
 import type { Plane } from '@/skins/travel/map/projection';
 
 /**
@@ -29,6 +35,7 @@ export function Traveller({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const last = useRef<PlacedStop | null>(null);
+  const turns = useRef(0);
   const [moving, setMoving] = useState(false);
   const target =
     stops.find((s) => s.id === activeId)?.placed ??
@@ -43,20 +50,21 @@ export function Traveller({
     };
     const from = last.current;
     last.current = target;
-    if (!from || reduced || from === target) {
+    if (!from || reduced || samePlace(from, target)) {
       place(target.at);
       return;
     }
-    const { points, duration } = rideOf(from, target);
-    const frames = points.map(({ at, offset }) => {
+    const ride = rideOf(from, target);
+    const frames = ride.points.map(({ at, offset }) => {
       const w = toWorld(at);
       return { transform: `translate(${w.x}px, ${w.y}px)`, offset };
     });
     const animation = element.animate(frames, {
-      duration,
+      duration: ride.duration,
       easing: 'ease-in-out',
       fill: 'forwards',
     });
+    const turn = (turns.current += 1);
     setMoving(true);
     animation.finished
       .then(() => {
@@ -64,8 +72,22 @@ export function Traveller({
         animation.cancel();
       })
       .catch(() => undefined)
-      .finally(() => setMoving(false));
-    return () => animation.cancel();
+      // a ride that began after this one was cut keeps the badge on
+      .finally(() => {
+        if (turns.current === turn) setMoving(false);
+      });
+    return () => {
+      // cut short (another stop was picked): the traveller stays where it is on the road, and the next ride starts from there
+      if (animation.playState === 'running') {
+        const here = positionAt(
+          ride,
+          animation.effect?.getComputedTiming().progress ?? 0,
+        );
+        last.current = restingAt(here);
+        place(here);
+      }
+      animation.cancel();
+    };
   }, [target, reduced]);
 
   return (

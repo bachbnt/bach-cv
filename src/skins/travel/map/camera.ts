@@ -88,5 +88,18 @@ export function fitBox(
 export const cameraTransform = (camera: Camera, size: Size): string =>
   `translate(${size.w / 2 - camera.cx * camera.z}px, ${size.h / 2 - camera.cy * camera.z}px) scale(${camera.z})`;
 
+/**
+ * The camera a transform of the world box shows: the inverse of `cameraTransform`, from the scale and the translation of its matrix. It is
+ * how a ride or a fly that is cut short, which only the browser knows the middle of, hands its place back to the state of the camera.
+ */
+export const cameraFromMatrix = (
+  matrix: { a: number; e: number; f: number },
+  size: Size,
+): Camera => ({
+  z: matrix.a,
+  cx: (size.w / 2 - matrix.e) / matrix.a,
+  cy: (size.h / 2 - matrix.f) / matrix.a,
+});
+
 /** How big a sprite is drawn: it grows more slowly than the map, so labels stay readable far out and drawings do not bloat close up. */
 export const spriteScale = (z: number): number => z ** -0.55;

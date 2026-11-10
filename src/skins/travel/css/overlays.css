@@ -7,7 +7,6 @@
 .tl-pop :focus-visible:not(input, textarea, select) {
   outline: 3px solid var(--tl-coral);
   outline-offset: 2px;
-  border-radius: 10px;
 }
 @media (prefers-reduced-motion: reduce) {
   .tl-pop,

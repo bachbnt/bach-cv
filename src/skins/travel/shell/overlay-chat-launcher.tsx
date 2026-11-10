@@ -26,7 +26,7 @@ export function ChatLauncher() {
       type='button'
       aria-label={copy.open}
       onClick={openChat}
-      className='tl-fab fixed right-4 bottom-7 z-35 grid size-14 cursor-pointer place-items-center transition-transform hover:-translate-y-0.5 active:scale-95 max-md:top-[66px] max-md:right-auto max-md:bottom-auto max-md:left-3 max-md:size-12'
+      className='fixed right-4 bottom-7 z-35 grid size-14 cursor-pointer place-items-center transition-transform hover:-translate-y-0.5 active:scale-95 max-md:top-[66px] max-md:right-auto max-md:bottom-auto max-md:left-3 max-md:size-12'
     >
       {/* a map pin: a drop turned so that its point looks down, with the logo upright in it */}
       <span

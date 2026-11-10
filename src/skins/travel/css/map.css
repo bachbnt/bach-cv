@@ -449,6 +449,9 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
   background: var(--tl-panel);
   color: var(--tl-ink);
   box-shadow: var(--tl-shadow);
+  /* as wide as its words, not as the half of the map that is left of its middle */
+  width: max-content;
+  max-width: calc(100% - 28px);
   font-size: 13px;
   font-weight: 700;
   pointer-events: none;
@@ -554,7 +557,7 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 .tl-pin[data-on] .tl-pin-btn {
   scale: 1.14;
 }
-.tl-pin-btn:focus-visible {
+.tl-root .tl-pin-btn:focus-visible {
   outline: none;
 }
 .tl-pin-btn:focus-visible .tl-pin-head {
@@ -700,6 +703,10 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 .tl-zoom button + button {
   border-top: 1px solid var(--tl-line);
 }
+.tl-zoom button:focus-visible {
+  /* the box clips what is outside it: the ring is drawn inside */
+  outline-offset: -4px;
+}
 .tl-zoom svg {
   width: 20px;
   height: 20px;
@@ -760,6 +767,11 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
 @media (pointer: coarse) {
   .tl-waves {
     display: none;
+  }
+  .tl-stars i,
+  .tl-cloud,
+  .tl-bird {
+    animation: none;
   }
   .tl-shore {
     animation: none;
