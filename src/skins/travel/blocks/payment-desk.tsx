@@ -5,9 +5,8 @@
 'use client';
 
 import { Info } from 'lucide-react';
-import { startTransition, useState, ViewTransition } from 'react';
-import { copyToClipboard } from '@/components/payment/copy-to-clipboard';
-import { splitMethods, summaryOf } from '@/components/payment/payment-details';
+import { startTransition, ViewTransition } from 'react';
+import { usePaymentMethods } from '@/components/payment/use-payment-methods';
 import { paymentCopy } from '@/content/copy/payment';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
@@ -24,8 +23,6 @@ import { TlDataState } from '@/skins/travel/ui/tl-data-state';
 import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
 import { TlStateNotice } from '@/skins/travel/ui/tl-state-notice';
 import { travelDeskCopy } from '@/content/copy/travel-desk';
-
-type Filter = 'all' | Doc<'payments'>['kind'];
 
 /** The colour of the n-th ticket (1 to 6, then round again), so the counter looks like a row of different windows. */
 const colorOf = (index: number) => (index % STOP_COLORS) + 1;
@@ -72,34 +69,22 @@ export function PaymentDesk() {
 /** The highlighted methods first as tickets of the windows, then "More ways to pay" as smaller tickets with a bank/wallet filter. */
 function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
   const copy = useCopy(paymentCopy);
-  const [filter, setFilter] = useState<Filter>('all');
-  const [qrId, setQrId] = useState<string | null>(null);
   const { toast, say } = usePaymentToast();
-
-  const copyAccount = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(m.account))
-        ? copy.toast.accountCopied(m.name)
-        : copy.toast.copyFailed,
-    );
-  const copyAll = async (m: Doc<'payments'>) =>
-    say(
-      (await copyToClipboard(summaryOf(m, copy)))
-        ? copy.toast.allCopied(m.name)
-        : copy.toast.copyFailed,
-    );
-
-  const { featured, rest } = splitMethods(methods);
-  const withQr = [...featured, ...rest].filter((m) => m.qr);
-  const qrIndex = withQr.findIndex((m) => m.id === qrId);
-  const qrMethod = qrIndex < 0 ? null : withQr[qrIndex];
-  const stepQr = (by: number) =>
-    setQrId(withQr[(qrIndex + by + withQr.length) % withQr.length]?.id ?? null);
-
-  const kinds = (['bank', 'wallet'] as const).filter((k) =>
-    rest.some((m) => m.kind === k),
-  );
-  const shownRows = rest.filter((m) => filter === 'all' || m.kind === filter);
+  const {
+    featured,
+    rest,
+    kinds,
+    shownRows,
+    withQr,
+    filter,
+    setFilter,
+    setQrId,
+    qrIndex,
+    qrMethod,
+    stepQr,
+    copyAccount,
+    copyAll,
+  } = usePaymentMethods(methods, say);
 
   return (
     <>

@@ -3,7 +3,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { animationsSettled } from '../support/animations';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -17,35 +17,6 @@ test.beforeEach(async ({ page }) => {
 const cards = (page: Page) => page.getByTestId('project');
 const card = (page: Page, name: string) =>
   cards(page).filter({ has: page.getByRole('heading', { name, exact: true }) });
-
-/** Answers the reads of the projects with `answer`, or waits before every read. */
-async function intercept(
-  page: Page,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes('"collectionId":"projects"');
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
 
 test.describe('the postcards', () => {
   test('every visible project is a postcard, the featured ones first in rank order', async ({
@@ -289,7 +260,7 @@ test.describe('data states', () => {
   test('a skeleton shows while the projects are on their way, then the postcards', async ({
     page,
   }) => {
-    await intercept(page, { delay: 1500 });
+    await interceptCollection(page, 'projects', { delay: 1500 });
     await gotoSkin(page, '/projects');
     const loading = page.getByRole('status', { name: 'Loading' }).first();
     await expect(loading).toBeVisible();
@@ -301,7 +272,7 @@ test.describe('data states', () => {
   test('says there is nothing to show yet, with a way forward', async ({
     page,
   }) => {
-    await intercept(page, 'empty');
+    await interceptCollection(page, 'projects', 'empty');
     await gotoSkin(page, '/projects');
     await expect(
       page.getByRole('heading', { name: 'No projects to show yet' }),
@@ -315,7 +286,7 @@ test.describe('data states', () => {
   test('says it could not load, and Try again loads the postcards', async ({
     page,
   }) => {
-    await intercept(page, 'error');
+    await interceptCollection(page, 'projects', 'error');
     await gotoSkin(page, '/projects');
     const alert = page
       .getByRole('alert')

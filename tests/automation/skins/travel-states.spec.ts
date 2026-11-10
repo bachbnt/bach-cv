@@ -2,8 +2,8 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { expect, test } from '@playwright/test';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -13,38 +13,9 @@ test.beforeEach(async ({ page }) => {
   await mockImages(page);
 });
 
-async function intercept(
-  page: Page,
-  collection: string,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes(`"collectionId":"${collection}"`);
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
-
 test.describe('the data states of the route', () => {
   test('a skeleton while the roles are on their way', async ({ page }) => {
-    await intercept(page, 'experience', { delay: 1500 });
+    await interceptCollection(page, 'experience', { delay: 1500 });
     await gotoSkin(page, '/resume');
     await expect(
       page.getByRole('status', { name: 'Loading' }).first(),
@@ -55,7 +26,7 @@ test.describe('the data states of the route', () => {
   });
 
   test('no roles: the empty card with a way forward', async ({ page }) => {
-    await intercept(page, 'experience', 'empty');
+    await interceptCollection(page, 'experience', 'empty');
     await page.addInitScript(() => undefined);
     await gotoSkin(page, '/resume');
     const notice = page.locator('[data-state="empty"]').first();
@@ -69,7 +40,7 @@ test.describe('the data states of the route', () => {
   });
 
   test('a failed read says so, and Try again loads it', async ({ page }) => {
-    await intercept(page, 'experience', 'error');
+    await interceptCollection(page, 'experience', 'error');
     await gotoSkin(page, '/resume');
     const alert = page.locator('[data-state="error"]').first();
     await expect(alert).toBeVisible({ timeout: 20_000 });

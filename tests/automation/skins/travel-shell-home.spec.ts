@@ -2,7 +2,8 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+import { animationsSettled } from '../support/animations';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -203,6 +204,113 @@ test.describe('Home, the trip overview', () => {
     await expect(
       page.getByRole('button', { name: 'Show more of the map' }),
     ).toHaveAttribute('aria-expanded', 'true');
+  });
+});
+
+test.describe('Home, where I have worked', () => {
+  const stops = (page: Page) =>
+    page.getByRole('list', { name: 'Stops of the trip' }).getByRole('button');
+
+  test('lists the latest roles of Standard and leaves the school to the Resume page', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await expect(stops(page)).toHaveCount(4);
+    // newest first, as Standard lists them
+    await expect(stops(page).first()).toContainText('FPT Software');
+    await expect(stops(page).nth(1)).toContainText('MoMo');
+    await expect(
+      page.getByRole('list', { name: 'Stops of the trip' }),
+    ).not.toContainText(/University/);
+    await expect(
+      page.getByRole('link', { name: 'Full resume' }),
+    ).toHaveAttribute('href', '/resume');
+  });
+});
+
+test.describe('the contact band and the rights line', () => {
+  for (const path of ['/', '/about']) {
+    test(`${path} ends with the contact band of Standard`, async ({ page }) => {
+      await gotoSkin(page, path);
+      const band = page.getByRole('region', {
+        name: 'Have a role or a project in mind?',
+      });
+      await expect(band.getByRole('link', { name: /@/ })).toHaveAttribute(
+        'href',
+        /^mailto:/,
+      );
+      await expect(band.getByText('Ho Chi Minh City, Vietnam')).toBeVisible();
+      await expect(band.getByText('384560623')).toBeVisible();
+      await expect(
+        band.getByRole('button', { name: 'Chat with BB Bot' }),
+      ).toBeVisible();
+    });
+  }
+
+  test('the chat switch takes the BB Bot card off the About band', async ({
+    page,
+  }) => {
+    await page.unroute('**/firestore.googleapis.com/**');
+    await mockFirestore(page, { 'site/live': { features: { chat: false } } });
+    await gotoSkin(page, '/about');
+    const band = page.getByRole('region', {
+      name: 'Have a role or a project in mind?',
+    });
+    await expect(band.getByRole('link', { name: /@/ })).toBeVisible();
+    await expect(band.getByRole('button')).toHaveCount(0);
+  });
+
+  test('every page card ends with the year, the name and the rights', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/projects');
+    const year = new Date().getFullYear();
+    const line = page.getByText(`© ${year}`);
+    await expect(line).toContainText('All rights reserved.');
+    await expect(line).toContainText('Bach Bui');
+  });
+
+  for (const width of [320, 390]) {
+    test(`on a phone at ${width} px the rights line and the map credit end the sheet, whole and inside it`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await gotoSkin(page, '/about');
+      const line = page.getByText(/^© \d{4}/);
+      await line.scrollIntoViewIfNeeded();
+      await animationsSettled(page);
+      const credit = page
+        .locator('.tl-panel')
+        .getByText(/Map data © OpenStreetMap contributors/);
+      // the sheet covers the map's own line, so the credit is said at the end of the sheet instead
+      await expect(page.locator('.tl-credits')).toBeHidden();
+      const panel = (await page.locator('.tl-panel').boundingBox())!;
+      for (const el of [line, credit]) {
+        await expect(el).toBeVisible();
+        const box = (await el.boundingBox())!;
+        expect(box.x).toBeGreaterThanOrEqual(panel.x);
+        expect(box.x + box.width).toBeLessThanOrEqual(panel.x + panel.width);
+        expect(box.y + box.height).toBeLessThanOrEqual(panel.y + panel.height);
+      }
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth - window.innerWidth,
+        ),
+      ).toBeLessThanOrEqual(0);
+    });
+  }
+
+  test('on a wide screen the card and the map credit do not overlap', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoSkin(page, '/about');
+    await animationsSettled(page);
+    const credits = page.locator('.tl-credits');
+    await expect(credits).toBeVisible();
+    const card = (await page.locator('.tl-panel').boundingBox())!;
+    const credit = (await credits.boundingBox())!;
+    expect(card.y + card.height).toBeLessThanOrEqual(credit.y);
   });
 });
 

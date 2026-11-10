@@ -26,9 +26,11 @@ test.describe('the map', () => {
     await expect(
       page.getByRole('group', { name: 'Trip map of Nha Trang' }),
     ).toBeVisible();
-    await expect(
-      page.getByText('Map data © OpenStreetMap contributors (ODbL)'),
-    ).toBeVisible();
+    // on a phone the sheet covers this line, so the credit is the last line of the sheet instead (travel-shell-home.spec.ts)
+    await expect(page.locator('.tl-credits')).toContainText(
+      'Map data © OpenStreetMap contributors (ODbL)',
+    );
+    await expect(page.locator('.tl-credits')).toBeVisible();
   });
 
   test('the scenery is decoration: the sights are hidden from assistive technology and are not controls', async ({

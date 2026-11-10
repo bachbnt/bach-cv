@@ -3,7 +3,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { animationsSettled } from '../support/animations';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -24,35 +24,6 @@ const fill = async (page: Page) => {
 const liveRegion = (page: Page) => page.locator('#contact-cta [role="status"]');
 const topics = (page: Page) =>
   page.getByRole('group', { name: 'Topic' }).getByRole('button');
-
-/** Answers the reads of the services with `answer`, or waits before every read. */
-async function intercept(
-  page: Page,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes('"collectionId":"services"');
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
 
 test.describe('the tours', () => {
   test('every service is a tour with a name, a description and its own icon tile', async ({
@@ -130,7 +101,7 @@ test.describe('the tours', () => {
   test('a skeleton shows while the services load, then the tours', async ({
     page,
   }) => {
-    await intercept(page, { delay: 1500 });
+    await interceptCollection(page, 'services', { delay: 1500 });
     await gotoSkin(page, '/services');
     const loading = page.getByRole('status', { name: 'Loading' }).first();
     await expect(loading).toBeVisible();
@@ -141,7 +112,7 @@ test.describe('the tours', () => {
   test('says there is nothing to show yet, and the booking form stays', async ({
     page,
   }) => {
-    await intercept(page, 'empty');
+    await interceptCollection(page, 'services', 'empty');
     await gotoSkin(page, '/services');
     await expect(
       page.getByRole('heading', { name: 'No services to show yet' }),
@@ -152,7 +123,7 @@ test.describe('the tours', () => {
   test('says it could not load, and Try again loads the tours', async ({
     page,
   }) => {
-    await intercept(page, 'error');
+    await interceptCollection(page, 'services', 'error');
     await gotoSkin(page, '/services');
     const alert = page
       .getByRole('alert')

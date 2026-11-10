@@ -15,6 +15,7 @@ import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useProfileQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
+import { ContactSection } from '@/skins/travel/blocks/contact-section';
 import { TripLuggage } from '@/skins/travel/blocks/trip-luggage';
 import { TlButtonLink } from '@/skins/travel/ui/tl-button';
 import { TlChip } from '@/skins/travel/ui/tl-chip';
@@ -27,7 +28,7 @@ const TONE_STOP = { primary: 3, mobile: 6, web: 1, ai: 5 } as const;
 
 /**
  * The traveller: the Standard About page (the portrait and photos, the summary, the specialties) as a traveller's card with photos
- * from the road, and the core stack as the packing list with Standard's link to all the skills (on the Resume page).
+ * from the road, and the core stack as the packing list with Standard's link to all the skills (on the Resume page), then the contact band that ends Standard's About page.
  */
 export function AboutPage() {
   const copy = useCopy(aboutCopy);
@@ -144,6 +145,7 @@ export function AboutPage() {
             <Route aria-hidden='true' />
             {words.seeTrip}
           </TlButtonLink>
+          <ContactSection />
         </div>
       </TlPanel>
     </TlPage>

@@ -143,7 +143,9 @@ test.describe('the BB Bot card', () => {
     expect(received[0].messages).toEqual([
       { role: 'user', content: 'Who are you?' },
     ]);
-    expect(received[0].systemPrompt).toContain('FPT Software');
+    // the Worker builds the system prompt from the site content: the browser only says the language
+    expect(received[0]).toMatchObject({ lang: 'en' });
+    expect(received[0]).not.toHaveProperty('systemPrompt');
     await box.fill('And now?');
     await box.press('Enter');
     await expect(panel.getByText('2/20 messages')).toBeVisible();
@@ -385,7 +387,7 @@ test.describe('the BB Bot card', () => {
       await expect(
         panel.getByText('Mình dẫn dắt một nhóm 5 người.'),
       ).toBeVisible();
-      expect(received[0].systemPrompt).toContain('answer in Vietnamese');
+      expect(received[0]).toMatchObject({ lang: 'vi' });
     });
 
     test('an error note and Try again are in Vietnamese', async ({ page }) => {

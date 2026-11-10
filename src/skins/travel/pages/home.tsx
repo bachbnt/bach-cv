@@ -7,12 +7,12 @@
 import { HOME_TITLE_ID, HomeHero } from '@/skins/travel/blocks/home-hero';
 import {
   HomeBuilds,
-  HomeContact,
   HomeFeatured,
   HomeLuggage,
   HomePipeline,
   HomeWork,
 } from '@/skins/travel/blocks/home-sections';
+import { ContactSection } from '@/skins/travel/blocks/contact-section';
 import { TlPage } from '@/skins/travel/ui/tl-page';
 import { TlPanel } from '@/skins/travel/ui/tl-panel';
 
@@ -32,7 +32,7 @@ export function HomePage() {
           <HomeBuilds />
           <HomeWork />
           <HomeFeatured />
-          <HomeContact />
+          <ContactSection />
         </div>
       </TlPanel>
     </TlPage>

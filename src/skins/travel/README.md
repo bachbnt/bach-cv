@@ -16,6 +16,10 @@ Id `travel`, class prefix `tl-`, theme `src/app/tailwind-theme-travel.css`, pale
 | Payment      | tickets and the payment desk    | each account is a ticket; the QR is the payment desk                  |
 | About        | the traveller's passport        | profile, core stack as the packing list, the trailhead (education)    |
 
+Home's "Where I've worked" lists the same roles as Standard: `latestRoles` of `lib/derive/home-lists` over the same experience query (the four
+newest jobs, `HOME_ROLES`), newest first as Standard does, each as its stop of the trip (`blocks/home-roles.ts`, `latestStops`; the ordering is not
+worked out here). The school and the older jobs are left to the Resume page, which the "Full resume" link opens; they are still pins on the map.
+
 The page is a card over the map (a sheet that rises from the bottom on a phone); the map keeps its camera and the traveller when the page
 changes. Every page is a real link in the rail (a bar of icons on a phone): the map is never the only way to anything.
 
@@ -74,6 +78,13 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   is a map pin. The session, limits, errors and Try again are the Standard ones (`useChatSession`).
 - **Connect** is a postcard (airmail edge, the owner's photo as the stamp, the email as the address) and every link is a stamp with a
   dashed edge, grouped as in Standard.
+- **Contact** (`blocks/contact-section.tsx`, `ContactSection`) is Standard's contact band (the question, the email, where I am, the phone and, with
+  `features.chat` on, the BB Bot card), one component that ends Home and About, as the band ends both pages in Standard. Its data states
+  (loading, empty, error) are the ones of `TlDataState`.
+- **The rights line** (`ui/tl-footer.tsx`) is Standard's footer, `© {year} {name}. {rights}` (`useNow()` for the year, `commonCopy.footer.rights`),
+  at the end of the scrolling part of every card (`TlPanel`), so it never covers a control and cannot meet the map controls. The card stops
+  24 px above the bottom of the map, so on a wide screen it keeps clear of the map credit. On a phone the sheet covers the map's credit line
+  (`.tl-credits`, hidden there), so the OpenStreetMap credit is the second line of the same footer.
 - **About** is put together as you watch (`tl-portrait-in`, `tl-chip-in`, `tl-photo-in`): the portrait is stamped on, the specialties pop in one by
   one and the photos drop on the table. Only transform properties and opacity move, and reduced motion shows the final page.
 
@@ -106,6 +117,12 @@ ui/                 tl-root, tl-button, tl-kicker, tl-chip, tl-panel (card or sh
 pages/ blocks/      the seven pages and what they are made of
 ```
 
+## Payment
+
+`blocks/payment-desk.tsx` uses the shared `usePaymentMethods` (`components/payment/use-payment-methods.ts`: the bank / wallet filter, the QR that is open and
+the step to the next, "Copy number" and "Copy all details") and so `paymentView` and the `KINDS` of `lib/derive/payment-kinds`; the skin only says the result
+in its own toast (`use-payment-toast.ts`) and draws tickets.
+
 ## Rules of the skin
 
 - Words only this skin has: `content/copy/travel*.ts`. Every control that looks different keeps the Standard accessible name.
@@ -118,7 +135,7 @@ pages/ blocks/      the seven pages and what they are made of
   (Hon Chong north of the centre, Long Son and the cathedral west, Vinpearl north-east across the sea, the islands south-east, Cam Ranh south, the
   sights on land, the boats at sea, the city beach with water to its east), the coast road and `placeStops`, the camera, the size of `geo.ts`
   (under 40 KB), the CSS rules (prefix, hover only in `@media (hover: hover)`, palette in both themes) and the copy keys in both languages.
-- Playwright (`tests/automation/skins/travel-*.spec.ts`): the frame and menus, Home, Resume, About, the map (controls, keys, drag, pins), the data
+- Playwright (`tests/automation/skins/travel-*.spec.ts`): the frame and menus, Home (the roles it lists, the contact band, the rights line and the credit), Resume, About, the map (controls, keys, drag, pins), the data
   states and the screens that are not a page, and for each other page its own spec (Projects, Certificates, Services, Payment, overlays).
 
 ## Not built on purpose

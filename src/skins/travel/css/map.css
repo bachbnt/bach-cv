@@ -731,6 +731,12 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
   border-radius: 999px;
   pointer-events: none;
 }
+/* on a phone the page's sheet covers it: the line is at the end of the sheet (`TlFooter`) */
+@media (max-width: 767px) {
+  .tl-credits {
+    display: none;
+  }
+}
 
 /* ---- paused: off screen or hidden */
 .tl-paused *,

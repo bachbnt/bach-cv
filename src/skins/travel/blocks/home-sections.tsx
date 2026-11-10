@@ -4,28 +4,24 @@
 
 'use client';
 
-import { emailContact, phoneContact } from '@/lib/derive/contacts';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { chatCopy } from '@/content/copy/chat';
 import { homeBuildCopy } from '@/content/copy/home-build';
 import { homeCopy } from '@/content/copy/home';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { statesCopy } from '@/content/copy/states';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { skillsOf } from '@/components/projects/project-helpers';
-import { useLive } from '@/hooks/use-live';
-import { featuredProjects } from '@/lib/derive/home-lists';
+import { featuredProjects, HOME_ROLES } from '@/lib/derive/home-lists';
 import { stripSkills } from '@/lib/derive/skill-strip';
 import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
-import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
-import { useChat } from '@/components/chat/chat-provider';
+import { useContentQuery } from '@/lib/query/use-content';
+import { latestStops } from '@/skins/travel/blocks/home-roles';
 import { TripStopList } from '@/skins/travel/blocks/trip-stop-list';
 import { useTravel } from '@/skins/travel/shell/travel-context';
-import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlChip } from '@/skins/travel/ui/tl-chip';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
 import { TlRowsSkeleton, TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
@@ -122,14 +118,18 @@ export function HomeBuilds() {
   );
 }
 
-/** Where I've worked: the stops of the trip with the Standard link to the full resume; a stop sends the map there and opens the Resume page. */
+/**
+ * Where I've worked: the latest roles of Standard (`latestRoles` of `lib/derive/home-lists`, newest first, the same list and the same
+ * number as Standard's) as their stops of the trip, with the Standard link to the full resume. The school and the older jobs are
+ * still on the map and on the Resume page. A stop sends the map there and opens the Resume page.
+ */
 export function HomeWork() {
   const copy = useCopy(homeCopy);
   const words = useCopy(travelTripCopy).home;
   const router = useRouter();
-  const { select, selectedId, queries } = useTravel();
+  const { select, selectedId, stops, queries } = useTravel();
   const { experience } = queries;
-  const { stops } = useTravel();
+  const shown = latestStops(experience.data ?? [], stops);
   return (
     <section aria-labelledby='tl-work'>
       <div className='mb-1 flex flex-wrap items-baseline justify-between gap-2'>
@@ -146,14 +146,15 @@ export function HomeWork() {
       </div>
       <TlDataState
         query={experience}
-        count={stops.length}
+        count={shown.length}
         empty='work'
         subject='work'
         level={3}
-        skeleton={<TlRowsSkeleton count={3} />}
+        skeleton={<TlRowsSkeleton count={HOME_ROLES - 1} />}
       >
         <p className='sr-only'>{words.showOnMap}</p>
         <TripStopList
+          only={shown}
           selectedId={selectedId}
           showTagline
           onPick={(id) => {
@@ -240,68 +241,6 @@ export function HomeFeatured() {
             );
           })}
         </ul>
-      )}
-    </section>
-  );
-}
-
-/** The contact band of Standard: the question, the email and the places, and the BB Bot card; the email is the booking desk's address. */
-export function HomeContact() {
-  const copy = useCopy(homeCopy);
-  const chat = useCopy(chatCopy);
-  const live = useLive();
-  const { openChat } = useChat();
-  const contactsQuery = useContentQuery('contacts');
-  const contacts = contactsQuery.data ?? [];
-  const { data: profile } = useProfileQuery();
-  const email = emailContact(contacts);
-  const phone = phoneContact(contacts);
-  return (
-    <section
-      id='contact'
-      aria-labelledby='tl-contact'
-      className='rounded-2xl bg-[linear-gradient(135deg,var(--tl-cover-1,var(--tl-sky-1)),var(--tl-sea-3))] p-4 text-white'
-    >
-      <h2 id='tl-contact' className='m-0 text-[17px] font-extrabold'>
-        {copy.contact.title}
-      </h2>
-      <TlDataState
-        query={contactsQuery}
-        count={contacts.length}
-        empty='contact'
-        subject='contact'
-        level={3}
-        className='mt-3 text-tl-ink'
-        skeleton={<TlSkeleton className='h-16' />}
-      >
-        {email && (
-          <a
-            href={email.url}
-            className='mt-2 block text-lg font-extrabold break-all underline decoration-2 underline-offset-4'
-          >
-            {email.label}
-          </a>
-        )}
-        <p className='m-0 mt-2 flex flex-wrap items-center gap-x-3 text-[13px] opacity-90'>
-          {profile?.location && (
-            <span className='inline-flex items-center gap-1'>
-              <MapPin aria-hidden='true' className='size-3.5' />
-              {profile.location}
-            </span>
-          )}
-          {phone && <span>{phone.label}</span>}
-        </p>
-      </TlDataState>
-      {live.features.chat && (
-        <div className='mt-3 rounded-xl bg-tl-solid p-3 text-tl-ink'>
-          <h3 className='m-0 text-[14.5px] font-bold'>{chat.askCard.title}</h3>
-          <p className='m-0 mb-2 text-[13px] text-tl-muted'>
-            {chat.askCard.body}
-          </p>
-          <TlButton variant='solid' size='sm' onClick={openChat}>
-            {chat.chatButton}
-          </TlButton>
-        </div>
       )}
     </section>
   );

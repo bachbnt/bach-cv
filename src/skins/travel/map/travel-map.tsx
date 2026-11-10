@@ -253,7 +253,10 @@ export function TravelMap({
         if (event.pointerType === 'mouse') setHover(sightUnder(event.target));
       }}
       onPointerLeave={() => setHover(null)}
-      onPointerDownCapture={endRide}
+      onPointerDownCapture={(event) => {
+        // a press on a control (the zoom buttons, a pin) is not a hand on the map: zooming again while a fly runs adds to its end
+        if (!(event.target as Element).closest('button, a')) endRide();
+      }}
       onWheelCapture={endRide}
       onKeyDownCapture={(event) => {
         // the keys that move the camera (as in `useCamera`); Tab or a letter leaves the ride alone

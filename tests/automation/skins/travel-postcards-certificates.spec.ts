@@ -3,7 +3,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -14,35 +14,6 @@ test.beforeEach(async ({ page }) => {
 });
 
 const stamps = (page: Page) => page.getByTestId('certificate');
-
-/** Answers the reads of the certificates with `answer`, or waits before every read. */
-async function intercept(
-  page: Page,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes('"collectionId":"certificates"');
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
 
 test.describe('the passport', () => {
   test('has a cover, the identity page and one stamp for each certificate, latest first', async ({
@@ -192,7 +163,7 @@ test.describe('data states', () => {
   test('a skeleton shows while the certificates are on their way, then the stamps', async ({
     page,
   }) => {
-    await intercept(page, { delay: 1500 });
+    await interceptCollection(page, 'certificates', { delay: 1500 });
     await gotoSkin(page, '/certificates');
     const loading = page.getByRole('status', { name: 'Loading' }).first();
     await expect(loading).toBeVisible();
@@ -202,7 +173,7 @@ test.describe('data states', () => {
   });
 
   test('says there is nothing to show yet', async ({ page }) => {
-    await intercept(page, 'empty');
+    await interceptCollection(page, 'certificates', 'empty');
     await gotoSkin(page, '/certificates');
     await expect(
       page.getByRole('heading', { name: 'No certificates to show yet' }),
@@ -217,7 +188,7 @@ test.describe('data states', () => {
   test('says it could not load, and Try again loads the stamps', async ({
     page,
   }) => {
-    await intercept(page, 'error');
+    await interceptCollection(page, 'certificates', 'error');
     await gotoSkin(page, '/certificates');
     const alert = page
       .getByRole('alert')

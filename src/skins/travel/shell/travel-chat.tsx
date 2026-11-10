@@ -38,11 +38,6 @@ export function TravelChat() {
     maxUserMessages: chat.maxUserMessages,
     maxInputLength: chat.maxInputLength,
   });
-  const { warmUp } = session;
-
-  useEffect(() => {
-    if (isOpen) warmUp();
-  }, [isOpen, warmUp]);
 
   const close = () => {
     closeChat();

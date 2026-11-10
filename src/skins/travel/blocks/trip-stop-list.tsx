@@ -10,23 +10,26 @@ import { resumeCopy } from '@/content/copy/resume';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import { useTravel } from '@/skins/travel/shell/travel-context';
+import { useTravel, type TripStop } from '@/skins/travel/shell/travel-context';
 import { TripCurrentFlag } from '@/skins/travel/blocks/trip-current-flag';
 
 /**
  * The itinerary: every stop of the trip as a button in order (a dotted road down the left, side trips indented). Picking one opens its
- * card and sends the map there; the open one is `aria-current`.
+ * card and sends the map there; the open one is `aria-current`. With `only`, just those stops, in the order given (Home's latest roles).
  */
 export function TripStopList({
   selectedId,
   onPick,
   showTagline = false,
+  only,
 }: {
   selectedId: string | null;
   onPick: (id: string) => void;
   showTagline?: boolean;
+  only?: TripStop[];
 }) {
-  const { stops } = useTravel();
+  const travel = useTravel();
+  const stops = only ?? travel.stops;
   const words = useCopy(travelTripCopy).resume;
   const current = useCopy(resumeCopy).experience.current;
   return (
