@@ -16,15 +16,15 @@ import { useTrade } from '@/skins/trade/shell/trade-context';
  * scrolled to.
  */
 export function useReveal(jobs: Doc<'experience'>[]) {
-  const { jobId, jobAsk } = useTrade();
+  const { jobId, pendingJob, doneJob, jobAsk } = useTrade();
   const reduced = useReducedMotion();
   const firstId = jobs[0]?.id;
   // what the visitor (or a request) decided; a role not in it follows the default, which is open for the first one
   const [decided, setDecided] = useState(
-    () => new Map<string, boolean>(jobId ? [[jobId, true]] : []),
+    () => new Map<string, boolean>(pendingJob ? [[pendingJob, true]] : []),
   );
   const [target, setTarget] = useState<{ id: string; n: number } | null>(
-    jobId ? { id: jobId, n: 0 } : null,
+    pendingJob ? { id: pendingJob, n: 0 } : null,
   );
   const [seenAsk, setSeenAsk] = useState(jobAsk);
 
@@ -37,6 +37,10 @@ export function useReveal(jobs: Doc<'experience'>[]) {
     setSeenAsk(jobAsk);
     if (jobId) reveal(jobId);
   }
+  // the ask is used once (seeded above or revealed just now): a later visit to Resume starts as usual
+  useEffect(() => {
+    if (pendingJob) doneJob();
+  }, [pendingJob, doneJob]);
   const toggle = (id: string) =>
     setDecided((old) => new Map(old).set(id, !(old.get(id) ?? id === firstId)));
   const open = new Set(

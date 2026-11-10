@@ -15,6 +15,7 @@ import { HomeProfileWindow } from '@/skins/dev/blocks/home-profile-window';
 import { DevAskBotButton } from '@/skins/dev/ui/dev-ask-bot-button';
 import { DevDownloadCv } from '@/skins/dev/ui/dev-download-cv';
 import { DevButtonGroup } from '@/skins/dev/ui/dev-button';
+import { DevCaret } from '@/skins/dev/ui/dev-caret';
 import { DevTerm, DevTermBody } from '@/skins/dev/ui/dev-term';
 import { DevTermBar } from '@/skins/dev/ui/dev-term-bar';
 
@@ -53,7 +54,7 @@ export function HomeHero() {
                   {copy.title.slice(at + titleHighlight.length)}
                 </>
               )}
-              <span className='dv-caret' aria-hidden='true' />
+              <DevCaret />
             </h1>
             <p className='mb-[18px] max-w-[640px] font-sans text-[17px] leading-[1.65] font-normal text-ink'>
               {intro}

@@ -142,7 +142,7 @@ test.describe('the Output tab', () => {
     await expect(log).toContainText('I/Router: /');
     // nothing was changed yet: no settings line
     await expect(log).not.toContainText('I/Settings');
-    await page.getByRole('button', { name: 'Language' }).click();
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
     await page.getByRole('menuitemradio', { name: /Tiếng Việt/ }).click();
     await expect(log).toContainText('I/Settings: language -> vi');
     await page.getByRole('button', { name: 'Giao diện', exact: true }).click();

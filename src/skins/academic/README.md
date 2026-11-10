@@ -39,9 +39,15 @@ vi) is a small kicker above the title (`§ Results`), decoration, so nothing is 
    about its top edge, held by the tape or the pin, then it settles), the contact form too: `AcPaper` has it by default, the photos and the
    cards that are not an `AcPaper` carry the class. Not for the paper of a window, a menu or the toast (it is not pinned to the board), only
    where there is a hover, never with reduced motion.
-8. **Content the mock had and Standard has not** was dropped or made decoration: the circled citations
-   between roles and projects, the full-time/part-time label, the canned chat answers, the placeholder CV and QR dialogs, the moving tech strip
-   (a still list of keywords, so there is no pause button to keep).
+8. **The line of rights** of Standard's footer (`© {year} {name}. {rights}`, `commonCopy.footer.rights`, the year from `useNow()`) is written in chalk at the
+   foot of the board, centred under the turn of the page and above the ledge (`shell/footer.tsx`). The ledge sticks to the bottom of the window and
+   comes to rest after it at the end of the page, so the line never lies under the ledge or the chat slip; at 320, 390 and 1440 px, in both themes and
+   both languages, it is a single line clear of both (`academic-shell.spec.ts`).
+9. **Accessible names are Standard's.** The language, skin and theme tags keep the words they show (`EN`, `Academic`, `Chalkboard`) but their
+   `aria-label` is the one of Standard's menus: `Language: English`, `Skin: Academic`, `Theme` (`shell/header.tsx` builds it, `ui/ac-menu.tsx` sets it).
+10. **Content the mock had and Standard has not** was dropped or made decoration: the circled citations
+    between roles and projects, the full-time/part-time label, the canned chat answers, the placeholder CV and QR dialogs, the moving tech strip
+    (a still list of keywords, so there is no pause button to keep).
 
 ## Page change: the eraser
 
@@ -52,7 +58,10 @@ board, inert and `aria-hidden` (class `ac-ghost`, no ids), and the new page is m
 (a radial-gradient ring around the pivot and a conic-gradient sector: a row of many gradients janked), so a frame takes the 16.7 ms of the display.
 The arithmetic is pure and tested (`shell/wipe-geometry.ts`, `tests/unit/skin/academic-wipe.test.ts`). No wipe on the first render, with
 reduced motion, for an anchor jump, for back/forward of the browser (they fall back to the foundation's fade, `ac-vt-in` / `ac-vt-out`), or when
-the old page is not on screen; a second change during a wipe ends the first at once.
+the old page is not on screen; a second change during a wipe ends the first at once. The copy is of the whole page and the mask is on the whole
+new page on purpose: the layout of what is on screen depends on the rest of the page, and a visitor who scrolls during the wipe would find the
+part outside a smaller mask missing. In desktop Chrome with the CPU throttled 6 times a 7,000 px page still wipes at the display's rate, with one slow
+frame when the copy is taken (no measurement on a device was made).
 
 ## Where things are
 
@@ -75,6 +84,9 @@ overlays), en and vi; Standard's own copy is reused wherever Standard has the wo
 
 ## Styling
 
+- The board (colour, light, grain) is the `position: fixed` layer `.ac-root::before` behind the content (the root is `isolation: isolate`), not
+  `background-attachment: fixed` on the root: a fixed attachment on a tall element is painted again on every scroll in some browsers, a fixed layer is
+  not. The look is the same in both themes.
 - Tailwind utilities with the `ac-*` theme colours (`bg-ac-sheet`, `text-ac-mute`) and fonts (`font-ac-chalk`, `font-ac-note`, `font-ac-serif`) of `app/tailwind-theme-academic.css`; their values live once on `html[data-skin='academic']` in `academic.css`, so portals
   see them. The shadcn tokens are mapped to the same palette there, so the shadcn components follow the skin.
 - CSS only for what utilities do not say: the palette, the board and its frame, paper grain, tape and pins, the wavy hand-drawn line (a mask),

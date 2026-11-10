@@ -79,6 +79,22 @@ html[data-skin='dev'] {
   block-size: auto;
 }
 
+/* a tab in the background, or a loop scrolled out of view: the endless loops (marquee, fill bars, shimmer, caret, live dots) wait instead of
+   running for nobody. DevRoot sets data-hidden (ui/dev-root.tsx) and `useLoopGate` sets data-off on the root of a loop that is off screen
+   (hooks/use-loop-gate.ts). */
+.dv-root[data-hidden],
+.dv-root[data-hidden] *,
+.dv-root[data-hidden] *::before,
+.dv-root[data-hidden] *::after,
+.dv-root [data-off],
+.dv-root [data-off] *,
+.dv-root [data-off]::before,
+.dv-root [data-off]::after,
+.dv-root [data-off] *::before,
+.dv-root [data-off] *::after {
+  animation-play-state: paused !important;
+}
+
 /* reduced motion: also the pseudo-elements (the live dot, the typed caret) */
 @media (prefers-reduced-motion: reduce) {
   .dv-root *,

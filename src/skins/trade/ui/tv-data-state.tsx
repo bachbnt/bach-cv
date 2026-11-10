@@ -13,7 +13,7 @@ import {
 } from '@/content/copy/states';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 import { TvButton, TvLink } from '@/skins/trade/ui/tv-button';
 import { TvFadeIn } from '@/skins/trade/ui/tv-fade-in';
 import { TvStateNotice } from '@/skins/trade/ui/tv-state-notice';

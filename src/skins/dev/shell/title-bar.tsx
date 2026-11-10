@@ -122,6 +122,7 @@ export function TitleBar({
             icon='globe'
             current={lang.toUpperCase()}
             label={common.language.label}
+            name={`${common.language.label}: ${names[lang]}`}
             value={lang}
             items={languages.map((code) => ({
               value: code,
@@ -138,6 +139,7 @@ export function TitleBar({
           icon='browser'
           current={skins.names[skin].name}
           label={skins.label}
+          name={`${skins.label}: ${skins.names[skin].name}`}
           value={skin}
           items={SKIN_IDS.map((id) => ({
             value: id,

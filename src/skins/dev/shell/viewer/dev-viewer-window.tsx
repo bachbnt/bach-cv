@@ -37,7 +37,7 @@ import {
 
 /** The round buttons at the sides of the picture. */
 const NAV_BUTTON =
-  'mx-auto grid size-[38px] cursor-pointer place-items-center rounded-full border border-line-2 bg-[color-mix(in_srgb,var(--chrome)_90%,transparent)] text-head [transition:transform_0.2s,border-color_0.2s] hover:border-signal hover:[transform:scale(1.08)] pointer-coarse:size-10';
+  'mx-auto grid size-[38px] cursor-pointer place-items-center rounded-full border border-line-2 bg-[color-mix(in_srgb,var(--chrome)_90%,transparent)] text-head [transition:transform_0.2s,border-color_0.2s] hover:border-signal hover:[transform:scale(1.08)] pointer-coarse:size-11';
 
 /** The window of the viewer: the title bar, the picture with its neighbours, the tags and the status line. */
 export function DevViewerWindow({

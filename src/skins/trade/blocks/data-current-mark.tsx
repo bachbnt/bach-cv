@@ -6,7 +6,7 @@
 
 import { resumeCopy } from '@/content/copy/resume';
 import { useCopy } from '@/lib/i18n/copy';
-import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 
 /** The "Current" word of Standard for the role I am in now, with the green live dot of the terminal. */

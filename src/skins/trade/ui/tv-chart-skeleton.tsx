@@ -5,7 +5,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 
 /** The heights, in percent, of the bars of the loading chart: a fixed pattern, so the placeholder never jumps between renders. */
 const BARS = [38, 52, 44, 61, 55, 70, 48, 66, 58, 76, 62, 50, 68, 80, 57, 72];

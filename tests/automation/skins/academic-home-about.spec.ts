@@ -3,7 +3,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -12,36 +12,6 @@ test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
   await mockImages(page);
 });
-
-/** Answers the reads of one collection with `answer` ('empty' or 'error'), or waits `delay` ms before every read. */
-async function intercept(
-  page: Page,
-  collection: string,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes(`"collectionId":"${collection}"`);
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
 
 const noHorizontalScroll = (page: Page) =>
   page.evaluate(
@@ -372,7 +342,7 @@ test.describe('Home data states in the Academic skin', () => {
   test('shows a loading note while the roles are on the way, then the roles', async ({
     page,
   }) => {
-    await intercept(page, 'experience', { delay: 1500 });
+    await interceptCollection(page, 'experience', { delay: 1500 });
     await gotoSkin(page, '/');
     const loading = page.getByRole('status', { name: 'Loading' }).first();
     await expect(loading).toBeVisible();
@@ -386,7 +356,7 @@ test.describe('Home data states in the Academic skin', () => {
   test('says there are no roles yet; Figure 1 keeps only the studies', async ({
     page,
   }) => {
-    await intercept(page, 'experience', 'empty');
+    await interceptCollection(page, 'experience', 'empty');
     await gotoSkin(page, '/');
     const notice = page.locator('[data-state="empty"]').first();
     await expect(notice).toBeVisible();
@@ -401,7 +371,7 @@ test.describe('Home data states in the Academic skin', () => {
   test('says the roles could not load, and Try again loads them', async ({
     page,
   }) => {
-    await intercept(page, 'experience', 'error');
+    await interceptCollection(page, 'experience', 'error');
     await gotoSkin(page, '/');
     const alert = page.locator('[data-state="error"]').first();
     // a failed read is tried once more before it counts as an error
@@ -419,7 +389,7 @@ test.describe('Home data states in the Academic skin', () => {
   test('with no featured projects, or if they fail to load, the block is left out', async ({
     page,
   }) => {
-    await intercept(page, 'projects', 'error');
+    await interceptCollection(page, 'projects', 'error');
     await gotoSkin(page, '/');
     await expect(
       page.getByRole('heading', { name: "Where I've worked" }),
@@ -432,7 +402,7 @@ test.describe('Home data states in the Academic skin', () => {
   test('says there are no contact details yet when there are none', async ({
     page,
   }) => {
-    await intercept(page, 'contacts', 'empty');
+    await interceptCollection(page, 'contacts', 'empty');
     await gotoSkin(page, '/');
     await expect(
       page
@@ -507,7 +477,7 @@ test.describe('About in the Academic skin', () => {
   test('says there is no core stack yet, and that it could not load, with Try again', async ({
     page,
   }) => {
-    await intercept(page, 'skills', 'empty');
+    await interceptCollection(page, 'skills', 'empty');
     await gotoSkin(page, '/about');
     await expect(
       page
@@ -516,7 +486,7 @@ test.describe('About in the Academic skin', () => {
     ).toBeVisible();
     await page.unroute('**/firestore.googleapis.com/**');
     await mockFirestore(page);
-    await intercept(page, 'skills', 'error');
+    await interceptCollection(page, 'skills', 'error');
     await page.reload();
     const alert = page.locator('[data-state="error"]').first();
     await expect(alert).toBeVisible({ timeout: 20_000 });

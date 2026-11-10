@@ -2,8 +2,8 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { expect, test } from '@playwright/test';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { allOn, servePayments } from '../support/payments';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -14,30 +14,6 @@ test.beforeEach(async ({ page, context }) => {
   await mockFirestore(page);
   await mockImages(page);
 });
-
-/** Answers the reads of the payments with `answer` ('error'), or waits `delay` ms before every read. */
-async function intercept(
-  page: Page,
-  answer: 'error' | { delay: number },
-): Promise<void> {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const request = route.request();
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes('"collectionId":"payments"');
-    return mine
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fallback();
-  });
-}
 
 test.describe('Payment on the board', () => {
   test('a highlighted method comes first on a card and the others follow in the table; hidden ones never show', async ({
@@ -210,7 +186,7 @@ test.describe('Payment on the board', () => {
     page,
   }) => {
     await servePayments(page, allOn());
-    await intercept(page, { delay: 1500 });
+    await interceptCollection(page, 'payments', { delay: 1500 });
     await gotoSkin(page, '/payment');
     const loading = page.getByRole('status', { name: 'Loading' });
     await expect(loading).toBeVisible();
@@ -222,7 +198,7 @@ test.describe('Payment on the board', () => {
   });
 
   test('says it could not load, and Try again loads it', async ({ page }) => {
-    await intercept(page, 'error');
+    await interceptCollection(page, 'payments', 'error');
     await gotoSkin(page, '/payment');
     const alert = page.locator('[data-state="error"]');
     // a failed read is tried once more before it counts as an error

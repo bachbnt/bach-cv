@@ -27,7 +27,7 @@ import {
 } from '@/skins/trade/blocks/shell-tape';
 import { navItems, WATCH, type Tile } from '@/skins/trade/config';
 import { useCounts } from '@/skins/trade/shell/use-counts';
-import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
+import { useDocumentHidden } from '@/hooks/use-document-hidden';
 import { TvTile } from '@/skins/trade/ui/tv-tile';
 import { cssVars } from '@/skins/trade/ui/css-vars';
 

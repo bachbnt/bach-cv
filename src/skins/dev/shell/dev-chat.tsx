@@ -51,11 +51,6 @@ export function DevChat() {
     maxUserMessages: chat.maxUserMessages,
     maxInputLength: chat.maxInputLength,
   });
-  const { warmUp } = session;
-
-  useEffect(() => {
-    if (isOpen) warmUp();
-  }, [isOpen, warmUp]);
 
   useEffect(() => {
     if (!enabled || modalOpen) return;

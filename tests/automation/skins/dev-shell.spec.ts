@@ -74,9 +74,16 @@ test.describe('the editor window', () => {
     page,
   }) => {
     await gotoSkin(page, '/');
-    await page.getByRole('button', { name: 'Language' }).click();
+    // the names Standard gives them
+    await expect(page.getByRole('button', { name: /^Skin: Dev$/ })).toHaveCount(
+      1,
+    );
+    await expect(page.getByRole('button', { name: /^Theme$/ })).toHaveCount(1);
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
     await page.getByRole('menuitemradio', { name: /Tiếng Việt/ }).click();
-    await expect(page.getByRole('button', { name: 'Ngôn ngữ' })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /^Ngôn ngữ: Tiếng Việt$/ }),
+    ).toBeVisible();
     await page.getByRole('button', { name: 'Giao diện', exact: true }).click();
     await page.getByRole('menuitemradio', { name: /Tối|Dark/ }).click();
     await expect(page.locator('html')).toHaveClass(/dark/);

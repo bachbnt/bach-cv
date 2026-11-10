@@ -6,6 +6,7 @@
 
 import { Pause, Play } from 'lucide-react';
 import { useState } from 'react';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
@@ -21,6 +22,7 @@ export function HomeTechStrip() {
   const states = useCopy(statesCopy);
   // a moving list needs a way to stop it that does not need a mouse (WCAG 2.2.2)
   const [paused, setPaused] = useState(false);
+  const gate = useLoopGate();
   const { data: skills = [], isPending } = useContentQuery('skills');
   const shown = stripSkills(skills);
 
@@ -52,6 +54,7 @@ export function HomeTechStrip() {
         className='overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)] motion-reduce:[mask-image:none]'
       >
         <div
+          ref={gate}
           className={cn(
             'flex w-max animate-[dv-marquee_45s_linear_infinite] gap-2.5 hover:[animation-play-state:paused] motion-reduce:w-auto motion-reduce:flex-wrap motion-reduce:animate-none',
             paused && '[animation-play-state:paused]',

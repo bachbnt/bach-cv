@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { gotoSkin, useSkin } from '../support/skin';
 import { trackViewTransitions } from '../support/view-transitions';
@@ -93,7 +93,9 @@ test.describe('motion in the Dev skin', () => {
     await expect(marquee).toBeVisible();
     const state = () =>
       marquee.evaluate((el) => getComputedStyle(el).animationPlayState);
-    expect(await state()).toBe('running');
+    // a list that is scrolled out of view waits by itself: look at it on screen
+    await marquee.scrollIntoViewIfNeeded();
+    await expect.poll(state).toBe('running');
     await page
       .getByRole('button', { name: 'Pause the moving list of technologies' })
       .focus();
@@ -159,6 +161,123 @@ test.describe('motion in the Dev skin', () => {
         .toBeGreaterThan(0);
       for (const animation of await watch.animations())
         expect(animation.duration).toBe(0);
+    });
+  });
+
+  test.describe('endless loops', () => {
+    /** The play states of the animations that never end, inside `target` (also those of its pseudo-elements). */
+    const loops = (target: Locator) =>
+      target.evaluate((el) =>
+        el
+          .getAnimations({ subtree: true })
+          .filter((a) => a.effect?.getComputedTiming().iterations === Infinity)
+          .map((a) => a.playState),
+      );
+    const allOf = (states: string[], state: string) =>
+      states.length > 0 && states.every((value) => value === state);
+    /** Puts the tab in the background (or back): the page only reads `visibilityState`. */
+    const setTab = (page: Page, state: 'hidden' | 'visible') =>
+      page.evaluate((value) => {
+        Object.defineProperty(document, 'visibilityState', {
+          configurable: true,
+          get: () => value,
+        });
+        document.dispatchEvent(new Event('visibilitychange'));
+      }, state);
+
+    test('the marquee, the fill bars, the caret and the dots of the chat button run in a visible tab and wait in a background one', async ({
+      page,
+    }) => {
+      await gotoSkin(page, '/');
+      const loopRoots = [
+        page.locator('section[aria-label="Technologies"] > div'),
+        page.locator('[data-reveal]:has(span[class*="dv-fill"])'),
+        page.locator('h1 .dv-caret'),
+        page.locator('[data-slot="dev-chat-fab"]'),
+      ];
+      // a loop that is off screen waits too: bring each one into view before looking at it
+      const running = async (root: Locator) => {
+        await root.scrollIntoViewIfNeeded();
+        await expect
+          .poll(async () => allOf(await loops(root), 'running'))
+          .toBe(true);
+      };
+      for (const root of loopRoots) await running(root);
+      await setTab(page, 'hidden');
+      await expect(page.locator('.dv-root')).toHaveAttribute('data-hidden', '');
+      for (const root of loopRoots)
+        expect(allOf(await loops(root), 'paused')).toBe(true);
+      await setTab(page, 'visible');
+      await expect(page.locator('.dv-root')).not.toHaveAttribute(
+        'data-hidden',
+        '',
+      );
+      for (const root of loopRoots) await running(root);
+    });
+
+    test('a loop that is scrolled out of view waits, and goes on when it is scrolled back', async ({
+      page,
+    }) => {
+      await gotoSkin(page, '/');
+      const bars = page.locator('[data-reveal]:has(span[class*="dv-fill"])');
+      await expect(bars).toBeAttached();
+      await bars.scrollIntoViewIfNeeded();
+      await expect(bars).not.toHaveAttribute('data-off', '');
+      await expect
+        .poll(async () => allOf(await loops(bars), 'running'))
+        .toBe(true);
+      await page.evaluate(() =>
+        window.scrollTo(0, document.documentElement.scrollHeight),
+      );
+      await expect(bars).toHaveAttribute('data-off', '');
+      expect(allOf(await loops(bars), 'paused')).toBe(true);
+      await bars.scrollIntoViewIfNeeded();
+      await expect(bars).not.toHaveAttribute('data-off', '');
+      await expect
+        .poll(async () => allOf(await loops(bars), 'running'))
+        .toBe(true);
+    });
+
+    test('a skeleton shimmers while it is on screen and waits in a background tab', async ({
+      page,
+    }) => {
+      // the reads wait until the test lets them go, so the skeleton stays
+      let release = () => {};
+      const held = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      await page.route('**/firestore.googleapis.com/**', async (route) => {
+        await held;
+        await route.fallback();
+      });
+      await page.goto('/projects');
+      const skeleton = page.locator(
+        'main [aria-hidden="true"].overflow-hidden',
+      );
+      await expect(skeleton.first()).toBeVisible();
+      await expect
+        .poll(async () => allOf(await loops(skeleton.first()), 'running'))
+        .toBe(true);
+      await setTab(page, 'hidden');
+      expect(allOf(await loops(skeleton.first()), 'paused')).toBe(true);
+      await setTab(page, 'visible');
+      release();
+    });
+
+    test.describe('with reduced motion', () => {
+      test.use({ reducedMotion: 'reduce' });
+
+      test('none of them runs', async ({ page }) => {
+        await gotoSkin(page, '/');
+        await expect(page.locator('h1 .dv-caret')).toBeAttached();
+        for (const root of [
+          page.locator('section[aria-label="Technologies"]'),
+          page.locator('[data-reveal]:has(span[class*="dv-fill"])'),
+          page.locator('h1 .dv-caret'),
+          page.locator('[data-slot="dev-chat-fab"]'),
+        ])
+          expect(await loops(root)).toEqual([]);
+      });
     });
   });
 

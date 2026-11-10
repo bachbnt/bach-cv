@@ -109,4 +109,4 @@ export function DevWindowTools({ className, ...props }: ComponentProps<'div'>) {
 
 /** A square icon button (or link) of the bar. */
 export const windowToolClass =
-  'inline-grid size-[30px] cursor-pointer place-items-center rounded-[6px] border-0 bg-transparent text-mute [transition:background_0.15s,color_0.15s] hover:bg-hov hover:text-head pointer-coarse:size-10';
+  'inline-grid size-[30px] cursor-pointer place-items-center rounded-[6px] border-0 bg-transparent text-mute [transition:background_0.15s,color_0.15s] hover:bg-hov hover:text-head pointer-coarse:size-11';

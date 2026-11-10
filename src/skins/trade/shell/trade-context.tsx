@@ -25,11 +25,14 @@ interface TradeContextValue {
   cvOpen: boolean;
   openCv: () => void;
   closeCv: () => void;
-  /** the job a flag of the chart asked for: the Resume page opens its responsibilities and scrolls to it */
+  /** the job a flag of the chart asked for last (the watchlist marks it); it stays for as long as the terminal is open */
   jobId: string | null;
+  /** the same ask while nobody has used it yet: the Resume page opens that job's responsibilities and scrolls to it, then `doneJob` clears it, so a later visit to Resume does not open it again */
+  pendingJob: string | null;
   /** how many times a job was asked for: it goes up on EVERY ask, so asking for the same job again (after the visitor scrolled away) scrolls again */
   jobAsk: number;
   showJob: (id: string) => void;
+  doneJob: () => void;
   /** the degree a flag of the chart asked for: the Resume page scrolls to its row once, then `doneDegree` clears the ask (a later visit to Resume does not scroll again) */
   degreeAsk: { id: string; n: number } | null;
   showDegree: (id: string) => void;
@@ -58,6 +61,7 @@ export function TradeProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [cvOpen, setCvOpen] = useState(false);
   const [asked, setAsked] = useState<{ id: string; n: number } | null>(null);
+  const [jobPending, setJobPending] = useState(false);
   const [degreeAsk, setDegreeAsk] = useState<{ id: string; n: number } | null>(
     null,
   );
@@ -72,10 +76,12 @@ export function TradeProvider({ children }: { children: ReactNode }) {
     (id: string) => {
       update({ panel: true });
       setAsked((old) => ({ id, n: (old?.n ?? 0) + 1 }));
+      setJobPending(true);
       router.push('/resume');
     },
     [router, update],
   );
+  const doneJob = useCallback(() => setJobPending(false), []);
   const showDegree = useCallback(
     (id: string) => {
       update({ panel: true });
@@ -109,8 +115,10 @@ export function TradeProvider({ children }: { children: ReactNode }) {
       openCv: () => setCvOpen(true),
       closeCv: () => setCvOpen(false),
       jobId: asked?.id ?? null,
+      pendingJob: jobPending ? (asked?.id ?? null) : null,
       jobAsk: asked?.n ?? 0,
       showJob,
+      doneJob,
       degreeAsk,
       showDegree,
       doneDegree,
@@ -128,7 +136,9 @@ export function TradeProvider({ children }: { children: ReactNode }) {
     [
       cvOpen,
       asked,
+      jobPending,
       showJob,
+      doneJob,
       degreeAsk,
       showDegree,
       doneDegree,

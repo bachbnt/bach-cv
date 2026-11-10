@@ -6,7 +6,7 @@
 
 import type { CSSProperties } from 'react';
 import { cn } from '@/lib/utils';
-import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 
 /** A placeholder shape with faint grid lines that shimmers while data loads (decoration: the block around it announces "Loading"). */
 export function TvSkeleton({

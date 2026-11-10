@@ -124,7 +124,7 @@ test.describe('what an audit of the board found', () => {
     page,
   }) => {
     await gotoSkin(page, '/');
-    await page.getByRole('button', { name: /^Language/ }).click();
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
     const chosen = page.getByRole('menuitemradio', { name: /English/ });
     await expect(chosen.locator('svg:not(.lucide)')).toBeVisible();
     await expect(chosen.locator('svg.lucide')).toBeHidden();

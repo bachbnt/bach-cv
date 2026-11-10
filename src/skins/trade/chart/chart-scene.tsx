@@ -62,7 +62,7 @@ import {
   type View,
 } from '@/skins/trade/chart/view';
 import { CHART_CONTROLS_ID } from '@/skins/trade/shell/toolbar';
-import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
+import { useDocumentHidden } from '@/hooks/use-document-hidden';
 import { useOnceTrue } from '@/hooks/use-once-true';
 import { useOnScreen } from '@/skins/trade/shell/use-on-screen';
 import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';

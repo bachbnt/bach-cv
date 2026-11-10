@@ -157,10 +157,19 @@ html[data-skin='academic'] {
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  background-color: var(--ac-board);
-  background-attachment: fixed;
+  /* the board is a layer of its own below the content (the next rule): `background-attachment: fixed` on a tall element is painted again on every scroll
+     in some browsers, a fixed layer is not. `isolate` keeps that layer inside the root, above its own (absent) background and below its content */
+  isolation: isolate;
 }
-html[data-skin='academic'].dark .ac-root {
+.ac-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--ac-board);
+}
+html[data-skin='academic'].dark .ac-root::before {
   background-image:
     radial-gradient(
       1300px 720px at 24% 0%,
@@ -179,7 +188,7 @@ html[data-skin='academic'].dark .ac-root {
     ),
     var(--ac-grain);
 }
-html[data-skin='academic']:not(.dark) .ac-root {
+html[data-skin='academic']:not(.dark) .ac-root::before {
   background-image:
     radial-gradient(
       1300px 720px at 30% 0%,

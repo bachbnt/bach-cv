@@ -3,7 +3,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -12,35 +12,6 @@ test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
   await mockImages(page);
 });
-
-/** Answers the reads of the projects with `answer` ('empty' or 'error'), or waits `delay` ms before every read. */
-async function intercept(
-  page: Page,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes('"collectionId":"projects"');
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
 
 const entryOf = (page: Page, name: string) =>
   page.locator('article').filter({
@@ -183,7 +154,7 @@ test.describe('Projects', () => {
   test('a page with no visible project shows the empty state', async ({
     page,
   }) => {
-    await intercept(page, 'empty');
+    await interceptCollection(page, 'projects', 'empty');
     await gotoSkin(page, '/projects');
     const notice = page.locator('[data-state="empty"]');
     await expect(
@@ -198,7 +169,7 @@ test.describe('Projects', () => {
   test('shows a skeleton while the data is on its way, then the content', async ({
     page,
   }) => {
-    await intercept(page, { delay: 1500 });
+    await interceptCollection(page, 'projects', { delay: 1500 });
     await gotoSkin(page, '/projects');
     const loading = page.getByRole('status', { name: 'Loading' }).first();
     await expect(loading).toBeVisible();
@@ -210,7 +181,7 @@ test.describe('Projects', () => {
   });
 
   test('says it could not load, and Try again loads it', async ({ page }) => {
-    await intercept(page, 'error');
+    await interceptCollection(page, 'projects', 'error');
     await gotoSkin(page, '/projects');
     const alert = page.locator('[data-state="error"]');
     // a failed read is tried once more before it counts as an error

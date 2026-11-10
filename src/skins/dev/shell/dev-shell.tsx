@@ -67,7 +67,7 @@ export function DevShell({
       // a window or a menu that is open (the chat, a viewer, the palette, a title bar menu) takes Esc first
       if (
         event.key === 'Escape' &&
-        !document.querySelector('[role="dialog"], [role="menu"]')
+        !document.querySelector('[role="dialog"], [role="menu"]:not([hidden])')
       )
         setZen(false);
     };

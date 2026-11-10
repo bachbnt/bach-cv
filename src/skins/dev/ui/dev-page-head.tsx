@@ -6,6 +6,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import type { PageKey } from '@/lib/content/schema';
 import { DEV_FILES, shownPath } from '@/skins/dev/config';
 import { DevButtonGroup } from '@/skins/dev/ui/dev-button';
+import { DevCaret } from '@/skins/dev/ui/dev-caret';
 import { DevLead } from '@/skins/dev/ui/dev-lead';
 import { DevTerm, DevTermBody } from '@/skins/dev/ui/dev-term';
 import { DevTermBar } from '@/skins/dev/ui/dev-term-bar';
@@ -39,7 +40,7 @@ export function DevPageHead({
         </div>
         <h1 className='text-[length:clamp(34px,5vw,58px)]'>
           {title}
-          <span className='dv-caret' aria-hidden='true' />
+          <DevCaret />
         </h1>
         {intro && (
           <DevLead>

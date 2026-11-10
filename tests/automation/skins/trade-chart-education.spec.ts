@@ -315,7 +315,7 @@ test.describe('in Vietnamese', () => {
     await page.waitForTimeout(700);
     const before = await legendAt(page, 0.5);
     const count = await bars(page);
-    await page.getByRole('button', { name: /^Language/ }).click();
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
     await page.getByRole('menuitemradio', { name: /Tiếng Việt/ }).click();
     await expect(
       page.getByRole('group', { name: 'Khung thời gian' }),

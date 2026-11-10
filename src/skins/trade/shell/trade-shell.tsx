@@ -43,7 +43,7 @@ import { Toolbar } from '@/skins/trade/shell/toolbar';
 import { ToolRail } from '@/skins/trade/shell/tool-rail';
 import { TradeProvider, useTrade } from '@/skins/trade/shell/trade-context';
 import { TradeOverlays } from '@/skins/trade/shell/trade-overlays';
-import { useDocumentHidden } from '@/skins/trade/shell/use-document-hidden';
+import { useDocumentHidden } from '@/hooks/use-document-hidden';
 import { useSearchHotkey } from '@/skins/trade/shell/use-search-hotkey';
 import { useReducedMotion } from '@/skins/trade/shell/use-reduced-motion';
 import { useScrollToPage } from '@/skins/trade/shell/use-scroll-to-page';

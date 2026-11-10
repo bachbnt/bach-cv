@@ -69,7 +69,7 @@ export function Header() {
       <div className='ml-auto flex flex-wrap items-center gap-2 max-[760px]:gap-1.5'>
         {languages.length > 1 && (
           <AcMenu
-            label={common.language.label}
+            label={`${common.language.label}: ${names[lang]}`}
             current={lang.toUpperCase()}
             value={lang}
             items={languages.map((code) => ({
@@ -85,7 +85,7 @@ export function Header() {
           />
         )}
         <AcMenu
-          label={skins.label}
+          label={`${skins.label}: ${skins.names[skin].name}`}
           current={skins.names[skin].name}
           value={skin}
           items={SKIN_IDS.map((id) => ({

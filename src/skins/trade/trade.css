@@ -185,7 +185,7 @@ html[data-skin='trade'] {
 
 /* a tab in the background, or a loop scrolled out of view: the endless loops (live ring, pulse, skeleton, the drawings of the services) wait
    instead of running for nobody. The shell sets data-hidden on the root (shell/trade-shell.tsx) and `useLoopGate` sets data-off on the root
-   of a loop that is off screen (shell/use-loop-gate.ts); the ticker tape and the chart tick stop by their own hooks. */
+   of a loop that is off screen (`hooks/use-loop-gate.ts`, shared with the Dev skin); the ticker tape and the chart tick stop by their own hooks. */
 .tv-root[data-hidden],
 .tv-root[data-hidden] *,
 .tv-root[data-hidden] *::before,

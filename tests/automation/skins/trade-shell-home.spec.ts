@@ -2,10 +2,11 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { expect, test } from '@playwright/test';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
+import { pageSettled } from '../support/animations';
 
 /** The first visit to a page compiles it in the dev server, which is slow when the machine is busy. */
 const SLOW = { timeout: 30_000 };
@@ -15,36 +16,6 @@ test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
   await mockImages(page);
 });
-
-/** Answers the reads of one collection with `answer` ('empty' or 'error'), or waits `ms` before every read. */
-async function intercept(
-  page: Page,
-  collection: string,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes(`"collectionId":"${collection}"`);
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
 
 const TITLE = 'I lead mobile teams and build the AI tooling they ship with.';
 
@@ -268,7 +239,7 @@ test.describe('Home states', () => {
   test('the featured projects show a skeleton while they load, then the cards', async ({
     page,
   }) => {
-    await intercept(page, 'projects', { delay: 1500 });
+    await interceptCollection(page, 'projects', { delay: 1500 });
     await gotoSkin(page, '/');
     await expect(
       page
@@ -281,7 +252,7 @@ test.describe('Home states', () => {
   test('the featured projects are left out when there are none or they fail to load', async ({
     page,
   }) => {
-    await intercept(page, 'projects', 'error');
+    await interceptCollection(page, 'projects', 'error');
     await gotoSkin(page, '/');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(
@@ -295,7 +266,7 @@ test.describe('Home states', () => {
   test('where I have worked shows the error with Try again, and the empty card', async ({
     page,
   }) => {
-    await intercept(page, 'experience', 'error');
+    await interceptCollection(page, 'experience', 'error');
     await gotoSkin(page, '/');
     const widget = page.getByRole('region', { name: "Where I've worked" });
     await expect(
@@ -311,7 +282,7 @@ test.describe('Home states', () => {
   test('where I have worked says so when there is nothing to show', async ({
     page,
   }) => {
-    await intercept(page, 'experience', 'empty');
+    await interceptCollection(page, 'experience', 'empty');
     await gotoSkin(page, '/');
     await expect(
       page
@@ -321,7 +292,7 @@ test.describe('Home states', () => {
   });
 
   test('the contact band shows the error with Try again', async ({ page }) => {
-    await intercept(page, 'contacts', 'error');
+    await interceptCollection(page, 'contacts', 'error');
     await gotoSkin(page, '/');
     await expect(
       page
@@ -333,7 +304,7 @@ test.describe('Home states', () => {
   test('the Skills list of the watchlist has the same three states', async ({
     page,
   }) => {
-    await intercept(page, 'skills', 'error');
+    await interceptCollection(page, 'skills', 'error');
     await gotoSkin(page, '/about');
     await page.getByRole('tab', { name: 'Skills' }).click();
     await expect(
@@ -380,7 +351,7 @@ test.describe('Home on a phone', () => {
   test('stacks the cards and nothing scrolls sideways', async ({ page }) => {
     await gotoSkin(page, '/');
     await expect(page.getByTestId('idea')).toHaveCount(3);
-    await page.waitForTimeout(1500);
+    await pageSettled(page);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,

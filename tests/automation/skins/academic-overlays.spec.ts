@@ -72,7 +72,9 @@ test.describe('chat', () => {
     await expect(pad.getByText('1/20 messages')).toBeVisible();
     expect(received).toHaveLength(1);
     expect(received[0].messages.at(-1)?.content).toBe('Who are you?');
-    expect(received[0].systemPrompt).toContain('Bùi Ngô Tôn Bách');
+    // the Worker builds the system prompt from the site content: the browser only says the language
+    expect(received[0]).toMatchObject({ lang: 'en' });
+    expect(received[0]).not.toHaveProperty('systemPrompt');
     // the questions not asked yet are offered again
     await expect(
       pad.getByRole('group', { name: 'Suggested questions' }),

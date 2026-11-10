@@ -58,9 +58,9 @@ test.describe('the terminal', () => {
     for (const name of [
       'Choose what the terminal shows',
       'Enter full screen',
-      /^Language/,
+      /^Language: English$/,
       'Theme',
-      /^Skin/,
+      /^Skin: Trade$/,
       'Download CV',
     ])
       await expect(bar.getByRole('button', { name })).toBeVisible();
@@ -72,9 +72,11 @@ test.describe('the terminal', () => {
     page,
   }) => {
     await gotoSkin(page, '/');
-    await page.getByRole('button', { name: /^Language/ }).click();
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
     await page.getByRole('menuitemradio', { name: /Tiếng Việt/ }).click();
-    await expect(page.getByRole('button', { name: /^Ngôn ngữ/ })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /^Ngôn ngữ: Tiếng Việt$/ }),
+    ).toBeVisible();
     await expect(
       page
         .getByRole('navigation', { name: 'Chính' })
@@ -94,7 +96,7 @@ test.describe('the terminal', () => {
     await page.getByRole('menuitemradio', { name: 'Tối' }).click();
     await expect(page.locator('html')).toHaveClass(/dark/);
 
-    await page.getByRole('button', { name: /^Skin/ }).click();
+    await page.getByRole('button', { name: /^Skin: Trade$/ }).click();
     await page.getByRole('menuitemradio', { name: /^Chuẩn/ }).click();
     await expect(page.locator('html')).not.toHaveAttribute('data-skin', /.+/);
     await expect(
@@ -280,6 +282,40 @@ test.describe('the watchlist', () => {
       'data-active',
       'true',
     );
+  });
+
+  test('a job asked for from Roles opens once: coming back to Resume later starts as usual', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const aside = watchlist(page);
+    await aside.getByRole('tab', { name: 'Roles' }).click();
+    await aside
+      .getByRole('tabpanel')
+      .getByRole('button', { name: /MoMo/ })
+      .click();
+    await expect(page).toHaveURL(/\/resume$/, SLOW);
+    const momo = page.locator('[data-job="momo"]');
+    await expect(momo).toHaveAttribute('data-active', 'true');
+    await expect(
+      momo.getByRole('button', { name: 'Hide responsibilities' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    await aside.getByRole('tab', { name: 'Pages' }).click();
+    await main(page).getByRole('link', { name: 'Projects' }).click();
+    await expect(page).toHaveURL(/\/projects$/, SLOW);
+    await main(page).getByRole('link', { name: 'Resume' }).click();
+    await expect(page).toHaveURL(/\/resume$/, SLOW);
+    await expect(
+      page
+        .locator('[data-job]')
+        .first()
+        .getByRole('button', { name: 'Hide responsibilities' }),
+    ).toBeVisible();
+    await expect(momo).not.toHaveAttribute('data-active', 'true');
+    await expect(
+      momo.getByRole('button', { name: 'Show responsibilities' }),
+    ).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('Roles with the Resume page off still tells the jobs, with no button and no hint to open them', async ({
@@ -575,7 +611,7 @@ test.describe('the symbol search', () => {
     await expect(page.getByRole('option')).toHaveCount(0);
     await page.keyboard.press('Escape');
 
-    await page.getByRole('button', { name: /^Language/ }).click();
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
     await page.getByRole('menuitemradio', { name: /Tiếng Việt/ }).click();
     await page.keyboard.press('Control+k');
     await expect(
@@ -815,7 +851,9 @@ test.describe('windows', () => {
       0,
     );
     await expect(page.getByRole('button', { name: 'Connect' })).toHaveCount(0);
-    await expect(page.getByRole('button', { name: /^Skin/ })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /^Skin: Trade$/ }),
+    ).toBeVisible();
     await expect(
       page.getByRole('button', { name: 'Search the site' }),
     ).toBeVisible();
@@ -869,7 +907,12 @@ test.describe('on a phone', () => {
     page,
   }) => {
     await gotoSkin(page, '/');
-    for (const name of [/^Language/, 'Theme', /^Skin/, 'Download CV']) {
+    for (const name of [
+      /^Language: English$/,
+      /^Theme$/,
+      /^Skin: Trade$/,
+      'Download CV',
+    ]) {
       await expect(page.getByRole('button', { name }).first()).toBeVisible();
     }
     const bar = page.getByRole('navigation', { name: 'Quick links' });
@@ -901,7 +944,7 @@ test.describe('on a phone', () => {
 
   test('the Skin menu still leaves the skin', async ({ page }) => {
     await gotoSkin(page, '/');
-    await page.getByRole('button', { name: /^Skin/ }).click();
+    await page.getByRole('button', { name: /^Skin: Trade$/ }).click();
     await page.getByRole('menuitemradio', { name: /^Standard/ }).click();
     await expect(page.locator('html')).not.toHaveAttribute(
       'data-skin',

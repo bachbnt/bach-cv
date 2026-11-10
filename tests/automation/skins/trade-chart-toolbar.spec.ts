@@ -94,7 +94,7 @@ test.describe('one toolbar', () => {
     await ready(page);
     const bar = header(page);
     const xs = await Promise.all(
-      [/^Language/, /^Skin/, 'Theme'].map(
+      [/^Language: English$/, /^Skin: Trade$/, /^Theme$/].map(
         async (name) =>
           (await bar.getByRole('button', { name }).boundingBox())!.x,
       ),
@@ -400,11 +400,11 @@ test.describe('on a phone', () => {
     await ready(page);
     const bar = header(page);
     // the Skin menu is always reachable
-    const skin = bar.getByRole('button', { name: /^Skin/ });
+    const skin = bar.getByRole('button', { name: /^Skin: Trade$/ });
     await expect(skin).toBeVisible();
     expect((await skin.boundingBox())!.x + 44).toBeLessThanOrEqual(391);
     const xs = await Promise.all(
-      [/^Language/, /^Skin/, 'Theme'].map(
+      [/^Language: English$/, /^Skin: Trade$/, /^Theme$/].map(
         async (name) =>
           (await bar.getByRole('button', { name }).boundingBox())!.x,
       ),

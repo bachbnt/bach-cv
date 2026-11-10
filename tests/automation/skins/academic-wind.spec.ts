@@ -6,6 +6,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
+import { pageSettled } from '../support/animations';
 
 test.beforeEach(async ({ page }) => {
   await useSkin(page, 'academic');
@@ -66,7 +67,7 @@ test.describe('a breath of wind lifts a photo or a note from behind', () => {
       page,
     }) => {
       await gotoSkin(page, path);
-      await page.waitForTimeout(1500);
+      await pageSettled(page);
       const still = await page.evaluate(() => {
         const paper =
           '.ac-tape, .ac-sticky, [data-slot="ac-paper"], [class*="bg-ac-polaroid"]';

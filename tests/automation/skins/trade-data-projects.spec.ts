@@ -6,6 +6,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
+import { pageSettled } from '../support/animations';
 
 test.beforeEach(async ({ page }) => {
   await useSkin(page, 'trade');
@@ -251,7 +252,7 @@ test.describe('motion', () => {
   }) => {
     await gotoSkin(page, '/projects');
     await expect(rows(page)).toHaveCount(9);
-    await page.waitForTimeout(1500);
+    await pageSettled(page);
     const sliding = () =>
       page.evaluate(() => {
         document

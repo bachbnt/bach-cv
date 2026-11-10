@@ -7,7 +7,7 @@
 import type { JSX } from 'react';
 import type { Service } from '@/lib/content/schema';
 import { cn } from '@/lib/utils';
-import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 import { TvArtApp } from '@/skins/trade/ui/tv-art-app';
 import { TvArtGeneric } from '@/skins/trade/ui/tv-art-generic';
 import { TvArtOss } from '@/skins/trade/ui/tv-art-oss';

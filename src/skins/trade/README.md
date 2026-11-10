@@ -109,7 +109,8 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
   time, exit. Later bars are hidden; each job's flag appears when the playhead passes its bar and is announced in a polite live region.
   With reduced motion there is no autoplay (Play is `aria-disabled` and says why), stepping works.
 - **Flags** are the jobs at their real start (the week on the weekly chart, else the month, quarter or year; a briefcase for a past job, a star for the current one): Enter or a click shows that job on Resume
-  (`TradeProvider.showJob`); hover or focus shows a tip with the company, role and period.
+  (`TradeProvider.showJob`); hover or focus shows a tip with the company, role and period. The ask is used once: Resume opens and scrolls to the job,
+  then `doneJob` clears `pendingJob` (`jobId` stays, the watchlist marks the role), so coming back to Resume later starts as usual.
 - **Keys** (the list opens with `?`): arrows, Home and End move the crosshair, plus and minus zoom, Alt+T, H, V, R, F, M pick a tool, Alt+1 to 4 the interval, Escape
   cancels, Delete removes the chosen drawing, Ctrl or Cmd+Z undoes, Shift+Ctrl+Z redoes, Shift+R is the replay. Shortcuts that work anywhere
   ignore fields and open windows.
@@ -165,8 +166,8 @@ ui/                 tv-root, tv-button, tv-chip, tv-toggle-chip, tv-field, tv-me
   linear only for the tape, the overshoot only for the flag drop. Entrances are named utilities (`animate-tv-pop`, `-fade-up`, `-slide-in`, `-grow`...);
   keyframes are in `css/*.css` and a test checks that no name repeats. `active:scale-*` and `translate-*` set the `scale` and `translate`
   properties, so the transition lists `scale` or `translate`, never `transform`. The endless loops pause in a background tab (`data-hidden`
-  on the root) and while they are scrolled out of view (`useLoopGate` puts `data-off` on the root of a loop: a skeleton, the drawing of a service,
-  the chart, the "Current" dot; one shared observer, and `trade.css` pauses every animation inside); the chart's tick also waits while the chart
+  on the root) and while they are scrolled out of view (`useLoopGate`, shared with the Dev skin in `src/hooks/use-loop-gate.ts`, puts `data-off` on the root of a loop: a skeleton, the drawing of a service,
+  the chart, the "Current" dot; one shared observer, and `trade.css` pauses every animation inside; `useDocumentHidden` is in `src/hooks` too); the chart's tick also waits while the chart
   is off screen or one of its windows is open. The content of a block that showed a skeleton fades in over it (`TvFadeIn`, 240 ms, opacity only,
   a `display: contents` wrapper so the layout is the content's own, children that already arrive with an animation are left alone, off for
   reduced motion); a block that had its data from the cache just appears.

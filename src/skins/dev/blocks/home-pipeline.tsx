@@ -5,6 +5,7 @@
 'use client';
 
 import { homeCopy } from '@/content/copy/home';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { DevChip } from '@/skins/dev/ui/dev-chip';
@@ -18,8 +19,10 @@ const BAR_DELAY = ['', '[animation-delay:1s]', '[animation-delay:2s]'];
 /** How a bug becomes a merge request: the title and its steps as one strip, each step with a bar that fills in turn. */
 export function HomePipeline() {
   const { pipeline } = useCopy(homeCopy);
+  const gate = useLoopGate();
   return (
     <div
+      ref={gate}
       className='grid grid-cols-[1.1fr_1fr_1fr_1fr] overflow-hidden rounded-[8px] border border-line-2 bg-chrome max-[900px]:grid-cols-1'
       data-reveal
     >

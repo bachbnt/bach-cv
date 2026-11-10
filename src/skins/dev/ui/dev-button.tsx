@@ -23,8 +23,8 @@ export const devButtonVariants = cva(
           'relative overflow-hidden border-brand bg-brand text-white hover:border-brand hover:brightness-110 hover:shadow-[0_0_0_3px_color-mix(in_srgb,var(--brand)_30%,transparent)] after:pointer-events-none after:absolute after:inset-0 after:-translate-x-[130%] after:bg-[image:linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.28)_50%,transparent_70%)] after:transition-transform after:duration-700 after:ease-[ease] after:content-[""] hover:after:translate-x-[130%]',
       },
       size: {
-        default: 'min-h-10 px-4 text-[13.5px]/[1.25]',
-        sm: 'min-h-[33px] px-3 text-[12.5px]/[1.25]',
+        default: 'min-h-10 px-4 text-[13.5px]/[1.25] pointer-coarse:min-h-11',
+        sm: 'min-h-[33px] px-3 text-[12.5px]/[1.25] pointer-coarse:min-h-11',
       },
     },
     defaultVariants: { variant: 'outline', size: 'default' },

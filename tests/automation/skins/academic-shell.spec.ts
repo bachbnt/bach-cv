@@ -29,9 +29,11 @@ test.describe('the board', () => {
     page,
   }) => {
     await gotoSkin(page, '/');
-    await expect(page.getByRole('button', { name: /^Language/ })).toBeVisible();
-    await expect(page.getByRole('button', { name: /^Theme/ })).toBeVisible();
-    await page.getByRole('button', { name: /^Skin/ }).click();
+    await expect(
+      page.getByRole('button', { name: /^Language: English$/ }),
+    ).toBeVisible();
+    await expect(page.getByRole('button', { name: /^Theme$/ })).toBeVisible();
+    await page.getByRole('button', { name: /^Skin: Academic$/ }).click();
     await page.getByRole('menuitemradio', { name: /Standard/ }).click();
     await expect(page.locator('html')).not.toHaveAttribute(
       'data-skin',
@@ -39,11 +41,27 @@ test.describe('the board', () => {
     );
   });
 
+  test('the menus have the accessible names Standard gives them, in both languages', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    for (const name of [/^Language: English$/, /^Skin: Academic$/, /^Theme$/])
+      await expect(page.getByRole('button', { name })).toHaveCount(1);
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
+    await page.getByRole('menuitemradio', { name: /Tiếng Việt/ }).click();
+    for (const name of [
+      /^Ngôn ngữ: Tiếng Việt$/,
+      /^Skin: Học thuật$/,
+      /^Giao diện$/,
+    ])
+      await expect(page.getByRole('button', { name })).toHaveCount(1);
+  });
+
   test('the name of Vietnamese in the language menu of an English page is written whole in the font that has its letters', async ({
     page,
   }) => {
     await gotoSkin(page, '/');
-    await page.getByRole('button', { name: /^Language/ }).click();
+    await page.getByRole('button', { name: /^Language: English$/ }).click();
     const family = (name: string) =>
       page
         .getByRole('menuitemradio', { name })
@@ -59,7 +77,11 @@ test.describe('the board', () => {
   }) => {
     const families = async () => {
       await gotoSkin(page, '/');
-      await page.getByRole('button', { name: /^(Language|Ngôn ngữ)/ }).click();
+      await page
+        .getByRole('button', {
+          name: /^(Language: English|Ngôn ngữ: Tiếng Việt)$/,
+        })
+        .click();
       const family = (name: string) =>
         page
           .getByRole('menuitemradio', { name })
@@ -87,5 +109,48 @@ test.describe('the board', () => {
     await expect(page).toHaveURL(/\/resume$/, arrived);
     await page.keyboard.press('ArrowLeft');
     await expect(page).toHaveURL(/\/about$/, arrived);
+  });
+});
+
+test.describe('the line of rights', () => {
+  for (const size of [
+    { width: 1440, height: 900 },
+    { width: 390, height: 844 },
+    { width: 320, height: 568 },
+  ])
+    test(`is Standard's footer line at the foot of the board and clear of the chat slip at ${size.width} px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(size);
+      await gotoSkin(page, '/');
+      const year = new Date().getFullYear();
+      const line = page.getByText(`© ${year} Bach Bui. All rights reserved.`);
+      await line.scrollIntoViewIfNeeded();
+      await page.evaluate(() =>
+        window.scrollTo(0, document.documentElement.scrollHeight),
+      );
+      await expect(line).toBeVisible();
+      const text = (await line.boundingBox())!;
+      const slip = (await page.locator('[data-ac-slip]').boundingBox())!;
+      const ledge = (await page.locator('.ac-ledge').boundingBox())!;
+      const touches = (a: typeof text, b: typeof text) =>
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y;
+      expect(touches(text, slip)).toBe(false);
+      expect(touches(text, ledge)).toBe(false);
+      expect(text.x).toBeGreaterThanOrEqual(0);
+      expect(text.x + text.width).toBeLessThanOrEqual(size.width);
+    });
+
+  test('is in Vietnamese on a Vietnamese page', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
+    await gotoSkin(page, '/');
+    await expect(
+      page.getByText(
+        `© ${new Date().getFullYear()} Bach Bui. Bảo lưu mọi quyền.`,
+      ),
+    ).toBeVisible();
   });
 });

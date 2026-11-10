@@ -36,7 +36,7 @@ export function AcMenu({
   onSelect,
   onPreview,
 }: {
-  /** the accessible name of the menu (`Language`) */
+  /** the accessible name of the menu, the one Standard gives it (`Language: English`, `Skin: Academic`, `Theme`) */
   label: string;
   /** the words on the tag (`EN`, `Academic`) */
   current: string;
@@ -49,7 +49,7 @@ export function AcMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label={`${label}: ${current}`}
+        aria-label={label}
         className='inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-[8px_4px_9px_5px/5px_9px_4px_8px] border-2 border-ac-rule bg-transparent px-3 font-ac-note text-[17px]/none whitespace-nowrap text-ac-ink transition-colors outline-none hover:border-ac-mute hover:bg-ac-faint data-popup-open:border-ac-mute data-popup-open:bg-ac-faint pointer-coarse:min-h-11'
       >
         {current}

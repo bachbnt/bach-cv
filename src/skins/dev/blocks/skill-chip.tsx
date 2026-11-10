@@ -52,7 +52,7 @@ export function DevSkillChip({
         data-slot='dev-chip'
         className={cn(
           devChipVariants({ tone: skill.category, core, interactive: true }),
-          'cursor-help appearance-none leading-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal active:brightness-90 pointer-coarse:min-h-9 pointer-coarse:items-center',
+          'cursor-help appearance-none leading-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal active:brightness-90 pointer-coarse:min-h-11 pointer-coarse:items-center',
         )}
         onTouchStart={() => {
           touch.current = true;

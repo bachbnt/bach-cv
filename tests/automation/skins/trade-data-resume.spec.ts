@@ -6,6 +6,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
+import { pageSettled } from '../support/animations';
 
 test.beforeEach(async ({ page }) => {
   await useSkin(page, 'trade');
@@ -453,7 +454,7 @@ test.describe('the skills heatmap', () => {
     await gotoSkin(page, '/resume');
     await showHeat(page);
     await tiles(page).first().scrollIntoViewIfNeeded();
-    await page.waitForTimeout(1500);
+    await pageSettled(page);
     const small = await tiles(page).evaluateAll((els) =>
       els
         .map((el) => el.getBoundingClientRect())

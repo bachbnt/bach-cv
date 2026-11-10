@@ -2,8 +2,8 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { expect, test, type Page } from '@playwright/test';
-import { mockFirestore } from '../support/firestore-mock';
+import { expect, test } from '@playwright/test';
+import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { gotoSkin, useSkin } from '../support/skin';
 
 /** The three states every block that reads data has (loading, empty, error with Try again), in the Trade skin. */
@@ -50,43 +50,13 @@ test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
 });
 
-/** Answers the reads of one collection with `answer` ('empty' or 'error'), or waits `ms` before every read. */
-async function intercept(
-  page: Page,
-  collection: string,
-  answer: 'empty' | 'error' | { delay: number },
-) {
-  await page.route('**/firestore.googleapis.com/**', async (route) => {
-    const request = route.request();
-    if (typeof answer === 'object') {
-      await new Promise((resolve) => setTimeout(resolve, answer.delay));
-      return route.fallback();
-    }
-    const mine =
-      request.url().includes(':runQuery') &&
-      (request.postData() ?? '').includes(`"collectionId":"${collection}"`);
-    if (!mine) return route.fallback();
-    return answer === 'error'
-      ? route.fulfill({
-          status: 500,
-          contentType: 'application/json',
-          body: '{"error":{"code":500,"status":"INTERNAL"}}',
-        })
-      : route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([{ readTime: '2026-01-01T00:00:00Z' }]),
-        });
-  });
-}
-
 for (const block of BLOCKS) {
   test.describe(`${block.path} in the Trade skin`, () => {
     // (the chart's flags carry the names of the degrees in a hidden tip, so the content is looked for in the page panel)
     test('shows a skeleton while the data is on its way, then the content', async ({
       page,
     }) => {
-      await intercept(page, block.collection, { delay: 1500 });
+      await interceptCollection(page, block.collection, { delay: 1500 });
       await gotoSkin(page, block.path);
       const loading = page.getByRole('status', { name: 'Loading' }).first();
       await expect(loading).toBeVisible();
@@ -104,7 +74,7 @@ for (const block of BLOCKS) {
     test('says there is nothing to show yet, with a way forward where Standard has one', async ({
       page,
     }) => {
-      await intercept(page, block.collection, 'empty');
+      await interceptCollection(page, block.collection, 'empty');
       await gotoSkin(page, block.path);
       const notice = page.locator('[data-state="empty"]').first();
       await expect(notice).toBeVisible();
@@ -115,7 +85,7 @@ for (const block of BLOCKS) {
     });
 
     test('says it could not load, and Try again loads it', async ({ page }) => {
-      await intercept(page, block.collection, 'error');
+      await interceptCollection(page, block.collection, 'error');
       await gotoSkin(page, block.path);
       const alert = page.locator('[data-state="error"]').first();
       // a failed read is tried once more before it counts as an error
@@ -138,7 +108,7 @@ for (const block of BLOCKS) {
 
 test('the Vietnamese states use the Standard words', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
-  await intercept(page, 'projects', 'empty');
+  await interceptCollection(page, 'projects', 'empty');
   await gotoSkin(page, '/projects');
   await expect(
     page.locator('[data-state="empty"]').getByRole('heading', {
@@ -150,7 +120,7 @@ test('the Vietnamese states use the Standard words', async ({ page }) => {
 test('the contact band says when the contacts cannot load', async ({
   page,
 }) => {
-  await intercept(page, 'contacts', 'error');
+  await interceptCollection(page, 'contacts', 'error');
   await gotoSkin(page, '/about');
   await expect(page.locator('[data-state="error"]').first()).toBeVisible({
     timeout: 20_000,
@@ -338,7 +308,7 @@ test.describe('the system screens in the look of the terminal', () => {
   test('loading is a chart of grid lines and bars that breathe, and a line sweeping along the top; both stand still for reduced motion', async ({
     page,
   }) => {
-    await intercept(page, 'payments', { delay: 2500 });
+    await interceptCollection(page, 'payments', { delay: 2500 });
     await gotoSkin(page, '/payment');
     const loading = page.getByRole('status', { name: 'Loading' });
     await expect(loading).toBeVisible();
@@ -355,7 +325,7 @@ test.describe('the system screens in the look of the terminal', () => {
 
   test('loading stands still for reduced motion', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await intercept(page, 'payments', { delay: 2500 });
+    await interceptCollection(page, 'payments', { delay: 2500 });
     await gotoSkin(page, '/payment');
     const loading = page.getByRole('status', { name: 'Loading' });
     await expect(loading).toBeVisible();
@@ -368,7 +338,7 @@ test.describe('the system screens in the look of the terminal', () => {
   test('empty is "No data for this symbol" and an error is the widget error, in both languages', async ({
     page,
   }) => {
-    await intercept(page, 'services', 'empty');
+    await interceptCollection(page, 'services', 'empty');
     await gotoSkin(page, '/services');
     const notice = page.locator('[data-state="empty"]').first();
     await expect(notice.getByText('No data for this symbol')).toBeVisible();
@@ -380,7 +350,7 @@ test.describe('the system screens in the look of the terminal', () => {
   test('an error says "Widget error" and Try again is a button', async ({
     page,
   }) => {
-    await intercept(page, 'services', 'error');
+    await interceptCollection(page, 'services', 'error');
     await gotoSkin(page, '/services');
     const alert = page.locator('[data-state="error"]').first();
     await expect(alert).toBeVisible({ timeout: 20_000 });
@@ -394,7 +364,7 @@ test.describe('the system screens in the look of the terminal', () => {
     page,
   }) => {
     await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
-    await intercept(page, 'services', 'empty');
+    await interceptCollection(page, 'services', 'empty');
     await gotoSkin(page, '/services');
     await expect(
       page

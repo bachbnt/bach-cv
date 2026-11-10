@@ -30,11 +30,14 @@ the URL does not change.
 5. Dev-only strings (command lines like `whoami`) are decoration: `aria-hidden`. Anything a visitor reads or operates uses the Standard
    copy (`content/copy/*`), so both languages work. A new string needs `en` and `vi` (`defineCopy`).
 6. Buttons that look like commands (`./download-cv.sh`) keep the Standard accessible name (`aria-label`), so tests and screen readers find
-   the same control in every skin (`ui/dev-download-cv.tsx`).
+   the same control in every skin (`ui/dev-download-cv.tsx`). So do the three menus of the title bar: `Language: English`, `Skin: Dev`, `Theme`
+   (`DevMenu` takes the name apart from its heading).
 7. Phone: `max-[900px]:` utilities (the root, `ui/dev-root.tsx`, carries the state of the drawer); below 640 px the status bar keeps only its buttons
    (Problems, Output, Terminal) and the items that only decorate it (project, branch, sync, language, Prettier, bell) give way, so no real control
-   is cut off; the footer leaves room for the chat button; on touch the small controls (title bar menus, Files, status bar) reach 44 px with an
-   invisible area around them; the Explorer is a drawer, and Connect and the CV button live in it
+   is cut off; the footer leaves room for the chat button; on touch every control reaches 44 px (`pointer-coarse:`): the small ones (title bar menus, Files,
+   status bar, the tabs, Clear and Close of the bottom panel) with an invisible `::after` area that never reaches past the gap to the next control, the others
+   (command buttons, filter chips, skill chips, the tools of a window, the arrows of the viewer) by growing, which only happens on touch
+   (`tests/automation/skins/dev-touch.spec.ts` measures them; the three lights of a window are 12 px dots with their own area and are not covered); the Explorer is a drawer, and Connect and the CV button live in it
    (the account menu opens as a bottom sheet).
 
 ## Motion
@@ -55,6 +58,10 @@ Beyond hovers, and all of it off for "reduce motion":
   header says `online` with a breathing dot while the chat can be reached.
 - **Photos**: on About the picture zooms slowly inside its frame and the frame takes the accent colour under the mouse; the photo of the card on Home only zooms.
 - The terminal card types its command and the caret blinks (`.dv-typed`), the marquee of skills and the live pill are older motion.
+- **Endless loops wait** when nobody can see them: the marquee, the fill bars of the pipeline, the shimmer of a skeleton, the caret and the live pill carry
+  `data-off` while they are scrolled out of view (`useLoopGate`, `src/hooks/use-loop-gate.ts`, shared with Trade), and the root has `data-hidden` while the
+  tab is in the background (`useDocumentHidden`, `ui/dev-root.tsx`); `dev-extra.css` pauses every animation under either. The chat button's dot and ring and the
+  dots and carets of the chat window are under the root, so the background tab stops them too. Reduced motion still removes them all.
 
 ## The Terminal
 

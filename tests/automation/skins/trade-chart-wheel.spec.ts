@@ -296,7 +296,7 @@ test('a change of the content while the visitor has zoomed keeps the window on t
   const centre = year((await dateAt(page, 0.5)).text);
   const left = year((await dateAt(page, 0.002)).text);
   // the language lays other words over the content: new documents, and the series is built again
-  await page.getByRole('button', { name: /^Language/ }).click();
+  await page.getByRole('button', { name: /^Language: English$/ }).click();
   await page.getByRole('menuitemradio', { name: /Tiếng Việt/ }).click();
   await expect(
     page.getByRole('group', { name: 'Khung thời gian' }),

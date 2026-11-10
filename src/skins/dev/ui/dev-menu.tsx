@@ -33,6 +33,7 @@ export function DevMenu({
   icon,
   current,
   label,
+  name = label,
   items,
   value,
   onSelect,
@@ -41,8 +42,10 @@ export function DevMenu({
   icon: CodiconName;
   /** what the button shows for the current choice */
   current: string;
-  /** the accessible name of the button and the heading of the menu */
+  /** the heading of the menu */
   label: string;
+  /** the accessible name of the button, the one Standard gives it (`Language: English`); the heading when it is the same */
+  name?: string;
   items: DevMenuItem[];
   value: string;
   onSelect: (value: string) => void;
@@ -122,7 +125,7 @@ export function DevMenu({
         aria-haspopup='menu'
         aria-expanded={open}
         aria-controls={menuId}
-        aria-label={label}
+        aria-label={name}
         ref={trigger}
         onClick={() => setOpen((v) => !v)}
         onKeyDown={onTriggerKey}

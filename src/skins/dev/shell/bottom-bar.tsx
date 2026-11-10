@@ -25,7 +25,11 @@ import type { DevTool, DevUi } from '@/skins/dev/shell/use-dev-ui';
 
 /** A tab of the panel (Problems, Output, Terminal): a grey caption, white with a green line under it when it is open. */
 const PANEL_TAB =
-  'h-full cursor-pointer border-b border-b-transparent bg-transparent px-0.5 text-mute uppercase hover:text-ink aria-pressed:border-b-signal aria-pressed:text-head';
+  'h-full cursor-pointer border-b border-b-transparent bg-transparent px-0.5 text-mute uppercase hover:text-ink aria-pressed:border-b-signal aria-pressed:text-head pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-x-2 pointer-coarse:after:-inset-y-[6.5px] pointer-coarse:after:content-[""]';
+
+/** Clear and Close are 22px squares: on touch each gets an invisible 44px area; the two share the 18px gap between them (6px and 12px) and do not overlap. */
+const PANEL_ICON =
+  'inline-grid size-[22px] place-items-center rounded-[5px] hover:bg-hov';
 
 /** A button (or a plain item) of the status bar: white on the red bar, lighter when pointed at or on. */
 const STATUS_BUTTON =
@@ -97,7 +101,8 @@ export function BottomBar({
               type='button'
               className={cn(
                 PANEL_TAB,
-                'inline-grid size-[22px] place-items-center rounded-[5px] hover:bg-hov',
+                PANEL_ICON,
+                'pointer-coarse:after:-inset-y-[11.5px] pointer-coarse:after:-right-1.5 pointer-coarse:after:-left-4',
               )}
               aria-label={output.output.clear}
               title={output.output.clear}
@@ -110,7 +115,8 @@ export function BottomBar({
             type='button'
             className={cn(
               PANEL_TAB,
-              'inline-grid size-[22px] place-items-center rounded-[5px] hover:bg-hov',
+              PANEL_ICON,
+              'pointer-coarse:after:-inset-y-[11.5px] pointer-coarse:after:-right-2.5 pointer-coarse:after:-left-3',
             )}
             aria-label={copy.panel.close}
             onClick={() => onChange({ panel: null })}

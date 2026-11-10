@@ -8,6 +8,7 @@ import { useRef, ViewTransition, type ReactNode } from 'react';
 import { academicCopy } from '@/content/copy/academic';
 import type { PageKey } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
+import { Footer } from '@/skins/academic/shell/footer';
 import { EraserWipe } from '@/skins/academic/shell/eraser-wipe';
 import { Header } from '@/skins/academic/shell/header';
 import { Ledge } from '@/skins/academic/shell/ledge';
@@ -46,7 +47,7 @@ export function AcademicShell({
             <Header />
             <Toc page={current} />
           </header>
-          <div className='mx-auto mt-4 max-w-[1120px] px-5 pb-10 max-[760px]:mt-2 max-[760px]:px-2.5'>
+          <div className='mx-auto mt-4 max-w-[1120px] px-5 pb-6 max-[760px]:mt-2 max-[760px]:px-2.5'>
             <main
               id='ac-main'
               tabIndex={-1}
@@ -75,6 +76,7 @@ export function AcademicShell({
               <Pager page={current} />
             </main>
           </div>
+          <Footer />
           <Ledge />
           <EraserWipe ref={wipeRef} />
           <AcOverlays />

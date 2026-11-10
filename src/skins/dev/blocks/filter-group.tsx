@@ -8,7 +8,7 @@ import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const filterVariants = cva(
-  "cursor-pointer rounded-[4px] border px-3.5 py-[7px] font-code text-[13px] leading-[normal] font-normal before:content-['--'_/_''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal active:[transform:scale(0.97)]",
+  "cursor-pointer rounded-[4px] border px-3.5 py-[7px] font-code text-[13px] leading-[normal] font-normal before:content-['--'_/_''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal active:[transform:scale(0.97)] pointer-coarse:min-h-11",
   {
     variants: {
       on: {

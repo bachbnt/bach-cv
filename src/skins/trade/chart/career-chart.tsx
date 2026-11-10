@@ -12,7 +12,7 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { CANDLE_SEED, type RangeKey } from '@/skins/trade/config';
 import { ChartBody } from '@/skins/trade/chart/chart-body';
 import { studiesOf } from '@/skins/trade/chart/education';
-import { useLoopGate } from '@/skins/trade/shell/use-loop-gate';
+import { useLoopGate } from '@/hooks/use-loop-gate';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 

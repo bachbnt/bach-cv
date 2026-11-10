@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { useChat } from '@/components/chat/chat-provider';
 import { useChatSession } from '@/components/chat/use-chat-session';
 import { useKeyboardInset } from '@/components/chat/use-keyboard-inset';
@@ -31,11 +31,6 @@ export function AcChat() {
     maxUserMessages: chat.maxUserMessages,
     maxInputLength: chat.maxInputLength,
   });
-  const { warmUp } = session;
-
-  useEffect(() => {
-    if (isOpen) warmUp();
-  }, [isOpen, warmUp]);
 
   if (!live.features.chat) return null;
 

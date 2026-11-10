@@ -19,9 +19,10 @@ function shared(): IntersectionObserver | null {
 }
 
 /**
- * A ref for the root of an endless loop (a skeleton, the drawing of a service, a live dot): while the element is scrolled out of view it
- * carries `data-off`, and `trade.css` pauses every animation inside it, so nothing runs for nobody. The loops of a tab in the
- * background are paused the same way by `data-hidden` on the shell. Nothing changes for the layout.
+ * A ref for the root of an endless loop (a skeleton, the drawing of a service, a live dot, a marquee): while the element is scrolled out of
+ * view it carries `data-off`, and the CSS of the skin (`trade.css`, `dev-extra.css`) pauses every animation in and under it, so nothing runs
+ * for nobody. The loops of a tab in the background are paused the same way by `data-hidden` on the root of the skin (`useDocumentHidden`).
+ * Nothing changes for the layout.
  */
 export function useLoopGate() {
   return useCallback((element: Element | null) => {

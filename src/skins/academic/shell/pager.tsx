@@ -102,7 +102,7 @@ export function Pager({ page }: { page: PageKey }) {
   return (
     <footer className='mt-14 flex flex-wrap items-center justify-between gap-3 border-t-2 border-dashed border-ac-rule pt-3.5 text-[0.9em] text-ac-mute'>
       <span>{previous && link(previous, 'previous')}</span>
-      <span className='font-ac-note text-[16.5px]'>
+      <span className='font-ac-note text-[16.5px] max-[480px]:order-last max-[480px]:basis-full max-[480px]:text-center'>
         {fill(copy.pager.position, {
           name: shell.name,
           n: index + 1,
