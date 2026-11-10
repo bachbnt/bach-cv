@@ -20,7 +20,7 @@ import { formatPeriod } from '@/lib/format';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
 import { STOP_COLORS } from '@/skins/travel/config';
-import { placeStops } from '@/skins/travel/map/route';
+import { placeStops, rideOf } from '@/skins/travel/map/route';
 import type { SightId } from '@/skins/travel/map/sights';
 import type { MapStop } from '@/skins/travel/map/types';
 
@@ -57,8 +57,8 @@ interface TravelContextValue {
 
 const TravelContext = createContext<TravelContextValue | null>(null);
 
-/** How long the tour stays at a stop. */
-const TOUR_STAY_MS = 2600;
+/** How long the tour stays at a stop once the traveller has got there (the ride to it comes first, and is as long as the ride is). */
+const TOUR_DWELL_MS = 1800;
 
 /**
  * What the parts of the Travel frame share: the career as the stops of the trip (read through the Standard hooks and ordered by
@@ -135,10 +135,22 @@ export function TravelProvider({ children }: { children: ReactNode }) {
         return;
       }
       setSelectedId(ids[i]);
-      timer.current = window.setTimeout(() => visit(i + 1), TOUR_STAY_MS);
+      // the next stop is shown when the traveller has got here and stayed a while: a ride cut short would jump back to where it began
+      const to = stops[i].map.placed;
+      const from =
+        (i
+          ? stops[i - 1]
+          : (stops.find((s) => s.career.id === selectedId) ??
+            stops[stops.length - 1])
+        )?.map.placed ?? to;
+      const ride = from === to ? 0 : rideOf(from, to).duration;
+      timer.current = window.setTimeout(
+        () => visit(i + 1),
+        ride + TOUR_DWELL_MS,
+      );
     };
     visit(0);
-  }, [stops]);
+  }, [stops, selectedId]);
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   const value = useMemo<TravelContextValue>(

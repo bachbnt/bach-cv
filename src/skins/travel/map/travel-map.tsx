@@ -17,6 +17,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import {
   cameraTransform,
+  clampCamera,
   fitBox,
   showsWholeMap,
   spriteScale,
@@ -46,6 +47,7 @@ import { worldOf } from '@/skins/travel/map/iso';
 import type { MapFocus, MapStop } from '@/skins/travel/map/types';
 import { useCamera } from '@/skins/travel/map/use-camera';
 import { useDeclutter } from '@/skins/travel/map/use-declutter';
+import { useRide } from '@/skins/travel/map/use-ride';
 import { usePaused } from '@/skins/travel/map/use-paused';
 import { useSize } from '@/skins/travel/map/use-size';
 
@@ -121,13 +123,27 @@ export function TravelMap({
       h: Math.max(200, size.h - bottom),
     };
   }, [size, panel]);
+  // shift so the point lands in the middle of the free part of the view
+  const shifted = useCallback(
+    (c: Camera): Camera => {
+      const dx = free.left + free.w / 2 - size.w / 2;
+      const dy = free.h / 2 - size.h / 2;
+      return { cx: c.cx - dx / c.z, cy: c.cy - dy / c.z, z: c.z };
+    },
+    [free, size],
+  );
+  /** The camera that shows a point of the world (a little above it, where its card is) in the free part of the view. */
+  const aimAt = useCallback(
+    (world: { x: number; y: number }, z: number): Camera =>
+      clampCamera(shifted({ cx: world.x, cy: world.y - 50, z }), size),
+    [shifted, size],
+  );
   const target = useCallback(
     (f: MapFocus): Camera => {
       let c: Camera;
       if (f.kind === 'stop' && stops.some((s) => s.id === f.id)) {
         const stop = stops.find((s) => s.id === f.id);
-        const w = toWorld(stop?.placed.at ?? { x: 0, y: 0 });
-        c = { cx: w.x, cy: w.y - 50, z: 0.9 };
+        return aimAt(toWorld(stop?.placed.at ?? { x: 0, y: 0 }), 0.9);
       } else if (f.kind === 'place') {
         const w = worldOf(f.lat, f.lng);
         c = { cx: w.x, cy: w.y, z: f.zoom };
@@ -142,12 +158,9 @@ export function TravelMap({
           1,
         );
       }
-      // shift so the point lands in the middle of the free part of the view
-      const dx = free.left + free.w / 2 - size.w / 2;
-      const dy = free.h / 2 - size.h / 2;
-      return { cx: c.cx - dx / c.z, cy: c.cy - dy / c.z, z: c.z };
+      return shifted(c);
     },
-    [stops, size, free],
+    [stops, free, aimAt, shifted],
   );
   // the sight the mouse is over shows its card too, but only while it is over it; a tap or the list keeps one open
   const [hover, setHover] = useState<SightId | null>(null);
@@ -157,6 +170,17 @@ export function TravelMap({
       const id = sightUnder(under);
       onSight(id && id !== sightId ? id : null);
     });
+  // the camera rides along with the traveller from stop to stop; a hand on the map ends the ride where it is
+  const view = useRef<HTMLDivElement>(null);
+  const { riding, follow, endRide } = useRide({
+    view,
+    stops,
+    camera,
+    size,
+    aimAt,
+    reduced,
+    set,
+  });
   useEffect(() => {
     if (!sightId) return;
     const onKey = (event: KeyboardEvent) => {
@@ -169,11 +193,16 @@ export function TravelMap({
   // a new focus (another page, another stop) makes the camera fly there
   const focusKey = JSON.stringify(focus);
   const lastFocus = useRef(focusKey);
+  // the stop the traveller was at before this one: the camera starts its ride from there
+  const lastActive = useRef(activeId);
   useEffect(() => {
+    const was = lastActive.current;
+    lastActive.current = activeId;
     if (lastFocus.current === focusKey) return;
     lastFocus.current = focusKey;
-    set(target(focus), !reduced);
-  }, [focusKey, focus, reduced, set, target]);
+    const aim = target(focus);
+    if (!follow(focus, was, aim)) set(aim, !reduced);
+  }, [focusKey, focus, activeId, reduced, set, target, follow]);
   // the first measure of the view: the camera starts on the overview
   const measured = useRef(false);
   useEffect(() => {
@@ -184,7 +213,7 @@ export function TravelMap({
 
   useDeclutter(
     stage,
-    ready && !moving && !flying,
+    ready && !moving && !flying && !riding,
     `${restZoom}|${size.w}x${size.h}|${routeOn}|${activeId}|${stops.map((stop) => stop.id).join()}`,
   );
 
@@ -223,6 +252,9 @@ export function TravelMap({
         if (event.pointerType === 'mouse') setHover(sightUnder(event.target));
       }}
       onPointerLeave={() => setHover(null)}
+      onPointerDownCapture={endRide}
+      onWheelCapture={endRide}
+      onKeyDownCapture={endRide}
       {...handlers}
     >
       <p id='tl-map-help' className='sr-only'>
@@ -230,7 +262,8 @@ export function TravelMap({
       </p>
       <Sky />
       <div
-        className={cn('tl-view', flying && 'tl-fly')}
+        ref={view}
+        className={cn('tl-view', flying && 'tl-fly', riding && 'tl-ride')}
         style={
           {
             width: WORLD.width,

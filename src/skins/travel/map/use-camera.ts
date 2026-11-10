@@ -61,6 +61,8 @@ export function useCamera(
     window.clearTimeout(timer.current);
     setFlying(fly);
     const clamped = clampCamera(next, live.current.size);
+    // the next event of the same turn (a wheel step after a ride was cut) already reads this camera
+    live.current = { ...live.current, camera: clamped };
     setCamera(clamped);
     if (fly)
       timer.current = window.setTimeout(() => setFlying(false), FLY_MS + 60);

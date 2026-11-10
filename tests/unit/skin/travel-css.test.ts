@@ -4,6 +4,7 @@
 
 import { readdirSync, readFileSync } from 'node:fs';
 import postcss from 'postcss';
+import { cameraTransform } from '@/skins/travel/map/camera';
 import { describe, expect, it } from 'vitest';
 
 const DIR = 'src/skins/travel';
@@ -121,6 +122,23 @@ describe('the CSS of the Travel skin', () => {
         rule.nodes.some((n) => n.type === 'decl' && n.prop === 'animation'),
     );
     expect(loose.map((r) => r.selector)).toEqual([]);
+  });
+
+  it('keeps the world off a layer of its own at rest and the shore off one at every zoom on a phone, which killed the tab of an iPhone', () => {
+    // the world is 6678 by 3998 units: `translate3d` puts all of it on a layer, a paused animation keeps the shore on one
+    expect(
+      cameraTransform({ cx: 100, cy: 100, z: 1 }, { w: 400, h: 800 }),
+    ).not.toMatch(/3d/);
+    const stopped = rules().filter(
+      (rule) =>
+        rule.selector.includes('.tl-shore') &&
+        rule.nodes.some(
+          (n) =>
+            n.type === 'decl' && n.prop === 'animation' && n.value === 'none',
+        ),
+    );
+    // once when the whole map is on screen, once on a touch screen
+    expect(stopped).toHaveLength(2);
   });
 
   it('keeps the state classes of the map for ancestors only, so no other rule can style the map itself through them', () => {

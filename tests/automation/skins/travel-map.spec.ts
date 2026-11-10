@@ -68,17 +68,18 @@ test.describe('the map', () => {
     // the state class must not resize the stage (it once shared its name with the far mountains of the sky)
     expect(await map.boundingBox()).toEqual(box);
     await expect(page.locator('.tl-waves')).toBeHidden();
+    // stopped, not paused: a paused animation still keeps its element on a layer of its own
     await expect(page.locator('.tl-boat').first()).toHaveCSS(
-      'animation-play-state',
-      'paused',
+      'animation-name',
+      'none',
     );
     await page.getByRole('button', { name: 'Zoom in' }).click();
     await page.getByRole('button', { name: 'Zoom in' }).click();
     await expect(map).not.toHaveClass(/tl-whole/);
     await expect(page.locator('.tl-waves')).toBeVisible();
-    await expect(page.locator('.tl-boat').first()).toHaveCSS(
-      'animation-play-state',
-      'running',
+    await expect(page.locator('.tl-boat').first()).not.toHaveCSS(
+      'animation-name',
+      'none',
     );
   });
 

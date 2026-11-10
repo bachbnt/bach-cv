@@ -81,9 +81,12 @@ export function fitBox(
   );
 }
 
-/** The CSS transform of the world box for a camera. */
+/**
+ * The CSS transform of the world box for a camera. A flat `translate`, not `translate3d`: the 3D one puts the whole world (6678 by 3998 units)
+ * on a layer of its own even at rest, which a phone cannot pay for; the box gets its layer from `will-change` only while it moves.
+ */
 export const cameraTransform = (camera: Camera, size: Size): string =>
-  `translate3d(${size.w / 2 - camera.cx * camera.z}px, ${size.h / 2 - camera.cy * camera.z}px, 0) scale(${camera.z})`;
+  `translate(${size.w / 2 - camera.cx * camera.z}px, ${size.h / 2 - camera.cy * camera.z}px) scale(${camera.z})`;
 
 /** How big a sprite is drawn: it grows more slowly than the map, so labels stay readable far out and drawings do not bloat close up. */
 export const spriteScale = (z: number): number => z ** -0.55;

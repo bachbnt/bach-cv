@@ -193,3 +193,35 @@ export function tripPath(from: PlacedStop | null, to: PlacedStop): Plane[] {
   if (to.side) out.push(to.at);
   return out.length > 1 ? out : [from?.at ?? pointAt(0), to.at];
 }
+
+/** A ride along the road: the points of the way with how far along its length each one is (0 to 1), and how long it takes. */
+export interface Ride {
+  points: { at: Plane; offset: number }[];
+  duration: number;
+}
+
+const RIDE_MS_PER_KM = 260;
+const RIDE_MIN_MS = 900;
+const RIDE_MAX_MS = 5200;
+
+/**
+ * The ride of the traveller from a stop to the next one. The traveller and the camera that follows it use this same way and time, so
+ * the camera is always where the traveller is, and the tour waits as long as the ride lasts.
+ */
+export function rideOf(from: PlacedStop, to: PlacedStop): Ride {
+  const path = tripPath(from, to);
+  const lengths = path.map((p, i) =>
+    i ? Math.hypot(p.x - path[i - 1].x, p.y - path[i - 1].y) : 0,
+  );
+  const total = lengths.reduce((a, b) => a + b, 0) || 1;
+  let done = 0;
+  const points = path.map((at, i) => {
+    done += lengths[i];
+    return { at, offset: done / total };
+  });
+  const km = (total / ROUTE_LENGTH) * 11;
+  return {
+    points,
+    duration: Math.min(RIDE_MAX_MS, Math.max(RIDE_MIN_MS, km * RIDE_MS_PER_KM)),
+  };
+}

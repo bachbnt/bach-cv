@@ -31,7 +31,8 @@
 }
 /* while the camera moves the map is one layer that only moves (and scales), not painted again at every step; it is crisp again at rest */
 .tl-moving .tl-view,
-.tl-view.tl-fly {
+.tl-view.tl-fly,
+.tl-view.tl-ride {
   will-change: transform;
 }
 
@@ -748,10 +749,21 @@ html[data-skin='travel']:not(.dark) .tl-stars i {
     .tl-bubble,
     .tl-shore
   ) {
-  animation-play-state: paused;
+  /* `none`, not `paused`: a paused animation still keeps the element on a layer of its own, and the shore is a layer as big as the map */
+  animation: none;
 }
 .tl-whole .tl-waves {
   display: none;
+}
+/* a phone (a touch screen) cannot keep two layers as big as the map alive: the crests of the waves and the breathing of the foam are left out
+   there at every zoom, as they are when the whole map is on screen. A page of this skin once got the tab killed on an iPhone (too much memory). */
+@media (pointer: coarse) {
+  .tl-waves {
+    display: none;
+  }
+  .tl-shore {
+    animation: none;
+  }
 }
 
 /* a long name (a school) is cut inside its pin label instead of making the label wider than the map */
