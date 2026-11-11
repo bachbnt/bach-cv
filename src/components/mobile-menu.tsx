@@ -85,7 +85,7 @@ export function MobileMenu({
             className='mr-12 flex min-h-11 items-center gap-3 self-start rounded-xl pr-2 active:bg-background'
           >
             <Image
-              src='/logo.png'
+              src='/logo-sm.png'
               alt=''
               width={36}
               height={34}

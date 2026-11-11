@@ -4,7 +4,7 @@
 
 'use client';
 
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import { useMemo } from 'react';
 import { CardsSkeleton } from '@/components/cards-skeleton';
 import { LoadingBlock } from '@/components/loading-block';
@@ -43,12 +43,12 @@ export function HomeProjects() {
         <h2 id='proj-h' className='text-[30px] min-[721px]:text-[40px]'>
           {copy.title}
         </h2>
-        <Link
+        <IntentLink
           href='/projects'
           className='text-base font-semibold underline underline-offset-4 hover:text-brand-ink'
         >
           {copy.all}
-        </Link>
+        </IntentLink>
       </div>
       {projectsQuery.isPending ? (
         <LoadingBlock>
@@ -84,9 +84,9 @@ export function HomeProjects() {
             const className =
               'glow lift group flex flex-col overflow-hidden rounded-2xl border bg-card';
             return href.startsWith('/') ? (
-              <Link key={project.id} href={href} className={className}>
+              <IntentLink key={project.id} href={href} className={className}>
                 {card}
-              </Link>
+              </IntentLink>
             ) : (
               <a key={project.id} href={href} className={className}>
                 {card}

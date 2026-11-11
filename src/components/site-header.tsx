@@ -5,7 +5,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import { ConnectMenu } from '@/components/connect-menu';
 import { LanguageSwitch } from '@/components/language-switch';
 import { commonCopy } from '@/content/copy/common';
@@ -30,13 +30,13 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
 
   return (
     <header className='mx-auto flex w-full max-w-[1200px] items-center justify-between gap-6 px-5 py-6 min-[721px]:px-12'>
-      <Link
+      <IntentLink
         href='/'
         aria-label={fill(copy.homeLink, { name: shell.name })}
         className='group flex items-center gap-3 font-heading text-xl font-bold tracking-[-0.02em] whitespace-nowrap'
       >
         <Image
-          src='/logo.png'
+          src='/logo-sm.png'
           alt=''
           width={36}
           height={34}
@@ -46,7 +46,7 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
         <span className='bg-[linear-gradient(var(--page),var(--page))] bg-size-[0_2px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-size-[100%_2px] motion-reduce:transition-none'>
           {shell.name}
         </span>
-      </Link>
+      </IntentLink>
 
       <div className='hidden items-center gap-7 min-[1200px]:flex'>
         <nav aria-label={copy.mainNav} className='flex items-center gap-7'>
@@ -68,14 +68,14 @@ export function SiteHeader({ current }: { current: PageKey | 'neutral' }) {
                 </small>
               </span>
             ) : (
-              <Link
+              <IntentLink
                 key={page}
                 href={href}
                 className={navLink}
                 aria-current={current === page ? 'page' : undefined}
               >
                 {label}
-              </Link>
+              </IntentLink>
             );
           })}
         </nav>

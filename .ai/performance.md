@@ -9,7 +9,16 @@
   `next/dynamic`.
 - Use `next-bundle-optimizer` (project skill) when a route's initial load grows.
 - Images are not optimized by Next.js (static export). Give every image explicit
-  dimensions and size sources sensibly.
+  dimensions and size sources sensibly. A picture that is only shown small gets its own small file (the header logo
+  is `public/logo-sm.png`, 3x of its 36 px; `logo.png` is the full one for the manifest and the skins).
+- Links in Standard use `IntentLink` (`components/intent-link.tsx`), not `next/link`: Next.js prefetches every visible
+  `<Link>`, which on a first visit downloads the code of every other page. `IntentLink` prefetches when the pointer comes over
+  the link, it gets the focus or a finger touches it. Keep `next/link` only where the visitor is about to choose (the open mobile menu).
+- Keep the root providers to what every Standard page needs. A provider only a skin uses (the tooltip provider of Trade) lives
+  in that skin's frame, so Standard does not download it.
+- First-load budget to keep an eye on (gzip/brotli, desktop `/`): about 370 KB of JavaScript in 19 requests (React and Next.js 180 KB,
+  Firebase lite 47 KB, zod 35 KB, base-ui 55 KB) and 54 KB of CSS. About 30 KB of that CSS is utilities that only the skins use: it
+  stays in the one Tailwind build on purpose (see "One Tailwind build" in `.ai/skins.md`).
 
 ## Rendering
 

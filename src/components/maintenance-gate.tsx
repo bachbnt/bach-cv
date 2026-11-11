@@ -35,7 +35,7 @@ export function MaintenanceGate({ children }: { children: ReactNode }) {
     >
       <div className='mx-auto flex w-full max-w-[1200px] items-center gap-3 px-5 py-6 font-heading text-xl font-bold tracking-[-0.02em] min-[721px]:px-12'>
         <Image
-          src='/logo.png'
+          src='/logo-sm.png'
           alt=''
           width={36}
           height={34}

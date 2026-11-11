@@ -80,7 +80,7 @@ tools in grouped flyouts, a measure tool, a bar replay, flags that open the job 
 of it controlled from ONE toolbar row like TradingView's (menus in the order Language, Skin, Theme, as in every skin), a symbol search (Ctrl+K) over all the real content, a ticker tape and a
 watchlist (pages, skills with a sparkline of the years they were used, roles), a screener for Projects, financials for Resume, a
 calendar for Certificates, a symbol profile for About, an order ticket for Services and a deposit page for Payment. Prefix `tv-`, colours
-`tv-*`. The chart is its own lazy chunk; the watchlist counts are read from the cache only.
+`tv-*`. The chart is its own lazy chunk; the watchlist counts are read from the cache only. The tips of its buttons (`HintTip`) share the `TooltipProvider` of `TradeShell`: Standard has no tips, so the provider is not in the app's root providers.
 
 ## The Academic skin
 

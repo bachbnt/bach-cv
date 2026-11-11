@@ -4,7 +4,7 @@
 
 'use client';
 
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import type { ReactNode } from 'react';
 import { LoadingBlock } from '@/components/loading-block';
 import { StateNotice } from '@/components/state-notice';
@@ -84,9 +84,9 @@ export function DataState({
         body={body}
       >
         {action && (
-          <Link href={action.href} className={buttonVariants()}>
+          <IntentLink href={action.href} className={buttonVariants()}>
             {action.label}
-          </Link>
+          </IntentLink>
         )}
       </StateNotice>
     );

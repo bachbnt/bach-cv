@@ -3,7 +3,7 @@
  */
 
 import { Wallet } from 'lucide-react';
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import { StateNotice } from '@/components/state-notice';
 import { buttonVariants } from '@/components/ui/button';
 import { paymentCopy } from '@/content/copy/payment';
@@ -28,9 +28,9 @@ export function PaymentEmpty() {
         </span>
       }
     >
-      <Link href={empty.href} className={buttonVariants()}>
+      <IntentLink href={empty.href} className={buttonVariants()}>
         {empty.action}
-      </Link>
+      </IntentLink>
     </StateNotice>
   );
 }

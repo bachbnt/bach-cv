@@ -4,7 +4,7 @@
 
 'use client';
 
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import { GoBackButton } from '@/components/go-back-button';
 import { buttonVariants } from '@/components/ui/button';
 import { commonCopy } from '@/content/copy/common';
@@ -28,12 +28,12 @@ export function StatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
           {text.body}
         </p>
         <div className='mt-2 flex flex-col gap-3 max-[480px]:self-stretch min-[481px]:flex-row'>
-          <Link
+          <IntentLink
             href='/'
             className={cn(buttonVariants({ variant: 'brand', size: 'lg' }))}
           >
             {copy.status.home}
-          </Link>
+          </IntentLink>
           <GoBackButton>{copy.status.back}</GoBackButton>
         </div>
       </section>

@@ -4,7 +4,7 @@
 
 'use client';
 
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import { CoreStack } from '@/components/skills/core-stack';
 import { aboutCopy } from '@/content/copy/about';
 import { useCopy } from '@/lib/i18n/copy';
@@ -19,12 +19,12 @@ export function AboutCoreStack() {
           <h2 id='core-h' className='text-[30px] min-[721px]:text-[40px]'>
             {core.title}
           </h2>
-          <Link
+          <IntentLink
             href='/resume#skills'
             className='text-base font-semibold underline underline-offset-4 hover:text-brand-ink pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center'
           >
             {core.all}
-          </Link>
+          </IntentLink>
         </div>
         <p className='mt-3 max-w-[620px] text-[17px] leading-[1.55] text-body'>
           {core.lead}

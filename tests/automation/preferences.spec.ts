@@ -65,6 +65,8 @@ test.describe('the skins the owner leaves out', () => {
     // the head script has read nothing yet (a first visit), so the saved skin shows until the read comes back
     await expect.poll(() => skinOn(page)).toBe('standard');
     await skinMenu(page).click();
+    // wait for the menu to be open before reading it
+    await expect(page.getByRole('menuitemradio')).toHaveCount(3);
     const names = await page.getByRole('menuitemradio').allTextContents();
     expect(names.join(' ')).toMatch(/Trade/);
     expect(names.join(' ')).not.toMatch(/Developer|Dev\b|Travel/);
@@ -253,6 +255,7 @@ test.describe('the theme', () => {
   }) => {
     await open(page, { theme: { off: ['system'] } });
     await themeMenu(page).click();
+    await expect(page.getByRole('menuitemradio')).toHaveCount(2);
     const names = await page.getByRole('menuitemradio').allTextContents();
     expect(names).toHaveLength(2);
     expect(names.join(' ')).not.toMatch(/System/);

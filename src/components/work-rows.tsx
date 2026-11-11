@@ -5,7 +5,7 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import { CurrentBadge } from '@/components/current-badge';
 import { DataState } from '@/components/data-state';
 import { RowsSkeleton } from '@/components/rows-skeleton';
@@ -41,7 +41,7 @@ export function WorkRows() {
     >
       <div className='-mx-3 border-t min-[721px]:-mx-6'>
         {rows.map((job) => (
-          <Link
+          <IntentLink
             key={job.id}
             href='/resume'
             data-row
@@ -82,7 +82,7 @@ export function WorkRows() {
             <p className='flex-[0_0_170px] text-[15px] text-muted-foreground min-[721px]:text-right'>
               {formatPeriod(job.startMonth, job.endMonth, lang)}
             </p>
-          </Link>
+          </IntentLink>
         ))}
       </div>
     </DataState>

@@ -14,6 +14,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useChat } from '@/components/chat/chat-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { tradeShellCopy } from '@/content/copy/trade-shell';
 import { useLive } from '@/hooks/use-live';
 import type { PageKey } from '@/lib/content/schema';
@@ -75,9 +76,13 @@ export function TradeShell({
   children: ReactNode;
 }) {
   return (
-    <TradeProvider>
-      <Terminal page={page}>{children}</Terminal>
-    </TradeProvider>
+    // the tips of the terminal's buttons share one provider (a second tip opens at once after the first); Standard has no tips, so
+    // the provider lives here and not in the app's providers, where every Standard visitor would download it
+    <TooltipProvider>
+      <TradeProvider>
+        <Terminal page={page}>{children}</Terminal>
+      </TradeProvider>
+    </TooltipProvider>
   );
 }
 

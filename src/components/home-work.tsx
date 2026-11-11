@@ -4,7 +4,7 @@
 
 'use client';
 
-import Link from 'next/link';
+import { IntentLink } from '@/components/intent-link';
 import { WorkRows } from '@/components/work-rows';
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
@@ -21,12 +21,12 @@ export function HomeWork() {
         <h2 id='work-h' className='text-[30px] min-[721px]:text-[40px]'>
           {copy.work.title}
         </h2>
-        <Link
+        <IntentLink
           href='/resume'
           className='text-base font-semibold underline underline-offset-4 hover:text-brand-ink'
         >
           {copy.work.all}
-        </Link>
+        </IntentLink>
       </div>
       <WorkRows />
     </section>

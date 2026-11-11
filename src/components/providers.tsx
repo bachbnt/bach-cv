@@ -21,7 +21,6 @@ import { SkinFrame } from '@/components/skin-frame';
 import { SkinProvider } from '@/lib/skin/skin';
 import { LanguageProvider } from '@/lib/i18n/language';
 import { ThemeProvider } from '@/lib/theme/theme';
-import { TooltipProvider } from '@/components/ui/tooltip';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 /** Bump when a schema change makes cached data unreadable. */
@@ -75,13 +74,11 @@ export function Providers({ children }: { children: ReactNode }) {
       <LanguageProvider>
         <ThemeProvider>
           <SkinProvider>
-            <TooltipProvider>
-              <ChatProvider>
-                <RevealOnScroll />
-                <PointerGlow />
-                <SkinFrame>{children}</SkinFrame>
-              </ChatProvider>
-            </TooltipProvider>
+            <ChatProvider>
+              <RevealOnScroll />
+              <PointerGlow />
+              <SkinFrame>{children}</SkinFrame>
+            </ChatProvider>
           </SkinProvider>
         </ThemeProvider>
       </LanguageProvider>

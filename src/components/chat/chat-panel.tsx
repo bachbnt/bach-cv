@@ -87,7 +87,7 @@ export function ChatPanel({
     >
       <header className='flex flex-none items-center gap-3 bg-night py-3.5 pr-3 pl-4 text-white'>
         <Image
-          src='/logo.png'
+          src='/logo-sm.png'
           alt=''
           width={28}
           height={26}
