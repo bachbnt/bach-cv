@@ -317,3 +317,21 @@ test.describe('the loops of the scenery', () => {
     for (const bird of birds) expect(bird).toEqual({ tag: 'div', inside: 1 });
   });
 });
+
+test.describe('the drawings of the map', () => {
+  test('are all drawn in every browser: none is left with a box of no size, which Chrome draws as nothing and Safari draws in full', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await page.getByRole('group', { name: 'Trip map of Nha Trang' }).waitFor();
+    const empty = await page.evaluate(() =>
+      [...document.querySelectorAll('.tl-sprite > .tl-art')]
+        .filter((art) => {
+          const box = art.querySelector('svg')?.getBoundingClientRect();
+          return !box || box.width === 0 || box.height === 0;
+        })
+        .map((art) => art.parentElement?.getAttribute('class') ?? ''),
+    );
+    expect(empty).toEqual([]);
+  });
+});

@@ -48,7 +48,7 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   the Thap Ba mud baths, Vinpearl on Hon Tre, the cable car, Hon Mieu, Hon Tam, Hon Mot, Hon Mun, Monkey Island, Ba Ho waterfalls, the Do Theatre, Co Tien mountain, the Truc Lam Phung Thuy Son monastery, Dong Bo mountain and Hon Ro hill) and
   signs for places off the map (Cam Ranh airport, Bai Dai, Doc Let). They are SCENERY: `aria-hidden`, never mixed with the owner's
   data. Each has an original drawing in `map/sprites/` (about 100 shapes at most, no filter, mask or animation of its own: the page holds about
-  4,800 elements). A sight on a peak (`onPeak`) takes the place of the plain mountain there. The name tags are a layer of their own over
+  4,800 elements). The peaks of the map are soft light patches of the ground, with no mountain drawn on them (they were nine drawings that Chrome sized to nothing and only Safari drew, so some visitors saw big mountains no other visitor saw); a mountain is on the map only where it is a sight (Co Tien, Truc Lam, Dong Bo, Hon Ro). The name tags are a layer of their own over
   every drawing (`data-label`), and `map/use-declutter.ts` (with the pure `map/declutter.ts`) runs once the camera rests: a tag that a card
   of a stop would cover moves to another side of its sight (below, left, right, above) and is left out only when none is free; each card
   of a stop takes the side that covers the drawings less.

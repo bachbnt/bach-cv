@@ -9,14 +9,13 @@ import { project, haversineKm } from '@/skins/travel/map/projection';
 import { BOATS } from '@/skins/travel/map/scenery';
 import { ART_BOX, SightArt } from '@/skins/travel/map/sprites/sight-art';
 import { CableCabin } from '@/skins/travel/map/sprites/cable-cabin';
-import { BoatArt, MountainArt } from '@/skins/travel/map/sprites/nature-art';
+import { BoatArt } from '@/skins/travel/map/sprites/nature-art';
 import {
   CABLE_CAR,
   CITY_CENTRE,
   EDGE_SIGNS,
   SIGHTS,
 } from '@/skins/travel/map/sights';
-import { PEAKS } from '@/skins/travel/map/geo';
 import { cn } from '@/lib/utils';
 
 type Words = (typeof travelMapCopy)['en'];
@@ -37,45 +36,16 @@ const at = (lat: number, lng: number): Placed => {
   return { left: w.x, top: w.y };
 };
 
-/** The mountains that have a drawing of their own among the sights are left out here, so that two mountains never stand on one peak. */
-const OWN_PEAKS = SIGHTS.filter((sight) => sight.onPeak).map((sight) =>
-  project(sight.lat, sight.lng),
-);
-const OWNED = 300;
-
-/** Mountains of the real peaks (decoration): taller for higher peaks. */
-const MOUNTAINS = PEAKS.filter(
-  ([x, y]) => !OWN_PEAKS.some((p) => Math.hypot(p.x - x, p.y - y) < OWNED),
-)
-  .map(([x, y, metres]) => ({
-    ...toWorld({ x, y }),
-    metres,
-  }))
-  .sort((a, b) => a.y - b.y);
-
 const CABLE = (() => {
   const a = toWorld(project(CABLE_CAR.from.lat, CABLE_CAR.from.lng));
   const b = toWorld(project(CABLE_CAR.to.lat, CABLE_CAR.to.lng));
   return { a, b, path: `path('M0 0 L${b.x - a.x} ${b.y - a.y}')` };
 })();
 
-/** Everything that stands up on the map and is only scenery: mountains, the sights, boats, the cable car and the signs at the edge. */
+/** Everything that stands up on the map and is only scenery: the sights, boats, the cable car and the signs at the edge. */
 export const Sprites = memo(function Sprites({ words }: { words: Words }) {
   return (
     <>
-      {MOUNTAINS.map((m) => (
-        <div
-          key={`${m.x}-${m.y}`}
-          className='tl-sprite'
-          style={
-            { left: m.x, top: m.y, zIndex: Math.round(m.y) } as CSSProperties
-          }
-        >
-          <div className='tl-art'>
-            <MountainArt metres={m.metres} />
-          </div>
-        </div>
-      ))}
       <svg
         aria-hidden='true'
         focusable='false'

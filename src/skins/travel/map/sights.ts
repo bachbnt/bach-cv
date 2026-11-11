@@ -72,8 +72,6 @@ interface Sight {
   scale: number;
   /** Where the name tag sits against the drawing. */
   tag: 'left' | 'right' | 'below';
-  /** The drawing is a mountain: it takes the place of the plain mountain of the peak under it. */
-  onPeak?: true;
 }
 
 export const SIGHTS: readonly Sight[] = [
@@ -256,7 +254,6 @@ export const SIGHTS: readonly Sight[] = [
     lng: 109.20756,
     scale: 1.8,
     tag: 'below',
-    onPeak: true,
   },
   {
     id: 'truc-lam',
@@ -266,7 +263,6 @@ export const SIGHTS: readonly Sight[] = [
     lng: 109.13005,
     scale: 1.6,
     tag: 'right',
-    onPeak: true,
   },
   {
     id: 'dong-bo',
@@ -276,7 +272,6 @@ export const SIGHTS: readonly Sight[] = [
     lng: 109.14332,
     scale: 2.1,
     tag: 'right',
-    onPeak: true,
   },
   {
     id: 'hon-ro',
@@ -286,7 +281,6 @@ export const SIGHTS: readonly Sight[] = [
     lng: 109.18448,
     scale: 1.3,
     tag: 'right',
-    onPeak: true,
   },
 ];
 

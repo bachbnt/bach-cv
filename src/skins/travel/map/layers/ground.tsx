@@ -39,7 +39,7 @@ const WALL_RIGHT = [bottom, right, ...shift([right, bottom], SLAB)];
 /** The footprint and the two walls: where the slab's land cross-section may show. */
 const SLAB_SHAPE = [top, right, ...shift([right, bottom, left], SLAB), left];
 
-/** A hill is a soft light patch on the ground; the mountain itself is a sprite standing on it. */
+/** A hill is a soft light patch on the ground; there is no drawing of a mountain on it (a mountain that is a sight has its own). */
 const hillRadius = (metres: number) => 90 + metres * 0.32;
 
 /** The sea and the slab of the map with its cross-section (static, never re-rendered). */
