@@ -42,7 +42,6 @@ export function useCamera(
   // the view may change size (a window resize, a panel): the camera shown is always valid for it
   const camera = useMemo(() => clampCamera(raw, size), [raw, size]);
   const [flying, setFlying] = useState(false);
-  const [dragging, setDragging] = useState(false);
   const [moving, setMoving] = useState(false);
   // the zoom the sprites were last sized for: it only follows the camera when a drag, wheel turn or key step has ended
   const [restZoom, setRestZoom] = useState(camera.z);
@@ -126,7 +125,6 @@ export function useCamera(
       const [a, b] = [...pointers.current.values()];
       pinch.current = { dist: Math.hypot(a.x - b.x, a.y - b.y) };
     }
-    setDragging(true);
   };
   const onPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
     const last = pointers.current.get(event.pointerId);
@@ -164,7 +162,6 @@ export function useCamera(
   const onPointerUp = (event: ReactPointerEvent<HTMLElement>) => {
     const began = pointers.current.delete(event.pointerId);
     pinch.current = null;
-    if (pointers.current.size === 0) setDragging(false);
     // a press on the map that did not drag is a tap: what is under the finger is told to the map (a sight shows its card)
     if (
       began &&
@@ -196,7 +193,6 @@ export function useCamera(
   return {
     camera,
     flying,
-    dragging,
     moving,
     restZoom,
     set,

@@ -20,8 +20,12 @@
   );
   outline-offset: -4px;
 }
-.tl-map.tl-dragging {
-  cursor: grabbing;
+/* The hand stays open while the map is dragged. `cursor` is inherited, so changing it on the map (`cursor: grabbing` for `.tl-dragging`) made the
+   browser work out the style of all its 5,000 elements at the first step of a drag: a hitch of about 190 ms at 6 times slower, 25 ms without it.
+   The two big subtrees say their own cursor, so that nothing they hold depends on the one of the map. */
+.tl-map > .tl-view,
+.tl-map > .tl-sky {
+  cursor: grab;
 }
 .tl-view {
   position: absolute;

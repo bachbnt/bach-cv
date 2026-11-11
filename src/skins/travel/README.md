@@ -111,7 +111,7 @@ screen, and on a touch screen the waves and the foam are left out. Measured at 3
 
 **What the loops cost, measured** (headed Chrome, the CPU slowed 4 to 6 times, the production build against the change). Each loop is a layer of its own
 and everything painted over a layer is made one too, so the loops decide how many layers a camera move has to build (`Layerize`, the biggest cost
-of a ride on a phone). Three rules, in `still.css` and `use-sprite-culling.ts`, with `travel-map.spec.ts` and `travel-css.test.ts` keeping them:
+of a ride on a phone). Four rules, in `still.css`, `map.css` and `use-sprite-culling.ts`, with `travel-map.spec.ts` and `travel-css.test.ts` keeping them:
 
 - **The bird flies by a `div`, not by its `svg`.** An animation on an svg root is not done by the compositor (as the boat's comment says), and it
   made the main thread restyle at every refresh and woke the other loops with it: at rest 360 restyles in 3 s (940 ms) fell to 21 (27 ms).
@@ -120,9 +120,18 @@ of a ride on a phone). Three rules, in `still.css` and `use-sprite-culling.ts`, 
 - **The scenery stands still while the camera moves** (`tl-moving`, `tl-fly`, `tl-ride`) and goes on when it has stopped. With the two above, a ride
   on a phone (CPU 6 times slower) built 34 layers instead of 142, and the median frame went from 25 ms to 9 ms (frames over 33 ms: 36 down to 11);
   dragging the map 26 ms to 8 ms (58 down to 5). On a laptop at 4 times slower a ride went from 41 ms to 9 ms.
+- **The cursor of the map does not change while it is dragged.** `cursor` is inherited: `cursor: grabbing` on the map made the browser work out
+  the style of all its 5,000 elements at the first step of a drag (one restyle of 5,090 elements, 142 ms at 6 times slower). Without it the
+  first frames of a drag take 25 ms instead of 190 ms, and the worst frame of a drag went from 173 to 67 ms. The two big subtrees (`.tl-view`,
+  `.tl-sky`) say their own `grab`, and the open hand stays while the map is dragged (a phone has no cursor). Hiding the fine parts of the
+  drawings while the camera moves, or making the layer ready before the move, did not change the hitch: what costs is the number of elements the browser has to restyle, not what is drawn.
 
-What is left: one layer as big as the world (13356 by 7996 units, `will-change` while the camera moves) is made at the start of a move, and that is a
-hitch of 100 to 200 ms at 6 times slower; it is what keeps the world from being painted again at every step.
+What is left, and it was measured: a zoom or the start of the trip still makes one restyle of all the elements (`--tl-sc`, the size of the
+sprites, is inherited by all of them), about 140 ms at 6 times slower (it was 207). Sizing the sprites once the fly has ended instead of at its
+start would move it to the end of the move, where the camera has stopped; not done.
+
+The one layer as big as the world (13356 by 7996 units, `will-change` while the camera moves) is made at the start of a move; it is what keeps the
+world from being painted again at every step, and it was not the cause of the hitch.
 
 ## Files
 

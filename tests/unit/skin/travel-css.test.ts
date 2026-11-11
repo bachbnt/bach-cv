@@ -209,4 +209,21 @@ describe('the CSS of the Travel skin', () => {
     );
     expect(left).toEqual([]);
   });
+
+  it('never changes the cursor of the map while it is moved: it is inherited, so the browser would restyle all its elements at the first step', () => {
+    const changing = rules().filter(
+      (rule) =>
+        /\.tl-map/.test(rule.selector) &&
+        /(\.tl-(dragging|moving|whole|close)|:active)/.test(rule.selector) &&
+        rule.nodes.some((n) => n.type === 'decl' && n.prop === 'cursor'),
+    );
+    expect(changing.map((r) => r.selector)).toEqual([]);
+    // the two big subtrees say their own cursor, so that what they hold does not depend on the one of the map
+    const own = rules().filter(
+      (rule) =>
+        /\.tl-map\s*>\s*\.tl-(view|sky)/.test(rule.selector) &&
+        rule.nodes.some((n) => n.type === 'decl' && n.prop === 'cursor'),
+    );
+    expect(own.length).toBeGreaterThan(0);
+  });
 });

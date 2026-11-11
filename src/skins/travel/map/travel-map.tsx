@@ -166,11 +166,15 @@ export function TravelMap({
   // the sight the mouse is over shows its card too, but only while it is over it; a tap or the list keeps one open
   const [hover, setHover] = useState<SightId | null>(null);
   const shownSight = sightId ?? hover;
-  const { camera, flying, dragging, moving, restZoom, set, handlers } =
-    useCamera(stage, size, target(focus), (under) => {
+  const { camera, flying, moving, restZoom, set, handlers } = useCamera(
+    stage,
+    size,
+    target(focus),
+    (under) => {
       const id = sightUnder(under);
       onSight(id && id !== sightId ? id : null);
-    });
+    },
+  );
   // the camera rides along with the traveller from stop to stop; a hand on the map ends the ride where it is
   const view = useRef<HTMLDivElement>(null);
   // the loops of the drawings far from the screen stand still (`data-off`, see `still.css`)
@@ -246,7 +250,6 @@ export function TravelMap({
       className={cn(
         'tl-map',
         paused && 'tl-paused',
-        dragging && 'tl-dragging',
         moving && 'tl-moving',
         camera.z >= CLOSE_ZOOM && 'tl-close',
         showsWholeMap(camera.z, size) && 'tl-whole',
