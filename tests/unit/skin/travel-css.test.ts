@@ -5,6 +5,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import postcss from 'postcss';
 import { cameraTransform } from '@/skins/travel/map/camera';
+import { SCALED } from '@/skins/travel/map/use-sprite-scale';
 import { describe, expect, it } from 'vitest';
 
 const DIR = 'src/skins/travel';
@@ -225,5 +226,46 @@ describe('the CSS of the Travel skin', () => {
         rule.nodes.some((n) => n.type === 'decl' && n.prop === 'cursor'),
     );
     expect(own.length).toBeGreaterThan(0);
+  });
+
+  it('registers --tl-sc as not inherited, and lists every element that reads it, so a zoom restyles a few hundred elements instead of the five thousand of the map', () => {
+    const registered = FILES.map((file) => readFileSync(file, 'utf8')).join(
+      '\n',
+    );
+    expect(registered).toMatch(
+      /@property\s+--tl-sc\s*\{[^}]*inherits:\s*false[^}]*\}/,
+    );
+    // no rule sets it but the one `@property` above: the world gives it, element by element (use-sprite-scale.ts)
+    const setters = rules().filter((rule) =>
+      rule.nodes.some((n) => n.type === 'decl' && n.prop === '--tl-sc'),
+    );
+    expect(setters.map((r) => r.selector)).toEqual([]);
+    // the last compound of every selector that reads it is in SCALED
+    const readers = rules()
+      .filter((rule) =>
+        rule.nodes.some(
+          (n) =>
+            n.type === 'decl' &&
+            !n.prop.startsWith('--') &&
+            n.value.includes('var(--tl-sc'),
+        ),
+      )
+      .flatMap((rule) => rule.selectors);
+    expect(readers.length).toBeGreaterThan(0);
+    const missing = readers.filter(
+      (selector) =>
+        !SCALED.some((scaled) =>
+          selector.replace(/\s+/g, ' ').endsWith(scaled),
+        ),
+    );
+    expect(missing).toEqual([]);
+    // and each entry of SCALED is read somewhere
+    const unused = SCALED.filter(
+      (scaled) =>
+        !readers.some((selector) =>
+          selector.replace(/\s+/g, ' ').endsWith(scaled),
+        ),
+    );
+    expect(unused).toEqual([]);
   });
 });

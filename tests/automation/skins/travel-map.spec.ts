@@ -335,3 +335,92 @@ test.describe('the drawings of the map', () => {
     expect(empty).toEqual([]);
   });
 });
+
+test.describe('the size of the sprites', () => {
+  // the elements that read `--tl-sc` (SCALED in use-sprite-scale.ts)
+  const READERS =
+    '.tl-art, .tl-hit, .tl-name, .tl-pin-btn, .tl-pin-flag, .tl-traveller-in, .tl-gondola-in, .tl-boat > *';
+
+  /** `--tl-sc` as the browser works it out: on the world, on every element that reads it, and on a part of a drawing, which does not. */
+  const scales = (page: import('@playwright/test').Page) =>
+    page.evaluate((readers) => {
+      const sc = (el: Element) =>
+        getComputedStyle(el).getPropertyValue('--tl-sc').trim();
+      return {
+        world: sc(document.querySelector('.tl-view')!),
+        readers: [...document.querySelectorAll(readers)].map(sc),
+        inside: sc(document.querySelector('.tl-art svg')!),
+      };
+    }, READERS);
+
+  /** How far a drawing is from the size the map means it to have at rest: its box over the box the rule gives it (the zoom of the map times `zoom ** -0.55`). */
+  const drift = (page: import('@playwright/test').Page) =>
+    page.evaluate(() => {
+      const view = document.querySelector<HTMLElement>('.tl-view')!;
+      const zoom = view.getBoundingClientRect().width / view.offsetWidth;
+      const arts = [...document.querySelectorAll<HTMLElement>('.tl-art')];
+      return Math.max(
+        ...arts.map((art) => {
+          const want = art.offsetWidth * zoom * zoom ** -0.55;
+          return Math.abs(art.getBoundingClientRect().width - want) / want;
+        }),
+      );
+    });
+
+  test('is given to the sprites themselves, not passed on by the world, so a zoom restyles a few hundred elements and not all of the map', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await page.getByRole('group', { name: 'Trip map of Nha Trang' }).waitFor();
+    const { world, readers, inside } = await scales(page);
+    expect(Number(world)).toBeGreaterThan(0);
+    expect(readers.length).toBeGreaterThan(50);
+    expect(new Set(readers)).toEqual(new Set([world]));
+    // a part of a drawing does not inherit it (it has the initial value, 1): the browser has nothing to work out inside the drawings
+    expect(inside).toBe('1');
+    // every kind of reader is among them, the pins and the traveller too
+    for (const selector of READERS.split(', '))
+      expect(await page.locator(selector).count(), selector).toBeGreaterThan(0);
+  });
+
+  test('is the one of the zoom at rest, at every zoom, and every sprite has it', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await page.getByRole('group', { name: 'Trip map of Nha Trang' }).waitFor();
+    const seen = new Set<string>();
+    for (let step = 0; step < 3; step += 1) {
+      // the fly has ended and the sprites have grown into their size
+      await expect(page.locator('.tl-view')).not.toHaveClass(/tl-fly/);
+      await expect.poll(() => drift(page)).toBeLessThan(0.01);
+      const { world, readers } = await scales(page);
+      expect(new Set(readers)).toEqual(new Set([world]));
+      seen.add(world);
+      await page.getByRole('button', { name: 'Zoom in' }).click();
+    }
+    // three different sizes: the zoom did change the size of the sprites
+    expect(seen.size).toBe(3);
+  });
+
+  test('is given to a sprite that arrives later, the card of a sight', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/about');
+    await page
+      .getByRole('region', { name: 'Places of Nha Trang' })
+      .getByRole('button', { name: 'Po Nagar towers' })
+      .click();
+    await expect(page.locator('.tl-info-card')).toBeVisible();
+    await expect
+      .poll(async () => {
+        const { world, readers } = await scales(page);
+        const card = await page
+          .locator('.tl-info-card')
+          .evaluate((el) =>
+            getComputedStyle(el).getPropertyValue('--tl-sc').trim(),
+          );
+        return card === world && readers.every((value) => value === world);
+      })
+      .toBe(true);
+  });
+});

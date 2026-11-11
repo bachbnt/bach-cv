@@ -27,6 +27,14 @@
 .tl-map > .tl-sky {
   cursor: grab;
 }
+/* The size of the sprites. It is not inherited: the world gives it to ~300 elements that read it (use-sprite-scale.ts) instead of all of ~5,000,
+   because a changed inherited property made the browser work out the style of every one of them at a zoom or at the start of the trip (145-170 ms
+   at 6 times slower). Add a rule that reads `var(--tl-sc)` only on an element listed in SCALED there. */
+@property --tl-sc {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
 .tl-view {
   position: absolute;
   left: 0;

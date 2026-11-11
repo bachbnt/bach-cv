@@ -126,9 +126,24 @@ of a ride on a phone). Four rules, in `still.css`, `map.css` and `use-sprite-cul
   `.tl-sky`) say their own `grab`, and the open hand stays while the map is dragged (a phone has no cursor). Hiding the fine parts of the
   drawings while the camera moves, or making the layer ready before the move, did not change the hitch: what costs is the number of elements the browser has to restyle, not what is drawn.
 
-What is left, and it was measured: a zoom or the start of the trip still makes one restyle of all the elements (`--tl-sc`, the size of the
-sprites, is inherited by all of them), about 140 ms at 6 times slower (it was 207). Sizing the sprites once the fly has ended instead of at its
-start would move it to the end of the move, where the camera has stopped; not done.
+- **The size of the sprites (`--tl-sc`) is not inherited.** A custom property is inherited by every element, and `--tl-sc` is set on the world, so a zoom
+  button or the start of the trip (a new size at once, as it is for any move that is not by hand) made the browser work out the style of all of
+  the ~4,700 elements: one restyle of 137-145 ms at 6 times slower, the longest task of the move. `@property --tl-sc` (`css/map.css`, `inherits: false`)
+  stops the inheritance and `use-sprite-scale.ts` gives the value to the ~90 elements that read it (`SCALED`: `.tl-art`, `.tl-name`, `.tl-hit`, the pins,
+  the traveller, the cabins, the boats; the card of a sight and the pins that arrive later get it from a `MutationObserver`, before they are drawn).
+  The restyle is now ~150 elements, 18-22 ms. The sizes are the same, at the same moment (the value is set in the same commit as before, so the
+  `transform 0.2s` of the sprites still grows into it): at rest the boxes of the drawings, names and pins are the same at 3 zooms (to 0.01 px) and
+  a screenshot differs in under 0.01 % of its pixels. Where `@property` is not known (Firefox before 128) the property stays inherited and nothing
+  changes. `travel-css.test.ts` keeps `SCALED` and the CSS together (a rule that reads `var(--tl-sc)` on an element that is not listed fails it) and
+  `travel-map.spec.ts` ("the size of the sprites") holds the rest. Deferring the new size until the camera has stopped was not needed and not done: it would only move the
+  same restyle to the end of the fly, with the sprites too big (the map grows by `z`, they should grow by `z ** 0.45`) while it runs.
+  Measured against the build before (headed Chrome, phone 390 by 780, CPU 6 times slower, runs alternated, 6 each, medians): longest task after a zoom
+  button 141 ms to under 50 ms (the browser reports none), after "Start the trip" 149 to 68 ms; the worst frame (the gap between two animation frames)
+  201 to 141 ms and 165 to 176 ms (no change within the noise); a ride 9 ms median and 24 ms p95 and a drag 8 ms median and 32 ms worst, as before.
+
+What is left: the worst frame of a zoom or of the start of the trip is still 130-180 ms, but no task of the main thread is that long any more.
+The rest is the frame pipeline (the click, React, layout, then a paint and a `Layerize` of 10-15 ms for the first frames of the move, each ~50-70 ms at 6 times
+slower, and a wait for the compositor between them); making the first frame cheaper would need fewer layers at the start of a move.
 
 The one layer as big as the world (13356 by 7996 units, `will-change` while the camera moves) is made at the start of a move; it is what keeps the
 world from being painted again at every step, and it was not the cause of the hitch.

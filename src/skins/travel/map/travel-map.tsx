@@ -50,6 +50,7 @@ import { useDeclutter } from '@/skins/travel/map/use-declutter';
 import { useRide } from '@/skins/travel/map/use-ride';
 import { usePaused } from '@/skins/travel/map/use-paused';
 import { useSpriteCulling } from '@/skins/travel/map/use-sprite-culling';
+import { useSpriteScale } from '@/skins/travel/map/use-sprite-scale';
 import { useSize } from '@/skins/travel/map/use-size';
 
 /** From this zoom on, the details that are too small to see from afar (a waterfall) are animated. */
@@ -179,6 +180,9 @@ export function TravelMap({
   const view = useRef<HTMLDivElement>(null);
   // the loops of the drawings far from the screen stand still (`data-off`, see `still.css`)
   useSpriteCulling(stage, view);
+  // while the camera is dragged or zoomed by hand the sprites keep their size: resizing all of them at every wheel step is what made zooming slow
+  const sprites = spriteScale(moving ? restZoom : camera.z);
+  useSpriteScale(view, sprites);
   const { riding, follow, endRide } = useRide({
     view,
     stops,
@@ -286,8 +290,8 @@ export function TravelMap({
             width: WORLD.width,
             height: WORLD.height,
             transform: cameraTransform(camera, size),
-            // while the camera is dragged or zoomed by hand the sprites keep their size: resizing all of them at every wheel step is what made zooming slow
-            '--tl-sc': spriteScale(moving ? restZoom : camera.z),
+            // read by use-declutter.ts; the sprites get it themselves (use-sprite-scale.ts), because the world does not pass it on
+            '--tl-sc': sprites,
           } as CSSProperties
         }
       >
