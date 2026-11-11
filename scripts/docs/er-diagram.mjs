@@ -65,15 +65,16 @@ const SITE = {
     f('maintenance', '{ enabled, message }'), f('pages', '{ 7 pages }'),
     f('home … payment', 'on | soon | hidden', '', true), f('features', '{ 4 switches }'),
     f('chat, cvDownload,', 'bool', '', true), f('contactForm, connectMenu', 'bool', '', true),
+    f('prefs', '{ skin, theme, language }'), f('default, force', 'one option', '', true), f('off', 'option[]', '', true),
   ] },
-  profile: { x: 1290, y: 574, w: 290, layer: 'runtime', sql: 'site_doc (JSON)', title: 'site/profile', fields: [
+  profile: { x: 1290, y: 640, w: 290, layer: 'runtime', sql: 'site_doc (JSON)', title: 'site/profile', fields: [
     f('fullName'), f('summary'), f('location'), f('covers', 'string[]'),
     f('specialties', 'object[]'), f('name, tone, visible', '', '', true), f('cvUrl'), f('cvFileName'), f('l10n', '{ summary }'),
   ] },
-  settings: { x: 1290, y: 842, w: 290, layer: 'runtime', sql: 'site_doc (JSON)', title: 'site/settings', fields: [
+  settings: { x: 1290, y: 908, w: 290, layer: 'runtime', sql: 'site_doc (JSON)', title: 'site/settings', fields: [
     f('chat', '{ botName, limits, suggestions[] }'), f('contactForm', '{ nameMax, messageMax }'),
   ] },
-  messages: { x: 1290, y: 972, w: 290, layer: 'write', sql: 'messages', title: 'messages', fields: [
+  messages: { x: 1290, y: 1038, w: 290, layer: 'write', sql: 'messages', title: 'messages', fields: [
     f('id', 'PK auto'), f('name'), f('email'), f('topic'), f('message'), f('locale', 'en|vi'), f('createdAt', 'server time'),
   ] },
 };
@@ -86,7 +87,7 @@ const same = (label, drawn, real) => {
   if (a !== b) throw new Error(`${label}: drawing has [${a}] but schema.ts has [${b}]`);
 };
 for (const [k, c] of Object.entries(CARDS)) same(k, top(c), COLLECTIONS[k].shape);
-same('live', ['maintenance', 'pages', 'features'], liveSchema.shape);
+same('live', ['maintenance', 'pages', 'features', 'prefs'], liveSchema.shape);
 same('shell', top(SITE.shell), shellSchema.shape);
 same('profile', top(SITE.profile), profileSchema.shape);
 same('settings', top(SITE.settings), settingsSchema.shape);
@@ -161,7 +162,7 @@ Object.values(all).forEach(card);
 const DEFS = '<defs><marker id="er-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z"/></marker></defs>';
 
 export const ER = {
-  svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1240" width="2000" role="img" aria-label="Entity diagram of the Firestore model">${DEFS}${svg}</svg>`,
+  svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1310" width="2000" role="img" aria-label="Entity diagram of the Firestore model">${DEFS}${svg}</svg>`,
   width: 2000,
   height: 1240,
   layers: LAYER,

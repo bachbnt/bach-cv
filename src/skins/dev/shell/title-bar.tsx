@@ -8,13 +8,12 @@ import { commonCopy } from '@/content/copy/common';
 import { devCopy } from '@/content/copy/dev';
 import { skinsCopy } from '@/content/copy/skins';
 import { type Lang } from '@/lib/content/schema';
-import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useSkin } from '@/lib/skin/skin';
-import { DEFAULT_SKIN, isSkinId, SKIN_IDS } from '@/lib/skin/skins';
+import { DEFAULT_SKIN, isSkinId } from '@/lib/skin/skins';
 import { preloadSkin } from '@/skins/registry';
-import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
+import { useTheme, type Theme } from '@/lib/theme/theme';
 import { DEV_PROJECT } from '@/skins/dev/config';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { emit } from '@/skins/dev/shell/devlog/store';
@@ -46,10 +45,10 @@ export function TitleBar({
 }) {
   const dev = useCopy(devCopy);
   const common = useCopy(commonCopy);
-  const { lang, setLang } = useLang();
-  const { theme, setTheme } = useTheme();
+  const { lang, setLang, options: offered, locked: langLocked } = useLang();
+  const { theme, setTheme, options: themes, locked: themeLocked } = useTheme();
   const skins = useCopy(skinsCopy);
-  const { skin, setSkin } = useSkin();
+  const { skin, setSkin, options: skinOptions, locked: skinLocked } = useSkin();
   const { say } = useDevOverlays();
   const fullscreen = useFullscreen();
   const lights = dev.windowLights;
@@ -61,7 +60,7 @@ export function TitleBar({
     setSkin(value);
   };
 
-  const languages = offeredLanguages(shell.languages);
+  const languages = offeredLanguages(offered);
   const names: Record<Lang, string> = {
     en: common.language.english,
     vi: common.language.vietnamese,
@@ -120,7 +119,7 @@ export function TitleBar({
         <span className='truncate'>{DEV_PROJECT}</span>
       </div>
       <div className='flex items-center gap-1.5 text-mute max-[620px]:gap-0.5 max-[900px]:ml-auto'>
-        {languages.length > 1 && (
+        {!langLocked && languages.length > 1 && (
           <DevMenu
             icon='globe'
             current={lang.toUpperCase()}
@@ -138,35 +137,39 @@ export function TitleBar({
             }}
           />
         )}
-        <DevMenu
-          icon='browser'
-          current={skins.names[skin].name}
-          label={skins.label}
-          name={`${skins.label}: ${skins.names[skin].name}`}
-          value={skin}
-          items={SKIN_IDS.map((id) => ({
-            value: id,
-            label: skins.names[id].name,
-            hint: skins.names[id].hint,
-          }))}
-          onSelect={chooseSkin}
-          onPreview={(value) => isSkinId(value) && preloadSkin(value)}
-        />
-        <DevMenu
-          icon='color-mode'
-          current={themeNames[theme]}
-          label={common.theme.label}
-          value={theme}
-          items={THEMES.map((value) => ({
-            value,
-            label: themeNames[value],
-            hint: dev.themeHints[value],
-          }))}
-          onSelect={(value) => {
-            const next = THEMES.find((option) => option === value);
-            if (next) setTheme(next);
-          }}
-        />
+        {!skinLocked && (
+          <DevMenu
+            icon='browser'
+            current={skins.names[skin].name}
+            label={skins.label}
+            name={`${skins.label}: ${skins.names[skin].name}`}
+            value={skin}
+            items={skinOptions.map((id) => ({
+              value: id,
+              label: skins.names[id].name,
+              hint: skins.names[id].hint,
+            }))}
+            onSelect={chooseSkin}
+            onPreview={(value) => isSkinId(value) && preloadSkin(value)}
+          />
+        )}
+        {!themeLocked && (
+          <DevMenu
+            icon='color-mode'
+            current={themeNames[theme]}
+            label={common.theme.label}
+            value={theme}
+            items={themes.map((value) => ({
+              value,
+              label: themeNames[value],
+              hint: dev.themeHints[value],
+            }))}
+            onSelect={(value) => {
+              const next = themes.find((option) => option === value);
+              if (next) setTheme(next);
+            }}
+          />
+        )}
       </div>
     </div>
   );

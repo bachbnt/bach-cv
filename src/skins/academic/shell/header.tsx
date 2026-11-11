@@ -14,8 +14,8 @@ import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useSkin } from '@/lib/skin/skin';
-import { isSkinId, SKIN_IDS } from '@/lib/skin/skins';
-import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
+import { isSkinId } from '@/lib/skin/skins';
+import { useTheme, type Theme } from '@/lib/theme/theme';
 import { AcConnectMenu } from '@/skins/academic/shell/ac-connect-menu';
 import { AcCvButton } from '@/skins/academic/shell/ac-cv-button';
 import { preloadSkin } from '@/skins/registry';
@@ -31,11 +31,11 @@ export function Header() {
   const common = useCopy(commonCopy);
   const copy = useCopy(academicCopy);
   const skins = useCopy(skinsCopy);
-  const { lang, setLang } = useLang();
-  const { theme, setTheme } = useTheme();
-  const { skin, setSkin } = useSkin();
+  const { lang, setLang, options: offered, locked: langLocked } = useLang();
+  const { theme, setTheme, options: themes, locked: themeLocked } = useTheme();
+  const { skin, setSkin, options: skinOptions, locked: skinLocked } = useSkin();
 
-  const languages = offeredLanguages(shell.languages);
+  const languages = offeredLanguages(offered);
   const names: Record<Lang, string> = {
     en: common.language.english,
     vi: common.language.vietnamese,
@@ -67,7 +67,7 @@ export function Header() {
         </small>
       </Link>
       <div className='ml-auto flex flex-wrap items-center gap-2 max-[760px]:gap-1.5'>
-        {languages.length > 1 && (
+        {!langLocked && languages.length > 1 && (
           <AcMenu
             label={`${common.language.label}: ${names[lang]}`}
             current={lang.toUpperCase()}
@@ -84,31 +84,35 @@ export function Header() {
             }}
           />
         )}
-        <AcMenu
-          label={`${skins.label}: ${skins.names[skin].name}`}
-          current={skins.names[skin].name}
-          value={skin}
-          items={SKIN_IDS.map((id) => ({
-            value: id,
-            label: skins.names[id].name,
-            hint: skins.names[id].hint,
-          }))}
-          onSelect={(value) => isSkinId(value) && setSkin(value)}
-          onPreview={(value) => isSkinId(value) && preloadSkin(value)}
-        />
-        <AcMenu
-          label={common.theme.label}
-          current={themeNames[theme]}
-          value={theme}
-          items={THEMES.map((value) => ({
-            value,
-            label: themeNames[value],
-          }))}
-          onSelect={(value) => {
-            const next = THEMES.find((option) => option === value);
-            if (next) setTheme(next);
-          }}
-        />
+        {!skinLocked && (
+          <AcMenu
+            label={`${skins.label}: ${skins.names[skin].name}`}
+            current={skins.names[skin].name}
+            value={skin}
+            items={skinOptions.map((id) => ({
+              value: id,
+              label: skins.names[id].name,
+              hint: skins.names[id].hint,
+            }))}
+            onSelect={(value) => isSkinId(value) && setSkin(value)}
+            onPreview={(value) => isSkinId(value) && preloadSkin(value)}
+          />
+        )}
+        {!themeLocked && (
+          <AcMenu
+            label={common.theme.label}
+            current={themeNames[theme]}
+            value={theme}
+            items={themes.map((value) => ({
+              value,
+              label: themeNames[value],
+            }))}
+            onSelect={(value) => {
+              const next = themes.find((option) => option === value);
+              if (next) setTheme(next);
+            }}
+          />
+        )}
         <AcConnectMenu />
         <AcCvButton />
       </div>

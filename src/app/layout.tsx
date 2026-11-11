@@ -7,8 +7,7 @@ import { Bricolage_Grotesque, Public_Sans } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import { shell } from '@/lib/content/shell';
 import { SITE_URL } from '@/lib/seo';
-import { SKIN_SCRIPT } from '@/lib/skin/skin-script';
-import { THEME_SCRIPT } from '@/lib/theme/theme-script';
+import { PREFS_SCRIPT } from '@/lib/preference/prefs-script';
 import './globals.css';
 
 const publicSans = Public_Sans({
@@ -70,8 +69,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     >
       <head>
         {imageOrigin && <link rel='preconnect' href={imageOrigin} />}
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
-        <script dangerouslySetInnerHTML={{ __html: SKIN_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: PREFS_SCRIPT }} />
       </head>
       <body className='flex min-h-full flex-col'>
         <script

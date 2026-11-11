@@ -18,7 +18,10 @@ Standard is the app itself (`app/**`, `components/**`); every other skin lives i
 
 1. `src/skins/<id>/skin.tsx` default-exports the `SkinDefinition`.
 2. Add the id to `SKIN_IDS`, its names to `content/copy/skins.ts` (en and vi), its loader to `skins/registry.ts`.
-3. The menus in the headers build themselves from `SKIN_IDS`.
+3. The menus in the headers build themselves from `SKIN_IDS`, through `useSkin().options` (the skins the owner has not left out) and `useSkin().locked`
+   (a skin is forced or only one is left: the menu is not shown). The same holds for the Theme and Language menus: they offer `useTheme().options` / `useLang().options` and
+   are not shown when `locked`. How the three are settled (the owner's `site/live` `prefs`, the visitor's choice and `?skin=`, `?theme=`, `?lang=`) is said once in
+   `lib/preference/preference.ts`; the head script `lib/preference/prefs-script.ts` says the same in ES5, and `tests/unit/lib/preference-script.test.ts` holds the two together.
 4. Add a Playwright spec in `tests/automation/skins/` that runs the same user-visible checks in the new skin. `useSkin(page, id)` from
    `tests/automation/support/skin.ts` makes a test open in it; unit tests of the skin's own logic go in `tests/unit/skin/`.
 

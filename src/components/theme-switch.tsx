@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { commonCopy } from '@/content/copy/common';
 import { useCopy } from '@/lib/i18n/copy';
-import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
+import { useTheme, type Theme } from '@/lib/theme/theme';
 
 const ICONS: Record<Theme, ComponentType<{ className?: string }>> = {
   system: Monitor,
@@ -30,8 +30,9 @@ const ICONS: Record<Theme, ComponentType<{ className?: string }>> = {
  */
 export function ThemeSwitch() {
   const copy = useCopy(commonCopy);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, options, locked } = useTheme();
 
+  if (locked) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -60,7 +61,7 @@ export function ThemeSwitch() {
           value={theme}
           onValueChange={(value) => setTheme(value as Theme)}
         >
-          {THEMES.map((code) => {
+          {options.map((code) => {
             const ItemIcon = ICONS[code];
             return (
               <DropdownMenuRadioItem

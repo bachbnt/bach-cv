@@ -25,8 +25,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { skinsCopy } from '@/content/copy/skins';
 import { useLang } from '@/lib/i18n/language';
 import { useSkin } from '@/lib/skin/skin';
-import { SKIN_IDS } from '@/lib/skin/skins';
-import { THEMES, useTheme, type Theme } from '@/lib/theme/theme';
+import { useTheme, type Theme } from '@/lib/theme/theme';
 import type { Lang } from '@/lib/content/schema';
 import { shell } from '@/lib/content/shell';
 import { cn } from 'cn';
@@ -47,9 +46,9 @@ export function MobileMenu({
   const { data: contacts = [] } = useContentQuery('contacts');
   const [menuOpen, setMenuOpen] = useState(false);
   const copy = useCopy(commonCopy);
-  const { lang, setLang } = useLang();
-  const { theme, setTheme } = useTheme();
-  const { skin, setSkin } = useSkin();
+  const { lang, setLang, options: languages, locked: langLocked } = useLang();
+  const { theme, setTheme, options: themes, locked: themeLocked } = useTheme();
+  const { skin, setSkin, options: skinOptions, locked: skinLocked } = useSkin();
   const skins = useCopy(skinsCopy);
   const [cvOpen, setCvOpen] = useState(false);
   // the CV opens once the drawer has finished closing, so two modals never overlap
@@ -153,7 +152,7 @@ export function MobileMenu({
             </div>
           )}
 
-          {shell.languages.length > 1 && (
+          {!langLocked && offeredLanguages(languages).length > 1 && (
             <div className='mt-3.5 flex items-center justify-between gap-3 border-t pt-3.5'>
               <p className='text-[13px] font-semibold text-muted-foreground'>
                 {copy.language.label}
@@ -163,7 +162,7 @@ export function MobileMenu({
                 aria-label={copy.language.label}
                 className='inline-flex rounded-xl bg-background p-[3px]'
               >
-                {offeredLanguages(shell.languages).map((code: Lang) => (
+                {offeredLanguages(languages).map((code: Lang) => (
                   <button
                     key={code}
                     type='button'
@@ -178,7 +177,7 @@ export function MobileMenu({
             </div>
           )}
 
-          {SKIN_IDS.length > 1 && (
+          {!skinLocked && (
             // the label sits above a grid: three names fit a narrow phone in one row and six make two even rows of three, four make two of two
             <div className='mt-3.5 border-t pt-3.5'>
               <p className='mb-2 text-[13px] font-semibold text-muted-foreground'>
@@ -189,10 +188,10 @@ export function MobileMenu({
                 aria-label={skins.label}
                 className={cn(
                   'grid gap-1 rounded-xl bg-background p-[3px]',
-                  SKIN_IDS.length % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2',
+                  skinOptions.length % 3 === 0 ? 'grid-cols-3' : 'grid-cols-2',
                 )}
               >
-                {SKIN_IDS.map((id) => (
+                {skinOptions.map((id) => (
                   <button
                     key={id}
                     type='button'
@@ -210,33 +209,37 @@ export function MobileMenu({
             </div>
           )}
 
-          <div className='mt-3.5 mb-4 flex items-center justify-between gap-3 border-t pt-3.5'>
-            <p className='text-[13px] font-semibold text-muted-foreground'>
-              {copy.theme.label}
-            </p>
-            <div
-              role='group'
-              aria-label={copy.theme.label}
-              className='inline-flex rounded-xl bg-background p-[3px]'
-            >
-              {THEMES.map((code: Theme) => {
-                const Icon = THEME_ICONS[code];
-                return (
-                  <button
-                    key={code}
-                    type='button'
-                    aria-pressed={theme === code}
-                    aria-label={copy.theme[code]}
-                    title={copy.theme[code]}
-                    onClick={() => setTheme(code)}
-                    className='inline-flex min-h-11 min-w-12 cursor-pointer items-center justify-center rounded-[10px] px-3 text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
-                  >
-                    <Icon aria-hidden='true' className='size-[18px]' />
-                  </button>
-                );
-              })}
+          {themeLocked ? (
+            <div className='mb-4' />
+          ) : (
+            <div className='mt-3.5 mb-4 flex items-center justify-between gap-3 border-t pt-3.5'>
+              <p className='text-[13px] font-semibold text-muted-foreground'>
+                {copy.theme.label}
+              </p>
+              <div
+                role='group'
+                aria-label={copy.theme.label}
+                className='inline-flex rounded-xl bg-background p-[3px]'
+              >
+                {themes.map((code: Theme) => {
+                  const Icon = THEME_ICONS[code];
+                  return (
+                    <button
+                      key={code}
+                      type='button'
+                      aria-pressed={theme === code}
+                      aria-label={copy.theme[code]}
+                      title={copy.theme[code]}
+                      onClick={() => setTheme(code)}
+                      className='inline-flex min-h-11 min-w-12 cursor-pointer items-center justify-center rounded-[10px] px-3 text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
+                    >
+                      <Icon aria-hidden='true' className='size-[18px]' />
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {live.features.cvDownload && (
             <button

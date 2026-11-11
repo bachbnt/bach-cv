@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { skinsCopy } from '@/content/copy/skins';
 import { PAGES } from '@/lib/content/schema';
 import { pageOfPath } from '@/lib/pages';
-import { SKIN_SCRIPT } from '@/lib/skin/skin-script';
+import { PREFS_SCRIPT } from '@/lib/preference/prefs-script';
 import {
   DEFAULT_SKIN,
   isSkinId,
@@ -47,14 +47,14 @@ describe('the list of skins', () => {
 
 describe('the script in <head>', () => {
   it('reads the saved choice and `?skin=`, and only knows the ids of the skins', () => {
-    expect(SKIN_SCRIPT).toContain(SKIN_STORAGE_KEY);
-    expect(SKIN_SCRIPT).toContain(JSON.stringify(SKIN_IDS));
-    expect(SKIN_SCRIPT).toContain("get('skin')");
-    expect(SKIN_SCRIPT).toContain("setAttribute('data-skin'");
+    expect(PREFS_SCRIPT).toContain(SKIN_STORAGE_KEY);
+    expect(PREFS_SCRIPT).toContain(JSON.stringify(SKIN_IDS));
+    expect(PREFS_SCRIPT).toContain("param('skin')");
+    expect(PREFS_SCRIPT).toContain("setAttribute('data-skin'");
   });
 
   it('is plain ES5 text (it is inlined into the static HTML)', () => {
-    expect(SKIN_SCRIPT).not.toMatch(/=>|\bconst\b|\blet\b|`/);
+    expect(PREFS_SCRIPT).not.toMatch(/=>|\bconst\b|\blet\b|`/);
   });
 });
 

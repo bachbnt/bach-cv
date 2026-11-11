@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { commonCopy } from '@/content/copy/common';
 import { type Lang } from '@/lib/content/schema';
-import { shell } from '@/lib/content/shell';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { offeredLanguages } from '@/lib/derive/offered-languages';
@@ -25,14 +24,14 @@ import { offeredLanguages } from '@/lib/derive/offered-languages';
  */
 export function LanguageSwitch() {
   const copy = useCopy(commonCopy);
-  const { lang, setLang } = useLang();
-  const options = offeredLanguages(shell.languages);
+  const { lang, setLang, options: allowed, locked } = useLang();
+  const options = offeredLanguages(allowed);
   const names: Record<Lang, string> = {
     en: copy.language.english,
     vi: copy.language.vietnamese,
   };
 
-  if (options.length < 2) return null;
+  if (locked || options.length < 2) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger

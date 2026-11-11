@@ -53,7 +53,7 @@ No id: ask which one. One skin per run.
   (Home, Projects, Resume, About, Certificates, Services, Payment), the header actions (Language, Skin, Theme, BB Bot chat, Connect,
   Download CV and the CV window, picture viewers, the QR payment dialog, the contact form), `site/live` switches that turn a feature
   off, the data states (loading, empty, error with Try again, 404, Coming soon, maintenance), keyboard, both languages, both themes.
-  The menus are in the order **Language, Skin, Theme** in every skin, and the Skin menu must always be reachable to leave the skin.
+  The menus are in the order **Language, Skin, Theme** in every skin (built from `useLang().options`, `useSkin().options` and `useTheme().options`, and not shown when `locked`: the owner may force one in `site/live` `prefs`), and the Skin menu must always be reachable to leave the skin (unless the owner forces a skin).
 - **Its own interface, never a clone.** Do not re-colour Standard's blocks. Reuse hooks, query options, copy and overlays that are
   pure behaviour; write your own components. The test is that nothing Standard tells is missing, not that blocks look alike.
 - **Nothing invented.** A mock element with no Standard counterpart (view counts, likes, ratings, price changes, fake chat, canned

@@ -356,7 +356,8 @@ ${table(
     html: `${table(
   ['Situation', 'What the visitor sees'],
   [
-    ['site/live cannot be read', 'defaults: every page and feature on, no maintenance'],
+    ['site/live cannot be read', 'defaults: every page and feature on, no maintenance, nothing forced or left out of the skin, theme and language menus'],
+    ['a slip in <code>site/live</code> <code>prefs</code>', 'a value that is not one of the options counts for nothing; the rest is used (so a typo in the console never breaks the site)'],
     ['a collection query fails', 'that block shows its error or empty state with Try again; the rest of the page works'],
     ['one malformed document', 'it is skipped (parsed with <code>safeParse</code>); the others show'],
     ['no translation for a field', 'the English text'],

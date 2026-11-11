@@ -32,7 +32,8 @@ The Home page of each skin, in the dark and in the light theme.
 ## Highlights
 
 - **Remote config.** `site/live` switches pages (`on` / `soon` / `hidden`), features (chat, CV download, contact form, Connect
-  menu) and a site-wide maintenance screen. Every content document has a `visible` flag that the Firestore rules enforce, so a
+  menu), a site-wide maintenance screen, and, for the **skin, the colour theme and the language**, what to offer, what to show a visitor
+  who has not chosen, and what to force on everyone (`prefs`, below). Every content document has a `visible` flag that the Firestore rules enforce, so a
   hidden item is never sent to a visitor.
 - **Bilingual.** English and Vietnamese. Interface copy is typed (`defineCopy(en, vi)`); content is translated through an `l10n.vi`
   overlay on each document.
@@ -160,6 +161,13 @@ Common edits in the Firebase console:
 
 - Hide or show an item: set `visible` on the document. Feature it with `highlight` (1 is first); order it with `sort`.
 - Switch a page: `site/live` → `pages.<page>` = `on`, `soon` or `hidden`. Switch a feature: `features.<name>` = `true` / `false`.
+- Skin, theme and language: `site/live` → `prefs.skin`, `prefs.theme`, `prefs.language`, each with `default`, `force` and `off`:
+  `default` is what a visitor who has not chosen sees (`travel`, `dark`, `vi`); `force` shows it to everyone, ignores their own choice and `?skin=`, and hides that
+  menu (for a campaign, or a skin that has a bug); `off` is a list of options to leave out of the menu (a visitor who had chosen one is given the default;
+  `standard` cannot be left out; leaving out `dark` or `light` leaves that scheme out altogether, also for a visitor who follows the system). Leave a text empty for
+  "not set". Anything that is not one of the options counts for nothing. The order is: force, the visitor's `?skin=` / `?theme=` / `?lang=` (also kept as a
+  choice) and their saved choice, the default, the browser's language / the system's colours, the default of the site (`lib/preference/preference.ts`).
+  The last read is kept in this browser (`bach-cv-prefs`), so a visitor who comes back has no flash; a first visit may see the default for a moment.
 - Maintenance: `site/live` → `maintenance.enabled = true` (message in `maintenance.message`, Vietnamese in `maintenance.l10n.vi.message`).
 - Translate: add `l10n.vi.<field>` on the document.
 - Skills: a skill with `listed: false` is not shown as a chip but can still be a technology tag on a project or a role.

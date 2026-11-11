@@ -12,7 +12,7 @@ import { useMaintenance } from '@/components/use-maintenance';
 import { skinsCopy } from '@/content/copy/skins';
 import { useCopy } from '@/lib/i18n/copy';
 import { pageOfPath } from '@/lib/pages';
-import { savedSkin, useSkin } from '@/lib/skin/skin';
+import { useSkin } from '@/lib/skin/skin';
 import { DEFAULT_SKIN, type SkinId } from '@/lib/skin/skins';
 import { hasLoader, SKIN_LOADERS } from '@/skins/registry';
 import type { SkinDefinition } from '@/skins/types';
@@ -25,7 +25,7 @@ const NOTE_MS = 6000;
  * and content. The default look stays on screen while a skin loads; on a first visit the head script keeps the body hidden instead.
  */
 export function SkinFrame({ children }: { children: ReactNode }) {
-  const { skin, setSkin } = useSkin();
+  const { skin, setSkin, settled } = useSkin();
   const pathname = usePathname();
   const copy = useCopy(skinsCopy);
   const maintenance = useMaintenance();
@@ -67,13 +67,14 @@ export function SkinFrame({ children }: { children: ReactNode }) {
     if (active) {
       html.setAttribute('data-skin', active.id);
       html.setAttribute('data-skin-ready', '');
-    } else if (skin === DEFAULT_SKIN && savedSkin() === DEFAULT_SKIN) {
-      // the first render is always the default (it matches the static HTML), so `skin` alone cannot say that the visitor chose it: with
-      // a saved choice the head script's `data-skin` stays, and the body stays hidden until that skin is ready
+    } else if (settled && (skin === DEFAULT_SKIN || failed)) {
+      // the first render is always the default (it matches the static HTML), so `skin` alone cannot say that the visitor (or the owner) chose
+      // another: until the choice has been read the head script's `data-skin` stays, and the body stays hidden until that skin is ready. A skin
+      // that could not be loaded gives the page back as well
       html.removeAttribute('data-skin');
       html.removeAttribute('data-skin-ready');
     }
-  }, [active, skin]);
+  }, [active, skin, settled, failed]);
 
   const note = failed ? (
     <p

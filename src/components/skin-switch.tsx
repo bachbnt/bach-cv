@@ -15,15 +15,15 @@ import {
 import { skinsCopy } from '@/content/copy/skins';
 import { useCopy } from '@/lib/i18n/copy';
 import { useSkin } from '@/lib/skin/skin';
-import { isSkinId, SKIN_IDS } from '@/lib/skin/skins';
+import { isSkinId } from '@/lib/skin/skins';
 import { preloadSkin } from '@/skins/registry';
 
 /** Header dropdown for the look of the site, built from `SKIN_IDS`: a new skin appears here by itself. */
 export function SkinSwitch() {
   const copy = useCopy(skinsCopy);
-  const { skin, setSkin } = useSkin();
+  const { skin, setSkin, options, locked } = useSkin();
 
-  if (SKIN_IDS.length < 2) return null;
+  if (locked) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -41,7 +41,7 @@ export function SkinSwitch() {
           value={skin}
           onValueChange={(value) => isSkinId(value) && setSkin(value)}
         >
-          {SKIN_IDS.map((id) => (
+          {options.map((id) => (
             <DropdownMenuRadioItem
               key={id}
               value={id}

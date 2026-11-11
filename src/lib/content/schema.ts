@@ -23,6 +23,9 @@
  */
 
 import { z } from 'zod';
+// relative, with the extension: `scripts/docs/er-diagram.mjs` loads this file with Node, which knows nothing of the `@/` alias
+import { SKIN_IDS } from '../skin/skins.ts';
+import { THEMES } from '../theme/themes.ts';
 
 // Zod would try `new Function()` to compile faster parsers; the data here is small, and a page with a Content-Security-Policy
 // that forbids eval would log a violation for it on every load.
@@ -382,6 +385,31 @@ export const COLLECTION_NAMES = [
 export type CollectionName = (typeof COLLECTION_NAMES)[number];
 
 /**
+ * What the owner says about one thing a visitor can choose (the skin, the theme, the language): what to show to a visitor who has not chosen
+ * (`default`), what to show to everyone and take the choice away (`force`), and what to leave out of the menu (`off`). Lenient on purpose: a
+ * value that is not one of the options counts for nothing, so a slip in the console never breaks the site. The order they are used in is
+ * `lib/preference/preference.ts`.
+ */
+const prefSchema = <const T extends readonly [string, ...string[]]>(
+  options: T,
+) => {
+  const one = z.enum(options).optional().catch(undefined);
+  return z
+    .object({
+      default: one,
+      force: one,
+      off: z
+        .array(z.unknown())
+        .catch([])
+        .transform((list) =>
+          list.filter((v): v is T[number] => options.includes(v as string)),
+        )
+        .default([]),
+    })
+    .prefault({});
+};
+
+/**
  * `site/live`: the first thing the browser reads. Small on purpose: switches only, never content.
  * Everything here takes effect on the next read, with no build.
  */
@@ -401,6 +429,14 @@ export const liveSchema = z.object({
         typeof pageStateSchema
       >,
     )
+    .prefault({}),
+  /** The skin, the colour theme and the language: what is on offer, what is the default and what is forced (see `prefSchema`). */
+  prefs: z
+    .object({
+      skin: prefSchema(SKIN_IDS),
+      theme: prefSchema(THEMES),
+      language: prefSchema(LANGS),
+    })
     .prefault({}),
   features: z
     .object({
