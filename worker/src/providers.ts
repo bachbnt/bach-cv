@@ -72,13 +72,11 @@ const requestJson = async (
 };
 
 /** `work` under a deadline, for a call that cannot be aborted (the Workers AI binding): the answer that comes late is dropped. */
-const within = <T>(work: Promise<T>, timeoutMs: number): Promise<T> => {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const late = new Promise<never>((_, reject) => {
-    timer = setTimeout(() => reject(timedOut()), timeoutMs);
+const within = <T>(work: Promise<T>, timeoutMs: number): Promise<T> =>
+  new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(timedOut()), timeoutMs);
+    work.then(resolve, reject).finally(() => clearTimeout(timer));
   });
-  return Promise.race([work, late]).finally(() => clearTimeout(timer ?? null));
-};
 
 const handleProviderResponse = async (
   response: Response,
