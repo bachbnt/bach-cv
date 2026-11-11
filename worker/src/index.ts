@@ -8,6 +8,7 @@ import {
   callGemini,
   callOpenAI,
   HttpError,
+  PROVIDER_TIMEOUT_MS,
   type AiBinding,
 } from './providers';
 import { getSystemPrompt, type PromptEnv } from './prompt';
@@ -95,11 +96,17 @@ const resolveCors = (request: Request, env: Env): Record<string, string> => {
   };
 };
 
+/** What a whole chat request may spend on providers, so a row of slow ones cannot keep a visitor waiting for minutes. */
+export const CHAT_BUDGET_MS = 25_000;
+/** A provider that has less than this left is not tried: it could not answer in it. */
+const MIN_ATTEMPT_MS = 1_500;
+
 const ask = (
   provider: ChatProvider,
   env: Env,
   messages: ChatMessage[],
   systemPrompt: string,
+  timeoutMs: number,
 ): Promise<string> => {
   switch (provider) {
     case 'cloudflare':
@@ -108,6 +115,7 @@ const ask = (
         messages,
         systemPrompt,
         env.CLOUDFLARE_AI_MODEL,
+        timeoutMs,
       );
     case 'openai':
       return callOpenAI(
@@ -115,6 +123,7 @@ const ask = (
         messages,
         systemPrompt,
         env.OPENAI_MODEL,
+        timeoutMs,
       );
     case 'claude':
       return callClaude(
@@ -122,6 +131,7 @@ const ask = (
         messages,
         systemPrompt,
         env.ANTHROPIC_MODEL,
+        timeoutMs,
       );
     case 'gemini':
       return callGemini(
@@ -129,6 +139,7 @@ const ask = (
         messages,
         systemPrompt,
         env.GEMINI_MODEL,
+        timeoutMs,
       );
   }
 };
@@ -192,9 +203,19 @@ const handleChat = async (
   // built here from the public site content, never taken from the request
   const systemPrompt = await getSystemPrompt(env, lang);
   let failure: HttpError | undefined;
+  const started = Date.now();
   for (const candidate of order) {
+    // each provider has `PROVIDER_TIMEOUT_MS`, and all of them together `CHAT_BUDGET_MS`: what is left of it is the most the next one gets
+    const left = CHAT_BUDGET_MS - (Date.now() - started);
+    if (left < MIN_ATTEMPT_MS) break;
     try {
-      const text = await ask(candidate, env, messages, systemPrompt);
+      const text = await ask(
+        candidate,
+        env,
+        messages,
+        systemPrompt,
+        Math.min(PROVIDER_TIMEOUT_MS, left),
+      );
       return json({ text, provider: candidate }, { headers: cors });
     } catch (error) {
       failure =

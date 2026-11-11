@@ -4,11 +4,13 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import worker, {
+  CHAT_BUDGET_MS,
   enabledProviders,
   recipientsOf,
   type Env,
 } from '../../../worker/src/index';
 import { clearPromptMemory } from '../../../worker/src/prompt';
+import { PROVIDER_TIMEOUT_MS } from '../../../worker/src/providers';
 import type { KvLike } from '../../../worker/src/rateLimit';
 
 const ORIGIN = 'https://bachbntdev.web.app';
@@ -699,5 +701,147 @@ describe('the system prompt belongs to the Worker', () => {
     expect(system).toContain('Bùi Ngô Tôn Bách');
     expect(system).toContain('Tóm tắt');
     expect(system).toContain('answer in Vietnamese');
+  });
+});
+
+describe('a provider that does not answer', () => {
+  // the fake clock moves the deadlines: the worker uses `setTimeout`, not `AbortSignal.timeout`
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  const gemini = {
+    candidates: [{ content: { parts: [{ text: 'from gemini' }] } }],
+  };
+  const openai = { choices: [{ message: { content: 'from openai' } }] };
+
+  /** A fetch that never answers until it is aborted, as an upstream that hangs. */
+  const hang = (init: RequestInit | undefined) =>
+    new Promise<Response>((_, reject) => {
+      init?.signal?.addEventListener('abort', () =>
+        reject(new DOMException('aborted', 'AbortError')),
+      );
+    });
+
+  it('is cut off after PROVIDER_TIMEOUT_MS and the next provider answers', async () => {
+    const fetchMock = vi.fn(async (url: string, init?: RequestInit) =>
+      url.includes('generativelanguage') ? hang(init) : Response.json(openai),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const answer = worker.fetch(
+      chat(undefined),
+      baseEnv({ ALLOWED_PROVIDERS: 'gemini,openai' }),
+    );
+    await vi.advanceTimersByTimeAsync(PROVIDER_TIMEOUT_MS + 10);
+    const res = await answer;
+    expect(await res.json()).toEqual({
+      text: 'from openai',
+      provider: 'openai',
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    // the one that hung was aborted, not left running
+    const first = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    expect(first[1].signal?.aborted).toBe(true);
+  });
+
+  it('is cut off when it sends the headers and then stops', async () => {
+    const stalled = (init: RequestInit | undefined) =>
+      ({
+        ok: true,
+        status: 200,
+        json: () =>
+          new Promise((_, reject) =>
+            init?.signal?.addEventListener('abort', () =>
+              reject(new DOMException('aborted', 'AbortError')),
+            ),
+          ),
+      }) as unknown as Response;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string, init?: RequestInit) =>
+        url.includes('generativelanguage')
+          ? stalled(init)
+          : Response.json(openai),
+      ),
+    );
+    const answer = worker.fetch(
+      chat(undefined),
+      baseEnv({ ALLOWED_PROVIDERS: 'gemini,openai' }),
+    );
+    await vi.advanceTimersByTimeAsync(PROVIDER_TIMEOUT_MS + 10);
+    expect(await (await answer).json()).toEqual({
+      text: 'from openai',
+      provider: 'openai',
+    });
+  });
+
+  it('is cut off for Workers AI too, which cannot be aborted: its late answer is dropped', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => Response.json(gemini)),
+    );
+    const never = new Promise<unknown>(() => undefined);
+    const answer = worker.fetch(
+      chat(undefined),
+      baseEnv({ AI: { run: () => never } }),
+    );
+    await vi.advanceTimersByTimeAsync(PROVIDER_TIMEOUT_MS + 10);
+    expect(await (await answer).json()).toEqual({
+      text: 'from gemini',
+      provider: 'gemini',
+    });
+  });
+
+  it('does not wait longer than CHAT_BUDGET_MS for a row of providers that hang, and says only upstream_error', async () => {
+    const fetchMock = vi.fn(async (_url: string, init?: RequestInit) =>
+      hang(init),
+    );
+    vi.stubGlobal('fetch', fetchMock);
+    const answer = worker.fetch(
+      chat(undefined),
+      baseEnv({
+        AI: { run: () => new Promise<unknown>(() => undefined) },
+        ALLOWED_PROVIDERS: 'cloudflare,gemini,openai,claude',
+      }),
+    );
+    await vi.advanceTimersByTimeAsync(CHAT_BUDGET_MS + 10);
+    const res = await answer;
+    expect(res.status).toBe(502);
+    expect(await res.json()).toEqual({ error: 'upstream_error' });
+    // 8 s each: three fit in the 25 s, the fourth would have 1 s and is not tried
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('leaves no timer behind when the provider answers', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => Response.json(gemini)),
+    );
+    const res = await worker.fetch(chat('gemini'), baseEnv());
+    expect(res.status).toBe(200);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('answers the rate limit if the last provider is out of allowance after another timed out', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string, init?: RequestInit) =>
+        url.includes('generativelanguage')
+          ? hang(init)
+          : new Response('{}', { status: 429 }),
+      ),
+    );
+    const answer = worker.fetch(
+      chat(undefined),
+      baseEnv({ ALLOWED_PROVIDERS: 'gemini,openai' }),
+    );
+    await vi.advanceTimersByTimeAsync(PROVIDER_TIMEOUT_MS + 10);
+    const res = await answer;
+    expect(res.status).toBe(429);
+    expect(await res.json()).toEqual({ error: 'rate_limit' });
   });
 });

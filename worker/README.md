@@ -8,7 +8,10 @@ Cloudflare Worker that fronts the LLM chat providers (Gemini / OpenAI / Anthropi
 - `POST /chat` → body `{ messages: [...], lang?: "en" | "vi", provider?: "cloudflare" | "gemini" | "openai" | "claude" }` → `{ "text": "...", "provider": "..." }`.
   The Worker builds the system prompt itself (see "The system prompt" below); a `systemPrompt` in the body is ignored.
   Without `provider` the Worker tries the enabled providers in order (`ALLOWED_PROVIDERS`, default `cloudflare,gemini`): the first that answers wins,
-  and a spent free allowance or a failure moves on to the next.
+  and a spent free allowance or a failure moves on to the next. **A provider that does not answer is cut off after 8 s** (`PROVIDER_TIMEOUT_MS` in
+  `src/providers.ts`: the request and the reading of its answer; the request is aborted, and Workers AI, which cannot be aborted, has its late answer dropped),
+  and **all of them together have 25 s** (`CHAT_BUDGET_MS` in `src/index.ts`; a provider with less than 1.5 s left is not tried). A visitor whose providers all
+  time out gets `502 upstream_error` after at most about 25 s, where before one hung provider could keep the request for minutes (122 s was seen).
 - `POST /notify` → body `{ name, email, topic?, message, locale?, turnstileToken? }` → emails the owner about a contact-form message (Resend). Needs `RESEND_API_KEY`,
   `NOTIFY_TO` and the KV rate limit; until then it answers `{ "ok": true, "sent": false }` and sends nothing.
 
