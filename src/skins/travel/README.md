@@ -109,6 +109,21 @@ The map is 6678 by 3998 units. The camera transform is flat (`translate`, not `t
 screen, and on a touch screen the waves and the foam are left out. Measured at 390 by 844 with a scale of 3: 34 layers and about 160 MB at rest
 (it was 130 layers and about 3 GB, which killed the tab on an iPhone). `travel-css.test.ts` keeps the rule.
 
+**What the loops cost, measured** (headed Chrome, the CPU slowed 4 to 6 times, the production build against the change). Each loop is a layer of its own
+and everything painted over a layer is made one too, so the loops decide how many layers a camera move has to build (`Layerize`, the biggest cost
+of a ride on a phone). Three rules, in `still.css` and `use-sprite-culling.ts`, with `travel-map.spec.ts` and `travel-css.test.ts` keeping them:
+
+- **The bird flies by a `div`, not by its `svg`.** An animation on an svg root is not done by the compositor (as the boat's comment says), and it
+  made the main thread restyle at every refresh and woke the other loops with it: at rest 360 restyles in 3 s (940 ms) fell to 21 (27 ms).
+- **A drawing far from the screen stands still.** `useSpriteCulling` marks a `.tl-sprite` or a cabin that is more than 40% of the map away from it
+  `data-off`, and its flag, steam, boat, wheel, cabin, diver and bubbles are `animation: none`. Layers during a ride: 142 down to 95.
+- **The scenery stands still while the camera moves** (`tl-moving`, `tl-fly`, `tl-ride`) and goes on when it has stopped. With the two above, a ride
+  on a phone (CPU 6 times slower) built 34 layers instead of 142, and the median frame went from 25 ms to 9 ms (frames over 33 ms: 36 down to 11);
+  dragging the map 26 ms to 8 ms (58 down to 5). On a laptop at 4 times slower a ride went from 41 ms to 9 ms.
+
+What is left: one layer as big as the world (13356 by 7996 units, `will-change` while the camera moves) is made at the start of a move, and that is a
+hitch of 100 to 200 ms at 6 times slower; it is what keeps the world from being painted again at every step.
+
 ## Files
 
 ```

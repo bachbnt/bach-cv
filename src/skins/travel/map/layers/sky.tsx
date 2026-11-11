@@ -55,26 +55,32 @@ export const Sky = memo(function Sky() {
         />
       ))}
       {BIRDS.map((bird) => (
-        <svg
+        // the bird flies by its box (a div): the same animation on the drawing, an svg root, is not done by the compositor, and the main
+        // thread would draw a frame at every refresh
+        <div
           key={bird.y}
           className='tl-bird'
-          viewBox='0 0 40 16'
-          width={34 * bird.scale}
-          height={14 * bird.scale}
           style={{
             top: `${bird.y}%`,
             animationDuration: `${bird.seconds}s`,
             animationDelay: `${bird.delay}s`,
           }}
         >
-          <path
-            d='M2 12 Q10 -2 20 10 Q30 -2 38 12'
-            className='fill-none stroke-tl-ink'
-            strokeWidth='2.4'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-          />
-        </svg>
+          <svg
+            viewBox='0 0 40 16'
+            width={34 * bird.scale}
+            height={14 * bird.scale}
+            className='block'
+          >
+            <path
+              d='M2 12 Q10 -2 20 10 Q30 -2 38 12'
+              className='fill-none stroke-tl-ink'
+              strokeWidth='2.4'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+            />
+          </svg>
+        </div>
       ))}
       <div className='tl-haze' />
     </div>

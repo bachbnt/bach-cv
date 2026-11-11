@@ -49,6 +49,7 @@ import { useCamera } from '@/skins/travel/map/use-camera';
 import { useDeclutter } from '@/skins/travel/map/use-declutter';
 import { useRide } from '@/skins/travel/map/use-ride';
 import { usePaused } from '@/skins/travel/map/use-paused';
+import { useSpriteCulling } from '@/skins/travel/map/use-sprite-culling';
 import { useSize } from '@/skins/travel/map/use-size';
 
 /** From this zoom on, the details that are too small to see from afar (a waterfall) are animated. */
@@ -172,6 +173,8 @@ export function TravelMap({
     });
   // the camera rides along with the traveller from stop to stop; a hand on the map ends the ride where it is
   const view = useRef<HTMLDivElement>(null);
+  // the loops of the drawings far from the screen stand still (`data-off`, see `still.css`)
+  useSpriteCulling(stage, view);
   const { riding, follow, endRide } = useRide({
     view,
     stops,

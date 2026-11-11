@@ -119,7 +119,11 @@ describe('the CSS of the Travel skin', () => {
       (rule) =>
         /(^|[\s,])\.tl-fall(\s|,|$)/.test(rule.selector) &&
         !rule.selector.includes('.tl-close') &&
-        rule.nodes.some((n) => n.type === 'decl' && n.prop === 'animation'),
+        // a rule that stops it (`animation: none`, for what is far from the screen or the whole map) is not one that starts it
+        rule.nodes.some(
+          (n) =>
+            n.type === 'decl' && n.prop === 'animation' && n.value !== 'none',
+        ),
     );
     expect(loose.map((r) => r.selector)).toEqual([]);
   });

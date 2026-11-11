@@ -44,3 +44,68 @@
     animation: none;
   }
 }
+
+/*
+ * Far from the screen: a drawing that `use-sprite-culling.ts` has marked `data-off` (more than 40% of the map away from it) stands still. Each loop is a
+ * layer of its own and everything over a layer is one too, so a phone that moves the camera over the world built over a hundred of them, most for
+ * flags and boats nobody could see. Named one by one, as above, and `none`, not `paused`, for the same reason; the drawing may itself be the boat or the
+ * cabin, or hold them.
+ */
+:is(.tl-sprite, .tl-gondola)[data-off]:is(
+    .tl-boat,
+    .tl-gondola,
+    .tl-flag,
+    .tl-steam,
+    .tl-wheel,
+    .tl-pod,
+    .tl-dive,
+    .tl-bubble,
+    .tl-fall
+  ),
+:is(.tl-sprite, .tl-gondola)[data-off]
+  :is(
+    .tl-boat,
+    .tl-gondola,
+    .tl-flag,
+    .tl-steam,
+    .tl-wheel,
+    .tl-pod,
+    .tl-dive,
+    .tl-bubble,
+    .tl-fall
+  ) {
+  animation: none;
+}
+
+/*
+ * While the camera moves (a drag or a wheel turn, a fly to a stop, the ride of the trip) the scenery stands still and goes on when it has stopped.
+ * What moves over the screen is the camera; a loop of the scenery is a layer of its own, and everything painted over a layer is made one too, so
+ * the more loops there are the more layers the phone has to build at every step of the camera. Said for what is on the screen; what is far
+ * from it is already still (above).
+ */
+.tl-moving
+  :is(
+    .tl-boat,
+    .tl-gondola,
+    .tl-flag,
+    .tl-steam,
+    .tl-wheel,
+    .tl-pod,
+    .tl-dive,
+    .tl-bubble,
+    .tl-fall
+  ),
+.tl-view:is(.tl-fly, .tl-ride)
+  :is(
+    .tl-boat,
+    .tl-gondola,
+    .tl-flag,
+    .tl-steam,
+    .tl-wheel,
+    .tl-pod,
+    .tl-dive,
+    .tl-bubble,
+    .tl-fall
+  ) {
+  animation: none;
+}

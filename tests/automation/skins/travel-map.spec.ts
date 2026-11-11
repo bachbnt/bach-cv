@@ -236,3 +236,84 @@ test.describe('the map', () => {
     expect(name).toBe('none');
   });
 });
+
+test.describe('the loops of the scenery', () => {
+  // the name of the animation that a part of a drawing plays now
+  const names = (page: import('@playwright/test').Page, selector: string) =>
+    page.evaluate(
+      (sel) =>
+        [...document.querySelectorAll(sel)].map(
+          (el) => getComputedStyle(el).animationName,
+        ),
+      selector,
+    );
+  const zoomIn = async (page: import('@playwright/test').Page) => {
+    for (let i = 0; i < 3; i += 1)
+      await page.getByRole('button', { name: 'Zoom in' }).click();
+    await expect(page.locator('.tl-map')).not.toHaveClass(/tl-moving/);
+  };
+
+  test('stand still for the drawings far from the screen, and go on for the ones near it', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await zoomIn(page);
+    // zoomed in, some drawings are far from the screen and are marked, the rest are not
+    await expect
+      .poll(() => page.locator('.tl-sprite[data-off]').count())
+      .toBeGreaterThan(5);
+    // each is read again until the browser has caught up with the camera (the marks follow it, one frame after the other)
+    await expect
+      .poll(async () => {
+        const far = await names(page, '.tl-sprite[data-off] .tl-flag');
+        return far.length > 0 && far.every((name) => name === 'none');
+      })
+      .toBe(true);
+    await expect
+      .poll(async () => {
+        const near = await names(page, '.tl-sprite:not([data-off]) .tl-flag');
+        return near.length > 0 && near.every((name) => name !== 'none');
+      })
+      .toBe(true);
+  });
+
+  test('stand still everywhere while the camera is moved by hand, and go on when it has stopped', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    await zoomIn(page);
+    await expect
+      .poll(() => page.locator('.tl-sprite:not([data-off]) .tl-flag').count())
+      .toBeGreaterThan(0);
+    const box = (await page.locator('.tl-map').boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width / 2 + 40, box.y + box.height / 2);
+    await expect(page.locator('.tl-map')).toHaveClass(/tl-moving/);
+    const moving = await names(page, '.tl-flag, .tl-steam, .tl-boat');
+    expect(new Set(moving)).toEqual(new Set(['none']));
+    await page.mouse.up();
+    await expect(page.locator('.tl-map')).not.toHaveClass(/tl-moving/);
+    await expect
+      .poll(async () =>
+        (await names(page, '.tl-sprite:not([data-off]) .tl-flag')).some(
+          (name) => name !== 'none',
+        ),
+      )
+      .toBe(true);
+  });
+
+  test('the bird flies by a box, not by its drawing: an svg root is not moved by the compositor', async ({
+    page,
+  }) => {
+    await gotoSkin(page, '/');
+    const birds = await page.evaluate(() =>
+      [...document.querySelectorAll('.tl-bird')].map((el) => ({
+        tag: el.tagName.toLowerCase(),
+        inside: el.querySelectorAll('svg').length,
+      })),
+    );
+    expect(birds.length).toBeGreaterThan(0);
+    for (const bird of birds) expect(bird).toEqual({ tag: 'div', inside: 1 });
+  });
+});
