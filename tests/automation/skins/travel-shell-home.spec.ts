@@ -207,6 +207,138 @@ test.describe('Home, the trip overview', () => {
   });
 });
 
+test.describe('the sheet of a phone', () => {
+  test.use({ viewport: { width: 360, height: 740 }, hasTouch: true });
+
+  const sheet = (page: Page) => page.locator('.tl-panel');
+  const share = async (page: Page) =>
+    page.evaluate(() => {
+      const panel = document.querySelector('.tl-panel') as HTMLElement;
+      return (
+        panel.getBoundingClientRect().height /
+        (panel.parentElement as HTMLElement).getBoundingClientRect().height
+      );
+    });
+  const handle = (page: Page) =>
+    page.getByRole('button', {
+      name: /Show the whole panel|Show more of the map/,
+    });
+  // a finger that goes from the middle of the handle by `rise` px up (negative: down), in `steps` moves, one every `gap` ms
+  const drag = async (page: Page, rise: number, steps = 10, gap = 16) => {
+    const box = (await handle(page).boundingBox())!;
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    for (let i = 1; i <= steps; i += 1) {
+      await page.mouse.move(x, y - (rise * i) / steps);
+      await page.waitForTimeout(gap);
+    }
+    return () => page.mouse.up();
+  };
+
+  test.beforeEach(async ({ page }) => {
+    await gotoSkin(page, '/');
+    await expect(handle(page)).toBeVisible();
+    await animationsSettled(page);
+  });
+
+  test('follows the finger on the handle, not animated behind it', async ({
+    page,
+  }) => {
+    const before = await share(page);
+    expect(before).toBeCloseTo(0.46, 1);
+    const release = await drag(page, 120, 12, 40);
+    // under way: taller than at rest, not yet the tall height
+    const mid = await share(page);
+    expect(mid).toBeGreaterThan(before + 0.05);
+    expect(mid).toBeLessThan(0.88);
+    await expect(sheet(page)).toHaveAttribute('data-dragging', '');
+    await release();
+  });
+
+  test('comes to rest at the tall height when it is dragged past the middle, and back at the short one when it is dragged down', async ({
+    page,
+  }) => {
+    const up = await drag(page, 220, 12, 40);
+    await up();
+    await expect(
+      page.getByRole('button', { name: 'Show more of the map' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    await expect.poll(() => share(page)).toBeCloseTo(0.88, 1);
+    // the inline height of the drag is gone: the classes say it again, so a turn of the phone still fits
+    await expect
+      .poll(() =>
+        sheet(page).evaluate((el) => (el as HTMLElement).style.height),
+      )
+      .toBe('');
+    await expect(sheet(page)).not.toHaveAttribute('data-dragging');
+
+    const down = await drag(page, -260, 12, 40);
+    await down();
+    await expect(
+      page.getByRole('button', { name: 'Show the whole panel' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    await expect.poll(() => share(page)).toBeCloseTo(0.46, 1);
+  });
+
+  test('goes back to where it was when it is dragged only a little', async ({
+    page,
+  }) => {
+    const up = await drag(page, 40, 8, 40);
+    await up();
+    await expect(
+      page.getByRole('button', { name: 'Show the whole panel' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    await expect.poll(() => share(page)).toBeCloseTo(0.46, 1);
+  });
+
+  test('goes to the tall height when it is flicked up, even from a short way', async ({
+    page,
+  }) => {
+    // 50 px in a few ms is faster than a flick, but not as far as half way
+    const up = await drag(page, 50, 2, 0);
+    await up();
+    await expect(
+      page.getByRole('button', { name: 'Show more of the map' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    await expect.poll(() => share(page)).toBeCloseTo(0.88, 1);
+  });
+
+  test('still switches between the two heights with a tap or the keyboard, and a drag is not also a tap', async ({
+    page,
+  }) => {
+    await handle(page).click();
+    await expect(
+      page.getByRole('button', { name: 'Show more of the map' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    await handle(page).focus();
+    await page.keyboard.press('Enter');
+    await expect(
+      page.getByRole('button', { name: 'Show the whole panel' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    // dragged up, it is tall and stays tall: the click that ends the drag does not switch it back
+    const up = await drag(page, 220, 10, 40);
+    await up();
+    await page.waitForTimeout(150);
+    await expect(
+      page.getByRole('button', { name: 'Show more of the map' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('does not scroll the page sideways or up and down with a drag of the handle', async ({
+    page,
+  }) => {
+    const up = await drag(page, 150, 10, 30);
+    await up();
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(0);
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  });
+});
+
 test.describe('Home, where I have worked', () => {
   const stops = (page: Page) =>
     page.getByRole('list', { name: 'Stops of the trip' }).getByRole('button');

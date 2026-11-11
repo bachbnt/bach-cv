@@ -85,6 +85,11 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
   at the end of the scrolling part of every card (`TlPanel`), so it never covers a control and cannot meet the map controls. The card stops
   24 px above the bottom of the map, so on a wide screen it keeps clear of the map credit. On a phone the sheet covers the map's credit line
   (`.tl-credits`, hidden there), so the OpenStreetMap credit is the second line of the same footer.
+- **The sheet of a phone** (`TlPanel`) has two heights, 46% and 88% of the map (`ui/sheet-snap.ts`). A tap, Enter or Space on its handle switches between
+  them; a finger on the handle drags it: the sheet follows the finger without animating behind it (`data-dragging`), and when it is let go it
+  comes to rest at the nearer height, or at the one a flick was thrown to (faster than 0.45 px/ms), gliding there. The handle has
+  `touch-action: none`, so the drag is not taken by the browser's scrolling, and the click that ends a drag is not a tap. Tested in
+  `travel-shell-home.spec.ts` (mouse) and `travel-sheet-snap.test.ts` (the maths); checked with touch events too.
 - **About** is put together as you watch (`tl-portrait-in`, `tl-chip-in`, `tl-photo-in`): the portrait is stamped on, the specialties pop in one by
   one and the photos drop on the table. Only transform properties and opacity move, and reduced motion shows the final page.
 
