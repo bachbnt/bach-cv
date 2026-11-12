@@ -141,6 +141,17 @@
       "listed": true,
       "l10n": {}
     },
+    "angular": {
+      "visible": true,
+      "highlight": null,
+      "sort": 235,
+      "name": "Angular",
+      "category": "web",
+      "icon": "angular",
+      "url": "https://angular.dev/",
+      "listed": true,
+      "l10n": {}
+    },
     "appkit": {
       "visible": true,
       "highlight": null,
@@ -1549,6 +1560,37 @@
       "l10n": {
         "vi": {
           "summary": "Website bán đồ uống kèm trang quản trị, xây dựng bằng React, Material UI, Redux và Node.js."
+        }
+      }
+    },
+    "jp-marugoto": {
+      "visible": true,
+      "highlight": null,
+      "sort": 110,
+      "name": "Marugoto Vocabulary",
+      "kind": "personal",
+      "startMonth": "2026-11",
+      "endMonth": null,
+      "technologies": ["angular", "typescript", "tailwindcss"],
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/bachbnt/jp-marugoto",
+          "kind": "github"
+        }
+      ],
+      "cover": "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/flashcards.png",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/flashcards.png",
+        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/quiz-setup.png",
+        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/quiz-question.png",
+        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/quiz-result.png",
+        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/mobile.png"
+      ],
+      "summary": "A web app for learning Japanese vocabulary from the Marugoto Starter textbook (Vietnamese edition): about 940 words in 9 topics and 55 subtopics, reviewed with 3D flip cards and tested with a quiz in either direction, with shuffle options, keyboard shortcuts, text-to-speech and a saved high score. Built with Angular and Tailwind CSS, with no backend.",
+      "l10n": {
+        "vi": {
+          "summary": "Web học từ vựng tiếng Nhật theo giáo trình Marugoto Starter (bản tiếng Việt): khoảng 940 từ thuộc 9 chủ đề lớn và 55 chủ đề con, ôn bằng thẻ lật 3D và tự kiểm tra bằng trắc nghiệm hai chiều, có trộn câu, phím tắt, đọc từ bằng giọng Nhật và lưu điểm cao nhất. Xây dựng bằng Angular và Tailwind CSS, không cần backend."
         }
       }
     },

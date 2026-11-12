@@ -190,7 +190,7 @@ test.describe('the watchlist', () => {
     await expect(nav.getByRole('link', { name: 'Resume' })).toContainText('4');
     await expect(nav.getByRole('link', { name: 'Home' })).toContainText('7');
     await expect(nav.getByRole('link', { name: 'Projects' })).toContainText(
-      '9',
+      '10',
     );
     await expect(nav.getByRole('link', { name: 'Certificates' })).toContainText(
       '3',
@@ -380,7 +380,7 @@ test.describe('the ticker tape', () => {
     await gotoSkin(page, '/projects');
     const strip = tape(page);
     await expect(
-      strip.getByRole('link', { name: /^Projects 9$/ }),
+      strip.getByRole('link', { name: /^Projects 10$/ }),
     ).toBeVisible();
     await expect(strip.getByRole('link', { name: /^Resume 4$/ })).toBeVisible();
     const kotlin = strip.getByText('Kotlin').first();

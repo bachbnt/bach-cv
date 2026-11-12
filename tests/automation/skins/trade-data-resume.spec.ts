@@ -310,7 +310,7 @@ test.describe('the skills heatmap', () => {
   }) => {
     await gotoSkin(page, '/resume');
     await showHeat(page);
-    await expect(tiles(page)).toHaveCount(37);
+    await expect(tiles(page)).toHaveCount(38);
     const heat = page.getByRole('group', {
       name: 'Skills heatmap, grouped by area',
     });

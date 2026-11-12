@@ -50,7 +50,7 @@ test.describe('Home keeps the information of Standard', () => {
     ).toBeVisible();
     const strip = symbol.getByRole('group', { name: 'The site in numbers' });
     await expect(strip.getByRole('link', { name: /Projects/ })).toContainText(
-      '9',
+      '10',
     );
     await expect(
       strip.getByRole('link', { name: /Certificates/ }),

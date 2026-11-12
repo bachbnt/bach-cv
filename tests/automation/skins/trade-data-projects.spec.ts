@@ -26,9 +26,9 @@ test.describe('the table', () => {
     page,
   }) => {
     await gotoSkin(page, '/projects');
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
     expect((await names(page)).slice(0, 4)).toEqual(FEATURED);
-    await expect(page.getByText('9 of 9 projects')).toBeVisible();
+    await expect(page.getByText('10 of 10 projects')).toBeVisible();
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
       'Projects',
     );
@@ -140,9 +140,9 @@ test.describe('the table', () => {
     await expect(filter).toBeFocused();
     await page.keyboard.type('devp');
     await expect(rows(page)).toHaveCount(1);
-    await expect(page.getByText('1 of 9 projects')).toBeVisible();
+    await expect(page.getByText('1 of 10 projects')).toBeVisible();
     await page.keyboard.press('Escape');
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
     await expect(filter).toHaveValue('');
   });
 });
@@ -157,7 +157,7 @@ test.describe('filters', () => {
     await expect(
       kinds.getByRole('button', { name: 'Personal' }),
     ).toHaveAttribute('aria-pressed', 'true');
-    await expect(rows(page)).toHaveCount(4);
+    await expect(rows(page)).toHaveCount(5);
     await page.getByRole('button', { name: 'Featured only' }).click();
     expect(await names(page)).toEqual(['DevPad', 'DevCmd']);
     await kinds.getByRole('button', { name: 'All', exact: true }).click();
@@ -168,7 +168,7 @@ test.describe('filters', () => {
     await page.keyboard.press('Escape');
     expect(await names(page)).toEqual(['DevCmd', 'FinHub MCP']);
     await page.getByRole('button', { name: 'Clear filters' }).click();
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
   });
 
   test('says when nothing matches, with a way back', async ({ page }) => {
@@ -181,7 +181,7 @@ test.describe('filters', () => {
     ).toBeVisible();
     await expect(rows(page)).toHaveCount(0);
     await page.getByRole('button', { name: 'Clear filters' }).last().click();
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
   });
 });
 
@@ -195,7 +195,7 @@ test.describe('views', () => {
       'aria-pressed',
       'true',
     );
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
     const card = rows(page).filter({ hasText: 'DevCmd' });
     await expect(card.getByText('Featured #4')).toBeVisible();
     await expect(card.getByText('A command-line tool')).toBeVisible();
@@ -211,7 +211,7 @@ test.describe('views', () => {
     await page.getByRole('button', { name: 'Heatmap' }).click();
     await expect(page.getByText('Area: number of technologies')).toBeVisible();
     await expect(page.getByText('Colour: kind')).toBeVisible();
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
     const tile = page.getByRole('button', {
       name: /^DevPad, Personal, 4 technologies$/,
     });
@@ -232,7 +232,7 @@ test.describe('views', () => {
       const box = (await page.getByRole('button', { name }).boundingBox())!;
       return box.width * box.height;
     };
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
     await expect
       .poll(() => area(/^bachbntdev/))
       .toBeGreaterThan(await area(/^VenusAI/));
@@ -251,7 +251,7 @@ test.describe('motion', () => {
     page,
   }) => {
     await gotoSkin(page, '/projects');
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
     await pageSettled(page);
     const sliding = () =>
       page.evaluate(() => {
@@ -270,7 +270,7 @@ test.describe('motion', () => {
   test('with reduced motion nothing animates', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await gotoSkin(page, '/projects');
-    await expect(rows(page)).toHaveCount(9);
+    await expect(rows(page)).toHaveCount(10);
     const count = await page.evaluate(() => {
       document
         .querySelector<HTMLButtonElement>('button[aria-label="Sort by Name"]')!
@@ -288,7 +288,7 @@ test.describe('language and phone', () => {
     await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
     await gotoSkin(page, '/projects');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Dự án');
-    await expect(page.getByText('9 / 9 dự án')).toBeVisible();
+    await expect(page.getByText('10 / 10 dự án')).toBeVisible();
     await expect(
       page.getByRole('button', { name: 'Bản đồ nhiệt' }),
     ).toBeVisible();
@@ -307,7 +307,7 @@ test.describe('language and phone', () => {
       await page.setViewportSize({ width: 390, height: 844 });
       await gotoSkin(page, '/projects');
       await page.getByRole('button', { name: view, exact: true }).click();
-      await expect(rows(page)).toHaveCount(9);
+      await expect(rows(page)).toHaveCount(10);
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth - window.innerWidth,
       );

@@ -141,7 +141,7 @@ test.describe('the skills', () => {
     await expect(
       table.getByRole('columnheader', { name: 'Skill' }),
     ).toBeVisible();
-    await expect(page.getByRole('row')).toHaveCount(38);
+    await expect(page.getByRole('row')).toHaveCount(39);
 
     // used only at MoMo (May 2022 - Jan 2026): 45 months, four years begun, four strokes
     const kmm = skillRow(page, 'KMM');
@@ -232,7 +232,7 @@ test.describe('the skills', () => {
     expect(shown).toBeLessThan(38);
     await expect(rows.filter({ hasText: 'AI and automation' })).toHaveCount(0);
     await group.getByRole('button', { name: 'All' }).click();
-    await expect(rows).toHaveCount(38);
+    await expect(rows).toHaveCount(39);
   });
 
   test('explains the tally in the margin of the table', async ({ page }) => {

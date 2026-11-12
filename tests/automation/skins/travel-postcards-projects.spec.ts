@@ -34,7 +34,7 @@ test.describe('the postcards', () => {
         'Tools I build for myself, and apps and sites I shipped for clients.',
       ),
     ).toBeVisible();
-    await expect(cards(page)).toHaveCount(9);
+    await expect(cards(page)).toHaveCount(10);
     await expect
       .poll(async () =>
         (await page.getByRole('heading', { level: 2 }).allTextContents()).slice(
@@ -158,7 +158,7 @@ test.describe('the postcards', () => {
       page.getByRole('heading', { name: 'Beli Coffee' }),
     ).toHaveCount(0);
     await group.getByRole('button', { name: 'All' }).click();
-    await expect(cards(page)).toHaveCount(9);
+    await expect(cards(page)).toHaveCount(10);
   });
 
   test('a project that is not featured has no tag and keeps its screenshots', async ({
