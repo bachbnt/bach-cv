@@ -4,6 +4,8 @@
 
 'use client';
 
+import { useSkills } from '@/components/skills/use-skills';
+import { useScrollToHash } from '@/hooks/use-scroll-to-hash';
 import { resumeCopy } from '@/content/copy/resume';
 import { devCopy } from '@/content/copy/dev';
 import { useYearsText } from '@/lib/query/use-career-years';
@@ -25,6 +27,9 @@ export function ResumePage() {
   const { hints } = useCopy(devCopy);
   const jobs = useContentQuery('experience').data;
   const degrees = useContentQuery('education').data;
+  const { isPending: skillsPending } = useSkills();
+  // the link "See all skills" of About ends in #skills, below the roles
+  useScrollToHash(jobs !== undefined && !skillsPending);
 
   return (
     <DevPage page='resume'>

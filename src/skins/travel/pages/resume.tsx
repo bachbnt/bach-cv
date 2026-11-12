@@ -4,8 +4,10 @@
 
 'use client';
 
+import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
 import { travelTripCopy } from '@/content/copy/travel-trip';
+import { useScrollToHash } from '@/hooks/use-scroll-to-hash';
 import { useCopy } from '@/lib/i18n/copy';
 import { useYearsText } from '@/lib/query/use-career-years';
 import { TripLuggage } from '@/skins/travel/blocks/trip-luggage';
@@ -31,6 +33,11 @@ export function ResumePage() {
     stops.find((s) => s.career.current)?.map.id ?? stops.at(-1)?.map.id ?? null;
   const openId = selectedId ?? currentId;
   const index = stops.findIndex((s) => s.map.id === openId);
+  const { isPending: skillsPending } = useSkills();
+  // the link "See all skills" of About ends in #skills, below the itinerary and the open stop
+  useScrollToHash(
+    !experience.isPending && !education.isPending && !skillsPending,
+  );
   const open = index >= 0 ? stops[index] : undefined;
 
   return (

@@ -4,9 +4,12 @@
 
 'use client';
 
+import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
+import { useScrollToHash } from '@/hooks/use-scroll-to-hash';
 import { useCopy } from '@/lib/i18n/copy';
 import { useYearsText } from '@/lib/query/use-career-years';
+import { useContentQuery } from '@/lib/query/use-content';
 import { ResumeCvButton } from '@/skins/academic/blocks/resume-cv-button';
 import { ResumeEducation } from '@/skins/academic/blocks/resume-education';
 import { ResumeExperience } from '@/skins/academic/blocks/resume-experience';
@@ -18,6 +21,10 @@ import { AcPageHead } from '@/skins/academic/ui/ac-page-head';
 export function ResumePage() {
   const copy = useCopy(resumeCopy);
   const intro = useYearsText(copy.intro, copy.introUndated, { spelled: true });
+  const jobs = useContentQuery('experience');
+  const { isPending: skillsPending } = useSkills();
+  // the link "See all skills" of About ends in #skills, below the roles
+  useScrollToHash(!jobs.isPending && !skillsPending);
   return (
     <AcPage page='resume'>
       <AcPageHead page='resume' title={copy.title} lead={intro}>
