@@ -1346,7 +1346,14 @@
       "name": "bachbntdev",
       "kind": "personal",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.webp",
-      "images": [],
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/01.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/02.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/03.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/04.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/05.webp"
+      ],
       "startMonth": null,
       "endMonth": null,
       "links": [
@@ -1366,10 +1373,10 @@
         "zod",
         "firebase"
       ],
-      "summary": "My portfolio and CV: a static Next.js site that reads its content from Firestore, in English and Vietnamese, with an AI chat assistant and a CV you can download as a PDF.",
+      "summary": "My portfolio and CV in five skins: Standard, Dev, Trade, Academic and Travel. One set of content, five different interfaces, in English and Vietnamese, with BB Bot, an AI chat assistant, and a CV that downloads as a PDF. Light by design: each skin loads only when it is chosen.",
       "l10n": {
         "vi": {
-          "summary": "Trang portfolio và CV của mình: website tĩnh Next.js đọc nội dung từ Firestore, có tiếng Anh và tiếng Việt, kèm trợ lý chat AI và CV tải về dạng PDF."
+          "summary": "Trang portfolio và CV của mình với năm skin: Standard, Dev, Trade, Academic và Travel. Cùng một nội dung, năm giao diện khác nhau, có tiếng Anh và tiếng Việt, kèm BB Bot (trợ lý chat AI) và CV tải về dạng PDF. Nhẹ ngay từ thiết kế: mỗi skin chỉ được tải khi chọn."
         }
       }
     },
@@ -1380,8 +1387,8 @@
       "name": "Beli Coffee",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/belicoffee.webp",
       "images": [],
-      "startMonth": null,
-      "endMonth": null,
+      "startMonth": "2019-09",
+      "endMonth": "2022-03",
       "technologies": [
         "android",
         "nodejs",
@@ -1407,8 +1414,8 @@
       "kind": "freelance",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/comchayrop.webp",
       "images": [],
-      "startMonth": null,
-      "endMonth": null,
+      "startMonth": "2022-03",
+      "endMonth": "2022-08",
       "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
       "links": [
         {
@@ -1545,8 +1552,8 @@
       "kind": "freelance",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/goodmorningcoffeetea.webp",
       "images": [],
-      "startMonth": null,
-      "endMonth": null,
+      "startMonth": "2022-07",
+      "endMonth": "2022-08",
       "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
       "links": [
         {
@@ -1567,30 +1574,33 @@
       "visible": true,
       "highlight": null,
       "sort": 110,
-      "name": "Marugoto Vocabulary",
+      "name": "JP Marugoto",
       "kind": "personal",
       "startMonth": "2026-11",
       "endMonth": null,
-      "technologies": ["angular", "typescript", "tailwindcss"],
+      "technologies": ["angular", "typescript", "tailwindcss", "firebase"],
       "links": [
         {
-          "label": "GitHub",
-          "url": "https://github.com/bachbnt/jp-marugoto",
-          "kind": "github"
+          "label": "Website",
+          "url": "https://jp-marugoto.web.app/",
+          "kind": "site"
         }
       ],
-      "cover": "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/flashcards.png",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/jpmarugoto.webp",
       "images": [
-        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/flashcards.png",
-        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/quiz-setup.png",
-        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/quiz-question.png",
-        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/quiz-result.png",
-        "https://raw.githubusercontent.com/bachbnt/jp-marugoto/main/docs/screenshots/mobile.png"
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/01.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/02.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/03.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/04.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/05.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/06.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/07.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/08.webp"
       ],
-      "summary": "A web app for learning Japanese vocabulary from the Marugoto Starter textbook (Vietnamese edition): about 940 words in 9 topics and 55 subtopics, reviewed with 3D flip cards and tested with a quiz in either direction, with shuffle options, keyboard shortcuts, text-to-speech and a saved high score. Built with Angular and Tailwind CSS, with no backend.",
+      "summary": "A web app for learning Japanese with the Marugoto A1 textbook: lessons, spaced-repetition review, flashcards, quizzes, listening and handwriting practice, with progress that syncs across devices. Built with Angular, Tailwind CSS and Firebase, and installable as an offline app.",
       "l10n": {
         "vi": {
-          "summary": "Web học từ vựng tiếng Nhật theo giáo trình Marugoto Starter (bản tiếng Việt): khoảng 940 từ thuộc 9 chủ đề lớn và 55 chủ đề con, ôn bằng thẻ lật 3D và tự kiểm tra bằng trắc nghiệm hai chiều, có trộn câu, phím tắt, đọc từ bằng giọng Nhật và lưu điểm cao nhất. Xây dựng bằng Angular và Tailwind CSS, không cần backend."
+          "summary": "Web học tiếng Nhật theo giáo trình Marugoto A1: bài học, ôn tập lặp lại ngắt quãng, thẻ ghi nhớ, trắc nghiệm, luyện nghe và luyện viết, tiến độ đồng bộ giữa các thiết bị. Xây dựng bằng Angular, Tailwind CSS và Firebase, cài được như ứng dụng dùng offline."
         }
       }
     },
@@ -1601,8 +1611,8 @@
       "name": "P&C Dashboard",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/pcdashboard.webp",
       "images": [],
-      "startMonth": null,
-      "endMonth": null,
+      "startMonth": "2022-03",
+      "endMonth": "2022-03",
       "technologies": ["flutter", "bloc", "react-native", "redux"],
       "links": [],
       "summary": "An internal social network app, built with Flutter and BLoC and with React Native and Redux.",
@@ -1629,7 +1639,7 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/06.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/07.webp"
       ],
-      "startMonth": null,
+      "startMonth": "2023-09",
       "endMonth": null,
       "technologies": ["flutter", "firebase"],
       "links": [
@@ -1661,7 +1671,7 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/05.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/06.webp"
       ],
-      "startMonth": null,
+      "startMonth": "2021-01",
       "endMonth": null,
       "technologies": ["flutter", "provider", "bloc", "firebase"],
       "links": [

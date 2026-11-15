@@ -2,30 +2,28 @@
 
 Personal portfolio and CV of Bach Bui, live at **https://bachbntdev.web.app**.
 
-A static Next.js site whose content lives in Firestore. Editing a document in the Firebase console changes the site within
-minutes: no build, no deploy. It speaks English and Vietnamese, has an AI assistant (BB Bot), and builds the CV as a PDF from the
-same data.
+One set of content in five skins (Standard, Dev, Trade, Academic and Travel), each its own interface, in English and Vietnamese.
+It has an AI assistant (BB Bot) and a CV that downloads as a PDF, and it stays light: each skin loads only when it is chosen.
+
+It is a static Next.js site whose content lives in Firestore. Editing a document in the Firebase console changes the site within
+minutes: no build, no deploy.
 
 ## Screenshots
 
-The Home page of each skin, in the dark and in the light theme.
+The Home page of each skin, and the first version of the site.
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/01.webp" alt="Home in the Standard skin, dark theme"><br><sub><b>Standard</b>, dark: the portfolio itself, with a rainbow palette.</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/02.webp" alt="Home in the Standard skin, light theme"><br><sub><b>Standard</b>, light.</sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/03.webp" alt="Home in the Dev skin, dark theme"><br><sub><b>Dev</b>, dark: the same content as a code editor, with a working terminal.</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/04.webp" alt="Home in the Dev skin, light theme"><br><sub><b>Dev</b>, light.</sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/05.webp" alt="Home in the Trade skin, dark theme"><br><sub><b>Trade</b>, dark: the same content as a trading terminal, with the career as a chart.</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/06.webp" alt="Home in the Trade skin, light theme"><br><sub><b>Trade</b>, light.</sub></td>
-  </tr>
-  <tr>
     <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.webp" alt="The Home page of the first version of the site"><br><sub><b>v1</b>: the first version of the site (2022).</sub></td>
-    <td width="50%"></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/01.webp" alt="Home in the Standard skin, light theme"><br><sub><b>Standard</b>, light: the portfolio itself.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/02.webp" alt="Home in the Dev skin, dark theme"><br><sub><b>Dev</b>, dark: a code editor with a working terminal.</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/03.webp" alt="Home in the Trade skin, dark theme"><br><sub><b>Trade</b>, dark: a trading terminal, the career as a chart.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/04.webp" alt="Home in the Academic skin, light theme"><br><sub><b>Academic</b>, light: a manuscript on a whiteboard.</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/05.webp" alt="Home in the Travel skin, light theme"><br><sub><b>Travel</b>, light: a trip map, the roles are the stops.</sub></td>
   </tr>
 </table>
 

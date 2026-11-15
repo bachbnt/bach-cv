@@ -77,7 +77,7 @@ export const formatMonth = (ym: string, lang: Lang = 'en'): string => {
 };
 
 /**
- * 'May 2022 – Jan 2026', 'May – Dec 2023' (same year), 'Jan 2026 – Present' (no end).
+ * 'May 2022 – Jan 2026', 'May – Dec 2023' (same year), 'Mar 2022' (one month), 'Jan 2026 – Present' (no end).
  * The dash is an en dash, as in the design mockup.
  */
 export const formatPeriod = (
@@ -88,6 +88,7 @@ export const formatPeriod = (
   const from = parse(start, lang);
   if (!end) return `${from.month} ${from.year} – ${PRESENT[lang]}`;
   const to = parse(end, lang);
+  if (start === end) return `${from.month} ${from.year}`;
   return from.year === to.year
     ? `${from.month} – ${to.month} ${to.year}`
     : `${from.month} ${from.year} – ${to.month} ${to.year}`;

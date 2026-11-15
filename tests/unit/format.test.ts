@@ -24,6 +24,10 @@ describe('formatPeriod', () => {
   it('says Present for a role with no end', () => {
     expect(formatPeriod('2026-01', null)).toBe('Jan 2026 – Present');
   });
+
+  it('says one month once when the start and the end are the same', () => {
+    expect(formatPeriod('2022-03', '2022-03')).toBe('Mar 2022');
+  });
 });
 
 describe('formatPeriod in Vietnamese', () => {

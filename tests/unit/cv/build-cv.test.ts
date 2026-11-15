@@ -194,11 +194,20 @@ describe('buildCv', () => {
   });
 
   it('lists projects with a period only when they are dated', () => {
-    const projects = build(input()).projects;
+    // every project of the seed is dated now: take the dates off one
+    const data = input();
+    data.projects = data.projects.map((p) =>
+      p.id === 'venus-ai' ? { ...p, startMonth: null, endMonth: null } : p,
+    );
+    const projects = build(data).projects;
     const devcmd = projects.find((p) => p.id === 'devcmd')!;
     expect(devcmd.period).toBe('Feb 2024 – Present');
     expect(devcmd.technologies).toEqual(['NodeJS', 'MCP']);
-    expect(projects.find((p) => p.id === 'beli-coffee')!.period).toBe('');
+    expect(projects.find((p) => p.id === 'beli-coffee')!.period).toBe(
+      'Sep 2019 – Mar 2022',
+    );
+    // no dates: no period
+    expect(projects.find((p) => p.id === 'venus-ai')!.period).toBe('');
   });
 
   it('falls back to the shell name when the profile is missing', () => {

@@ -51,6 +51,12 @@ test.describe('the postcards', () => {
   });
 
   test('a postcard tells every datum of the project', async ({ page }) => {
+    // every project of the seed is dated: take the dates off Venus AI to see a postcard with no postmark
+    await mockFirestore(page, {}, (collection, id, doc) =>
+      collection === 'projects' && id === 'venus-ai'
+        ? { ...doc, startMonth: null, endMonth: null }
+        : doc,
+    );
     await gotoSkin(page, '/projects');
     const venus = card(page, 'VenusAI');
     await expect(venus.getByText('Freelance', { exact: true })).toBeVisible();
@@ -88,7 +94,9 @@ test.describe('the postcards', () => {
     await expect(beli.getByRole('button', { name: /screenshot/ })).toHaveCount(
       0,
     );
-    await expect(beli).not.toContainText('Postmark');
+    await expect(beli).toContainText('Sep 2019 – Mar 2022');
+    // Venus AI has no dates here
+    await expect(venus).not.toContainText('Postmark');
   });
 
   test('a project without a cover gets a drawn view with its initials', async ({
