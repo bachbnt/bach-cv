@@ -171,6 +171,26 @@ export const PROJECT_KINDS = [
   'company',
   'academic',
 ] as const;
+/** What a project runs on, for the filter of the Projects page. A project can be on several. */
+export const PLATFORMS = ['mobile', 'web', 'desktop', 'ai'] as const;
+export type Platform = (typeof PLATFORMS)[number];
+/** A project is `ongoing` while it has no end month, `finished` once it has one. */
+export const PROJECT_STATUSES = ['ongoing', 'finished'] as const;
+export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
+/**
+ * The orders a visitor can pick on the Projects page (`lib/derive/project-view.ts` says what each one is): `manual` is the owner's own order
+ * (`sort`), the first of the list.
+ */
+export const PROJECT_SORTS = [
+  'manual',
+  'latest',
+  'oldest',
+  'name',
+  'featured',
+  'technologies',
+] as const;
+export type ProjectSort = (typeof PROJECT_SORTS)[number];
+
 export const LINK_KINDS = [
   'site',
   'store',
@@ -199,6 +219,14 @@ export const projectSchema = z.object({
   startMonth: monthSchema.nullable().default(null),
   endMonth,
   technologies: skillIds,
+  /** what it runs on; a value that is not one of `PLATFORMS` is left out, so a slip in the console never breaks the page */
+  platforms: z
+    .array(z.unknown())
+    .catch([])
+    .transform((list) =>
+      list.filter((v): v is Platform => PLATFORMS.includes(v as Platform)),
+    )
+    .default([]),
   links: z.array(projectLinkSchema).default([]),
   l10n: l10nOf({ summary: z.string() }),
 });
@@ -409,6 +437,27 @@ const prefSchema = <const T extends readonly [string, ...string[]]>(
     .prefault({});
 };
 
+/** A list of ids from the console: what is not text is left out, so a slip never breaks the site. */
+const idList = z
+  .array(z.unknown())
+  .catch([])
+  .transform((list) => list.filter((v): v is string => typeof v === 'string'))
+  .default([]);
+
+/**
+ * What the owner says about one filter of the Projects page. `enabled: false` takes the filter away; `default` are the values selected for a
+ * visitor who has not chosen; `force` are the values selected for everyone, which take the choice away; `off` are values left out of the filter.
+ * Lenient on purpose, like `prefSchema`: an id that is not an option counts for nothing (`lib/derive/project-view.ts`).
+ */
+const filterSchema = z
+  .object({
+    enabled: z.boolean().catch(true),
+    default: idList,
+    force: idList,
+    off: idList,
+  })
+  .prefault({ enabled: true });
+
 /**
  * `site/live`: the first thing the browser reads. Small on purpose: switches only, never content.
  * Everything here takes effect on the next read, with no build.
@@ -436,6 +485,27 @@ export const liveSchema = z.object({
       skin: prefSchema(SKIN_IDS),
       theme: prefSchema(THEMES),
       language: prefSchema(LANGS),
+    })
+    .prefault({}),
+  /** The Projects page: the order a visitor can pick (`sort`, as the skin, the theme and the language) and the filters (`filters`). */
+  projects: z
+    .object({
+      sort: prefSchema(PROJECT_SORTS),
+      filters: z
+        .object({
+          tech: filterSchema,
+          platform: filterSchema,
+          kind: filterSchema,
+          status: filterSchema,
+          search: z
+            .object({
+              enabled: z.boolean().catch(true),
+              /** the words typed for a visitor who has not typed any */
+              default: z.string().catch(''),
+            })
+            .prefault({ enabled: true, default: '' }),
+        })
+        .prefault({}),
     })
     .prefault({}),
   features: z

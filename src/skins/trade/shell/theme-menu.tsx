@@ -17,7 +17,7 @@ const ICONS: Record<Theme, ReactNode> = {
   dark: <Moon aria-hidden='true' />,
 };
 
-/** The theme menu of the toolbar: System, Light and Dark, with the Standard accessible name (`Theme`). */
+/** The theme menu of the toolbar: System, Light and Dark, with the Standard accessible name (`Theme`). Like the language and skin menus beside it, it shows an icon and the current value. */
 export function ThemeMenu() {
   const copy = useCopy(commonCopy);
   const { theme, setTheme, options, locked } = useTheme();
@@ -25,6 +25,7 @@ export function ThemeMenu() {
   return (
     <ToolbarMenu
       icon={ICONS[theme]}
+      current={copy.theme[theme]}
       label={copy.theme.label}
       value={theme}
       items={options.map((value) => ({ value, label: copy.theme[value] }))}

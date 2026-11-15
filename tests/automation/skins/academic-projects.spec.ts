@@ -4,6 +4,7 @@
 
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore, interceptCollection } from '../support/firestore-mock';
+import { projectsControls } from '../support/projects-controls';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -76,7 +77,12 @@ test.describe('Projects', () => {
     page,
   }) => {
     await gotoSkin(page, '/projects');
-    const group = page.getByRole('group', { name: 'Filter projects' });
+    const group = (await projectsControls().openFilters(page)).getByRole(
+      'group',
+      {
+        name: 'Type',
+      },
+    );
     const all = group.getByRole('button', { name: 'All', exact: true });
     await expect(all).toHaveAttribute('aria-pressed', 'true');
     const number = page.locator('#ref-p-finhub').getByText(/^\d+$/).first();
@@ -249,7 +255,12 @@ test.describe('Projects', () => {
     await expect(
       page.getByRole('heading', { name: 'Dự án nổi bật' }),
     ).toBeVisible();
-    const group = page.getByRole('group', { name: 'Lọc dự án' });
+    const group = (await projectsControls('vi').openFilters(page)).getByRole(
+      'group',
+      {
+        name: 'Loại',
+      },
+    );
     await expect(group.getByRole('button', { name: 'Cá nhân' })).toBeVisible();
     await expect(page.getByText('Xây dựng với').first()).toBeVisible();
     await expect(

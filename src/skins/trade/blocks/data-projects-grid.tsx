@@ -12,10 +12,10 @@ import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import {
   ariaSort,
-  type Density,
+  type ColumnSort,
   type ProjectColumn,
-  type SortState,
-} from '@/skins/trade/blocks/data-projects-model';
+} from '@/lib/derive/project-view';
+import type { Density } from '@/skins/trade/blocks/data-projects-model';
 import { cssVars } from '@/skins/trade/ui/css-vars';
 import { HeaderButton } from '@/skins/trade/blocks/data-projects-header-button';
 import { ProjectRow } from '@/skins/trade/blocks/data-project-row';
@@ -24,6 +24,7 @@ const TRACK: Record<ProjectColumn, { width: string; min: number }> = {
   name: { width: 'minmax(220px,2.4fr)', min: 220 },
   kind: { width: '104px', min: 104 },
   featured: { width: '118px', min: 118 },
+  started: { width: '150px', min: 150 },
   technologies: { width: 'minmax(220px,2fr)', min: 220 },
   screenshots: { width: '110px', min: 110 },
   links: { width: 'minmax(140px,1.3fr)', min: 140 },
@@ -42,6 +43,7 @@ export function DataProjectsGrid({
   density,
   sort,
   onSort,
+  sortable,
   onOpenScreenshots,
   listRef,
 }: {
@@ -49,8 +51,10 @@ export function DataProjectsGrid({
   skills: Map<string, Doc<'skills'>>;
   columns: Set<ProjectColumn>;
   density: Density;
-  sort: SortState;
+  sort: ColumnSort;
   onSort: (column: ProjectColumn) => void;
+  /** a header sorts; not when the owner has fixed the order */
+  sortable: boolean;
   onOpenScreenshots: (project: Doc<'projects'>) => void;
   listRef: RefObject<HTMLDivElement | null>;
 }) {
@@ -122,6 +126,7 @@ export function DataProjectsGrid({
                   })}
                   state={ariaSort(sort, column)}
                   onClick={() => onSort(column)}
+                  disabled={!sortable}
                 />
               </div>
             ))}

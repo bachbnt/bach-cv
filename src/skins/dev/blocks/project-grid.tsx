@@ -4,15 +4,14 @@
 
 'use client';
 
-import { useState } from 'react';
-import { kindsPresent } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
+import { useProjectView } from '@/hooks/use-project-view';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
-import { DevFilterGroup } from '@/skins/dev/blocks/filter-group';
 import { ProjectCard } from '@/skins/dev/blocks/project-card';
+import { DevProjectsToolbar } from '@/skins/dev/blocks/projects-toolbar';
 
-/** The filter chips (All plus each kind that has a project) and the grid of cards under them. */
+/** The controls of the Projects page (search, order, filters) and the grid of cards under them. */
 export function ProjectGrid({
   projects,
   skills,
@@ -23,34 +22,38 @@ export function ProjectGrid({
   onOpenScreenshots: (project: Doc<'projects'>) => void;
 }) {
   const copy = useCopy(projectsCopy);
-  const [filter, setFilter] = useState<'all' | Doc<'projects'>['kind']>('all');
-  const kinds = kindsPresent(projects);
-  const shown =
-    filter === 'all' ? projects : projects.filter((p) => p.kind === filter);
-
+  const view = useProjectView(projects, skills);
   return (
     <>
-      {kinds.length > 1 && (
-        <DevFilterGroup
-          label={copy.filterLabel}
-          value={filter}
-          options={(['all', ...kinds] as const).map((value) => ({
-            value,
-            label: value === 'all' ? copy.filterAll : copy.kinds[value],
-          }))}
-          onChange={setFilter}
-        />
+      <DevProjectsToolbar view={view} />
+      {view.shown.length > 0 ? (
+        <div className='grid grid-cols-[repeat(3,1fr)] gap-4 max-[900px]:grid-cols-[1fr_1fr] max-[620px]:grid-cols-[1fr]'>
+          {view.shown.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              skills={skills}
+              onOpenScreenshots={onOpenScreenshots}
+            />
+          ))}
+        </div>
+      ) : (
+        <div
+          role='status'
+          className='flex max-w-[640px] flex-wrap items-center gap-x-4 gap-y-2 rounded-[8px] border border-dashed border-line-2 bg-chrome px-[22px] py-5 font-code text-[14px] text-mute'
+        >
+          <span>{copy.filters.none}</span>
+          {view.clearable && (
+            <button
+              type='button'
+              onClick={view.clear}
+              className='cursor-pointer border-0 border-b border-b-transparent bg-transparent p-0 font-code text-[13px] text-sky hover:border-b-sky focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal pointer-coarse:min-h-11'
+            >
+              {copy.filters.clear}
+            </button>
+          )}
+        </div>
       )}
-      <div className='grid grid-cols-[repeat(3,1fr)] gap-4 max-[900px]:grid-cols-[1fr_1fr] max-[620px]:grid-cols-[1fr]'>
-        {shown.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            skills={skills}
-            onOpenScreenshots={onOpenScreenshots}
-          />
-        ))}
-      </div>
     </>
   );
 }

@@ -22,6 +22,7 @@ const FIELD_NOTES = {
   startMonth: 'Period start, <code>YYYY-MM</code>.',
   endMonth: 'Period end, <code>YYYY-MM</code>; null means current.',
   technologies: 'Ids of documents in <code>skills</code>.',
+  platforms: 'What a project runs on: <code>mobile</code>, <code>web</code>, <code>desktop</code> or <code>ai</code>, any number. The filter of the Projects page reads it.',
   skills: 'Ids of documents in <code>skills</code>.',
   projectId: 'Optional id of a document in <code>projects</code>.',
   listed: 'false: a tag only, not shown as a chip in the Skills section.',
@@ -39,6 +40,7 @@ const FIELD_NOTES = {
   qr: 'QR image path; empty means no QR.',
   pages: 'Each page is <code>on</code>, <code>soon</code> or <code>hidden</code>.',
   features: 'Switches: chat, cvDownload, contactForm, connectMenu.',
+  projects: 'The Projects page: <code>sort</code> (default, force, off) and <code>filters</code> (tech, platform, kind, status: enabled, default, force, off; search: enabled, default).',
   maintenance: '<code>enabled</code> covers the whole site; <code>message</code> and <code>l10n.vi.message</code> are shown.',
   defaultLanguage: 'The language used on the first paint.',
   languages: 'The languages the site offers.',
@@ -156,6 +158,8 @@ ${table(
     [c('site/live.features.cvDownload = false'), 'the Download CV buttons disappear'],
     [c('site/live.features.contactForm = false'), 'the form is replaced by a short note'],
     [c('site/live.features.connectMenu = false'), 'the Connect button disappears'],
+    [c('site/live.projects.sort = { default: "latest" }'), 'the Projects page opens in that order for a visitor who has not chosen (<code>force</code> shows it to everyone and takes the order list away; <code>off</code> leaves orders out of the list: manual, latest, oldest, name, featured, technologies)'],
+    [c('site/live.projects.filters.platform = { default: ["mobile"] }'), 'the page opens filtered to Mobile (<code>force</code> fixes it and hides the filter, <code>off</code> leaves values out, <code>enabled: false</code> takes the filter away; the same for tech, kind and status)'],
     [c('site/live.maintenance.enabled = true'), 'the whole site is replaced by a maintenance screen with your message (and Vietnamese in <code>l10n.vi.message</code>)'],
     [c('l10n.vi.summary') + ' etc.', 'the Vietnamese text for that field'],
   ],
@@ -259,6 +263,8 @@ ${code(`site/live
   pages:       { home: "on", about: "on", resume: "on", projects: "on",
                  certificates: "on", services: "on", payment: "on" }
   features:    { chat: true, cvDownload: true, contactForm: true, connectMenu: true }
+  projects:    { sort: { default: "", force: "", off: [] },
+                 filters: { platform: { enabled: true, default: [], force: [], off: [] } } }
 
 payments/bidv
   name: "BIDV", kind: "bank", holder: "...", account: "...", qr: "https://...",

@@ -165,6 +165,14 @@ Components never import Firebase. Read through `@/lib/query/use-content` (`useCo
 helpers in `components/payment/*`, `components/projects/project-helpers.ts`. Loading, empty and error states follow the Standard blocks
 (`components/data-state.tsx`, `state-notice.tsx`); the Dev versions are `ui/dev-data-state.tsx` and `ui/dev-state-notice.tsx`.
 
+## Projects: order and filters
+
+`blocks/projects-toolbar.tsx` is **one line of a terminal**: the prompt echoes the command the choice makes (`$ projects ls --sort=latest --platform=mobile "text"`, decoration,
+`aria-hidden`), then a search field and two buttons that read like flags, `--Filters` and `--Sort`, each opening a menu (the shadcn popover, in the code font): the filters as rows of
+`--flags` (`DevFilterGroup` with `caption`, `selected` and a count on each choice), the orders as a list. The rules (which order, "and" between filters, the owner's `site/live`
+`projects` settings, the address and the last choice) are `hooks/use-project-view.ts` and `lib/derive/project-view.ts`, the same in every skin; the shared checks are
+`tests/automation/support/projects-view-suite.ts`, called by `dev-projects-view.spec.ts`.
+
 ## Things to know
 
 - The page's server-rendered content is not used in a skin: `SkinFrame` renders `skins/<id>/pages/<page>` instead.

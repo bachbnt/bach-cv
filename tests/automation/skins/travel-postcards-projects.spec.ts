@@ -4,6 +4,7 @@
 
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore, interceptCollection } from '../support/firestore-mock';
+import { projectsControls } from '../support/projects-controls';
 import { mockImages } from '../support/images';
 import { animationsSettled } from '../support/animations';
 import { gotoSkin, useSkin } from '../support/skin';
@@ -135,11 +136,16 @@ test.describe('the postcards', () => {
     page,
   }) => {
     await gotoSkin(page, '/projects');
-    const group = page.getByRole('group', { name: 'Filter projects' });
+    const group = (await projectsControls().openFilters(page)).getByRole(
+      'group',
+      {
+        name: 'Type',
+      },
+    );
     await expect(group.getByRole('button')).toHaveText([
-      'All',
-      'Personal',
-      'Freelance',
+      /^All$/,
+      /^Personal/,
+      /^Freelance/,
     ]);
     await expect(group.getByRole('button', { name: 'All' })).toHaveAttribute(
       'aria-pressed',
@@ -255,8 +261,8 @@ test.describe('the screenshots', () => {
     await expect(photo).toBeFocused();
     await page.keyboard.press('Tab');
     await expect(venus.getByRole('link', { name: 'App Store' })).toBeFocused();
-    const all = page
-      .getByRole('group', { name: 'Filter projects' })
+    const all = (await projectsControls().openFilters(page))
+      .getByRole('group', { name: 'Type' })
       .getByRole('button', { name: 'Personal' });
     await all.focus();
     await page.keyboard.press('Space');
@@ -425,7 +431,12 @@ test.describe('in Vietnamese', () => {
     await expect(
       page.getByText('Những tấm bưu thiếp từ các nơi tôi đã xây dựng'),
     ).toBeVisible();
-    const group = page.getByRole('group', { name: 'Lọc dự án' });
+    const group = (await projectsControls('vi').openFilters(page)).getByRole(
+      'group',
+      {
+        name: 'Loại',
+      },
+    );
     await expect(group.getByRole('button', { name: 'Cá nhân' })).toBeVisible();
     await expect(group.getByRole('button', { name: 'Tất cả' })).toBeVisible();
     await expect(

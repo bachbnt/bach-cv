@@ -4,6 +4,8 @@
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
+import { animationsSettled } from '../support/animations';
+import { projectsControls } from '../support/projects-controls';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -104,8 +106,18 @@ test.describe('touch targets of the Dev skin are 44 px', () => {
     await expect44(page.locator('main [data-slot="dev-button"]'), 2);
   });
 
-  test('the filter chips of Projects', async ({ page }) => {
+  test('the search box, the Filters and Sort buttons and the filter chips of Projects', async ({
+    page,
+  }) => {
     await gotoSkin(page, '/projects');
+    const en = projectsControls();
+    await expect44(page.getByRole('searchbox', { name: 'Search projects' }), 1);
+    await expect44(en.filtersButton(page), 1);
+    await expect44(en.sortButton(page), 1);
+    // the chips are in the menu of the Filters button
+    await en.openFilters(page);
+    // the menu opens with a zoom: measure it at rest
+    await animationsSettled(page);
     await expect(
       page.locator('[data-slot="dev-filter"]').first(),
     ).toBeVisible();

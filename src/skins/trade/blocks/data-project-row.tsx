@@ -16,10 +16,10 @@ import type { Doc } from '@/lib/content/schema';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import type {
-  Density,
-  ProjectColumn,
-} from '@/skins/trade/blocks/data-projects-model';
+import type { ProjectColumn } from '@/lib/derive/project-view';
+import { formatPeriod } from '@/lib/format';
+import { useLang } from '@/lib/i18n/language';
+import type { Density } from '@/skins/trade/blocks/data-projects-model';
 import { HintTip } from '@/skins/trade/chart/hint-tip';
 import { DataKind } from '@/skins/trade/blocks/data-kind';
 import { DataProjectDetail } from '@/skins/trade/blocks/data-project-detail';
@@ -54,6 +54,7 @@ export function ProjectRow({
 }) {
   const copy = useCopy(projectsCopy);
   const { projects: words } = useCopy(tradeDataCopy);
+  const { lang } = useLang();
   const detailId = useId();
   const tags = skillsOf(project.technologies, skills);
   const comfy = density === 'comfortable';
@@ -111,6 +112,11 @@ export function ProjectRow({
           {copy.featuredTag} {fill(words.rank, { rank: project.highlight })}
         </TvChip>
       ) : null,
+    started: project.startMonth ? (
+      <span className='text-xs tabular-nums'>
+        {formatPeriod(project.startMonth, project.endMonth, lang)}
+      </span>
+    ) : null,
     technologies: <DataTags skills={tags} limit={comfy ? 5 : 3} />,
     screenshots:
       project.images.length > 0 ? (

@@ -1373,6 +1373,7 @@
         "zod",
         "firebase"
       ],
+      "platforms": ["web", "ai"],
       "summary": "My portfolio and CV in five skins: Standard, Dev, Trade, Academic and Travel. One set of content, five different interfaces, in English and Vietnamese, with BB Bot, an AI chat assistant, and a CV that downloads as a PDF. Light by design: each skin loads only when it is chosen.",
       "l10n": {
         "vi": {
@@ -1397,6 +1398,7 @@
         "webrtc",
         "socketio"
       ],
+      "platforms": ["mobile"],
       "links": [],
       "summary": "An Android app for ordering coffee, built with a Node.js and MongoDB backend and Firebase.",
       "l10n": {
@@ -1417,6 +1419,7 @@
       "startMonth": "2022-03",
       "endMonth": "2022-08",
       "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
+      "platforms": ["web"],
       "links": [
         {
           "label": "Website",
@@ -1439,6 +1442,7 @@
       "startMonth": "2024-02",
       "endMonth": null,
       "technologies": ["nodejs", "mcp"],
+      "platforms": ["desktop", "ai"],
       "links": [
         {
           "label": "GitHub",
@@ -1478,6 +1482,7 @@
       "startMonth": "2026-05",
       "endMonth": null,
       "technologies": ["swift", "swiftui", "appkit", "macos"],
+      "platforms": ["desktop"],
       "links": [
         {
           "label": "GitHub",
@@ -1521,6 +1526,7 @@
       "startMonth": "2026-05",
       "endMonth": null,
       "technologies": ["python", "mcp", "vnstock", "ccxt"],
+      "platforms": ["ai"],
       "links": [
         {
           "label": "GitHub",
@@ -1555,6 +1561,7 @@
       "startMonth": "2022-07",
       "endMonth": "2022-08",
       "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
+      "platforms": ["web"],
       "links": [
         {
           "label": "Website",
@@ -1579,6 +1586,7 @@
       "startMonth": "2026-11",
       "endMonth": null,
       "technologies": ["angular", "typescript", "tailwindcss", "firebase"],
+      "platforms": ["web"],
       "links": [
         {
           "label": "Website",
@@ -1614,6 +1622,7 @@
       "startMonth": "2022-03",
       "endMonth": "2022-03",
       "technologies": ["flutter", "bloc", "react-native", "redux"],
+      "platforms": ["mobile"],
       "links": [],
       "summary": "An internal social network app, built with Flutter and BLoC and with React Native and Redux.",
       "l10n": {
@@ -1639,9 +1648,10 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/06.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/07.webp"
       ],
-      "startMonth": "2023-09",
-      "endMonth": null,
+      "startMonth": "2022-12",
+      "endMonth": "2024-04",
       "technologies": ["flutter", "firebase"],
+      "platforms": ["mobile", "ai"],
       "links": [
         {
           "label": "Website",
@@ -1672,8 +1682,9 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/06.webp"
       ],
       "startMonth": "2021-01",
-      "endMonth": null,
+      "endMonth": "2023-01",
       "technologies": ["flutter", "provider", "bloc", "firebase"],
+      "platforms": ["mobile"],
       "links": [
         {
           "label": "Website",

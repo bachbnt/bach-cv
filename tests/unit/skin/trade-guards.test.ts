@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { toggleId } from '@/skins/trade/blocks/data-projects-model';
+import { toggleValue as toggleId } from '@/lib/derive/project-view';
 import { isTileKey } from '@/skins/trade/blocks/data-skill-heat-model';
 import { CHART_TYPES, isChartType } from '@/skins/trade/chart/chart-types';
 import { isDrawingTool } from '@/skins/trade/chart/tool-groups';

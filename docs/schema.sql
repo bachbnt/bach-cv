@@ -120,6 +120,11 @@ CREATE TABLE project_link (
   kind       TEXT NOT NULL DEFAULT 'other',
   PRIMARY KEY (project_id, pos)
 );
+CREATE TABLE project_platform (
+  project_id TEXT NOT NULL REFERENCES projects (id) ON DELETE CASCADE,
+  platform   TEXT NOT NULL CHECK (platform IN ('mobile', 'web', 'desktop', 'ai')),
+  PRIMARY KEY (project_id, platform)
+);
 CREATE TABLE project_skill (
   project_id TEXT NOT NULL REFERENCES projects (id) ON DELETE CASCADE,
   skill_id   TEXT NOT NULL REFERENCES skills (id),

@@ -166,6 +166,11 @@ Common edits in the Firebase console:
   "not set". Anything that is not one of the options counts for nothing. The order is: force, the visitor's `?skin=` / `?theme=` / `?lang=` (also kept as a
   choice) and their saved choice, the default, the browser's language / the system's colours, the default of the site (`lib/preference/preference.ts`).
   The last read is kept in this browser (`bach-cv-prefs`), so a visitor who comes back has no flash; a first visit may see the default for a moment.
+- The Projects page: `site/live` → `projects.sort` (`default`, `force`, `off`, as for the skin: the orders are `manual`, `latest`, `oldest`, `name`, `featured`,
+  `technologies`) and `projects.filters.tech`, `.platform`, `.kind`, `.status` (`enabled`, `default`, `force`, `off`: lists of values, `force` fixes them and hides the
+  filter) and `.search` (`enabled`, `default`). A project's `platforms` (`mobile`, `web`, `desktop`, `ai`) feeds the platform filter, `startMonth` the orders by date.
+  A visitor's choice is in the address (`/projects?sort=latest&platform=mobile&tech=angular`, which can be sent) and kept in this browser (`bach-cv-projects`); a
+  value the owner forces always wins. Every skin draws its own controls (a search box, ONE Filters button and ONE Sort button that open menus) over the same rules (`lib/derive/project-view.ts`, `hooks/use-project-view.ts`).
 - Maintenance: `site/live` → `maintenance.enabled = true` (message in `maintenance.message`, Vietnamese in `maintenance.l10n.vi.message`).
 - Translate: add `l10n.vi.<field>` on the document.
 - Skills: a skill with `listed: false` is not shown as a chip but can still be a technology tag on a project or a role.

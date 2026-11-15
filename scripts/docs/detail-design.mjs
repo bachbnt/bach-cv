@@ -151,7 +151,7 @@ ${table(
     [c('/'), 'home', 'hero, pipeline card, skills strip, where I worked, what I built at FPT, featured projects, contact band', 'live, profile, contacts, skills, experience, projects'],
     [c('/about'), 'about', 'page head with summary and photos, Core stack, skill groups', 'profile, skills, experience, projects'],
     [c('/resume'), 'resume', 'roles with key project and responsibilities, skills, education with thesis', 'experience, skills, projects, education'],
-    [c('/projects'), 'projects', 'featured projects, kind filter, grid, screenshots dialog', 'projects, skills'],
+    [c('/projects'), 'projects', 'featured projects, then the grid with a search box, an order and the filters (type, platform, status, technologies) that the owner can set, fix or leave out in site/live, screenshots dialog', 'projects, skills'],
     [c('/certificates'), 'certificates', 'latest certificate, grid, preview dialog, PDF link', 'certificates, skills'],
     [c('/services'), 'services', 'service cards with drawings, contact form', 'services, settings'],
     [c('/payment'), 'payment', 'preferred methods, more ways to pay, QR dialog, copy buttons; paused state', 'payments (only here)'],

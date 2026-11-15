@@ -12,12 +12,16 @@ export function HeaderButton({
   sortLabel,
   state,
   onClick,
+  disabled = false,
 }: {
   label: string;
   sortLabel: string;
   state: 'ascending' | 'descending' | 'none';
   onClick: () => void;
+  /** the owner has fixed the order: the header is only its name */
+  disabled?: boolean;
 }) {
+  if (disabled) return <span className='whitespace-nowrap'>{label}</span>;
   const Icon =
     state === 'ascending'
       ? ArrowUp

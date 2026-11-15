@@ -5,16 +5,15 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useMemo, useRef, useState, type CSSProperties } from 'react';
-import { kindsPresent } from '@/components/projects/project-helpers';
+import { useMemo, useRef, type CSSProperties } from 'react';
 import { projectsCopy } from '@/content/copy/projects';
 import { travelPostcardsCopy } from '@/content/copy/travel-postcards';
-import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
-import { FilterChip } from '@/skins/travel/blocks/filter-chip';
 import { Postcard } from '@/skins/travel/blocks/postcard';
+import { TlProjectsToolbar } from '@/skins/travel/blocks/projects-toolbar';
 import { useScreenshotsDialog } from '@/skins/travel/blocks/use-screenshots-dialog';
+import { useProjectView } from '@/hooks/use-project-view';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
@@ -39,27 +38,31 @@ function PostcardsSkeleton() {
 }
 
 /**
- * The Projects page body: the heading, the kind filter (as Standard: All plus each kind that has a project), and the postcards in a
- * strip that scrolls sideways (a column on a phone). Featured projects come first, in rank order, and wear a Featured tag.
+ * The Projects page body: the heading, the controls (search, order, filters), and the postcards in a strip that scrolls sideways (a
+ * column on a phone). Featured projects come first, in rank order, unless another order is picked, and wear a Featured tag.
  */
 export function PostcardsStrip() {
   const copy = useCopy(projectsCopy);
   const words = useCopy(travelPostcardsCopy).projects;
   const reduced = useReducedMotion();
-  const projectsQuery = useContentQuery('projects', { featuredFirst: true });
+  const projectsQuery = useContentQuery('projects');
   const { data: skillList = [] } = useContentQuery('skills');
   const skills = useMemo(
     () => new Map(skillList.map((s) => [s.id, s])),
     [skillList],
   );
   const [openScreenshots, dialog] = useScreenshotsDialog();
-  const [filter, setFilter] = useState<'all' | Doc<'projects'>['kind']>('all');
   const strip = useRef<HTMLUListElement>(null);
 
   const projects = projectsQuery.data ?? [];
-  const kinds = kindsPresent(projects);
-  const shown =
-    filter === 'all' ? projects : projects.filter((p) => p.kind === filter);
+  // the featured ones come first unless the owner or the visitor picks another order
+  const view = useProjectView(projects, skills, 'featured');
+  const shown = view.shown;
+  // a swap of the strip starts it again from its first postcard (the words typed in the search box just change it, one key at a time)
+  const swap = [
+    view.sort.value,
+    ...Object.values(view.groups).map((group) => group.selected.join('+')),
+  ].join('|');
 
   const scroll = (direction: -1 | 1) => {
     const el = strip.current;
@@ -86,23 +89,6 @@ export function PostcardsStrip() {
           </p>
         </div>
         <div className='flex flex-wrap items-center gap-2'>
-          {kinds.length > 1 && (
-            <div
-              role='group'
-              aria-label={copy.filterLabel}
-              className='flex flex-wrap gap-1.5'
-            >
-              {(['all', ...kinds] as const).map((value) => (
-                <FilterChip
-                  key={value}
-                  pressed={filter === value}
-                  onClick={() => setFilter(value)}
-                >
-                  {value === 'all' ? copy.filterAll : copy.kinds[value]}
-                </FilterChip>
-              ))}
-            </div>
-          )}
           {shown.length > 0 && (
             <div className='hidden gap-1.5 md:flex'>
               <TlButton
@@ -125,6 +111,7 @@ export function PostcardsStrip() {
           )}
         </div>
       </header>
+      {projects.length > 0 && <TlProjectsToolbar view={view} />}
       <TlDataState
         query={projectsQuery}
         count={projects.length}
@@ -133,9 +120,26 @@ export function PostcardsStrip() {
         skeleton={<PostcardsSkeleton />}
         level={2}
       >
+        {shown.length === 0 && (
+          <div
+            role='status'
+            className='flex flex-wrap items-center gap-x-4 gap-y-1 py-6 text-[14px] text-tl-muted'
+          >
+            <span>{copy.filters.none}</span>
+            {view.clearable && (
+              <button
+                type='button'
+                onClick={view.clear}
+                className='inline-flex min-h-8 cursor-pointer items-center rounded-full px-2 text-[13px] font-semibold text-tl-ink underline underline-offset-4 pointer-coarse:min-h-11'
+              >
+                {copy.filters.clear}
+              </button>
+            )}
+          </div>
+        )}
         {/* a filter swaps the strip: the new postcards rise in from the start of the strip */}
         <ul
-          key={filter}
+          key={swap}
           ref={strip}
           aria-label={words.postcardsLabel}
           className='tl-rise m-0 flex list-none snap-x snap-proximity flex-col gap-4 p-0 md:-mx-2 md:flex-row md:scroll-px-2 md:overflow-x-auto md:[scrollbar-width:thin] md:px-2 md:pt-4 md:pb-4'

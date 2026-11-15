@@ -6,8 +6,17 @@
 
 import { LayoutDashboard, LayoutGrid, Table2 } from 'lucide-react';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import { kindsPresent } from '@/components/projects/project-helpers';
 import { projectsCopy } from '@/content/copy/projects';
+import { useProjectView } from '@/hooks/use-project-view';
+import {
+  columnSortOf,
+  nextSort,
+  PROJECT_COLUMNS,
+  projectSortOf,
+  sortProjectsByColumn,
+  type ColumnSort,
+  type ProjectColumn,
+} from '@/lib/derive/project-view';
 import { isTyping } from '@/lib/is-typing';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import { useCopy } from '@/lib/i18n/copy';
@@ -17,19 +26,6 @@ import { DataProjectsGrid } from '@/skins/trade/blocks/data-projects-grid';
 import { type Density } from '@/skins/trade/blocks/data-projects-model';
 import { DataProjectsHeatmap } from '@/skins/trade/blocks/data-projects-heatmap';
 import { DataProjectsSkeleton } from '@/skins/trade/blocks/data-projects-skeleton';
-import {
-  DEFAULT_SORT,
-  filterProjects,
-  isFiltering,
-  nextSort,
-  NO_FILTERS,
-  PROJECT_COLUMNS,
-  sortProjects,
-  techOptions,
-  type ProjectColumn,
-  type ProjectFilters,
-  type SortState,
-} from '@/skins/trade/blocks/data-projects-model';
 import { DataScreenerBar } from '@/skins/trade/blocks/data-screener-bar';
 import { DataSegmented } from '@/skins/trade/blocks/data-segmented';
 import { useFlip } from '@/skins/trade/blocks/data-use-flip';
@@ -59,8 +55,10 @@ export function DataProjectsScreener() {
   const [columns, setColumns] = useState(
     () => new Set<ProjectColumn>(PROJECT_COLUMNS),
   );
-  const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
-  const [filters, setFilters] = useState<ProjectFilters>(NO_FILTERS);
+  // a click on a header that is not one of the orders of the list (the kind, the screenshots, a name going down) is the table's alone
+  const [custom, setCustom] = useState<ColumnSort | undefined>(undefined);
+  // the featured only chip is the terminal's own filter: the others are the page's (`useProjectView`)
+  const [featuredOnly, setFeaturedOnly] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -87,22 +85,43 @@ export function DataProjectsScreener() {
   }, []);
 
   const projects = query.data ?? [];
-  const kinds = kindsPresent(projects);
-  const techs = techOptions(projects, skills);
-  const matching = filterProjects(projects, filters, skills);
-  const shown = sortProjects(matching, sort, skills);
+  // the featured ones first, unless the owner or the visitor picks another order
+  const projectView = useProjectView(projects, skills, 'featured', {
+    transition: false,
+  });
+  const sort: ColumnSort =
+    custom !== undefined ? custom : columnSortOf(projectView.sort.value);
+  const matching = featuredOnly
+    ? projectView.shown.filter((project) => project.highlight !== null)
+    : projectView.shown;
+  const shown =
+    custom !== undefined
+      ? sortProjectsByColumn(matching, custom, skills)
+      : matching;
+  const clearable = projectView.clearable || featuredOnly;
 
-  const changeFilters = (next: ProjectFilters) => {
+  const clearFilters = () => {
     capture();
-    setFilters(next);
+    setFeaturedOnly(false);
+    projectView.clear();
+  };
+  const sortBy = (column: ProjectColumn) => {
+    capture();
+    const next = nextSort(sort, column);
+    const order = projectSortOf(next);
+    if (order === undefined) setCustom(next);
+    else {
+      setCustom(undefined);
+      projectView.sort.set(order);
+    }
   };
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (
       event.key === 'Escape' &&
       event.currentTarget.contains(event.target as Node) &&
-      isFiltering(filters)
+      clearable
     )
-      changeFilters(NO_FILTERS);
+      clearFilters();
   };
 
   const switcher = projects.length > 0 && (
@@ -145,10 +164,20 @@ export function DataProjectsScreener() {
       >
         <div onKeyDown={onKeyDown}>
           <DataScreenerBar
-            filters={filters}
-            onFilters={changeFilters}
-            kinds={kinds}
-            techs={techs}
+            view={projectView}
+            featuredOnly={featuredOnly}
+            onFeaturedOnly={(on) => {
+              capture();
+              setFeaturedOnly(on);
+            }}
+            clearable={clearable}
+            onClear={clearFilters}
+            sortValue={custom !== undefined ? '' : projectView.sort.value}
+            onSortChange={(value) => {
+              capture();
+              setCustom(undefined);
+              projectView.sort.set(value);
+            }}
             density={density}
             onDensity={(next) => {
               capture();
@@ -159,7 +188,6 @@ export function DataProjectsScreener() {
             showColumns={view === 'table'}
             showDensity={view !== 'heatmap'}
             shown={shown.length}
-            total={projects.length}
             inputRef={inputRef}
           />
           {shown.length === 0 ? (
@@ -170,10 +198,7 @@ export function DataProjectsScreener() {
               title={words.noMatch.title}
               body={words.noMatch.body}
             >
-              <TvButton
-                variant='outline'
-                onClick={() => changeFilters(NO_FILTERS)}
-              >
+              <TvButton variant='outline' onClick={clearFilters}>
                 {words.filter.clear}
               </TvButton>
             </TvStateNotice>
@@ -184,10 +209,8 @@ export function DataProjectsScreener() {
               columns={columns}
               density={density}
               sort={sort}
-              onSort={(column) => {
-                capture();
-                setSort((old) => nextSort(old, column));
-              }}
+              onSort={sortBy}
+              sortable={projectView.sort.visible}
               onOpenScreenshots={openScreenshots}
               listRef={listRef}
             />

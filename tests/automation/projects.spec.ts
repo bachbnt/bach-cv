@@ -4,6 +4,7 @@
 
 import { expect, test } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
+import { projectsControls } from './support/projects-controls';
 
 test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
@@ -58,7 +59,12 @@ test('a project without a cover gets an initials tile', async ({ page }) => {
 
 test('the kind chips filter the grid', async ({ page }) => {
   await page.goto('/projects');
-  const group = page.getByRole('group', { name: 'Filter projects' });
+  const group = (await projectsControls().openFilters(page)).getByRole(
+    'group',
+    {
+      name: 'Type',
+    },
+  );
   await expect(group.getByRole('button', { name: 'All' })).toHaveAttribute(
     'aria-pressed',
     'true',
@@ -254,7 +260,10 @@ test.describe('in Vietnamese', () => {
     await expect(
       page.getByRole('heading', { name: 'Tất cả dự án' }),
     ).toBeVisible();
-    const group = page.getByRole('group', { name: 'Lọc dự án' });
+    const group = (await projectsControls('vi').openFilters(page)).getByRole(
+      'group',
+      { name: 'Loại' },
+    );
     await expect(group.getByRole('button', { name: 'Cá nhân' })).toBeVisible();
     await expect(
       page.getByRole('link', { name: 'Xem website' }).first(),

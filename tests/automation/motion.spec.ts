@@ -4,6 +4,7 @@
 
 import { expect, test, type Page } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
+import { projectsControls } from './support/projects-controls';
 import { trackViewTransitions } from './support/view-transitions';
 
 test.beforeEach(async ({ page }) => {
@@ -53,7 +54,10 @@ test.describe('motion', () => {
   }) => {
     const watch = await trackViewTransitions(page);
     await page.goto('/projects');
-    const group = page.getByRole('group', { name: 'Filter projects' });
+    const group = (await projectsControls().openFilters(page)).getByRole(
+      'group',
+      { name: 'Type' },
+    );
     await expect(group.getByRole('button', { name: 'All' })).toHaveAttribute(
       'aria-pressed',
       'true',

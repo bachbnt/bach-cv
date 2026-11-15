@@ -4,6 +4,7 @@
 
 import { expect, test } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
+import { projectsControls } from '../support/projects-controls';
 import { allOn, servePayments } from '../support/payments';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -63,7 +64,12 @@ test.describe('Projects', () => {
 
   test('the kind chips filter the grid', async ({ page }) => {
     await gotoSkin(page, '/projects');
-    const group = page.getByRole('group', { name: 'Filter projects' });
+    const group = (await projectsControls().openFilters(page)).getByRole(
+      'group',
+      {
+        name: 'Type',
+      },
+    );
     await expect(
       group.getByRole('button', { name: 'All', exact: true }),
     ).toHaveAttribute('aria-pressed', 'true');
@@ -186,7 +192,12 @@ test.describe('Projects', () => {
     await expect(
       page.getByRole('heading', { name: 'Dự án nổi bật' }),
     ).toBeVisible();
-    const group = page.getByRole('group', { name: 'Lọc dự án' });
+    const group = (await projectsControls('vi').openFilters(page)).getByRole(
+      'group',
+      {
+        name: 'Loại',
+      },
+    );
     await expect(group.getByRole('button', { name: 'Cá nhân' })).toBeVisible();
     await expect(
       page.getByRole('link', { name: 'Xem website' }).first(),

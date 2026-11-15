@@ -85,6 +85,10 @@ ui/                 ac-root, ac-page, ac-page-head, ac-section (chalk headings),
                     ac-chip, ac-menu, ac-icon (the drawn marks), ac-line-input, ac-soon-tag, ac-data-state, ac-state-notice, ac-skeleton, status screens
 ```
 
+Projects: the search is a line written on the paper (`ui/ac-line-input`), the filters and the order are two hand-drawn buttons that each let down a **sheet of paper** (the shadcn popover with the paper of the board) with
+hand-drawn chips and the number each leaves in small writing, and **how many are left and the way back ("Clear filters") are a note in the margin** (`AcRow`), tied to the controls by the bracket
+(`blocks/projects-toolbar.tsx`). The rules are `hooks/use-project-view.ts` and `lib/derive/project-view.ts`; neither filtering nor sorting renumbers the references.
+
 Words only this skin has: `content/copy/academic*.ts` (shell, home and about, resume, projects, certificates and services, payment,
 overlays), en and vi; Standard's own copy is reused wherever Standard has the word.
 

@@ -152,7 +152,11 @@ test.describe('filters', () => {
     page,
   }) => {
     await gotoSkin(page, '/projects');
-    const kinds = page.getByRole('group', { name: 'Filter projects' });
+    // the type, the platform, the status and the technologies are in the menu of the Filters button
+    const filters = page.getByRole('button', { name: /^Filters/ });
+    const menu = page.getByRole('dialog', { name: 'Filters' });
+    await filters.click();
+    const kinds = menu.getByRole('group', { name: 'Type' });
     await kinds.getByRole('button', { name: 'Personal' }).click();
     await expect(
       kinds.getByRole('button', { name: 'Personal' }),
@@ -160,11 +164,18 @@ test.describe('filters', () => {
     await expect(rows(page)).toHaveCount(5);
     await page.getByRole('button', { name: 'Featured only' }).click();
     expect(await names(page)).toEqual(['DevPad', 'DevCmd']);
-    await kinds.getByRole('button', { name: 'All', exact: true }).click();
+    await filters.click();
+    await menu
+      .getByRole('group', { name: 'Type' })
+      .getByRole('button', { name: 'All', exact: true })
+      .click();
     await expect(rows(page)).toHaveCount(4);
     await page.getByRole('button', { name: 'Featured only' }).click();
-    await page.getByRole('button', { name: /^Technologies/ }).click();
-    await page.getByRole('checkbox', { name: /^MCP/ }).check();
+    await filters.click();
+    await menu
+      .getByRole('group', { name: 'Technology' })
+      .getByRole('button', { name: /^MCP/ })
+      .click();
     await page.keyboard.press('Escape');
     expect(await names(page)).toEqual(['DevCmd', 'FinHub MCP']);
     await page.getByRole('button', { name: 'Clear filters' }).click();
@@ -295,7 +306,7 @@ test.describe('language and phone', () => {
     await expect(
       page.getByRole('button', { name: 'Sắp xếp theo Tên' }),
     ).toBeVisible();
-    await expect(page.getByRole('group', { name: 'Lọc dự án' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /^Bộ lọc/ })).toBeVisible();
     await rows(page).first().getByRole('button', { name: 'VenusAI' }).click();
     await expect(page.getByText('Nổi bật #1').first()).toBeVisible();
   });

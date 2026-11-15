@@ -15,7 +15,7 @@ const files = (dir: string): string[] =>
         : [];
   });
 
-// Paper that is not on the board: the sheet component itself, the paper of the windows and the menus, the toast, and the loading placeholders.
+// Paper that is not on the board: the sheet component itself, the paper of the windows and the menus (`ui/ac-sheet.ts` is the paper of a menu), the toast, and the loading placeholders.
 const NOT_ON_THE_BOARD =
   /(ui\/ac-paper|ui\/ac-menu|shell\/|-skeleton)\.?[a-z]*(\.tsx)?$|shell\//;
 

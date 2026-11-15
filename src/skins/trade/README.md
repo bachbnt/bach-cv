@@ -219,8 +219,11 @@ are in `content/copy/trade-data.ts` (en and vi); Standard's copy (`projects.ts`,
 Pure logic is in `blocks/data-*-model.ts` and `data-treemap.ts`, tested in `tests/unit/skin/trade-data-*.test.ts`; the keyframes and the
 kind colours (`--tv-data-*`) are in `css/data.css`. Nothing reads as a quote: every number is a count, a date or a duration of the data.
 
-- **Projects = screener** (`data-projects-screener.tsx`). A bar of filters (text, kind chips, featured only, a technology multi-select built
-  from the skills projects use: a project must use all chosen), density, and a column chooser (the name is always shown). Three views:
+- **Projects = screener** (`data-projects-screener.tsx`). A bar of filters (text, ONE **Filters** button that opens a menu with the type, the platform, the status and the technologies as
+  chips with the number each leaves, **Featured only**), ONE button for the **order** that opens a menu, density, and a column chooser (the name is always shown). The rules and the owner's `site/live` `projects`
+  settings are `hooks/use-project-view.ts` and `lib/derive/project-view.ts`, the same in every skin: an order of the menu sorts the column it stands for (`columnSortOf`, `projectSortOf`: latest and oldest are the
+  **Started** column), a click on a header that is one of the orders moves the menu, and one that is not (the kind, the screenshots, the names going down) is the table's alone ("Table order" on the button); a
+  forced order makes the headers plain names. The screener opens with the featured ones first (`fallbackSort`). Three views:
   **Table** (sortable headers with `aria-sort`, a click or Enter cycles ascending, descending, default order; a row opens to the cover,
   kind, rank, summary, every technology, links and screenshots, so a hidden column is still reachable), **Cards** (cover, kind, rank,
   summary, tags, links) and **Heatmap** (a squarified treemap: **area is the number of technologies of the project, colour its kind**, both

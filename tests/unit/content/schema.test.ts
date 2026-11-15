@@ -9,6 +9,7 @@ import {
   liveSchema,
   localize,
   messageSchema,
+  projectSchema,
   resolveItems,
   settingsSchema,
   shellSchema,
@@ -33,6 +34,52 @@ describe('fail-open defaults', () => {
 
   it('a skill defaults to the tools category', () => {
     expect(skillSchema.parse({}).category).toBe('tools');
+  });
+});
+
+describe("projects: platforms and the owner's settings", () => {
+  it('a project has no platform until it is given one, and a platform that does not exist is left out', () => {
+    expect(projectSchema.parse({}).platforms).toEqual([]);
+    expect(
+      projectSchema.parse({ platforms: ['mobile', 'toaster', 4, 'web'] })
+        .platforms,
+    ).toEqual(['mobile', 'web']);
+    expect(projectSchema.parse({ platforms: 'mobile' }).platforms).toEqual([]);
+  });
+
+  it('live has nothing fixed, nothing left out and every filter on for the Projects page', () => {
+    const { projects } = liveSchema.parse({});
+    expect(projects.sort).toEqual({ off: [] });
+    for (const group of ['tech', 'platform', 'kind', 'status'] as const)
+      expect(projects.filters[group]).toEqual({
+        enabled: true,
+        default: [],
+        force: [],
+        off: [],
+      });
+    expect(projects.filters.search).toEqual({ enabled: true, default: '' });
+  });
+
+  it('what is not one of the options is left out, so a slip in the console never breaks the page', () => {
+    const { projects } = liveSchema.parse({
+      projects: {
+        sort: { default: 'sideways', force: 'name', off: ['latest', 'nope'] },
+        filters: {
+          platform: { default: ['mobile', 7, null], off: 'web' },
+          tech: { force: ['angular'], enabled: false },
+          search: { default: 5 },
+        },
+      },
+    });
+    expect(projects.sort.default).toBeUndefined();
+    expect(projects.sort.force).toBe('name');
+    expect(projects.sort.off).toEqual(['latest']);
+    expect(projects.filters.platform.default).toEqual(['mobile']);
+    expect(projects.filters.platform.off).toEqual([]);
+    expect(projects.filters.tech).toMatchObject({
+      enabled: false,
+      force: ['angular'],
+    });
   });
 });
 

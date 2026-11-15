@@ -95,6 +95,10 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
 
 ## How a page arrives
 
+Projects: one line (the strip needs the height) with a search field, a **Filters** button and a sorter, each letting down a card (the shadcn popover): in the filters a platform is a vehicle (phone, globe, screen,
+spark), a status says whether the trip goes on or has arrived (a route, a flag) and a technology is a **luggage tag**; a pin marks the line of how many postcards are left
+(`blocks/projects-toolbar.tsx`). The strip opens with the featured ones first (`fallbackSort`), unless the owner or the visitor says otherwise; the rules are `hooks/use-project-view.ts` and `lib/derive/project-view.ts`.
+
 Every page has an entrance of its own, in the voice of its metaphor, played once when it opens (Only transform properties and opacity move,
 nothing loops, and reduced motion shows the final page): Home is put together piece by piece (portrait stamped on, facts pop in), Resume draws
 the dotted road while the stops light up and the guidebook of a stop opens like a book, Projects are dealt onto the table like postcards (from

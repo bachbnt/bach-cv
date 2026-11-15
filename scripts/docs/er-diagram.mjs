@@ -33,9 +33,10 @@ const CARDS = {
     f('logo'), f('thesisTitle'), f('thesisUrl'), f('thesisSourceUrl'), f('technologies', 'skill id[]', 'skills'), f('cv', 'full|compact|off'),
     ...SHARED, f('l10n', '{ degree, major, thesisTitle }'),
   ] },
-  projects: { x: 920, y: 70, w: 290, layer: 'runtime', sql: 'projects + 3 child tables', fields: [
+  projects: { x: 920, y: 70, w: 290, layer: 'runtime', sql: 'projects + 4 child tables', fields: [
     f('id', 'PK slug'), f('name'), f('kind', 'personal|freelance|...'), f('summary'), f('cover'), f('images', 'string[]'),
     f('startMonth', 'YYYY-MM | null'), f('endMonth', 'YYYY-MM | null'), f('technologies', 'skill id[]', 'skills'),
+    f('platforms', 'mobile|web|desktop|ai[]'),
     f('links', 'object[]'), f('label', '', '', true), f('url', '', '', true), f('kind', '', '', true),
     ...SHARED, f('sort', 'int'), f('l10n', '{ summary }'),
   ] },
@@ -66,6 +67,7 @@ const SITE = {
     f('home … payment', 'on | soon | hidden', '', true), f('features', '{ 4 switches }'),
     f('chat, cvDownload,', 'bool', '', true), f('contactForm, connectMenu', 'bool', '', true),
     f('prefs', '{ skin, theme, language }'), f('default, force', 'one option', '', true), f('off', 'option[]', '', true),
+    f('projects', '{ sort, filters }'), f('enabled, default,', 'filter settings', '', true), f('force, off', 'value[]', '', true),
   ] },
   profile: { x: 1290, y: 640, w: 290, layer: 'runtime', sql: 'site_doc (JSON)', title: 'site/profile', fields: [
     f('fullName'), f('summary'), f('location'), f('covers', 'string[]'),
@@ -87,7 +89,7 @@ const same = (label, drawn, real) => {
   if (a !== b) throw new Error(`${label}: drawing has [${a}] but schema.ts has [${b}]`);
 };
 for (const [k, c] of Object.entries(CARDS)) same(k, top(c), COLLECTIONS[k].shape);
-same('live', ['maintenance', 'pages', 'features', 'prefs'], liveSchema.shape);
+same('live', ['maintenance', 'pages', 'features', 'prefs', 'projects'], liveSchema.shape);
 same('shell', top(SITE.shell), shellSchema.shape);
 same('profile', top(SITE.profile), profileSchema.shape);
 same('settings', top(SITE.settings), settingsSchema.shape);
