@@ -166,7 +166,7 @@ css/                one file for each area, imported in this order by skin.tsx (
                       sprites.css (the loops inside the drawings), overlays.css, pages-trip.css, pages-postcards.css, pages-desk.css
 map/                geo (generated), projection, iso, route, sights, camera, the map component and its layers, sprites/
 shell/              the frame: header, rail, menus, context (trip stops, CV window), overlays
-ui/                 tl-root, tl-button, tl-kicker, tl-chip, tl-panel (card or sheet), tl-page, data states, status screens
+ui/                 tl-root, tl-button, tl-kicker, tl-chip, tl-panel (card or sheet), tl-page, data states, status screens (404, Coming soon and 500 "Delayed" for a page that threw, whose sheet opens tall on a phone)
 pages/ blocks/      the seven pages and what they are made of
 ```
 

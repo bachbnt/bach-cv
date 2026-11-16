@@ -33,6 +33,9 @@ The Home page of each skin, and the first version of the site.
   menu), a site-wide maintenance screen, and, for the **skin, the colour theme and the language**, what to offer, what to show a visitor
   who has not chosen, and what to force on everyone (`prefs`, below). Every content document has a `visible` flag that the Firestore rules enforce, so a
   hidden item is never sent to a visitor.
+- **Errors never leave a blank page.** A page that throws shows an error screen in the look of the skin that is on (`PageError`, inside
+  its frame; Standard has `app/error.tsx`), and if even the frame fails, `app/global-error.tsx` shows a plain last screen. Try again forgets
+  the content the browser kept and reloads. A browser that blocks its storage still opens the site.
 - **Bilingual.** English and Vietnamese. Interface copy is typed (`defineCopy(en, vi)`); content is translated through an `l10n.vi`
   overlay on each document.
 - **Static and cheap.** `output: 'export'` served by Firebase Hosting; the browser reads Firestore with the lite SDK and

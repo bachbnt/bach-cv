@@ -238,7 +238,7 @@ ${table(
   ['Query', 'staleTime', 'Other'],
   [
     [c('site/live'), '60 s', 'refetch when the tab regains focus'],
-    ['profile, settings, collections', '5 minutes', 'persisted to localStorage for 24 h (payments are never persisted); bump the cache version when the schema changes'],
+    ['profile, settings, collections', '5 minutes', 'persisted to localStorage for 24 h (payments are never persisted); bump the cache version when the schema changes (now <code>v2-3</code>). <code>site/live</code> is also parsed again when it comes back from the cache, so a field added later (such as <code>projects</code>) is filled with its default instead of being missing'],
   ],
 )}
 <p>Returning visitors read from the persisted cache and only refetch what is stale. Idea for later: load blocks below the fold when they near the

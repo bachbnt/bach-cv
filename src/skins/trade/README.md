@@ -129,7 +129,7 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
 ## Where things are
 
 ```text
-skin.tsx            SkinDefinition: Frame (TradeShell) + one component for each page + NotFound + Maintenance
+skin.tsx            SkinDefinition: Frame (TradeShell) + one component for each page + NotFound + PageError + Maintenance
 config.ts           the watchlist (tickers, routes, order, hidden/soon), the ranges, the phone bar, the chart seed
 trade.css           the palette (--tv-*, dark and light), the shadcn tokens mapped to it, focus ring, keyframes, view transitions
 shell/              toolbar and its menus, tool rail (the drawing tools), icon rail (chat, Connect), range bar, watchlist, hero note,
@@ -313,7 +313,8 @@ layout is the skin's. Words only these screens have (the kickers, "Trade", "Reco
 - **System screens** (`ui/tv-*`): 404 is "Symbol not found" (with the path), Coming soon is "Pre-market" (no date), maintenance is "Market
   closed", each with candles that draw themselves (`tv-candle-art.tsx`); loading is a chart of grid lines and breathing bars
   (`tv-chart-skeleton.tsx`, `tv-skeleton.tsx`) with a line sweeping along the top, empty is "No data for this symbol" and an error
-  is the widget error with Try again.
+  is the widget error with Try again. A page that throws is the same screen with a "Feed error" tag and the code 500 (`TvStatusScreen`
+  variant `error`, shown by `PageError`): Reconnect forgets the saved content and reloads, Home leaves it.
 - Motion is transform and opacity only (the count-up is the one script), all of it off for reduced motion (the rule at the end of
   `trade.css`; the count-up and the timeline check `useReducedMotion`).
 - Tests: `tests/automation/skins/trade-desk-about|services|payment.spec.ts`, `trade-states.spec.ts`.

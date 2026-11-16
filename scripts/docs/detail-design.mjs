@@ -125,7 +125,7 @@ ${fig(layers(), 'Solid arrows: allowed dependencies. Dashed: shared helpers.', 1
 ${table(
   ['Folder', 'Responsibility'],
   [
-    [c('src/app'), 'App Router: routes, root layout (fonts, providers, favicon), 404, global CSS and design tokens'],
+    [c('src/app'), 'App Router: routes, root layout (fonts, providers, favicon), 404, the screens for an error (<code>error</code>, <code>global-error</code>), global CSS and design tokens'],
     [c('src/components'), 'UI by page or feature; <code>ui/</code> is shadcn (Base UI); <code>page-shell</code>, <code>page-gate</code>, <code>maintenance-gate</code>, header, footer'],
     [c('src/lib/content'), 'the data contract (Zod schemas, helpers <code>resolveItems</code>, <code>localize</code>), the repository interface, the lite adapter, the embedded shell'],
     [c('src/lib/derive'), 'the pure functions that turn content into what the UI shows (years in software, the current and the first role, the months a skill was used and its Used at, a degree abbreviation, groups, orderings, initials, the series of the Trade chart, the tally of the years a skill was used, the rows of the timeline of the career, the payment kinds, the pages that are on, the offered languages, the core stack, the contacts, the visible specialties, which role or degree was active at a date, what Home lists); Standard and every skin import them, one test file each in <code>tests/unit/lib/derive</code>'],
@@ -156,6 +156,7 @@ ${table(
     [c('/services'), 'services', 'service cards with drawings, contact form', 'services, settings'],
     [c('/payment'), 'payment', 'preferred methods, more ways to pay, QR dialog, copy buttons; paused state', 'payments (only here)'],
     ['other', '-', '404 screen', '-'],
+    ['other', '-', 'error screen (a page that threw)', '-'],
   ],
 )}
 <p>Header and menus read ${c('site/live')} and ${c('contacts')} on every page. The chat button and the language switch are mounted for the whole site; the chat panel and the conversation (<code>ChatDock</code>) are a separate chunk, loaded when the button is first opened or when the pointer or the focus reaches it.</p>
@@ -305,7 +306,7 @@ ${table(
   ['Part', 'How it works'],
   [
     ['Before the first paint', 'a small inline script in <code>&lt;head&gt;</code> puts the saved choice on <code>&lt;html data-skin&gt;</code>; the body stays hidden until <code>data-skin-ready</code>. Standard visitors get no attribute and no delay. While the skin comes, a thin line runs along the top (<code>html::after</code>) so the page is not blank. If the skin has not become ready after 8 seconds, the script removes the attribute and Standard shows (no blank page when a chunk fails to load).'],
-    ['Loading', '<code>SkinFrame</code> shows Standard (<code>children</code>) or loads the skin with <code>import()</code> from the registry. A skin is a <code>SkinDefinition</code>: <code>Frame</code>, one component per page, <code>NotFound</code>, <code>Maintenance</code>; a missing page does not compile. Its code is downloaded only when chosen.'],
+    ['Loading', '<code>SkinFrame</code> shows Standard (<code>children</code>) or loads the skin with <code>import()</code> from the registry. A skin is a <code>SkinDefinition</code>: <code>Frame</code>, one component per page, <code>NotFound</code>, <code>PageError</code>, <code>Maintenance</code>; a missing page does not compile. Its code is downloaded only when chosen.'],
     ['Same content', 'a skin reads the same hooks (<code>lib/query</code>, <code>use-live</code>) and the same interface copy as Standard, so data states, errors, switches, keyboard and both languages behave the same. Layers do not change: a skin sits beside <code>components</code> and never imports Firebase.'],
     ['Styling', 'one Tailwind build for every skin (<code>globals.css</code> scans <code>src/skins</code>); the Dev palette is theme colours whose values sit on <code>html[data-skin=\'dev\']</code>, dark and light, and the shadcn tokens are mapped to it so dialogs follow the skin. CSS files hold only keyframes, view transitions and token colours.'],
     ['Dev only: Terminal', 'a small working shell in the bottom panel (<code>help</code>, <code>ls</code>, <code>cd</code>, <code>cv</code>, <code>connect</code>, <code>ask</code>, <code>clear</code>, <code>exit</code>) that drives what Standard already has: navigation, the CV window, the Connect menu and BB Bot. It honours the <code>site/live</code> switches (a hidden page does not exist, a soon page says so).'],
@@ -332,6 +333,7 @@ ${table(
     [c('Providers'), 'persisted query client, language, tooltip, chat state, maintenance gate, scroll reveal, chat widget'],
     [c('SitePage / PageShell / PageGate'), 'colours per page, header and footer, the on / soon / hidden switch'],
     [c('MaintenanceGate'), 'replaces the whole site when maintenance is on'],
+    [c('PageErrorBoundary'), 'around the page of a skin: if the page throws, the frame stays and the skin\'s <code>PageError</code> shows in its place; another path puts the page back'],
     [c('SiteHeader, ConnectMenu, MobileMenu, LanguageSwitch'), 'navigation driven by site/live; contacts grouped by <code>menuGroup</code>; drawer below 1200 px'],
     [c('Tag, BrandIcon, Button'), 'design tokens: category colours, brand marks. One <code>Button</code> for every action: filled ink is the main action (one per card or dialog), outline is the second, an underlined link is the quiet one (with an arrow when it leaves the site). 40 px high, 44 px on touch and phones.'],
     ['Focus rings', 'the global <code>:focus-visible</code> outline is kept: no control sets <code>outline-none</code> without its own ring. A browser test tabs through the pages and the dialogs and fails on any control without one.'],
@@ -358,6 +360,10 @@ ${table(
   [
     ['site/live cannot be read', 'defaults: every page and feature on, no maintenance, nothing forced or left out of the skin, theme and language menus'],
     ['a slip in <code>site/live</code> <code>prefs</code>', 'a value that is not one of the options counts for nothing; the rest is used (so a typo in the console never breaks the site)'],
+    ['a page throws while it renders', 'Standard: <code>app/error.tsx</code> inside its header and footer. A skin: its own <code>PageError</code> inside its frame (Dev a terminal that exits with code 1, Trade a feed error, Academic a page not finished, Travel a delayed trip). Try again forgets the content the browser kept (<code>bach-cv-query</code>) and reloads; Home leaves the error behind. The message of the error is never shown, only the console gets it'],
+    ['the frame, a provider or an error screen throws', '<code>app/global-error.tsx</code>: plain markup with its own styles, no skin, theme, provider or data, so nothing in it can fail; light or dark follows the browser, the language is the saved one (English if it cannot be read)'],
+    ['the browser does not allow its storage (a private window, blocked cookies)', 'the site works and keeps nothing: the persisted cache falls back to an empty one'],
+    ['the content kept by an older version lacks a field', '<code>site/live</code> is parsed again when it is read from the cache and the default fills what is missing; the cache version is also bumped when the schema changes'],
     ['a collection query fails', 'that block shows its error or empty state with Try again; the rest of the page works'],
     ['one malformed document', 'it is skipped (parsed with <code>safeParse</code>); the others show'],
     ['no translation for a field', 'the English text'],

@@ -74,7 +74,7 @@ drives what Standard already has, so no content or data is added). The code is i
   `tests/unit/skin/terminal.test.ts` covers it without React. `use-terminal.ts` holds the scrollback, the history and the keys;
   `use-terminal-actions.ts` does what a command asks of the page (Next.js navigation, the CV window, the chat); `dev-terminal.tsx` is the view.
 - Commands: `help`, `ls` (the files of the tabs; a page that is `soon` is marked), `cd <page>` (key, file name with or without extension in
-  any case, `~`, `..` or nothing for Home; a hidden page does not exist, a `soon` page says it is coming soon), `cv`, `connect`, `ask`
+  any case, `~`, `..` or nothing for Home; a hidden page does not exist, a `soon` page says it is coming soon; a page that throws is `PageError`, the same terminal card with 500 and Retry / Home), `cv`, `connect`, `ask`
   (each prints `opening ...` then opens its window, or says `not available` when its switch is off: `cvDownload`, `connectMenu`,
   `chat`), `clear` (and Ctrl+L), `exit` (closes the panel). Anything else is `zsh: command not found`.
 - Keys: Enter runs, Arrow up and down browse the history, Tab completes a command or a page after `cd` (several matches are listed, and
@@ -124,7 +124,7 @@ chat opened | viewer opened | copied`, `I/Terminal: ls`, `E/Runtime: uncaught (T
 ## Where things are
 
 ```text
-skin.tsx            SkinDefinition: Frame (DevShell) + one component for each page + NotFound + Maintenance
+skin.tsx            SkinDefinition: Frame (DevShell) + one component for each page + NotFound + PageError + Maintenance
 dev.css             the palette (dark and light), the base of links/images/buttons, code colours, keyframes and view transitions
 dev-extra.css       focus ring, shadcn tokens mapped to the palette, reduced motion, folder animation
 css/<area>.css      keyframes of an area (imported by skin.tsx, or by the page when only that page needs them)

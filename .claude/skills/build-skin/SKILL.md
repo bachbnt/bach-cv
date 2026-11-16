@@ -66,6 +66,8 @@ No id: ask which one. One skin per run.
   copy a helper from another skin, replace copies you find. If the data lacks a field, add it to the schema and the documents, do not
   infer it in a component. Layout, geometry and animation maths stay in the skin. (2) A feature, a behaviour change or a data fix is
   applied to Standard and to EVERY skin in the same change, with copy keys, tests and docs; grep the other skins for the same concept.
+- **Docs go with the code, in the same change** (`.ai/project.md`, "Docs go with the code"): the root README, the README of the skin,
+  `.ai/*.md` and the design documents (edit `scripts/docs/*.mjs`, run `npm run docs`). Report "docs checked, no change" if none needed.
 - Data only through `lib/query` hooks, never Firebase. Interface copy in `content/copy/*` with `defineCopy` (en **and** vi); words only
   this skin has go in `content/copy/<id>*.ts`. No visible literal in JSX, `aria-label`, `title`, `alt`. The UI word is "Skin"; a skin
   name never contains "Giao diện". A control that looks different keeps the Standard accessible name.
@@ -119,7 +121,7 @@ No id: ask which one. One skin per run.
 ## 3. Build
 
 ```
-skin.tsx          default-exports the SkinDefinition (Frame, pages, NotFound, Maintenance); imports the skin CSS
+skin.tsx          default-exports the SkinDefinition (Frame, pages, NotFound, PageError, Maintenance); imports the skin CSS
 config.ts         nav items, page-key -> label / icon / route (pure, unit-testable)
 fonts.ts          next/font declarations
 <id>.css          palette (dark base, light :not(.dark)), shadcn tokens mapped to it, base rules in @layer base
@@ -135,7 +137,8 @@ Order of work (validate between steps, keep the app compiling after each):
 
 1. Palette, fonts, root, theme tokens, `Frame` with the real navigation (`aria-current`, Soon marker, hidden pages absent, keyboard) and
    the header controls Standard has. Write the plan in the skin's README first (page <-> metaphor mapping, shell, tokens).
-2. `Maintenance`, `NotFound`, the state screens (loading skeleton, empty, error with Try again), the shared data-state primitive.
+2. `Maintenance`, `NotFound`, `PageError` (the screen for a page that threw: the skin's status screen with the code 500, Try again that
+   calls `recover` and Home), the state screens (loading skeleton, empty, error with Try again), the shared data-state primitive.
 3. The pages one by one, each after reading its Standard component; then the overlays (viewer, chat docked or sheet, CV, Connect, QR).
 4. Phone, reduced motion, light theme, both languages, then the polish pass: hover / press / focus on every control, one motion scale.
 5. Big engines (chart, map) in their own lazy chunk, geometry in pure unit-tested modules, scene art in its own files.
@@ -147,7 +150,7 @@ Order of work (validate between steps, keep the app compiling after each):
 - Unit tests in `tests/unit/skin/<id>-*.test.ts`: the skin's pure logic; **CSS rules** (prefix, hover only inside `@media (hover: hover)`,
   palette in both themes, no duplicate `@keyframes`, every utility colour has a theme token); **contrast**; copy keys in en and vi.
   Playwright in `tests/automation/skins/<id>-*.spec.ts` with `useSkin`, `mockFirestore`, `mockImages`, `mockWorker`, `gotoSkin`: all seven
-  pages with the real seed, every Standard datum, link and action, the states (loading, error + retry, empty, soon, maintenance, 404),
+  pages with the real seed, every Standard datum, link and action, the states (loading, error + retry, empty, soon, maintenance, 404, a page that throws: see `tests/automation/errors.spec.ts`),
   vi, reduced motion, phone width, keyboard, the overlays, the `site/live` switches, and the Skin switch back to Standard.
 - Run Playwright with its own server: `PW_PORT=<port> NEXT_DIST_DIR=.next-<id> NEXT_PUBLIC_CHAT_PROXY_URL=http://localhost:9999/chat
 PW_CHANNEL=chrome npx playwright test <specs> --workers=2 --timeout=90000` (a server started with the real chat proxy URL breaks the
@@ -164,7 +167,7 @@ PW_CHANNEL=chrome npx playwright test <specs> --workers=2 --timeout=90000` (a se
 ## 5. Finish
 
 Remove `.next-*`, `test-results*`, `zz-*` scratch specs, stop the servers; `git status` shows only intended files. Report in Vietnamese:
-what was built per page (the metaphor and what each datum became), what was changed in shared files, the **derivations** created or
+what was built per page (the metaphor and what each datum became), what was changed in shared files, **docs checked** (which README, `.ai` and design documents were updated, or "no change"), the **derivations** created or
 used in `src/lib/derive/`, a **cross-skin check** (for each other skin: what you did for the same concept, or why it does not apply),
 the mock elements **dropped or made decoration**, test results (counts, flakes named), sizes, anything rough or undecided, and where
 the screenshots are. Do not commit.

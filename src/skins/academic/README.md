@@ -72,7 +72,7 @@ frame when the copy is taken (no measurement on a device was made).
 ## Where things are
 
 ```text
-skin.tsx            SkinDefinition: Frame (AcademicShell) + one component for each page + NotFound + Maintenance
+skin.tsx            SkinDefinition: Frame (AcademicShell) + one component for each page + NotFound + PageError + Maintenance
 academic.css        the palette (dark = chalkboard, light = whiteboard), the shadcn tokens, the board and its frame, paper, tape, pins, the hand-drawn line,
                     the ledge, keyframes and reduced motion
 css/<area>.css      pseudo-element decoration of an area (home-about, overlays, wipe) and what arrives on a page (reveal), imported by the component that needs it
@@ -82,7 +82,7 @@ shell/              the frame: header (language, skin, theme, Connect, CV), cont
 pages/<page>.tsx    one file for each page: AcPage + AcPageHead + the blocks
 blocks/             the parts of a page (named for their page)
 ui/                 ac-root, ac-page, ac-page-head, ac-section (chalk headings), ac-note (AcRow, a block with its margin note), ac-paper, ac-button,
-                    ac-chip, ac-menu, ac-icon (the drawn marks), ac-line-input, ac-soon-tag, ac-data-state, ac-state-notice, ac-skeleton, status screens
+                    ac-chip, ac-menu, ac-icon (the drawn marks), ac-line-input, ac-soon-tag, ac-data-state, ac-state-notice, ac-skeleton, status screens (404, Coming soon and 500 "Page not finished" for a page that threw)
 ```
 
 Projects: the search is a line written on the paper (`ui/ac-line-input`), the filters and the order are two hand-drawn buttons that each let down a **sheet of paper** (the shadcn popover with the paper of the board) with

@@ -34,6 +34,21 @@ This Next.js version differs from older releases. Read the relevant guide in
 - `scripts/`: Firestore backup and restore.
 - `tests/fixtures/seed.json`: a snapshot of the Firestore data for tests (payment accounts are fake).
 
+## Docs go with the code
+
+Whenever code changes, before finishing, read the documents that describe it and fix what is now wrong or missing, in the same
+change. Do not leave it for later.
+
+- The root `README.md`, and the README of every skin the change touches (`src/skins/<id>/README.md`: its file list, its system
+  screens and behaviour notes).
+- `.ai/*.md`, when a rule or a structure changed.
+- The design documents `docs/data-design.html` and `docs/detail-design.html` (and the entity diagram, `docs/schema.sql`). They are
+  generated from `scripts/docs/*.mjs`: edit the script, run `npm run docs`, and keep the regenerated files with the change; never
+  edit `docs/*.html` by hand or run prettier on `docs/`.
+- A schema or data change always reaches the data design. A new module, screen, component, failure mode, cache rule or
+  `SkinDefinition` field reaches the detail design.
+- If nothing needs updating, say "docs checked, no change" in the report so it is clear they were looked at.
+
 ## Default Checks
 
 Run focused checks for the change, and before finishing broader changes run:
