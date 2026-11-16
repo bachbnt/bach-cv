@@ -171,14 +171,15 @@ for (const skin of SKINS) {
 }
 
 test.describe('the last screen, when the root of the app throws', () => {
-  /** A browser that does not allow its storage throws when the page only reads `window.localStorage`, which the root does at start. */
+  /** The root throws while it works out the language: `keepOf` is on the stack of the call, and nothing outside the providers is. */
   async function breakRoot(page: Page) {
     await page.addInitScript(() => {
-      Object.defineProperty(window, 'localStorage', {
-        get() {
-          throw new DOMException('blocked', 'SecurityError');
-        },
-      });
+      const original = Array.prototype.includes;
+      Array.prototype.includes = function (...args) {
+        if (/keepOf/.test(new Error().stack ?? ''))
+          throw new Error('the root is broken on purpose');
+        return Reflect.apply(original, this, args) as boolean;
+      };
     });
     await mockFirestore(page);
     await mockImages(page);
@@ -198,7 +199,7 @@ test.describe('the last screen, when the root of the app throws', () => {
     await expect(
       page.getByRole('link', { name: 'Back to home' }),
     ).toHaveAttribute('href', '/');
-    await expect(page.getByText('blocked')).toHaveCount(0);
+    await expect(page.getByText('broken on purpose')).toHaveCount(0);
   });
 
   test('follows the light or dark of the browser, and fits a phone', async ({
@@ -225,4 +226,30 @@ test.describe('the last screen, when the root of the app throws', () => {
       ),
     ).toBeLessThanOrEqual(1);
   });
+});
+
+test.describe('a browser that does not allow its storage', () => {
+  // reading `window.localStorage` throws there (a private window, blocked cookies): the site still opens, it only keeps nothing
+  for (const id of ['standard', 'dev', 'trade', 'academic', 'travel'] as const)
+    test(`opens the Projects page in the ${id} skin`, async ({ page }) => {
+      await page.addInitScript(() => {
+        Object.defineProperty(window, 'localStorage', {
+          get() {
+            throw new DOMException('blocked', 'SecurityError');
+          },
+        });
+      });
+      await mockFirestore(page);
+      await mockImages(page);
+      const errors: string[] = [];
+      page.on('pageerror', (e) => errors.push(e.message));
+      await page.goto('/projects?skin=' + id);
+      await expect(
+        page.getByRole('button', { name: /^Filters/ }).first(),
+      ).toBeVisible();
+      await expect(
+        page.getByRole('alert').filter({ hasText: 'Something went wrong' }),
+      ).toHaveCount(0);
+      expect(errors).toEqual([]);
+    });
 });

@@ -44,14 +44,18 @@ export function Providers({ children }: { children: ReactNode }) {
         },
       }),
   );
-  const [persister] = useState<Persister>(() =>
-    typeof window === 'undefined'
-      ? noopPersister
-      : createSyncStoragePersister({
-          storage: window.localStorage,
-          key: 'bach-cv-query',
-        }),
-  );
+  const [persister] = useState<Persister>(() => {
+    if (typeof window === 'undefined') return noopPersister;
+    try {
+      return createSyncStoragePersister({
+        storage: window.localStorage,
+        key: 'bach-cv-query',
+      });
+    } catch {
+      // a browser that does not allow its storage throws when it is only read: the site works, it just keeps nothing
+      return noopPersister;
+    }
+  });
 
   return (
     <PersistQueryClientProvider
