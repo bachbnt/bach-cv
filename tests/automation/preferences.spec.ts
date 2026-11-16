@@ -66,11 +66,11 @@ test.describe('the skins the owner leaves out', () => {
     await expect.poll(() => skinOn(page)).toBe('standard');
     await skinMenu(page).click();
     // wait for the menu to be open before reading it
-    await expect(page.getByRole('menuitemradio')).toHaveCount(3);
+    await expect(page.getByRole('menuitemradio')).toHaveCount(4);
     const names = await page.getByRole('menuitemradio').allTextContents();
     expect(names.join(' ')).toMatch(/Trade/);
     expect(names.join(' ')).not.toMatch(/Developer|Dev\b|Travel/);
-    expect(names).toHaveLength(3);
+    expect(names).toHaveLength(4);
   });
 
   test('cannot be asked for in the URL either', async ({ page }) => {
@@ -80,7 +80,9 @@ test.describe('the skins the owner leaves out', () => {
 
   test('can never take the default skin away', async ({ page }) => {
     await open(page, {
-      skin: { off: ['standard', 'dev', 'trade', 'academic', 'travel'] },
+      skin: {
+        off: ['standard', 'dev', 'trade', 'academic', 'travel', 'phone'],
+      },
     });
     await skinReady(page, 'standard');
     // nothing is left to choose: there is no Skin menu

@@ -57,7 +57,7 @@ describe('a preference (the skin as the example)', () => {
       { off: ['travel', 'dev'], default: 'travel' },
       { url: 'dev', saved: 'travel' },
     );
-    expect(r.options).toEqual(['standard', 'trade', 'academic']);
+    expect(r.options).toEqual(['standard', 'trade', 'academic', 'phone']);
     expect(r.value).toBe('standard');
   });
 
@@ -69,7 +69,7 @@ describe('a preference (the skin as the example)', () => {
   });
 
   it('has nothing to choose when only one is left', () => {
-    const r = skin({ off: ['dev', 'trade', 'academic', 'travel'] });
+    const r = skin({ off: ['dev', 'trade', 'academic', 'travel', 'phone'] });
     expect(r.options).toEqual(['standard']);
     expect(r.locked).toBe(true);
     expect(r.forced).toBe(false);

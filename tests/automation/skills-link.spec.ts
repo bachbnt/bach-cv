@@ -13,7 +13,14 @@ const SIZES = [
   { name: 'phone', width: 390, height: 844 },
 ];
 
-for (const skin of ['standard', 'dev', 'trade', 'academic', 'travel'] as const)
+for (const skin of [
+  'standard',
+  'dev',
+  'trade',
+  'academic',
+  'travel',
+  'phone',
+] as const)
   for (const size of SIZES)
     test(`${skin}: See all skills ends on the Skills section of Resume (${size.name})`, async ({
       page,

@@ -76,6 +76,13 @@ const SKINS: {
     home: 'Terminal',
     vi: { title: 'Chuyến này chưa cất cánh', retry: 'Đặt lại' },
   },
+  {
+    id: 'phone',
+    title: 'This app stopped',
+    retry: 'Reopen',
+    home: 'Home screen',
+    vi: { title: 'Ứng dụng đã dừng', retry: 'Mở lại' },
+  },
 ];
 
 async function open(page: Page, id: SkinId, path: string) {
@@ -230,7 +237,14 @@ test.describe('the last screen, when the root of the app throws', () => {
 
 test.describe('a browser that does not allow its storage', () => {
   // reading `window.localStorage` throws there (a private window, blocked cookies): the site still opens, it only keeps nothing
-  for (const id of ['standard', 'dev', 'trade', 'academic', 'travel'] as const)
+  for (const id of [
+    'standard',
+    'dev',
+    'trade',
+    'academic',
+    'travel',
+    'phone',
+  ] as const)
     test(`opens the Projects page in the ${id} skin`, async ({ page }) => {
       await page.addInitScript(() => {
         Object.defineProperty(window, 'localStorage', {
