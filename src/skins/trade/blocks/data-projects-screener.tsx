@@ -161,6 +161,7 @@ export function DataProjectsScreener() {
         subject='projects'
         skeleton={<DataProjectsSkeleton />}
         className='m-3.5'
+        skeletonClassName=''
       >
         <div onKeyDown={onKeyDown}>
           <DataScreenerBar

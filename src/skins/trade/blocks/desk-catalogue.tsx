@@ -18,6 +18,18 @@ import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 import { fill } from '@/lib/chat/fill';
 
 /**
+ * The heights of the five rows of a typical catalogue while it loads: on a phone the art is small and the button is under the text, in the
+ * middle widths the text is a narrow column beside a large art and the button, and from 896px of the panel the column is wide.
+ */
+const ROW = [
+  'h-[145px] @xl:h-[207px] @4xl:h-[158px]',
+  'h-[173px] @xl:h-[262px] @4xl:h-[158px]',
+  'h-[145px] @xl:h-[189px] @4xl:h-[158px]',
+  'h-[145px] @xl:h-[169px] @4xl:h-[158px]',
+  'h-[145px] @xl:h-[158px] @4xl:h-[158px]',
+];
+
+/**
  * The broker catalogue: each service is a row with its drawing of the skin (`TvServiceArt`, chosen by the `art` of the service), name and description, and a Trade action that picks the service as the topic of
  * the order ticket. Without a `onTrade` (the contact form is off) the rows have no action.
  */
@@ -46,8 +58,12 @@ export function DeskCatalogue({
         subject='services'
         skeleton={
           <div className='grid gap-2'>
-            {Array.from({ length: 3 }, (_, i) => (
-              <TvSkeleton key={i} className='h-32' />
+            {ROW.map((height, i) => (
+              <TvSkeleton
+                key={i}
+                data-skeleton={i === 0 ? 'item' : undefined}
+                className={height}
+              />
             ))}
           </div>
         }

@@ -23,6 +23,7 @@ import type { Density } from '@/skins/trade/blocks/data-projects-model';
 import { HintTip } from '@/skins/trade/chart/hint-tip';
 import { DataKind } from '@/skins/trade/blocks/data-kind';
 import { DataProjectDetail } from '@/skins/trade/blocks/data-project-detail';
+import { DataProjectStatus } from '@/skins/trade/blocks/data-project-status';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
@@ -69,34 +70,37 @@ export function ProjectRow({
           onOpenScreenshots={onOpenScreenshots}
         />
         <div className='min-w-0'>
-          <h3 className='text-[13px] leading-snug font-semibold'>
-            <HintTip
-              label={fill(open ? words.details.hide : words.details.show, {
-                name: project.name,
-              })}
-              side='top'
-            >
-              <button
-                type='button'
-                data-row-button=''
-                tabIndex={tabbable ? 0 : -1}
-                aria-expanded={open}
-                aria-controls={detailId}
-                onFocus={onFocusRow}
-                onClick={onToggle}
-                className='-ml-1 flex min-h-8 cursor-pointer items-center gap-1 rounded px-1 text-left pointer-coarse:min-h-11'
+          <div className='flex flex-wrap items-center gap-x-2'>
+            <h3 className='min-w-0 text-[13px] leading-snug font-semibold'>
+              <HintTip
+                label={fill(open ? words.details.hide : words.details.show, {
+                  name: project.name,
+                })}
+                side='top'
               >
-                <ChevronRight
-                  aria-hidden='true'
-                  className={cn(
-                    'size-3.5 flex-none text-tv-mute transition-transform duration-160',
-                    open && 'rotate-90',
-                  )}
-                />
-                <span className='min-w-0 break-words'>{project.name}</span>
-              </button>
-            </HintTip>
-          </h3>
+                <button
+                  type='button'
+                  data-row-button=''
+                  tabIndex={tabbable ? 0 : -1}
+                  aria-expanded={open}
+                  aria-controls={detailId}
+                  onFocus={onFocusRow}
+                  onClick={onToggle}
+                  className='-ml-1 flex min-h-8 cursor-pointer items-center gap-1 rounded px-1 text-left pointer-coarse:min-h-11'
+                >
+                  <ChevronRight
+                    aria-hidden='true'
+                    className={cn(
+                      'size-3.5 flex-none text-tv-mute transition-transform duration-160',
+                      open && 'rotate-90',
+                    )}
+                  />
+                  <span className='min-w-0 break-words'>{project.name}</span>
+                </button>
+              </HintTip>
+            </h3>
+            <DataProjectStatus project={project} />
+          </div>
           {comfy && project.summary && (
             <p className='line-clamp-2 pl-3.5 text-xs/[1.45] text-tv-mute'>
               {project.summary}

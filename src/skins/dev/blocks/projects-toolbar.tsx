@@ -18,6 +18,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { DevFilterGroup } from '@/skins/dev/blocks/filter-group';
 import { DevCaret } from '@/skins/dev/ui/dev-caret';
+import { activeFilterCount } from '@/lib/derive/project-view';
 
 const INPUT =
   'h-8 w-[190px] rounded-[4px] border border-line-2 bg-editor px-2.5 font-code text-[13px] leading-[normal] text-head outline-none placeholder:text-dim focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal max-[520px]:w-full pointer-coarse:min-h-11';
@@ -57,9 +58,7 @@ export function DevProjectsToolbar({ view }: { view: ProjectView }) {
   const showMore =
     moreOpen || techMore.some((o) => groups.tech.selected.includes(o.value));
   const anyFilter = Object.values(groups).some((group) => group.visible);
-  const active = Object.values(groups)
-    .filter((group) => group.visible)
-    .reduce((sum, group) => sum + group.selected.length, 0);
+  const active = activeFilterCount(groups);
   if (!anyFilter && !sort.visible && !search.visible) return null;
 
   return (

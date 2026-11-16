@@ -34,7 +34,7 @@ export function WorkRows() {
       level={3}
       skeleton={
         <RowsSkeleton
-          count={HOME_ROLES - 1}
+          count={HOME_ROLES}
           className='-mx-3 border-t min-[721px]:-mx-6'
         />
       }

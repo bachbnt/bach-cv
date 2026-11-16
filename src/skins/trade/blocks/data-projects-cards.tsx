@@ -18,6 +18,7 @@ import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { DataKind } from '@/skins/trade/blocks/data-kind';
+import { DataProjectStatus } from '@/skins/trade/blocks/data-project-status';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import type { Density } from '@/skins/trade/blocks/data-projects-model';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
@@ -116,6 +117,7 @@ function ProjectCard({
       <div className='flex flex-1 flex-col gap-2 p-3'>
         <div className='flex flex-wrap items-center gap-2'>
           <DataKind kind={project.kind} />
+          <DataProjectStatus project={project} />
           {project.highlight !== null && (
             <TvChip tone='gold'>
               {copy.featuredTag} {fill(words.rank, { rank: project.highlight })}

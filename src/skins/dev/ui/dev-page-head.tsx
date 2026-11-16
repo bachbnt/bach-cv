@@ -20,7 +20,7 @@ export function DevPageHead({
 }: {
   page: PageKey;
   title: string;
-  intro?: string;
+  intro?: ReactNode;
   children?: ReactNode;
 }) {
   const command = `code ${shownPath(DEV_FILES[page])}`;

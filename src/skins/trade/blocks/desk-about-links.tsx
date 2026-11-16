@@ -43,11 +43,16 @@ export function DeskAboutLinks() {
         subject='contact'
         level={3}
         skeleton={
-          <div className='grid gap-2'>
+          <>
+            <TvSkeleton className='mb-2 h-9' />
             <TvSkeleton className='h-10' />
             <TvSkeleton className='h-10' />
-            <TvSkeleton className='h-10' />
-          </div>
+            <div className='mt-2 grid gap-2'>
+              {Array.from({ length: 3 }, (_, i) => (
+                <TvSkeleton key={i} className='h-24' />
+              ))}
+            </div>
+          </>
         }
       >
         {email && <TvEmailRow email={email} className='mb-2' />}

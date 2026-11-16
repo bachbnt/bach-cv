@@ -30,9 +30,20 @@ const TRACK: Record<ProjectColumn, { width: string; min: number }> = {
   links: { width: 'minmax(140px,1.3fr)', min: 140 },
 };
 
-const shownColumns = (columns: Set<ProjectColumn>) =>
+export const shownColumns = (columns: Set<ProjectColumn>) =>
   (Object.keys(TRACK) as ProjectColumn[]).filter(
     (column) => column === 'name' || columns.has(column),
+  );
+
+/** The tracks of the table for the columns shown, and the width under which it scrolls inside its own box (the loading skeleton lays out the same grid). */
+export const gridStyle = (shown: ProjectColumn[]) =>
+  cssVars(
+    { '--tv-cols': shown.map((column) => TRACK[column].width).join(' ') },
+    {
+      // the 12px gaps between columns and the 12px padding on each side
+      minWidth:
+        shown.reduce((sum, column) => sum + TRACK[column].min + 12, 0) + 12,
+    },
   );
 
 /** The projects as a data grid: sortable columns, the columns of the visitor's choice, a row that opens to everything about the project. */
@@ -66,14 +77,7 @@ export function DataProjectsGrid({
   const activeId = projects.some((p) => p.id === active)
     ? active
     : projects[0]?.id;
-  const style = cssVars(
-    { '--tv-cols': shown.map((column) => TRACK[column].width).join(' ') },
-    {
-      // the 12px gaps between columns and the 12px padding on each side
-      minWidth:
-        shown.reduce((sum, column) => sum + TRACK[column].min + 12, 0) + 12,
-    },
-  );
+  const style = gridStyle(shown);
 
   const toggle = (id: string) =>
     setOpen((old) => {

@@ -4,17 +4,17 @@
 
 'use client';
 
-import { Info } from 'lucide-react';
 import { startTransition, ViewTransition } from 'react';
 import { DataState } from '@/components/data-state';
 import { PaymentEmpty } from '@/components/payment/payment-empty';
 import { PaymentFeature } from '@/components/payment/payment-feature';
 import { PaymentQrDialog } from '@/components/payment/payment-qr-dialog';
+import { PaymentNote } from '@/components/payment/payment-note';
 import { PaymentRow } from '@/components/payment/payment-row';
+import { PaymentSkeleton } from '@/components/payment/payment-skeleton';
 import { PaymentToast } from '@/components/payment/payment-toast';
 import { useToast } from '@/hooks/use-toast';
 import { usePaymentMethods } from '@/components/payment/use-payment-methods';
-import { Skeleton } from '@/components/ui/skeleton';
 import { paymentCopy } from '@/content/copy/payment';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
@@ -35,8 +35,9 @@ export function PaymentList() {
       empty='services'
       emptyContent={<PaymentEmpty />}
       subject='payments'
-      skeleton={<Skeleton className='h-[260px] max-w-[720px] rounded-3xl' />}
+      skeleton={<PaymentSkeleton />}
       className='mt-12'
+      skeletonClassName='mt-0'
     >
       <PaymentMethods methods={methods} />
     </DataState>
@@ -66,13 +67,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
 
   return (
     <>
-      <p className='mt-7 flex max-w-[720px] items-start gap-3 rounded-xl border bg-card px-4 py-3.5 text-[15px] leading-normal text-body'>
-        <Info
-          className='mt-0.5 size-5 flex-none text-page'
-          aria-hidden='true'
-        />
-        <span>{copy.note}</span>
-      </p>
+      <PaymentNote />
 
       {featured.length > 0 && (
         <section aria-labelledby='pay-featured-h' className='mt-14'>

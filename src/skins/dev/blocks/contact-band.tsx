@@ -47,8 +47,8 @@ export function DevContactBand() {
           level={3}
           skeleton={
             <>
-              <DevSkeleton className='h-8 w-[280px] max-w-full' />
-              <DevSkeleton className='mt-3 h-[18px] w-[200px] max-w-full' />
+              <DevSkeleton className='h-8 w-full max-w-[280px]' />
+              <DevSkeleton className='mt-3 h-[18px] w-full max-w-[200px] min-[901px]:max-[1279px]:h-[39px]' />
             </>
           }
         >

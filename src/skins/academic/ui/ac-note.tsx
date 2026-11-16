@@ -60,7 +60,14 @@ export function AcRow({
   children: ReactNode;
 }) {
   const id = useId();
-  if (!note) return <div className={cn('min-w-0', className)}>{children}</div>;
+  // the words sit in the same place of the tree with a note and without one (a note comes and goes as the data loads), so they are not
+  // mounted again, which would make every query they read start again
+  if (!note)
+    return (
+      <div className={cn('min-w-0', className)}>
+        <div className='min-w-0'>{children}</div>
+      </div>
+    );
   return (
     <div
       className={cn(

@@ -8,7 +8,7 @@ import { evidenceLine } from '@/components/skills/skill-text';
 import { resumeCopy } from '@/content/copy/resume';
 import { useCopy } from '@/lib/i18n/copy';
 import { AREA_INK } from '@/skins/academic/blocks/resume-tags';
-import type { SkillRow } from '@/skins/academic/blocks/resume-skills-model';
+import type { SkillRow } from '@/lib/derive/skill-rows';
 import { cn } from '@/lib/utils';
 import { coreStack } from '@/lib/derive/core-stack';
 

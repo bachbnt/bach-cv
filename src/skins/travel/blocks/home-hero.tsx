@@ -14,7 +14,9 @@ import { shell } from '@/lib/content/shell';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
-import { useCareerYears, useYearsText } from '@/lib/query/use-career-years';
+import { YearsText } from '@/components/years-text';
+import { useCareerYears } from '@/lib/query/use-career-years';
+import { HomeHeroSkeleton } from '@/skins/travel/blocks/home-hero-skeleton';
 import { useTravel } from '@/skins/travel/shell/travel-context';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlKicker } from '@/skins/travel/ui/tl-kicker';
@@ -30,9 +32,11 @@ export function HomeHero() {
   const copy = useCopy(homeCopy);
   const words = useCopy(travelTripCopy).home;
   const { lang } = useLang();
-  const { stops, touring, startTour, stopTour, selectedId } = useTravel();
+  const { stops, touring, startTour, stopTour, selectedId, queries } =
+    useTravel();
+  // the counters and the trip button come with the roles: until then their places are blank, so the page does not jump
+  const pending = queries.experience.isPending || queries.education.isPending;
   const years = useCareerYears();
-  const intro = useYearsText(copy.intro, copy.introUndated);
   const riding = touring
     ? stops.find((s) => s.map.id === selectedId)?.map.title
     : undefined;
@@ -66,69 +70,79 @@ export function HomeHero() {
         {copy.title}
       </h1>
       <p className='tl-rise m-0 text-tl-muted' style={turn(300)}>
-        {intro}
+        <YearsText withYears={copy.intro} withoutYears={copy.introUndated} />
       </p>
-      <ul className='m-0 flex list-none flex-wrap gap-2 p-0'>
-        {years !== null && (
-          <li
-            className='tl-chip-in min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'
-            style={pop(420)}
-          >
-            <b className='block text-[22px]/[1.1]'>{years}</b>
-            <span className='text-xs font-semibold'>{words.yearsLabel}</span>
-          </li>
-        )}
-        {stops.length > 0 && (
-          <li
-            className='tl-chip-in min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'
-            style={pop(500)}
-          >
-            <b className='block text-[22px]/[1.1]'>{stops.length}</b>
-            <span className='text-xs font-semibold'>{words.stopsLabel}</span>
-          </li>
-        )}
-      </ul>
-      {stops.length > 0 && (
-        <div className='flex items-center gap-3'>
-          <TlButton
-            variant='solid'
-            aria-pressed={touring}
-            onClick={touring ? stopTour : startTour}
-            className='tl-chip-in flex-none'
-            style={pop(620)}
-          >
-            {touring ? (
-              <Square aria-hidden='true' />
-            ) : (
-              <Play aria-hidden='true' />
-            )}
-            {touring ? words.stopTrip : words.startTrip}
-          </TlButton>
-          {/* the sentence is for the screen reader; what is seen is a badge on the same row as the button, so the row never changes height */}
-          <p role='status' className='m-0 min-w-0'>
-            {riding && (
-              <>
-                <span className='sr-only'>
-                  {fill(words.tripRunning, { name: riding })}
+      {pending ? (
+        <HomeHeroSkeleton />
+      ) : (
+        <>
+          <ul className='m-0 flex list-none flex-wrap gap-2 p-0'>
+            {years !== null && (
+              <li
+                className='tl-chip-in min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'
+                style={pop(420)}
+              >
+                <b className='block text-[22px]/[1.1]'>{years}</b>
+                <span className='text-xs font-semibold'>
+                  {words.yearsLabel}
                 </span>
-                <span
-                  aria-hidden='true'
-                  className='tl-rise flex max-w-full min-w-0 items-center gap-2 rounded-full bg-tl-chip py-1.5 pr-3.5 pl-3 text-tl-chip-ink'
-                >
-                  <span className='tl-live relative size-2 flex-none rounded-full bg-tl-teal' />
-                  <span className='flex min-w-0 flex-col leading-tight'>
-                    <small className='text-[10.5px] font-extrabold tracking-[0.8px] text-tl-coral uppercase'>
-                      {words.ridingTo}
-                    </small>
-                    <b className='truncate text-[13.5px] font-extrabold'>
-                      {riding}
-                    </b>
-                  </span>
-                </span>
-              </>
+              </li>
             )}
-          </p>
-        </div>
+            {stops.length > 0 && (
+              <li
+                className='tl-chip-in min-w-[110px] flex-1 rounded-2xl bg-tl-chip px-3 py-2 text-tl-chip-ink'
+                style={pop(500)}
+              >
+                <b className='block text-[22px]/[1.1]'>{stops.length}</b>
+                <span className='text-xs font-semibold'>
+                  {words.stopsLabel}
+                </span>
+              </li>
+            )}
+          </ul>
+          {stops.length > 0 && (
+            <div className='flex items-center gap-3'>
+              <TlButton
+                variant='solid'
+                aria-pressed={touring}
+                onClick={touring ? stopTour : startTour}
+                className='tl-chip-in flex-none'
+                style={pop(620)}
+              >
+                {touring ? (
+                  <Square aria-hidden='true' />
+                ) : (
+                  <Play aria-hidden='true' />
+                )}
+                {touring ? words.stopTrip : words.startTrip}
+              </TlButton>
+              {/* the sentence is for the screen reader; what is seen is a badge on the same row as the button, so the row never changes height */}
+              <p role='status' className='m-0 min-w-0'>
+                {riding && (
+                  <>
+                    <span className='sr-only'>
+                      {fill(words.tripRunning, { name: riding })}
+                    </span>
+                    <span
+                      aria-hidden='true'
+                      className='tl-rise flex max-w-full min-w-0 items-center gap-2 rounded-full bg-tl-chip py-1.5 pr-3.5 pl-3 text-tl-chip-ink'
+                    >
+                      <span className='tl-live relative size-2 flex-none rounded-full bg-tl-teal' />
+                      <span className='flex min-w-0 flex-col leading-tight'>
+                        <small className='text-[10.5px] font-extrabold tracking-[0.8px] text-tl-coral uppercase'>
+                          {words.ridingTo}
+                        </small>
+                        <b className='truncate text-[13.5px] font-extrabold'>
+                          {riding}
+                        </b>
+                      </span>
+                    </span>
+                  </>
+                )}
+              </p>
+            </div>
+          )}
+        </>
       )}
     </header>
   );

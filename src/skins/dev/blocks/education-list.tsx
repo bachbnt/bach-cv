@@ -6,7 +6,7 @@
 
 import { useContentQuery } from '@/lib/query/use-content';
 import { DevEducationCards } from '@/skins/dev/blocks/education-cards';
-import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
+import { DevEducationSkeleton } from '@/skins/dev/blocks/education-skeleton';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 
 /** Degrees, with the loading, empty and error states of every data block. */
@@ -20,7 +20,7 @@ export function DevEducationList() {
       empty='education'
       subject='education'
       level={3}
-      skeleton={<DevCardsSkeleton count={2} min={380} height={420} />}
+      skeleton={<DevEducationSkeleton />}
     >
       <DevEducationCards degrees={degrees} />
     </DevDataState>

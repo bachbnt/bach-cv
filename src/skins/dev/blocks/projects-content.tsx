@@ -10,13 +10,16 @@ import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { highlighted } from '@/lib/derive/highlighted';
-import { FeaturedProject } from '@/skins/dev/blocks/featured-project';
+import {
+  FEATURED_LIST,
+  FeaturedProject,
+} from '@/skins/dev/blocks/featured-project';
 import { ProjectGrid } from '@/skins/dev/blocks/project-grid';
+import { ProjectsSkeleton } from '@/skins/dev/blocks/projects-skeleton';
 import { useOpenScreenshots } from '@/skins/dev/blocks/use-open-screenshots';
 import { countHint } from '@/skins/dev/ui/count-hint';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevSection } from '@/skins/dev/ui/dev-section';
-import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
 
 /** Featured projects (by rank), then every project with the kind filter. */
 export function ProjectsContent() {
@@ -39,15 +42,16 @@ export function ProjectsContent() {
       count={projects.length}
       empty='projects'
       subject='projects'
-      skeleton={<DevCardsSkeleton count={3} min={320} height={380} />}
+      skeleton={<ProjectsSkeleton />}
       className='mt-[54px]'
+      skeletonClassName=''
     >
       {featured.length > 0 && (
         <DevSection
           title={copy.featured}
           hint={countHint(hints, 'projects', featured.length)}
         >
-          <div className='grid gap-[18px]'>
+          <div className={FEATURED_LIST}>
             {featured.map((project) => (
               <FeaturedProject
                 key={project.id}

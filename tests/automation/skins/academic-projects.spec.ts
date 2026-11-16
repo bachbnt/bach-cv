@@ -7,6 +7,7 @@ import { mockFirestore, interceptCollection } from '../support/firestore-mock';
 import { projectsControls } from '../support/projects-controls';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
+import { defineProjectStatusTests } from '../support/project-status-suite';
 
 test.beforeEach(async ({ page }) => {
   await useSkin(page, 'academic');
@@ -273,4 +274,16 @@ test.describe('Projects', () => {
       page.getByRole('button', { name: /ảnh chụp màn hình$/ }).first(),
     ).toBeVisible();
   });
+});
+
+defineProjectStatusTests({
+  skin: 'academic',
+  project: (page, name) =>
+    page.locator('article').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
+  home: (page, name) =>
+    page.getByRole('link').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
 });

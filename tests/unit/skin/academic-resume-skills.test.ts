@@ -5,10 +5,10 @@
 import { describe, expect, it } from 'vitest';
 import type { Doc } from '@/lib/content/schema';
 import { skillEvidence, type CareerJob } from '@/lib/derive/skill-use';
+import { skillRows } from '@/lib/derive/skill-rows';
 import {
   areasOf,
   filterRows,
-  skillRows,
   sortRows,
 } from '@/skins/academic/blocks/resume-skills-model';
 
@@ -61,25 +61,6 @@ const jobs: CareerJob[] = [
   job('b', '2022-01', null, ['kotlin', 'claude']),
 ];
 const rows = skillRows(skills, jobs, skillEvidence(jobs as never, []), NOW);
-
-describe('skillRows', () => {
-  it('has a row for each listed skill, in the order of the areas of Standard', () => {
-    expect(rows.map((row) => row.skill.id)).toEqual([
-      'claude',
-      'kotlin',
-      'react',
-      'git',
-    ]);
-  });
-
-  it('takes the months and the places from the shared derivations', () => {
-    const kotlin = rows.find((row) => row.skill.id === 'kotlin');
-    // Jan 2020 - Nov 2026, the two roles are back to back
-    expect(kotlin?.months).toBe(83);
-    expect(kotlin?.evidence?.usedAt).toEqual(['B', 'A']);
-    expect(rows.find((row) => row.skill.id === 'git')?.months).toBe(0);
-  });
-});
 
 describe('areasOf and filterRows', () => {
   it('lists the areas that have a row, in order, and filters by one', () => {

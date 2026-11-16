@@ -6,7 +6,7 @@
 
 import { homeCopy } from '@/content/copy/home';
 import { useCopy } from '@/lib/i18n/copy';
-import { useYearsText } from '@/lib/query/use-career-years';
+import { YearsText } from '@/components/years-text';
 import { DownloadCvButton } from '@/skins/trade/shell/download-cv-button';
 import { TvAskButton } from '@/skins/trade/ui/tv-ask-button';
 
@@ -16,7 +16,6 @@ import { TvAskButton } from '@/skins/trade/ui/tv-ask-button';
  */
 export function HeroNote() {
   const copy = useCopy(homeCopy);
-  const intro = useYearsText(copy.intro, copy.introUndated);
   return (
     <section
       aria-labelledby='tv-hero-h'
@@ -28,7 +27,9 @@ export function HeroNote() {
       >
         {copy.title}
       </h1>
-      <p className='max-w-[620px] text-[13px]/[1.6] text-tv-mute'>{intro}</p>
+      <p className='max-w-[620px] text-[13px]/[1.6] text-tv-mute'>
+        <YearsText withYears={copy.intro} withoutYears={copy.introUndated} />
+      </p>
       <div className='mt-1 flex flex-wrap gap-2'>
         <DownloadCvButton label={copy.downloadCv} size='lg' />
         <TvAskButton size='lg' />

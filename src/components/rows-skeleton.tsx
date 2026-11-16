@@ -20,12 +20,12 @@ export function RowsSkeleton({
           className='flex flex-wrap items-center gap-x-8 gap-y-3 border-b px-3 py-5 min-[721px]:px-6 min-[721px]:py-6'
         >
           <Skeleton className='h-20 w-28 flex-none rounded-[10px]' />
-          <Skeleton className='h-7 w-[230px] max-w-full' />
-          <div className='flex min-w-0 flex-[1_1_320px] flex-col gap-2'>
-            <Skeleton className='h-5 w-3/5' />
-            <Skeleton className='h-4 w-4/5' />
+          <Skeleton className='h-[33px] min-w-[230px] flex-[0_0_230px]' />
+          <div className='min-w-0 flex-[1_1_320px]'>
+            <Skeleton className='h-[26px] w-3/5' />
+            <Skeleton className='mt-1 h-12 w-4/5 max-[359px]:h-[72px]' />
           </div>
-          <Skeleton className='h-4 w-[170px] max-w-full' />
+          <Skeleton className='h-[23px] flex-[0_0_170px]' />
         </div>
       ))}
     </div>

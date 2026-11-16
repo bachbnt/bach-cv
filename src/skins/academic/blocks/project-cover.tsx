@@ -12,6 +12,7 @@ import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { fill } from '@/lib/chat/fill';
+import { ProjectStatus } from '@/skins/academic/blocks/project-status';
 
 /** The tile that stands in for a missing cover, tinted by the category of the first technology (chalk colours). */
 const TILE: Record<Doc<'skills'>['category'], string> = {
@@ -79,6 +80,7 @@ export function ProjectCover({
           />
         )}
       </div>
+      <ProjectStatus project={project} />
       <figcaption className='mt-2 font-ac-note text-[16px]/[1.25] text-ac-mute'>
         <b className='font-normal text-ac-md'>
           {fill(own.figure, { n: number })}

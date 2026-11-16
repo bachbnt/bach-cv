@@ -11,11 +11,12 @@ import { useNow } from '@/hooks/use-now';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { ResumeCoreStack } from '@/skins/academic/blocks/resume-core-stack';
+import { ResumeSkillsSkeleton } from '@/skins/academic/blocks/resume-skills-skeleton';
+import { ResumeSkillsSubhead } from '@/skins/academic/blocks/resume-skills-subhead';
 import { ResumeSkillsTable } from '@/skins/academic/blocks/resume-skills-table';
-import { skillRows } from '@/skins/academic/blocks/resume-skills-model';
+import { skillRows } from '@/lib/derive/skill-rows';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 
 /** The Skills section: the lead, the core stack, then every listed skill in the table with the months it was used and where. */
 export function ResumeSkills() {
@@ -41,23 +42,21 @@ export function ResumeSkills() {
         subject='skills'
         level={3}
         className='mt-6'
-        skeleton={
-          <div className='mt-6 grid gap-3'>
-            {[0, 1, 2, 3, 4, 5].map((i) => (
-              <AcSkeleton key={i} className='h-5' />
-            ))}
-          </div>
-        }
+        skeleton={<ResumeSkillsSkeleton />}
+        skeletonClassName=''
       >
-        <h3 className='mt-8 mb-0 font-ac-chalk text-[26px]/[1.15] font-normal'>
-          {copy.core.title}
-        </h3>
-        <p className='mt-1 mb-0 text-[0.95em] text-ac-mute'>{copy.core.lead}</p>
+        <ResumeSkillsSubhead
+          title={copy.core.title}
+          lead={copy.core.lead}
+          className='mt-8'
+        />
         <ResumeCoreStack rows={rows} />
-        <h3 className='mt-10 mb-0 font-ac-chalk text-[26px]/[1.15] font-normal'>
-          {copy.all.title}
-        </h3>
-        <p className='mt-1 mb-4 text-[0.95em] text-ac-mute'>{words.allLead}</p>
+        <ResumeSkillsSubhead
+          title={copy.all.title}
+          lead={words.allLead}
+          className='mt-10'
+          leadClassName='mb-4'
+        />
         <ResumeSkillsTable rows={rows} />
       </AcDataState>
     </section>

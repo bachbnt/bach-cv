@@ -16,12 +16,12 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
+import { AcTimelineSkeleton } from '@/skins/academic/blocks/ac-timeline-skeleton';
 import {
   axisYears,
   barKind,
   placeBar,
 } from '@/skins/academic/blocks/ac-timeline-model';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 import '@/skins/academic/css/home-about.css';
 
 /**
@@ -45,7 +45,7 @@ export function AcTimeline() {
   if (jobsQuery.isPending || degreesQuery.isPending) {
     return (
       <div role='status' aria-busy='true' aria-label={states.loading}>
-        <AcSkeleton className='h-[300px]' />
+        <AcTimelineSkeleton />
       </div>
     );
   }

@@ -32,8 +32,7 @@ export function EducationList() {
         <CardsSkeleton
           count={2}
           min={380}
-          height={420}
-          itemClassName='bg-card'
+          itemClassName='h-[650px] bg-card min-[721px]:h-[590px]'
         />
       }
       className='mt-8'

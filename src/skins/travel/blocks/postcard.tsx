@@ -22,6 +22,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { cn } from '@/lib/utils';
 import { PostcardCover } from '@/skins/travel/blocks/postcard-cover';
+import { ProjectStatus } from '@/skins/travel/blocks/project-status';
 import {
   STOP_OF_CATEGORY,
   stopClass,
@@ -81,6 +82,7 @@ export function Postcard({
           firstSkill={tags[0]}
           onOpen={() => onOpenScreenshots(project)}
         />
+        <ProjectStatus project={project} />
         <span
           aria-hidden='true'
           className='pointer-events-none absolute top-2 right-2 grid size-11 rotate-12 place-items-center rounded-full border-2 border-dashed border-tl-paper-hot-ink bg-tl-paper text-tl-paper-hot-ink shadow-tl-tag'

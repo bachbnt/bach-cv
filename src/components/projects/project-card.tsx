@@ -5,6 +5,7 @@
 'use client';
 
 import { ProjectCover } from '@/components/projects/project-cover';
+import { ProjectStatus } from '@/components/projects/project-status';
 import { ProjectLinkItem } from '@/components/projects/project-link-item';
 import { ProjectTags } from '@/components/projects/project-tags';
 import { ScreenshotsOverlay } from '@/components/projects/screenshots-overlay';
@@ -42,6 +43,7 @@ export function ProjectCard({
           />
         </div>
         <ScreenshotsOverlay project={project} onOpen={onOpenScreenshots} />
+        <ProjectStatus project={project} />
       </div>
       <div className='mt-2 flex items-center gap-2'>
         <span className='inline-flex rounded-full bg-page-tint px-2.5 py-[3px] text-[13px] font-semibold whitespace-nowrap text-page'>

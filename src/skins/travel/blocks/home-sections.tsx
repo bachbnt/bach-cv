@@ -14,17 +14,20 @@ import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { statesCopy } from '@/content/copy/states';
 import { travelTripCopy } from '@/content/copy/travel-trip';
 import { skillsOf } from '@/components/projects/project-helpers';
-import { featuredProjects, HOME_ROLES } from '@/lib/derive/home-lists';
+import { featuredProjects } from '@/lib/derive/home-lists';
 import { stripSkills } from '@/lib/derive/skill-strip';
 import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
+import { HomeFeaturedSkeleton } from '@/skins/travel/blocks/home-featured-skeleton';
 import { latestStops } from '@/skins/travel/blocks/home-roles';
+import { HomeWorkSkeleton } from '@/skins/travel/blocks/home-work-skeleton';
+import { ProjectStatus } from '@/skins/travel/blocks/project-status';
 import { TripStopList } from '@/skins/travel/blocks/trip-stop-list';
 import { useTravel } from '@/skins/travel/shell/travel-context';
 import { TlChip } from '@/skins/travel/ui/tl-chip';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
-import { TlRowsSkeleton, TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
+import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
 
 const heading = 'm-0 text-[17px] font-extrabold';
 
@@ -74,7 +77,7 @@ export function HomeLuggage() {
   const copy = useCopy(homeCopy);
   const { data: skills = [], isPending } = useContentQuery('skills');
   const shown = stripSkills(skills);
-  if (isPending) return <TlSkeleton className='h-14' />;
+  if (isPending) return <TlSkeleton className='h-36' />;
   if (!shown.length) return null;
   return (
     <section aria-label={copy.technologies}>
@@ -150,7 +153,7 @@ export function HomeWork() {
         empty='work'
         subject='work'
         level={3}
-        skeleton={<TlRowsSkeleton count={HOME_ROLES - 1} />}
+        skeleton={<HomeWorkSkeleton />}
       >
         <p className='sr-only'>{words.showOnMap}</p>
         <TripStopList
@@ -193,7 +196,7 @@ export function HomeFeatured() {
       </div>
       {query.isPending ? (
         <div role='status' aria-busy='true' aria-label={states.loading}>
-          <TlRowsSkeleton count={2} />
+          <HomeFeaturedSkeleton />
         </div>
       ) : (
         <ul className='m-0 grid grid-cols-1 list-none gap-2.5 p-0'>
@@ -222,6 +225,7 @@ export function HomeFeatured() {
                         {initialsOf(project.name)}
                       </span>
                     )}
+                    <ProjectStatus project={project} compact />
                   </span>
                   <span className='min-w-0'>
                     <b className='block text-[14.5px]'>{project.name}</b>

@@ -4,7 +4,6 @@
 
 'use client';
 
-import { Info } from 'lucide-react';
 import { startTransition, ViewTransition } from 'react';
 import { usePaymentMethods } from '@/components/payment/use-payment-methods';
 import { paymentCopy } from '@/content/copy/payment';
@@ -13,6 +12,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { LazyPaymentQrDialog } from '@/skins/travel/blocks/lazy-dialogs';
 import { PaymentFilterChip } from '@/skins/travel/blocks/payment-filter-chip';
+import { PaymentNote } from '@/skins/travel/blocks/payment-note';
+import { PaymentSkeleton } from '@/skins/travel/blocks/payment-skeleton';
 import { PaymentTicket } from '@/skins/travel/blocks/payment-ticket';
 import { PaymentTicketRow } from '@/skins/travel/blocks/payment-ticket-row';
 import { PaymentToast } from '@/skins/travel/blocks/payment-toast';
@@ -20,7 +21,6 @@ import { useToast } from '@/hooks/use-toast';
 import { STOP_COLORS } from '@/skins/travel/config';
 import { TlButtonLink } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
-import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
 import { TlStateNotice } from '@/skins/travel/ui/tl-state-notice';
 import { travelDeskCopy } from '@/content/copy/travel-desk';
 
@@ -54,12 +54,7 @@ export function PaymentDesk() {
         </TlStateNotice>
       }
       subject='payments'
-      skeleton={
-        <div className='grid grid-cols-1 gap-4'>
-          <TlSkeleton className='h-36 rounded-3xl' />
-          <TlSkeleton className='h-36 rounded-3xl' />
-        </div>
-      }
+      skeleton={<PaymentSkeleton />}
     >
       <PaymentMethods methods={methods} />
     </TlDataState>
@@ -88,16 +83,7 @@ function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
 
   return (
     <>
-      <p
-        role='note'
-        className='m-0 flex items-start gap-2.5 rounded-2xl border border-dashed border-tl-line bg-tl-panel-2 px-3.5 py-3 text-[13.5px]/[1.5]'
-      >
-        <Info
-          className='mt-0.5 size-[18px] flex-none text-tl-coral'
-          aria-hidden='true'
-        />
-        <span>{copy.note}</span>
-      </p>
+      <PaymentNote />
 
       {featured.length > 0 && (
         <section aria-labelledby='tl-pay-featured' className='mt-6'>

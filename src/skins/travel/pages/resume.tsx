@@ -6,18 +6,18 @@
 
 import { useSkills } from '@/components/skills/use-skills';
 import { resumeCopy } from '@/content/copy/resume';
-import { travelTripCopy } from '@/content/copy/travel-trip';
 import { useScrollToHash } from '@/hooks/use-scroll-to-hash';
 import { useCopy } from '@/lib/i18n/copy';
-import { useYearsText } from '@/lib/query/use-career-years';
+import { YearsText } from '@/components/years-text';
+import { TripItineraryHead } from '@/skins/travel/blocks/trip-itinerary-head';
 import { TripLuggage } from '@/skins/travel/blocks/trip-luggage';
+import { TripSkeleton } from '@/skins/travel/blocks/trip-skeleton';
 import { TripStopCard } from '@/skins/travel/blocks/trip-stop-card';
 import { TripStopList } from '@/skins/travel/blocks/trip-stop-list';
 import { useTravel } from '@/skins/travel/shell/travel-context';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
 import { TlPage } from '@/skins/travel/ui/tl-page';
 import { TlPanel } from '@/skins/travel/ui/tl-panel';
-import { TlRowsSkeleton } from '@/skins/travel/ui/tl-skeleton';
 
 /**
  * The route: every role and the school is a stop of the itinerary, the open one is a guidebook card (its responsibilities are things
@@ -25,8 +25,6 @@ import { TlRowsSkeleton } from '@/skins/travel/ui/tl-skeleton';
  */
 export function ResumePage() {
   const copy = useCopy(resumeCopy);
-  const words = useCopy(travelTripCopy).resume;
-  const intro = useYearsText(copy.intro, copy.introUndated, { spelled: true });
   const { stops, selectedId, select, queries } = useTravel();
   const { experience, education } = queries;
   const currentId =
@@ -48,7 +46,13 @@ export function ResumePage() {
             <h1 id='tl-resume-title' className='m-0 text-2xl font-extrabold'>
               {copy.title}
             </h1>
-            <p className='m-0 mt-1 text-tl-muted'>{intro}</p>
+            <p className='m-0 mt-1 text-tl-muted'>
+              <YearsText
+                withYears={copy.intro}
+                withoutYears={copy.introUndated}
+                spelled
+              />
+            </p>
           </header>
           <TlDataState
             query={{
@@ -60,22 +64,15 @@ export function ResumePage() {
             count={experience.data?.length ?? 0}
             empty='experience'
             subject='experience'
-            skeleton={<TlRowsSkeleton count={4} />}
+            skeleton={<TripSkeleton />}
+            skeletonClassName='grid grid-cols-1 gap-5'
           >
             {null}
           </TlDataState>
           {stops.length > 0 && (
             <>
               <section aria-labelledby='tl-itinerary'>
-                <h2
-                  id='tl-itinerary'
-                  className='m-0 text-[17px] font-extrabold'
-                >
-                  {copy.experience.title} · {words.itinerary}
-                </h2>
-                <p className='m-0 mb-2 text-[12.5px] text-tl-muted'>
-                  {words.pickStop}
-                </p>
+                <TripItineraryHead />
                 <TripStopList selectedId={openId} onPick={select} />
               </section>
               {open && (

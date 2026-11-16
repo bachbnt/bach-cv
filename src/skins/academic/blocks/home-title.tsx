@@ -17,6 +17,7 @@ import { HomeAskButton } from '@/skins/academic/blocks/home-ask-button';
 import { HomeCvButton } from '@/skins/academic/blocks/home-cv-button';
 import { HomePolaroid } from '@/skins/academic/blocks/home-polaroid';
 import { AcNoteCap, AcRow } from '@/skins/academic/ui/ac-note';
+import { AcSkeletonLine } from '@/skins/academic/ui/ac-skeleton-line';
 
 /**
  * The title page: the sentence that says what I do, in chalk, the two buttons (the CV and the chat), and my portrait taped beside them.
@@ -26,29 +27,44 @@ export function HomeTitle() {
   const copy = useCopy(homeCopy);
   const mine = useCopy(academicHomeAboutCopy).home;
   const { lang } = useLang();
-  const { data: jobs = [] } = useContentQuery('experience');
-  const current = currentJob(jobs);
+  const jobsQuery = useContentQuery('experience');
+  const current = currentJob(jobsQuery.data ?? []);
 
   return (
     <AcRow
       tone='d'
       note={
-        current && (
+        current || jobsQuery.isPending ? (
           <>
             <span className='ac-line inline-block pb-1.5 font-ac-chalk text-[28px]/[1.1] [--ul:currentColor] [--ac-line-h:8px] [--ac-line-y:0px]'>
               <span aria-hidden='true'>∴ </span>
               {mine.currentRole}
             </span>
-            <AcNoteCap>
-              {current.role}, {current.company}
-            </AcNoteCap>
-            <AcNoteCap>
-              {fill(mine.since, {
-                month: formatMonth(current.startMonth, lang),
-              })}
-            </AcNoteCap>
+            {current ? (
+              <>
+                <AcNoteCap>
+                  {current.role}, {current.company}
+                </AcNoteCap>
+                <AcNoteCap>
+                  {fill(mine.since, {
+                    month: formatMonth(current.startMonth, lang),
+                  })}
+                </AcNoteCap>
+              </>
+            ) : (
+              <>
+                <AcSkeletonLine
+                  className='mt-[3px] h-[21.45px]'
+                  barClassName='h-3.5 w-11/12'
+                />
+                <AcSkeletonLine
+                  className='mt-[3px] h-[21.45px]'
+                  barClassName='h-3.5 w-1/2'
+                />
+              </>
+            )}
           </>
-        )
+        ) : undefined
       }
     >
       <div className='flex flex-wrap items-start gap-x-10 gap-y-8'>

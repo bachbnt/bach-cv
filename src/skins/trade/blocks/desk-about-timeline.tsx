@@ -40,9 +40,9 @@ export function DeskAboutTimeline() {
         subject='education'
         level={3}
         skeleton={
-          <div className='grid gap-2'>
-            <TvSkeleton className='h-14' />
-            <TvSkeleton className='h-14' />
+          <div className='ml-1.5 grid gap-4'>
+            <TvSkeleton className='h-[86px] @4xl:h-[70px]' />
+            <TvSkeleton className='h-[86px] @4xl:h-[70px]' />
           </div>
         }
       >

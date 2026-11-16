@@ -55,11 +55,17 @@ export function DeskAboutStack() {
         subject='coreStack'
         level={3}
         skeleton={
-          <div className='grid grid-cols-[repeat(auto-fill,minmax(170px,1fr))] gap-2'>
-            {Array.from({ length: 4 }, (_, i) => (
-              <TvSkeleton key={i} className='h-20' />
-            ))}
-          </div>
+          <>
+            <TvSkeleton className='mb-2 h-1.5 rounded-full border-0' />
+            <div className='grid grid-cols-[repeat(auto-fill,minmax(170px,1fr))] gap-2'>
+              {Array.from({ length: 5 }, (_, i) => (
+                <TvSkeleton
+                  key={i}
+                  className='h-[58px] @xl:h-[63.7px] @4xl:h-[66.5px]'
+                />
+              ))}
+            </div>
+          </>
         }
       >
         <div

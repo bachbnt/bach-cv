@@ -13,7 +13,8 @@ import { PaymentKind } from '@/skins/academic/blocks/payment-kind';
 import { PaymentMark } from '@/skins/academic/blocks/payment-mark';
 import { AcButton } from '@/skins/academic/ui/ac-button';
 
-const TH =
+/** The head of a column (the loading skeleton shares it). */
+export const PAYMENT_TABLE_HEAD =
   'ac-line relative py-2 pr-2.5 pb-2.5 text-left font-ac-note text-[18px] font-normal whitespace-nowrap [--ul:var(--ac-mute)] [--ac-line-y:0px] [--ac-line-h:6px] after:right-2.5 after:left-0';
 
 /**
@@ -38,13 +39,13 @@ export function PaymentTable({
       </caption>
       <thead className='max-[760px]:hidden'>
         <tr>
-          <th scope='col' className={TH}>
+          <th scope='col' className={PAYMENT_TABLE_HEAD}>
             {words.columns.method}
           </th>
-          <th scope='col' className={TH}>
+          <th scope='col' className={PAYMENT_TABLE_HEAD}>
             {words.columns.account}
           </th>
-          <th scope='col' className={TH}>
+          <th scope='col' className={PAYMENT_TABLE_HEAD}>
             <span className='sr-only'>{words.columns.actions}</span>
           </th>
         </tr>

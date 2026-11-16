@@ -23,6 +23,7 @@ import type { ProjectView } from '@/hooks/use-project-view';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from 'cn';
+import { activeFilterCount } from '@/lib/derive/project-view';
 
 const BUTTON =
   'inline-flex h-11 cursor-pointer items-center gap-2 rounded-full border-[1.5px] border-border bg-card px-4 text-[15px] font-medium transition-[border-color,background-color,scale] outline-none hover:border-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[.98] data-popup-open:border-foreground min-[721px]:h-10';
@@ -54,9 +55,7 @@ export function ProjectsToolbar({ view }: { view: ProjectView }) {
   const showMore =
     moreOpen || techMore.some((o) => groups.tech.selected.includes(o.value));
   const anyFilter = Object.values(groups).some((group) => group.visible);
-  const active = Object.values(groups)
-    .filter((group) => group.visible)
-    .reduce((sum, group) => sum + group.selected.length, 0);
+  const active = activeFilterCount(groups);
   if (!anyFilter && !sort.visible && !search.visible) return null;
 
   return (

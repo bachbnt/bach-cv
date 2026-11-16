@@ -64,7 +64,15 @@ export function SkillGroups({ className }: { className?: string }) {
       empty='skills'
       subject='skills'
       level={3}
-      skeleton={<CardsSkeleton count={4} min={250} height={300} gap={20} />}
+      skeleton={
+        <CardsSkeleton
+          count={4}
+          min={250}
+          gap={20}
+          // the cards are as tall as their chips wrap: four across (1156px and up) they are the tallest, two or three across two rows share the height
+          itemClassName='h-[270px] min-[721px]:h-[307px] min-[1156px]:h-[454px]'
+        />
+      }
     >
       <div
         className={cn(

@@ -10,8 +10,8 @@ import { statesCopy } from '@/content/copy/states';
 import { stripSkills } from '@/lib/derive/skill-strip';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
+import { HomeKeywordsSkeleton } from '@/skins/academic/blocks/home-keywords-skeleton';
 import { HomeCol } from '@/skins/academic/blocks/home-col';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 
 /**
  * The technologies of Standard's moving strip, written as the keywords under an abstract: the same skills in the same order and limit, still (a
@@ -28,7 +28,7 @@ export function HomeKeywords() {
     return (
       <HomeCol className='mt-6'>
         <div role='status' aria-busy='true' aria-label={states.loading}>
-          <AcSkeleton className='h-6 w-[min(100%,560px)]' />
+          <HomeKeywordsSkeleton label={mine.keywords} />
         </div>
       </HomeCol>
     );

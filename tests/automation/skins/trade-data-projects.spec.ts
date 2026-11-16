@@ -7,6 +7,7 @@ import { mockFirestore } from '../support/firestore-mock';
 import { mockImages } from '../support/images';
 import { gotoSkin, useSkin } from '../support/skin';
 import { pageSettled } from '../support/animations';
+import { defineProjectStatusTests } from '../support/project-status-suite';
 
 test.beforeEach(async ({ page }) => {
   await useSkin(page, 'trade');
@@ -334,4 +335,16 @@ test.describe('language and phone', () => {
       true,
     );
   });
+});
+
+defineProjectStatusTests({
+  skin: 'trade',
+  project: (page, name) =>
+    page.getByTestId('project').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
+  home: (page, name) =>
+    page.getByTestId('idea').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
 });

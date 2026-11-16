@@ -12,7 +12,7 @@ import { Tag } from '@/components/tag';
 import { homeCopy } from '@/content/copy/home';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
-import { useYearsText } from '@/lib/query/use-career-years';
+import { YearsText } from '@/components/years-text';
 import { shell } from '@/lib/content/shell';
 
 const wrap = 'mx-auto w-full max-w-[1200px] px-5 min-[721px]:px-12';
@@ -21,7 +21,6 @@ const wrap = 'mx-auto w-full max-w-[1200px] px-5 min-[721px]:px-12';
 export function HomeHero() {
   const copy = useCopy(homeCopy);
   const { pipeline } = copy;
-  const intro = useYearsText(copy.intro, copy.introUndated);
   return (
     <div className='band-glow rounded-b-[40px] bg-page-tint'>
       <section
@@ -38,7 +37,10 @@ export function HomeHero() {
             style={{ '--i': 1 } as CSSProperties}
             className='hi max-w-[560px] text-xl leading-[1.55] text-body'
           >
-            {intro}
+            <YearsText
+              withYears={copy.intro}
+              withoutYears={copy.introUndated}
+            />
           </p>
           <div
             style={{ '--i': 2 } as CSSProperties}

@@ -2,30 +2,60 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-import { HomeCol } from '@/skins/academic/blocks/home-col';
+'use client';
+
+import { projectsCopy } from '@/content/copy/projects';
+import { useCopy } from '@/lib/i18n/copy';
+import { PROJECT_ENTRY_ITEM } from '@/skins/academic/blocks/project-entry';
+import { ProjectSkeletonEntry } from '@/skins/academic/blocks/project-skeleton-entry';
+import { AcRow } from '@/skins/academic/ui/ac-note';
+import { AcHeading } from '@/skins/academic/ui/ac-section';
 import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 
-/** Three entries of the list that are not written yet: a name, a few lines and a photo taped beside them. */
+const FEATURED = 4;
+const ALL = 10;
+
+/**
+ * The page as it will be: the two headings are real, then the featured entries, the line of controls and the entries of the list, with the
+ * grid, the margin notes and the sizes of the loaded ones.
+ */
 export function ProjectSkeleton() {
+  const copy = useCopy(projectsCopy);
   return (
-    <HomeCol className='flex flex-col' aria-hidden='true'>
-      {[0, 1, 2].map((i) => (
-        <div
-          key={i}
-          className='grid gap-6 border-t-2 border-dashed border-ac-faint py-[22px] first:border-t-0 first:pt-0 min-[700px]:grid-cols-[minmax(0,1fr)_200px]'
-        >
-          <div>
-            <AcSkeleton className='mb-3 h-6 w-2/5' />
-            <AcSkeleton className='mb-4 h-3 w-16' />
-            <AcSkeleton className='mb-2 h-4 w-11/12' />
-            <AcSkeleton className='mb-2 h-4 w-4/5' />
-            <AcSkeleton className='h-4 w-1/2' />
-          </div>
-          <div className='ac-paper ac-tape h-[130px] w-full max-w-[200px] -rotate-[1.2deg] rounded-[2px] p-2 odd:rotate-[1.4deg]'>
-            <AcSkeleton className='h-full w-full' />
-          </div>
+    <>
+      <section>
+        <AcHeading className='mt-6 mb-5'>{copy.featured}</AcHeading>
+        <ol className='m-0 list-none p-0'>
+          {Array.from({ length: FEATURED }, (_, i) => (
+            <li
+              key={i}
+              data-skeleton={i === 0 ? 'item' : undefined}
+              className={PROJECT_ENTRY_ITEM}
+            >
+              <ProjectSkeletonEntry featured long={i > 0} />
+            </li>
+          ))}
+        </ol>
+      </section>
+      <section>
+        <AcHeading className='mt-14 mb-1'>{copy.all}</AcHeading>
+        <div data-skeleton='toolbar' aria-hidden='true' className='mt-4'>
+          <AcRow tone='a' note={<AcSkeleton className='h-[30px] w-40' />}>
+            <div className='flex flex-wrap items-end gap-x-4 gap-y-3'>
+              <AcSkeleton className='h-[37px] max-w-[300px] min-w-[200px] flex-1' />
+              <AcSkeleton className='h-[34px] w-[98px]' />
+              <AcSkeleton className='h-[34px] w-[117px]' />
+            </div>
+          </AcRow>
         </div>
-      ))}
-    </HomeCol>
+        <ol className='m-0 mt-6 list-none p-0'>
+          {Array.from({ length: ALL }, (_, i) => (
+            <li key={i} className={PROJECT_ENTRY_ITEM}>
+              <ProjectSkeletonEntry featured={false} long={i > 0} />
+            </li>
+          ))}
+        </ol>
+      </section>
+    </>
   );
 }

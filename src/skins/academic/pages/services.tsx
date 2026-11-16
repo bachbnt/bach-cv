@@ -16,6 +16,7 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { ContactSection } from '@/skins/academic/blocks/contact-section';
 import { ServiceList } from '@/skins/academic/blocks/service-list';
 import { AcNoteBig, AcNoteCap, AcRow } from '@/skins/academic/ui/ac-note';
+import { AcSkeletonLine } from '@/skins/academic/ui/ac-skeleton-line';
 import { AcPage } from '@/skins/academic/ui/ac-page';
 import { AcPageHead } from '@/skins/academic/ui/ac-page-head';
 import { prefersReducedMotion } from '@/hooks/use-reduced-motion';
@@ -57,6 +58,14 @@ export function ServicesPage() {
               <AcNoteCap>
                 {fill(count === 1 ? own.noteOne : own.noteMany, { n: count })}
               </AcNoteCap>
+            </>
+          ) : services.isPending ? (
+            <>
+              <AcSkeletonLine className='h-[34px]' barClassName='h-7 w-12' />
+              <AcSkeletonLine
+                className='mt-[3px] h-[21.45px]'
+                barClassName='h-3.5 w-3/4'
+              />
             </>
           ) : undefined
         }

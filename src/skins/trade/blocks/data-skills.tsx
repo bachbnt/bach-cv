@@ -29,6 +29,14 @@ const DOT: Record<Skill['category'], string> = {
   tools: 'bg-tools-foreground',
 };
 
+/** The heights of the four areas of a typical list while it loads: the tiles wrap into more lines in a narrower box. */
+const GROUPS = [
+  'h-[160px] min-[600px]:h-[84px]',
+  'h-[274px] min-[600px]:h-[160px] min-[901px]:h-[122px]',
+  'h-[160px] min-[600px]:h-[122px] min-[901px]:h-[84px]',
+  'h-[198px] min-[600px]:h-[122px] min-[901px]:h-[84px]',
+];
+
 /**
  * The Skills section: the core stack as large tiles with where each was used, then every listed skill by area as small tiles. All of
  * them show the Standard tip ("Used at FPT, MoMo. First used 2022.") on hover, focus or tap.
@@ -95,10 +103,14 @@ export function DataSkills({
           subject='coreStack'
           level={3}
           className='mt-2'
+          skeletonClassName=''
           skeleton={
-            <div className='mt-2 grid grid-cols-[repeat(auto-fill,minmax(170px,1fr))] gap-2'>
-              {Array.from({ length: 4 }, (_, i) => (
-                <TvSkeleton key={i} className='h-20' />
+            <div className='mt-2 grid grid-cols-[repeat(auto-fill,minmax(min(100%,190px),1fr))] gap-2'>
+              {Array.from({ length: 5 }, (_, i) => (
+                <TvSkeleton
+                  key={i}
+                  className='h-[58.5px] min-[901px]:h-[75px]'
+                />
               ))}
             </div>
           }
@@ -130,9 +142,9 @@ export function DataSkills({
           subject='skills'
           level={3}
           skeleton={
-            <div className='grid gap-2'>
-              {Array.from({ length: 3 }, (_, i) => (
-                <TvSkeleton key={i} className='h-16' />
+            <div className='grid gap-2.5'>
+              {GROUPS.map((height, i) => (
+                <TvSkeleton key={i} className={height} />
               ))}
             </div>
           }

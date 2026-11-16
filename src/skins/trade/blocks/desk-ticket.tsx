@@ -23,6 +23,7 @@ import { DeskField } from '@/skins/trade/blocks/desk-field';
 import { DeskTicketSent } from '@/skins/trade/blocks/desk-ticket-sent';
 import { DeskTopicSegment } from '@/skins/trade/blocks/desk-topic-segment';
 import { TvButton } from '@/skins/trade/ui/tv-button';
+import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 import { TV_FIELD } from '@/skins/trade/ui/tv-field';
 
 /**
@@ -34,11 +35,14 @@ export function DeskTicket({
   form,
   limits,
   services,
+  servicesPending = false,
   className,
 }: {
   form: ReturnType<typeof useContactForm>;
   limits: FormLimits & { messageMax: number };
   services: Doc<'services'>[];
+  /** the topics are on their way: their row is held with a blank shape, so the ticket does not grow when they arrive */
+  servicesPending?: boolean;
   className?: string;
 }) {
   const copy = useCopy(servicesCopy);
@@ -99,6 +103,7 @@ export function DeskTicket({
                 onSubmit={form.submit}
                 className='flex flex-col gap-2'
               >
+                {servicesPending && <TvSkeleton className='h-[90px]' />}
                 {services.length > 0 && (
                   <DeskTopicSegment
                     services={services}

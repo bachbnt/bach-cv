@@ -6,8 +6,8 @@
 
 import { useContentQuery } from '@/lib/query/use-content';
 import { DevCertificateGallery } from '@/skins/dev/blocks/certificate-gallery';
+import { DevCertificateSkeleton } from '@/skins/dev/blocks/certificate-skeleton';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
-import { DevCardsSkeleton, DevSkeleton } from '@/skins/dev/ui/dev-skeleton';
 
 /** The certificates, with the loading, empty and error states of every data block. */
 export function DevCertificateList() {
@@ -19,18 +19,7 @@ export function DevCertificateList() {
       count={items.length}
       empty='certificates'
       subject='certificates'
-      skeleton={
-        <>
-          <DevSkeleton style={{ height: 340 }} />
-          <DevCardsSkeleton
-            count={2}
-            min={320}
-            height={320}
-            gap={18}
-            className='mt-[18px]'
-          />
-        </>
-      }
+      skeleton={<DevCertificateSkeleton />}
     >
       <DevCertificateGallery />
     </DevDataState>

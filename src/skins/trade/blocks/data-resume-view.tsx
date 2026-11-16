@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { resumeCopy } from '@/content/copy/resume';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import { useCopy } from '@/lib/i18n/copy';
-import { useYearsText } from '@/lib/query/use-career-years';
+import { YearsText } from '@/components/years-text';
 import { useContentQuery } from '@/lib/query/use-content';
 import { DataCorporateActions } from '@/skins/trade/blocks/data-corporate-actions';
 import { DataMediaHost } from '@/skins/trade/blocks/data-media';
@@ -28,7 +28,6 @@ import { Jobs } from '@/skins/trade/blocks/data-resume-jobs';
 /** Resume as a set of statements: the career by year, the events, the notes of each role, education and skills. */
 export function DataResumeView() {
   const copy = useCopy(resumeCopy);
-  const intro = useYearsText(copy.intro, copy.introUndated, { spelled: true });
   const { resume } = useCopy(tradeDataCopy);
   const query = useContentQuery('experience');
   const loaded = !query.isPending;
@@ -54,7 +53,13 @@ export function DataResumeView() {
   return (
     <TvPanel
       title={copy.title}
-      intro={intro}
+      intro={
+        <YearsText
+          withYears={copy.intro}
+          withoutYears={copy.introUndated}
+          spelled
+        />
+      }
       actions={<DownloadCvButton label={copy.downloadCv} />}
     >
       <nav
@@ -76,6 +81,7 @@ export function DataResumeView() {
           level={2}
           skeleton={<DataResumeSkeleton />}
           className='m-3.5'
+          skeletonClassName=''
         >
           <Jobs jobs={jobs} reveal={reveal} />
         </TvDataState>

@@ -4,6 +4,7 @@
 
 import { describe, expect, it } from 'vitest';
 import {
+  activeFilterCount,
   ariaSort,
   availableOf,
   columnSortOf,
@@ -605,5 +606,35 @@ describe('the address', () => {
     expect(parseSavedView('{"sort":4,"tech":["a",3],"q":false}')).toEqual({
       tech: ['a'],
     });
+  });
+});
+
+describe('activeFilterCount', () => {
+  const group = (visible: boolean, selected: string[]) => ({
+    visible,
+    selected,
+  });
+
+  it('adds up the choices of the filters that are shown', () => {
+    expect(
+      activeFilterCount({
+        tech: group(true, ['react', 'flutter']),
+        platform: group(true, ['mobile']),
+        kind: group(true, []),
+      }),
+    ).toBe(3);
+  });
+
+  it('leaves out a filter that is not shown (the owner fixed it or turned it off)', () => {
+    expect(
+      activeFilterCount({
+        tech: group(true, ['react']),
+        platform: group(false, ['mobile', 'web']),
+      }),
+    ).toBe(1);
+  });
+
+  it('is zero when nothing is chosen', () => {
+    expect(activeFilterCount({ tech: group(true, []) })).toBe(0);
   });
 });

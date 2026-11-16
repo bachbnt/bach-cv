@@ -10,11 +10,11 @@ import { useLive } from '@/hooks/use-live';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 import { HomeAskButton } from '@/skins/academic/blocks/home-ask-button';
+import { HomeContactSkeleton } from '@/skins/academic/blocks/home-contact-skeleton';
 import { HomeCol } from '@/skins/academic/blocks/home-col';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcPaper } from '@/skins/academic/ui/ac-paper';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 import { emailContact, phoneContact } from '@/lib/derive/contacts';
 
 /**
@@ -47,12 +47,8 @@ export function HomeContactBand() {
             subject='contact'
             level={3}
             className='mt-6'
-            skeleton={
-              <>
-                <AcSkeleton className='h-9 w-[320px] max-w-full' />
-                <AcSkeleton className='mt-4 h-5 w-48' />
-              </>
-            }
+            skeleton={<HomeContactSkeleton />}
+            skeletonClassName='inline'
           >
             {email && (
               <a

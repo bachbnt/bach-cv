@@ -15,25 +15,6 @@
     opacity: 0;
   }
 }
-/* the bars of the loading chart breathe */
-@keyframes tv-bar {
-  0%,
-  100% {
-    scale: 1 0.55;
-  }
-  50% {
-    scale: 1 1;
-  }
-}
-/* a soft light sweeps over the loading chart */
-@keyframes tv-sweep {
-  from {
-    translate: -100% 0;
-  }
-  to {
-    translate: 400% 0;
-  }
-}
 /* the thin line at the top of a block that is loading */
 @keyframes tv-load {
   from {

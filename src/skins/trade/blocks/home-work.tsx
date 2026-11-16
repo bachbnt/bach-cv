@@ -24,6 +24,14 @@ import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
+/** The heights of the four rows of a typical list, by the width of the widget (one column on a phone, wider, beside the build widget): the text wraps differently in each. */
+const ROW = [
+  'h-[188px] @2xl:h-[94px] @4xl:h-28',
+  'h-[185px] @2xl:h-[91px] @4xl:h-[109px]',
+  'h-[167px] @2xl:h-[73px] @4xl:h-[91px]',
+  'h-[167px] @2xl:h-[73px] @4xl:h-[109px]',
+];
+
 /**
  * "Where I've worked": the newest roles that appear in the CV as a compact timeline (company, role, tagline, period and how long it
  * lasted, from the dates), each a link to the Resume page, and the link to all of it.
@@ -57,10 +65,18 @@ export function HomeWork() {
         subject='work'
         level={3}
         className='m-3'
+        skeletonClassName=''
         skeleton={
-          <div className='grid gap-2 p-3'>
+          <div className='py-1'>
             {Array.from({ length: HOME_ROLES }, (_, i) => (
-              <TvSkeleton key={i} className='h-16' />
+              <TvSkeleton
+                key={i}
+                data-skeleton={i === 0 ? 'item' : undefined}
+                className={cn(
+                  'rounded-none border-0 border-b',
+                  ROW[i % ROW.length],
+                )}
+              />
             ))}
           </div>
         }

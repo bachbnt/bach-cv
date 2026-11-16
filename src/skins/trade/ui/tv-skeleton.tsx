@@ -12,15 +12,19 @@ import { useLoopGate } from '@/hooks/use-loop-gate';
 export function TvSkeleton({
   className,
   style,
+  'data-skeleton': unit,
 }: {
   className?: string;
   style?: CSSProperties;
+  /** what a test measures: the control row, the first repeated unit, the detail pane */
+  'data-skeleton'?: 'toolbar' | 'item' | 'detail';
 }) {
   const gate = useLoopGate();
   return (
     <div
       ref={gate}
       aria-hidden='true'
+      data-skeleton={unit}
       style={style}
       className={cn(
         'relative overflow-hidden rounded-md border border-tv-line bg-tv-panel bg-[linear-gradient(var(--tv-grid)_1px,transparent_1px)] bg-[size:100%_25%] after:absolute after:inset-0 after:animate-[tv-shimmer_1.4s_ease-in-out_infinite] after:bg-[linear-gradient(90deg,transparent,var(--tv-hover),transparent)] after:content-[""] after:[transform:translateX(-100%)]',

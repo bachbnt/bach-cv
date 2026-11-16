@@ -13,10 +13,10 @@ import { useSkills } from '@/components/skills/use-skills';
 import { aboutCopy } from '@/content/copy/about';
 import { resumeCopy } from '@/content/copy/resume';
 import { useCopy } from '@/lib/i18n/copy';
+import { AboutCoreStackSkeleton } from '@/skins/academic/blocks/about-core-stack-skeleton';
 import { HomeCol } from '@/skins/academic/blocks/home-col';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 import { coreStack } from '@/lib/derive/core-stack';
 
 /**
@@ -48,13 +48,7 @@ export function AboutCoreStack() {
           empty='coreStack'
           subject='coreStack'
           level={3}
-          skeleton={
-            <div className='grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-5'>
-              {Array.from({ length: 4 }, (_, i) => (
-                <AcSkeleton key={i} className='h-[120px]' />
-              ))}
-            </div>
-          }
+          skeleton={<AboutCoreStackSkeleton />}
         >
           <ul className='m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-x-5 gap-y-7 p-0'>
             {stack.map((skill, index) => {

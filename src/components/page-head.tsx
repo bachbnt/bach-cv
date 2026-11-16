@@ -14,7 +14,7 @@ export function PageHead({
   children,
 }: {
   title: string;
-  intro?: string;
+  intro?: ReactNode;
   children?: ReactNode;
 }) {
   return (

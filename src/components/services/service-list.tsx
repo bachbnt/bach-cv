@@ -23,7 +23,7 @@ export function ServiceList() {
       count={services.length}
       empty='services'
       subject='services'
-      skeleton={<CardsSkeleton count={3} min={340} height={420} />}
+      skeleton={<CardsSkeleton count={5} min={340} height={386} fit='fill' />}
       className='mt-12'
     >
       <div

@@ -14,6 +14,7 @@ import { initialsOf } from '@/lib/derive/initials';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { DevChip } from '@/skins/dev/ui/dev-chip';
+import { DevStatus } from '@/skins/dev/ui/dev-status';
 import { fill } from '@/lib/chat/fill';
 
 /** the card is a link, so it carries the look of a `DevCard` itself */
@@ -65,6 +66,7 @@ export function HomeProjectCard({
             {initialsOf(project.name)}
           </span>
         )}
+        <DevStatus project={project} />
       </div>
       <div className='flex flex-1 flex-col px-4 pt-3.5 pb-4'>
         <h3 className='text-[20px] text-sky [overflow-wrap:anywhere]'>

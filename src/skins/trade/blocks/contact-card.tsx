@@ -45,10 +45,11 @@ export function ContactCard() {
           subject='contact'
           level={3}
           className='mt-3'
+          skeletonClassName=''
           skeleton={
             <>
-              <TvSkeleton className='h-7 w-[280px] max-w-full' />
-              <TvSkeleton className='mt-3 h-4 w-40' />
+              <TvSkeleton className='h-7 w-44 max-w-full' />
+              <TvSkeleton className='mt-2 h-11 w-56 max-w-full' />
             </>
           }
         >

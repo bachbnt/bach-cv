@@ -2,7 +2,7 @@
  * Copyright (c) 2026 bachbnt. All rights reserved.
  */
 
-// How many payment methods there are of each kind (bank, wallet), for a skin that says it in a note.
+// How many payment methods there are of each kind (bank, wallet), and the methods grouped by kind, for a skin that says it in a note or lists them by kind.
 
 import type { Payment } from '@/lib/content/schema';
 
@@ -22,4 +22,14 @@ export function kindCounts<T extends { kind: Kind }>(
       count: methods.filter((m) => m.kind === kind).length,
     })).filter((k) => k.count > 0),
   };
+}
+
+/** The methods grouped by kind, in the order of `KINDS`; a kind with none is left out and the order inside a group is the order given. */
+export function groupByKind<T extends { kind: Kind }>(
+  methods: T[],
+): { kind: Kind; methods: T[] }[] {
+  return KINDS.map((kind) => ({
+    kind,
+    methods: methods.filter((m) => m.kind === kind),
+  })).filter((group) => group.methods.length > 0);
 }

@@ -14,10 +14,10 @@ import { formatPeriod } from '@/lib/format';
 import { useContentQuery } from '@/lib/query/use-content';
 import { isCurrent } from '@/lib/derive/current-job';
 import { jobBadge } from '@/lib/derive/job-badge';
+import { HomeWorkSkeleton } from '@/skins/dev/blocks/home-work-skeleton';
 import { DevLivePill } from '@/skins/dev/blocks/live-pill';
 import { countHint } from '@/skins/dev/ui/count-hint';
-import { DevSkeleton } from '@/skins/dev/ui/dev-skeleton';
-import { HOME_ROLES, latestRoles } from '@/lib/derive/home-lists';
+import { latestRoles } from '@/lib/derive/home-lists';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevSection } from '@/skins/dev/ui/dev-section';
 
@@ -43,13 +43,7 @@ export function HomeWork() {
         empty='work'
         subject='work'
         level={3}
-        skeleton={
-          <div className='grid gap-2'>
-            {Array.from({ length: HOME_ROLES - 1 }, (_, i) => (
-              <DevSkeleton key={i} className='h-[92px]' />
-            ))}
-          </div>
-        }
+        skeleton={<HomeWorkSkeleton />}
       >
         <div className='overflow-hidden rounded-[8px] border border-line-2 bg-chrome'>
           {rows.map((job) => (

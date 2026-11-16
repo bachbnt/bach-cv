@@ -19,6 +19,20 @@ import { DeskSection } from '@/skins/trade/blocks/desk-section';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
+/**
+ * The seven facts of a typical profile while they load, in the grid they have: the heights are what the cards measure (two columns from
+ * a phone, four from 576px of the box), where the text wraps into a different number of lines.
+ */
+const FACTS = [
+  'h-[82px] @xl:h-[109px]',
+  'h-[82px] @xl:h-[109px]',
+  'h-[109px] @sm:h-[93px] @xl:h-[109px]',
+  'h-[109px] @sm:h-[93px] @xl:h-[109px]',
+  'h-[61px] @xl:h-[87px]',
+  'h-[61px] @xl:h-[87px]',
+  'col-span-2 h-[87px] @sm:h-[61px] @xl:h-[87px]',
+];
+
 function Fact({
   label,
   className,
@@ -70,8 +84,8 @@ export function DeskAboutFacts() {
           aria-hidden='true'
           className='grid grid-cols-2 gap-2 @[560px]:grid-cols-4'
         >
-          {Array.from({ length: 4 }, (_, i) => (
-            <TvSkeleton key={i} className='h-16' />
+          {FACTS.map((className, i) => (
+            <TvSkeleton key={i} className={className} />
           ))}
         </div>
       ) : (

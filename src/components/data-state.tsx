@@ -37,6 +37,7 @@ export function DataState({
   skeleton,
   level,
   className,
+  skeletonClassName = className,
   children,
 }: {
   query: QueryLike;
@@ -49,12 +50,16 @@ export function DataState({
   level?: 2 | 3;
   /** spacing around the skeleton and the cards, so the page does not jump when the data arrives */
   className?: string;
+  /** the spacing of the skeleton when it is not the one of the states (the skeleton holds headings the loaded page lays out on its own) */
+  skeletonClassName?: string;
   children: ReactNode;
 }) {
   const copy = useCopy(statesCopy);
 
   if (query.isPending)
-    return <LoadingBlock className={className}>{skeleton}</LoadingBlock>;
+    return (
+      <LoadingBlock className={skeletonClassName}>{skeleton}</LoadingBlock>
+    );
 
   // a background refetch that failed keeps the data it had: only a block with nothing to show is an error
   if (query.isError && count === 0)

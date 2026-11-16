@@ -13,7 +13,8 @@ import { devResumeCopy } from '@/content/copy/dev-resume-certificates';
 import { resumeCopy } from '@/content/copy/resume';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
-import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
+import { CORE_GRID, CORE_MAIN_SPAN } from '@/skins/dev/blocks/core-grid';
+import { CoreStackSkeleton } from '@/skins/dev/blocks/core-stack-skeleton';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevCard } from '@/skins/dev/ui/dev-card';
 import { coreStack } from '@/lib/derive/core-stack';
@@ -25,7 +26,8 @@ const fillsWithMain = (count: number) => (count + 1) % 3 === 0;
 const CARD =
   'relative flex flex-col gap-3 overflow-hidden border-t-2 border-t-(--c) px-[18px] py-4 hover:border-(color:--c) hover:shadow-[0_16px_36px_color-mix(in_srgb,var(--c)_22%,transparent)] after:pointer-events-none after:absolute after:-top-10 after:-right-10 after:size-[130px] after:rounded-full after:bg-[radial-gradient(circle,color-mix(in_srgb,var(--c)_28%,transparent),transparent_70%)] after:opacity-55 after:transition-[opacity,transform] after:duration-[300ms,400ms] after:ease-[ease] after:content-[""] hover:after:opacity-100 hover:after:[transform:scale(1.25)]';
 const CARD_MAIN =
-  'col-span-2 max-[900px]:col-[1/-1] bg-[linear-gradient(160deg,color-mix(in_srgb,var(--c)_14%,var(--chrome)),var(--chrome)_55%)] px-[22px] py-5';
+  CORE_MAIN_SPAN +
+  ' bg-[linear-gradient(160deg,color-mix(in_srgb,var(--c)_14%,var(--chrome)),var(--chrome)_55%)] px-[22px] py-5';
 
 /**
  * The skills marked `highlight`, in rank order, as cards: the mark, the name, the year it was first used and the places it was
@@ -45,11 +47,11 @@ export function DevCoreStack() {
       empty='coreStack'
       subject='coreStack'
       level={3}
-      skeleton={<DevCardsSkeleton count={5} min={220} height={150} />}
+      skeleton={<CoreStackSkeleton />}
     >
       <div
         // `dv-core-grid` is only a hook for the tests
-        className='dv-core-grid grid grid-cols-[repeat(3,minmax(0,1fr))] gap-4 max-[900px]:grid-cols-[repeat(2,minmax(0,1fr))] max-[620px]:grid-cols-[minmax(0,1fr)]'
+        className={cn('dv-core-grid', CORE_GRID)}
       >
         {core.map((skill, i) => {
           const found = evidence.get(skill.id);

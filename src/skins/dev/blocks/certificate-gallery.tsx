@@ -14,6 +14,10 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { DevCertificateCard } from '@/skins/dev/blocks/certificate-card';
 import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
 
+/** The columns of the grid of certificates (shared with the loading skeleton). */
+export const CERTIFICATE_GRID =
+  'grid grid-cols-[repeat(2,1fr)] gap-[18px] max-[620px]:grid-cols-[1fr]';
+
 /** The latest certificate large, the rest in a grid; the pictures open in the viewer of the shell, which steps through all of them. */
 export function DevCertificateGallery() {
   const copy = useCopy(certificatesCopy);
@@ -52,7 +56,7 @@ export function DevCertificateGallery() {
   };
 
   return (
-    <div className='grid grid-cols-[repeat(2,1fr)] gap-[18px] max-[620px]:grid-cols-[1fr]'>
+    <div className={CERTIFICATE_GRID}>
       {certificates.map((certificate, index) => (
         <DevCertificateCard
           key={certificate.id}

@@ -13,29 +13,14 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
 import { LazyLightbox } from '@/skins/travel/blocks/lazy-dialogs';
+import { PASSPORT_STAMPS } from '@/skins/travel/blocks/passport-grid';
+import { PassportSkeleton } from '@/skins/travel/blocks/passport-skeleton';
 import {
   PassportStamp,
   type StampSkill,
 } from '@/skins/travel/blocks/passport-stamp';
 import { tlButton } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
-import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
-
-function StampsSkeleton() {
-  return (
-    <div className='grid grid-cols-1 gap-4'>
-      {[0, 1, 2].map((i) => (
-        <div key={i} className='flex items-center gap-3.5'>
-          <TlSkeleton className='size-[88px] flex-none rounded-full' />
-          <div className='grid grid-cols-1 flex-1 gap-2'>
-            <TlSkeleton className='h-4 w-4/5' />
-            <TlSkeleton className='h-3 w-1/2' />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 /**
  * The stamps of the passport, the latest first (the query already orders them), with the data states of every block, and the
@@ -71,12 +56,9 @@ export function PassportList() {
         count={items.length}
         empty='certificates'
         subject='certificates'
-        skeleton={<StampsSkeleton />}
+        skeleton={<PassportSkeleton />}
       >
-        <ul
-          aria-label={words.stampsLabel}
-          className='tl-ruled m-0 -mx-5 grid grid-cols-1 list-none gap-5 px-5 py-2 pb-3'
-        >
+        <ul aria-label={words.stampsLabel} className={PASSPORT_STAMPS}>
           {items.map((certificate, i) => (
             <li key={certificate.id}>
               <PassportStamp

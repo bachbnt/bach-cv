@@ -10,16 +10,13 @@ import { ProjectCover } from '@/components/projects/project-cover';
 import { skillsOf } from '@/components/projects/project-helpers';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { statesCopy } from '@/content/copy/states';
-import {
-  HOME_PROJECTS,
-  featuredProjects,
-  projectHref,
-} from '@/lib/derive/home-lists';
+import { featuredProjects, projectHref } from '@/lib/derive/home-lists';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { HomeCol } from '@/skins/academic/blocks/home-col';
+import { HomeProjectsSkeleton } from '@/skins/academic/blocks/home-projects-skeleton';
+import { ProjectStatus } from '@/skins/academic/blocks/project-status';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 
 const TILTS = [-1.3, 1, -0.7] as const;
 
@@ -55,11 +52,7 @@ export function HomeProjects() {
         </div>
         {projectsQuery.isPending ? (
           <div role='status' aria-busy='true' aria-label={states.loading}>
-            <div className='grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-8'>
-              {Array.from({ length: HOME_PROJECTS }, (_, i) => (
-                <AcSkeleton key={i} className='h-[300px]' />
-              ))}
-            </div>
+            <HomeProjectsSkeleton />
           </div>
         ) : (
           <div className='grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-x-8 gap-y-10'>
@@ -77,13 +70,14 @@ export function HomeProjects() {
                       firstSkill={tags[0]}
                       className='h-[190px]'
                     />
+                    <ProjectStatus project={project} className='top-4 left-0' />
                   </span>
                   <span className='mt-4 block'>
                     <h3 className='ac-glow m-0 font-ac-chalk text-[26px]/[1.15] font-normal'>
                       {project.name}
                     </h3>
                     {project.summary && (
-                      <span className='mt-1 line-clamp-3 block text-[0.94em]'>
+                      <span className='mt-1 line-clamp-3 text-[0.94em]'>
                         {project.summary}
                       </span>
                     )}

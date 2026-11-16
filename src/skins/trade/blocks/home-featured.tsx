@@ -19,6 +19,7 @@ import {
   featuredProjects,
   projectHref,
 } from '@/lib/derive/home-lists';
+import { DataProjectStatus } from '@/skins/trade/blocks/data-project-status';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
 import { useSkillMap } from '@/skins/trade/blocks/use-skill-map';
 import { ShellWidget } from '@/skins/trade/ui/shell-widget';
@@ -100,6 +101,7 @@ function IdeaCard({
       <div className='flex flex-1 flex-col gap-1.5 p-3'>
         <div className='flex flex-wrap items-center gap-x-2 gap-y-1'>
           <TvChip tone='accent'>{copy.kinds[project.kind]}</TvChip>
+          <DataProjectStatus project={project} />
           {project.startMonth && (
             <span className='text-[11px] text-tv-mute tabular-nums'>
               {project.startMonth.slice(0, 4)}
@@ -167,10 +169,15 @@ export function HomeFeatured() {
         subject='projects'
         level={3}
         className='m-3'
+        skeletonClassName=''
         skeleton={
           <div className='grid gap-3 p-3 @2xl:grid-cols-3'>
             {Array.from({ length: HOME_PROJECTS }, (_, i) => (
-              <TvSkeleton key={i} className='h-64' />
+              <TvSkeleton
+                key={i}
+                data-skeleton={i === 0 ? 'item' : undefined}
+                className='h-[348px] max-[359px]:h-[315px] @2xl:h-[332px] @4xl:h-[356px]'
+              />
             ))}
           </div>
         }

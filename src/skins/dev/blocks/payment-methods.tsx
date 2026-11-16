@@ -11,8 +11,8 @@ import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 import { DevFilterGroup } from '@/skins/dev/blocks/filter-group';
 import { PaymentFeature } from '@/skins/dev/blocks/payment-feature';
+import { PaymentNote } from '@/skins/dev/blocks/payment-note';
 import { PaymentRow } from '@/skins/dev/blocks/payment-row';
-import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { useDevOverlays } from '@/skins/dev/shell/dev-overlay-context';
 import { countHint } from '@/skins/dev/ui/count-hint';
 import { DevSection } from '@/skins/dev/ui/dev-section';
@@ -59,13 +59,7 @@ export function PaymentMethods({ methods }: { methods: Doc<'payments'>[] }) {
 
   return (
     <>
-      <p
-        className='mt-5 flex max-w-[740px] items-start gap-2.5 rounded-[8px] border border-dashed border-line-2 bg-chrome px-[17px] py-[13px] font-sans text-[14.5px]/[1.6] font-normal text-mute'
-        data-reveal
-      >
-        <DevIcon name='info' className='mt-[3px] flex-none text-signal' />
-        <span>{copy.note}</span>
-      </p>
+      <PaymentNote />
 
       {featured.length > 0 && (
         <DevSection

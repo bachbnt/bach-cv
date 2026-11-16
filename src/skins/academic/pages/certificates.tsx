@@ -26,7 +26,13 @@ export function CertificatesPage() {
     <AcPage page='certificates'>
       <AcRow
         tone='b'
-        note={items.length > 0 ? <CertificateSeal items={items} /> : undefined}
+        note={
+          items.length > 0 ? (
+            <CertificateSeal items={items} />
+          ) : certificates.isPending ? (
+            <CertificateSeal />
+          ) : undefined
+        }
       >
         <AcPageHead page='certificates' title={copy.title} lead={copy.intro} />
       </AcRow>

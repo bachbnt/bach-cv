@@ -5,6 +5,7 @@
 import { expect, test } from '@playwright/test';
 import { mockFirestore } from '../support/firestore-mock';
 import { projectsControls } from '../support/projects-controls';
+import { defineProjectStatusTests } from '../support/project-status-suite';
 import { allOn, servePayments } from '../support/payments';
 import { gotoSkin, useSkin } from '../support/skin';
 
@@ -390,4 +391,16 @@ test.describe('Payment', () => {
       page.getByRole('link', { name: 'Cho tôi biết về dự án của bạn' }),
     ).toHaveAttribute('href', '/services#contact-cta');
   });
+});
+
+defineProjectStatusTests({
+  skin: 'dev',
+  project: (page, name) =>
+    page.locator('[data-slot="dev-project"]').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
+  home: (page, name) =>
+    page.getByRole('link').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
 });

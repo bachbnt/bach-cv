@@ -16,6 +16,7 @@ import type { Doc } from '@/lib/content/schema';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { DataKind } from '@/skins/trade/blocks/data-kind';
+import { DataProjectStatus } from '@/skins/trade/blocks/data-project-status';
 import { DataTags } from '@/skins/trade/blocks/data-tags';
 import { ProjectLinks } from '@/skins/trade/blocks/project-links';
 import { TvChip } from '@/skins/trade/ui/tv-chip';
@@ -46,6 +47,7 @@ export function DataProjectDetail({
       <div className='grid min-w-0 content-start gap-2.5'>
         <div className='flex flex-wrap items-center gap-2'>
           <DataKind kind={project.kind} />
+          <DataProjectStatus project={project} />
           {project.highlight !== null && (
             <TvChip tone='gold'>
               {copy.featuredTag}{' '}

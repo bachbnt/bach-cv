@@ -9,10 +9,10 @@ import { useSkills } from '@/components/skills/use-skills';
 import { useNow } from '@/hooks/use-now';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
+import { ResumeExperienceSkeleton } from '@/skins/academic/blocks/resume-experience-skeleton';
 import { ResumeRole } from '@/skins/academic/blocks/resume-role';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 
 /** The Experience section: every visible role, newest first, each a numbered result with its note in the margin. */
 export function ResumeExperience() {
@@ -34,18 +34,8 @@ export function ResumeExperience() {
         subject='experience'
         level={3}
         className='mt-4'
-        skeleton={
-          <div className='mt-4 grid gap-6'>
-            {[0, 1, 2].map((i) => (
-              <div key={i} className='grid gap-2.5'>
-                <AcSkeleton className='h-8 w-2/5' />
-                <AcSkeleton className='w-1/4' />
-                <AcSkeleton className='w-4/5' />
-                <AcSkeleton className='w-3/5' />
-              </div>
-            ))}
-          </div>
-        }
+        skeleton={<ResumeExperienceSkeleton />}
+        skeletonClassName=''
       >
         <div className='mt-4'>
           {jobs.map((job, index) => (

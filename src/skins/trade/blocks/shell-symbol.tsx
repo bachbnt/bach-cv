@@ -32,7 +32,7 @@ function Stat({
   count: number | null;
   pending: boolean;
 }) {
-  if (pending) return <TvSkeleton className='h-[52px] border-0' />;
+  if (pending) return <TvSkeleton className='h-[55px] border-0' />;
   if (count === null) return null;
   return (
     <Link
@@ -92,6 +92,9 @@ export function SymbolOverview() {
           )}
         </div>
       </div>
+      {years === null && jobs.isPending && (
+        <TvSkeleton className='mt-4 h-12 w-36 border-0' />
+      )}
       {years !== null && (
         <p className='mt-4 flex items-baseline gap-2'>
           <span className='sr-only'>

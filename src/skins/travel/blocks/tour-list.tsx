@@ -11,8 +11,8 @@ import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { TourCard } from '@/skins/travel/blocks/tour-card';
+import { TourSkeleton } from '@/skins/travel/blocks/tour-skeleton';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
-import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
 
 /**
  * The tours: every service as a card, in the order of the `services` collection. With the contact form on, the tours are also the
@@ -57,13 +57,7 @@ export function TourList({
       count={services.length}
       empty='services'
       subject='services'
-      skeleton={
-        <div className='grid grid-cols-1 gap-2'>
-          {[0, 1, 2].map((i) => (
-            <TlSkeleton key={i} className='h-[68px] rounded-2xl' />
-          ))}
-        </div>
-      }
+      skeleton={<TourSkeleton />}
     >
       {features.contactForm ? (
         <div role='group' aria-label={copy.cta.topicLabel}>

@@ -9,7 +9,10 @@ import { projectsCopy } from '@/content/copy/projects';
 import { highlighted } from '@/lib/derive/highlighted';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
-import { ProjectEntry } from '@/skins/academic/blocks/project-entry';
+import {
+  PROJECT_ENTRY_ITEM,
+  ProjectEntry,
+} from '@/skins/academic/blocks/project-entry';
 import { ProjectList } from '@/skins/academic/blocks/project-list';
 import { useOpenScreenshots } from '@/skins/academic/blocks/use-open-screenshots';
 import { ProjectSkeleton } from '@/skins/academic/blocks/project-skeleton';
@@ -38,16 +41,14 @@ export function ProjectsContent() {
       subject='projects'
       skeleton={<ProjectSkeleton />}
       className='mt-6'
+      skeletonClassName=''
     >
       {featured.length > 0 && (
         <section>
           <AcHeading className='mt-6 mb-5'>{copy.featured}</AcHeading>
           <ol className='m-0 list-none p-0'>
             {featured.map((project) => (
-              <li
-                key={project.id}
-                className='border-t-2 border-dashed border-ac-faint py-[22px] first:border-t-0 first:pt-0'
-              >
+              <li key={project.id} className={PROJECT_ENTRY_ITEM}>
                 <ProjectEntry
                   featured
                   project={project}

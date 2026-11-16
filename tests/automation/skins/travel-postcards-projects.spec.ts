@@ -8,6 +8,7 @@ import { projectsControls } from '../support/projects-controls';
 import { mockImages } from '../support/images';
 import { animationsSettled } from '../support/animations';
 import { gotoSkin, useSkin } from '../support/skin';
+import { defineProjectStatusTests } from '../support/project-status-suite';
 
 test.beforeEach(async ({ page }) => {
   await useSkin(page, 'travel');
@@ -456,4 +457,16 @@ test.describe('in Vietnamese', () => {
     ).toBeAttached();
     await expect(card(page, 'DevCmd')).toContainText('Thg 2 2024 – Nay');
   });
+});
+
+defineProjectStatusTests({
+  skin: 'travel',
+  project: (page, name) =>
+    page.getByTestId('project').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
+  home: (page, name) =>
+    page.getByRole('listitem').filter({
+      has: page.getByText(name, { exact: true }),
+    }),
 });

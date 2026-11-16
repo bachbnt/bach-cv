@@ -21,6 +21,10 @@ import { DevCard } from '@/skins/dev/ui/dev-card';
 import { DevKind } from '@/skins/dev/ui/dev-kind';
 import { DevLink } from '@/skins/dev/ui/dev-link';
 
+/** The columns of the grid of degrees (shared with the loading skeleton). */
+export const EDUCATION_GRID =
+  'grid grid-cols-[repeat(2,1fr)] gap-3.5 max-[620px]:grid-cols-[1fr]';
+
 /** Degrees as cards: photo, school, period, major, and the thesis with its technologies and links. */
 export function DevEducationCards({
   degrees,
@@ -33,7 +37,7 @@ export function DevEducationCards({
   const { lang } = useLang();
 
   return (
-    <div className='grid grid-cols-[repeat(2,1fr)] gap-3.5 max-[620px]:grid-cols-[1fr]'>
+    <div className={EDUCATION_GRID}>
       {degrees.map((degree) => (
         <DevCard
           as='article'

@@ -14,6 +14,7 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { ContactForm } from '@/skins/academic/blocks/contact-form';
 import { ContactSent } from '@/skins/academic/blocks/contact-sent';
 import { ContactTopics } from '@/skins/academic/blocks/contact-topics';
+import { ContactTopicsSkeleton } from '@/skins/academic/blocks/contact-topics-skeleton';
 import { AcPaper } from '@/skins/academic/ui/ac-paper';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
 
@@ -29,7 +30,7 @@ export function ContactSection({
   const copy = useCopy(servicesCopy).cta;
   const { features } = useLive();
   const { openChat } = useChat();
-  const { data: services = [] } = useContentQuery('services');
+  const servicesQuery = useContentQuery('services');
   const limits = useContactLimits();
 
   return (
@@ -45,11 +46,15 @@ export function ContactSection({
             <AcPaper kind='sticky' className='mt-6'>
               <p>{copy.hint}</p>
             </AcPaper>
-            <ContactTopics
-              services={services}
-              topicId={form.topicId}
-              onSelect={form.selectTopic}
-            />
+            {servicesQuery.isPending ? (
+              <ContactTopicsSkeleton />
+            ) : (
+              <ContactTopics
+                services={servicesQuery.data ?? []}
+                topicId={form.topicId}
+                onSelect={form.selectTopic}
+              />
+            )}
           </>
         ) : (
           <AcPaper kind='sticky' role='note' className='mt-6'>

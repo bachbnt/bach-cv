@@ -28,6 +28,7 @@ export function TvDataState({
   skeleton,
   level,
   className,
+  skeletonClassName = className,
   children,
 }: {
   query: QueryLike;
@@ -40,6 +41,8 @@ export function TvDataState({
   level?: 2 | 3;
   /** spacing around the skeleton and the cards, so the page does not jump when the data arrives */
   className?: string;
+  /** the spacing of the skeleton when it is not the one of the states (the skeleton holds headings the loaded page lays out on its own) */
+  skeletonClassName?: string;
   children: ReactNode;
 }) {
   const copy = useCopy(statesCopy);
@@ -55,7 +58,7 @@ export function TvDataState({
         role='status'
         aria-busy='true'
         aria-label={copy.loading}
-        className={cn('relative overflow-hidden', className)}
+        className={cn('relative overflow-hidden', skeletonClassName)}
       >
         <span
           aria-hidden='true'

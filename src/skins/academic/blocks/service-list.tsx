@@ -40,6 +40,7 @@ export function ServiceList({
       subject='services'
       skeleton={<ServiceSkeleton />}
       className='mt-8'
+      skeletonClassName=''
     >
       {/* the text stays left of the ruled margin (262px of notes and the gap), as the text of every page does */}
       <ol

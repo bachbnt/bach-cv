@@ -4,7 +4,7 @@
 
 'use client';
 
-import { Info, Wallet } from 'lucide-react';
+import { Wallet } from 'lucide-react';
 import { startTransition, ViewTransition } from 'react';
 import { usePaymentMethods } from '@/components/payment/use-payment-methods';
 import { paymentCopy } from '@/content/copy/payment';
@@ -14,7 +14,9 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { LazyPaymentQrDialog } from '@/skins/trade/blocks/lazy-dialogs';
+import { DeskPaymentNote } from '@/skins/trade/blocks/desk-payment-note';
 import { DeskPaymentRecommended } from '@/skins/trade/blocks/desk-payment-recommended';
+import { DeskPaymentSkeleton } from '@/skins/trade/blocks/desk-payment-skeleton';
 import {
   DeskPaymentRow,
   PAYMENT_COLUMNS,
@@ -22,7 +24,6 @@ import {
 import { DeskSection } from '@/skins/trade/blocks/desk-section';
 import { DeskSnackbar } from '@/skins/trade/blocks/desk-snackbar';
 import { useToast } from '@/hooks/use-toast';
-import { TvChartSkeleton } from '@/skins/trade/ui/tv-chart-skeleton';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvLink } from '@/skins/trade/ui/tv-button';
 import { TvStateNotice } from '@/skins/trade/ui/tv-state-notice';
@@ -55,7 +56,8 @@ export function DeskPayment() {
           </TvStateNotice>
         }
         subject='payments'
-        skeleton={<TvChartSkeleton className='h-[200px] max-w-[760px]' />}
+        skeleton={<DeskPaymentSkeleton />}
+        skeletonClassName=''
       >
         <DeskMethods methods={methods} />
       </TvDataState>
@@ -88,16 +90,7 @@ function DeskMethods({ methods }: { methods: Doc<'payments'>[] }) {
   return (
     <>
       <div className='@container grid gap-3'>
-        <p
-          role='note'
-          className='flex items-start gap-2.5 rounded-md border border-tv-line border-l-2 border-l-tv-accent bg-tv-panel px-3 py-2.5 text-xs/[1.5]'
-        >
-          <Info
-            className='mt-0.5 size-4 flex-none text-tv-accent-ink'
-            aria-hidden='true'
-          />
-          <span>{copy.note}</span>
-        </p>
+        <DeskPaymentNote />
 
         {featured.length > 0 && (
           <DeskSection

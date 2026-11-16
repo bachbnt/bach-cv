@@ -8,9 +8,9 @@ import { useSkills } from '@/components/skills/use-skills';
 import { useScrollToHash } from '@/hooks/use-scroll-to-hash';
 import { resumeCopy } from '@/content/copy/resume';
 import { devCopy } from '@/content/copy/dev';
-import { useYearsText } from '@/lib/query/use-career-years';
 import { useContentQuery } from '@/lib/query/use-content';
 import { useCopy } from '@/lib/i18n/copy';
+import { YearsText } from '@/components/years-text';
 import { DevExperienceList } from '@/skins/dev/blocks/experience-list';
 import { DevEducationList } from '@/skins/dev/blocks/education-list';
 import { DevResumeSkills } from '@/skins/dev/blocks/resume-skills';
@@ -23,7 +23,6 @@ import { DevSection } from '@/skins/dev/ui/dev-section';
 /** Resume in the Dev skin: the career as a Source Control graph, the skills and the degrees. */
 export function ResumePage() {
   const copy = useCopy(resumeCopy);
-  const intro = useYearsText(copy.intro, copy.introUndated, { spelled: true });
   const { hints } = useCopy(devCopy);
   const jobs = useContentQuery('experience').data;
   const degrees = useContentQuery('education').data;
@@ -33,7 +32,17 @@ export function ResumePage() {
 
   return (
     <DevPage page='resume'>
-      <DevPageHead page='resume' title={copy.title} intro={intro}>
+      <DevPageHead
+        page='resume'
+        title={copy.title}
+        intro={
+          <YearsText
+            withYears={copy.intro}
+            withoutYears={copy.introUndated}
+            spelled
+          />
+        }
+      >
         <DevDownloadCv label={copy.downloadCv} />
       </DevPageHead>
       <DevSection

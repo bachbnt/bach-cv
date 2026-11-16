@@ -4,7 +4,7 @@
 
 'use client';
 
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { useLoopGate } from '@/hooks/use-loop-gate';
 import { cn } from '@/lib/utils';
 
@@ -12,9 +12,14 @@ import { cn } from '@/lib/utils';
 export function DevSkeleton({
   className,
   style,
+  children,
+  ...data
 }: {
   className?: string;
   style?: CSSProperties;
+  /** blank bars (`DevSkeletonBar`) that give the shape the structure of the card it stands for */
+  children?: ReactNode;
+  'data-skeleton'?: 'toolbar' | 'item' | 'detail';
 }) {
   const gate = useLoopGate();
   return (
@@ -26,35 +31,9 @@ export function DevSkeleton({
         className,
       )}
       style={style}
-    />
-  );
-}
-
-/** A grid of card-shaped placeholders that wraps the way the real cards do (`min` is the narrowest card in px). */
-export function DevCardsSkeleton({
-  count,
-  min,
-  height,
-  gap = 14,
-  className,
-}: {
-  count: number;
-  min: number;
-  height: number;
-  gap?: number;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn('grid', className)}
-      style={{
-        gap,
-        gridTemplateColumns: `repeat(auto-fit, minmax(${min}px, 1fr))`,
-      }}
+      {...data}
     >
-      {Array.from({ length: count }, (_, i) => (
-        <DevSkeleton key={i} style={{ height }} />
-      ))}
+      {children}
     </div>
   );
 }

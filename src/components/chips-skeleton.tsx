@@ -15,11 +15,11 @@ export function ChipsSkeleton({
 }) {
   const widths = [88, 112, 76, 128, 96, 104, 84, 120];
   return (
-    <div className={cn('flex flex-wrap gap-3', className)}>
+    <div className={cn('flex gap-3 overflow-hidden', className)}>
       {Array.from({ length: count }, (_, n) => (
         <Skeleton
           key={n}
-          className='h-9 rounded-full'
+          className='h-7 flex-none rounded-full'
           style={{ width: widths[n % widths.length] }}
         />
       ))}

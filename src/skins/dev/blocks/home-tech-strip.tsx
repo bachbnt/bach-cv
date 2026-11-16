@@ -34,7 +34,7 @@ export function HomeTechStrip() {
         aria-label={states.loading}
         className='mt-7'
       >
-        <DevSkeleton className='h-7' />
+        <DevSkeleton className='h-[23px]' />
       </div>
     );
   }

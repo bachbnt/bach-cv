@@ -8,11 +8,9 @@ import {
   ArrowUpDown,
   Check,
   ChevronDown,
-  Flag,
   Globe,
   MapPin,
   Monitor,
-  Route,
   SlidersHorizontal,
   Smartphone,
   Sparkles,
@@ -30,6 +28,8 @@ import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { FilterChip } from '@/skins/travel/blocks/filter-chip';
+import { STATUS_ICON } from '@/skins/travel/blocks/project-status';
+import { activeFilterCount } from '@/lib/derive/project-view';
 
 const CONTROL =
   'h-8 rounded-full border border-tl-line bg-tl-panel-2 px-3.5 text-[13px] font-semibold text-tl-ink outline-none placeholder:font-normal placeholder:text-tl-muted focus-visible:ring-2 focus-visible:ring-tl-ink/40 pointer-coarse:h-11';
@@ -42,10 +42,6 @@ const PLATFORM_ICON: Record<string, LucideIcon> = {
   web: Globe,
   desktop: Monitor,
   ai: Sparkles,
-};
-const STATUS_ICON: Record<string, LucideIcon> = {
-  ongoing: Route,
-  finished: Flag,
 };
 
 /** The shape of a luggage tag: square on the side of the string hole, round on the other. */
@@ -124,9 +120,7 @@ export function TlProjectsToolbar({ view }: { view: ProjectView }) {
   const showMore =
     moreOpen || techMore.some((o) => groups.tech.selected.includes(o.value));
   const anyFilter = Object.values(groups).some((group) => group.visible);
-  const active = Object.values(groups)
-    .filter((group) => group.visible)
-    .reduce((sum, group) => sum + group.selected.length, 0);
+  const active = activeFilterCount(groups);
   if (!anyFilter && !sort.visible && !search.visible) return null;
 
   return (
@@ -213,7 +207,7 @@ export function TlProjectsToolbar({ view }: { view: ProjectView }) {
                   <Choice
                     key={o.value}
                     label={copy.statuses[o.value as keyof typeof copy.statuses]}
-                    icon={STATUS_ICON[o.value]}
+                    icon={STATUS_ICON[o.value as keyof typeof STATUS_ICON]}
                     count={o.count}
                     pressed={groups.status.selected.includes(o.value)}
                     onClick={() => groups.status.toggle(o.value)}

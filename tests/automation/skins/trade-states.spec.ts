@@ -305,22 +305,25 @@ test.describe('the system screens in the look of the terminal', () => {
     ).toBeVisible();
   });
 
-  test('loading is a chart of grid lines and bars that breathe, and a line sweeping along the top; both stand still for reduced motion', async ({
+  test('loading is the page with blank shapes that shimmer and a line sweeping along the top; both stand still for reduced motion', async ({
     page,
   }) => {
     await interceptCollection(page, 'payments', { delay: 2500 });
     await gotoSkin(page, '/payment');
     const loading = page.getByRole('status', { name: 'Loading' });
     await expect(loading).toBeVisible();
-    expect(await loading.locator('span').count()).toBeGreaterThan(10);
-    await expect(loading.locator('span[class*="tv-bar"]').first()).toHaveCSS(
-      'animation-name',
-      'tv-bar',
-    );
+    expect(
+      await loading.locator('[aria-hidden="true"]').count(),
+    ).toBeGreaterThan(3);
     await expect(loading.locator('span[class*="tv-load"]').first()).toHaveCSS(
       'animation-name',
       'tv-load',
     );
+    expect(
+      await loading.evaluate(
+        (el) => el.getAnimations({ subtree: true }).length,
+      ),
+    ).toBeGreaterThan(1);
   });
 
   test('loading stands still for reduced motion', async ({ page }) => {
@@ -329,10 +332,15 @@ test.describe('the system screens in the look of the terminal', () => {
     await gotoSkin(page, '/payment');
     const loading = page.getByRole('status', { name: 'Loading' });
     await expect(loading).toBeVisible();
-    await expect(loading.locator('span[class*="tv-bar"]').first()).toHaveCSS(
+    await expect(loading.locator('span[class*="tv-load"]').first()).toHaveCSS(
       'animation-name',
       'none',
     );
+    expect(
+      await loading.evaluate(
+        (el) => el.getAnimations({ subtree: true }).length,
+      ),
+    ).toBe(0);
   });
 
   test('empty is "No data for this symbol" and an error is the widget error, in both languages', async ({

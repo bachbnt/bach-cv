@@ -46,7 +46,13 @@ export function ContactSection() {
         subject='contact'
         level={3}
         className='mt-3 text-tl-ink'
-        skeleton={<TlSkeleton className='h-16' />}
+        skeletonClassName='mt-2 grid grid-cols-1 gap-2'
+        skeleton={
+          <>
+            <TlSkeleton className='h-7 w-3/5 rounded-md' />
+            <TlSkeleton className='h-[18px] w-4/5 rounded-md' />
+          </>
+        }
       >
         {email && (
           <a

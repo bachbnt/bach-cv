@@ -9,7 +9,10 @@ import { projectsCopy } from '@/content/copy/projects';
 import { useProjectView } from '@/hooks/use-project-view';
 import type { Doc } from '@/lib/content/schema';
 import { useCopy } from '@/lib/i18n/copy';
-import { ProjectEntry } from '@/skins/academic/blocks/project-entry';
+import {
+  PROJECT_ENTRY_ITEM,
+  ProjectEntry,
+} from '@/skins/academic/blocks/project-entry';
 import { AcProjectsToolbar } from '@/skins/academic/blocks/projects-toolbar';
 
 const NOTE_BUTTON =
@@ -46,10 +49,7 @@ export function ProjectList({
         {view.shown.length > 0 ? (
           <ol className='m-0 mt-6 list-none p-0'>
             {view.shown.map((project) => (
-              <li
-                key={project.id}
-                className='border-t-2 border-dashed border-ac-faint py-[22px] first:border-t-0 first:pt-0'
-              >
+              <li key={project.id} className={PROJECT_ENTRY_ITEM}>
                 <ProjectEntry
                   project={project}
                   number={projects.indexOf(project) + 1}

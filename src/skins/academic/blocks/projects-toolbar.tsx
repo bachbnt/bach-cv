@@ -20,6 +20,7 @@ import { AcChip } from '@/skins/academic/ui/ac-chip';
 import { AC_SHEET } from '@/skins/academic/ui/ac-sheet';
 import { lineInput } from '@/skins/academic/ui/ac-line-input';
 import { AcRow } from '@/skins/academic/ui/ac-note';
+import { activeFilterCount } from '@/lib/derive/project-view';
 
 const NOTE_BUTTON =
   'inline-flex min-h-8 cursor-pointer items-center border-0 bg-transparent p-0 font-ac-note text-[18px] text-ac-link underline underline-offset-4 pointer-coarse:min-h-11';
@@ -78,9 +79,7 @@ export function AcProjectsToolbar({ view }: { view: ProjectView }) {
   const showMore =
     moreOpen || techMore.some((o) => groups.tech.selected.includes(o.value));
   const anyFilter = Object.values(groups).some((group) => group.visible);
-  const active = Object.values(groups)
-    .filter((group) => group.visible)
-    .reduce((sum, group) => sum + group.selected.length, 0);
+  const active = activeFilterCount(groups);
   if (!anyFilter && !sort.visible && !search.visible) return null;
 
   const note = (

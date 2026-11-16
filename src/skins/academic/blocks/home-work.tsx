@@ -8,16 +8,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { homeCopy } from '@/content/copy/home';
 import { isCurrent } from '@/lib/derive/current-job';
-import { HOME_ROLES, latestRoles } from '@/lib/derive/home-lists';
+import { latestRoles } from '@/lib/derive/home-lists';
 import { jobBadge } from '@/lib/derive/job-badge';
 import { formatPeriod } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
 import { AcTimeline } from '@/skins/academic/blocks/ac-timeline';
+import { HomeWorkSkeleton } from '@/skins/academic/blocks/home-work-skeleton';
 import { HomeCol } from '@/skins/academic/blocks/home-col';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
 
 /**
@@ -51,13 +51,7 @@ export function HomeWork() {
           empty='work'
           subject='work'
           level={3}
-          skeleton={
-            <div className='grid gap-4'>
-              {Array.from({ length: HOME_ROLES - 1 }, (_, i) => (
-                <AcSkeleton key={i} className='h-20' />
-              ))}
-            </div>
-          }
+          skeleton={<HomeWorkSkeleton />}
         >
           <ul className='m-0 list-none border-t-2 border-dashed border-ac-faint p-0'>
             {rows.map((job) => (

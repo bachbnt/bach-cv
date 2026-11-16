@@ -9,10 +9,11 @@ import { devCopy } from '@/content/copy/dev';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
-import { HOME_PROJECTS, featuredProjects } from '@/lib/derive/home-lists';
+import { featuredProjects } from '@/lib/derive/home-lists';
 import { HomeProjectCard } from '@/skins/dev/blocks/home-project-card';
+import { HOME_PROJECTS_GRID } from '@/skins/dev/blocks/home-projects-grid';
+import { HomeProjectsSkeleton } from '@/skins/dev/blocks/home-projects-skeleton';
 import { countHint } from '@/skins/dev/ui/count-hint';
-import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevSection } from '@/skins/dev/ui/dev-section';
 
@@ -47,11 +48,9 @@ export function HomeProjects() {
         count={featured.length}
         empty='projects'
         subject='projects'
-        skeleton={
-          <DevCardsSkeleton count={HOME_PROJECTS} min={260} height={380} />
-        }
+        skeleton={<HomeProjectsSkeleton />}
       >
-        <div className='grid grid-cols-3 gap-4 max-[900px]:grid-cols-2 max-[620px]:grid-cols-1'>
+        <div className={HOME_PROJECTS_GRID}>
           {featured.map((project) => (
             <HomeProjectCard
               key={project.id}

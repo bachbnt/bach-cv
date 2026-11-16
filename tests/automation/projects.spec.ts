@@ -5,6 +5,7 @@
 import { expect, test } from '@playwright/test';
 import { mockFirestore } from './support/firestore-mock';
 import { projectsControls } from './support/projects-controls';
+import { defineProjectStatusTests } from './support/project-status-suite';
 
 test.beforeEach(async ({ page }) => {
   await mockFirestore(page);
@@ -280,4 +281,16 @@ test.describe('in Vietnamese', () => {
     await page.keyboard.press('Escape');
     await expect(dialog).toBeHidden();
   });
+});
+
+defineProjectStatusTests({
+  skin: 'standard',
+  project: (page, name) =>
+    page.locator('article').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
+  home: (page, name) =>
+    page.getByRole('link').filter({
+      has: page.getByRole('heading', { name, exact: true }),
+    }),
 });

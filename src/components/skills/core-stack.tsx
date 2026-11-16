@@ -30,7 +30,7 @@ export function CoreStack({ className }: { className?: string }) {
       subject='coreStack'
       level={3}
       className={className}
-      skeleton={<CardsSkeleton count={4} min={190} height={150} gap={16} />}
+      skeleton={<CardsSkeleton count={5} min={190} height={141} gap={16} />}
     >
       <div
         className={cn(

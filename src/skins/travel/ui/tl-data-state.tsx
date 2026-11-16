@@ -26,6 +26,7 @@ export function TlDataState({
   skeleton,
   level,
   className,
+  skeletonClassName = className,
   children,
 }: {
   query: QueryLike;
@@ -36,6 +37,8 @@ export function TlDataState({
   skeleton: ReactNode;
   level?: 2 | 3;
   className?: string;
+  /** the spacing of the skeleton when it is not the one of the states (the skeleton holds headings the loaded page lays out on its own) */
+  skeletonClassName?: string;
   children: ReactNode;
 }) {
   const copy = useCopy(statesCopy);
@@ -47,7 +50,7 @@ export function TlDataState({
         role='status'
         aria-busy='true'
         aria-label={copy.loading}
-        className={className}
+        className={skeletonClassName}
       >
         {skeleton}
       </div>

@@ -21,6 +21,14 @@ import { AcButton } from '@/skins/academic/ui/ac-button';
 import { AcNoteBig, AcNoteCap, AcRow } from '@/skins/academic/ui/ac-note';
 import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
+/** The grid of an entry (the text and the cover); the loading skeleton shares it. */
+export const PROJECT_ENTRY_GRID =
+  'grid min-w-0 gap-x-6 gap-y-2 outline-none min-[900px]:grid-cols-[minmax(0,1fr)_184px]';
+
+/** The ruled line between two entries of a list, and the room around an entry; the loading skeleton shares it. */
+export const PROJECT_ENTRY_ITEM =
+  'border-t-2 border-dashed border-ac-faint py-[22px] first:border-t-0 first:pt-0';
+
 /** The colour of a technology is the chalk of its category, as the tags of Standard are tinted by it. */
 const TONE: Record<Doc<'skills'>['category'], string> = {
   mobile: 'text-ac-mc',
@@ -72,7 +80,7 @@ export function ProjectEntry({
         id={featured ? undefined : `ref-p-${project.id}`}
         tabIndex={featured ? undefined : -1}
         className={cn(
-          'grid min-w-0 gap-x-6 gap-y-2 outline-none min-[900px]:grid-cols-[minmax(0,1fr)_184px]',
+          PROJECT_ENTRY_GRID,
           // without a note the entry keeps out of the margin all the same, so the ruled line never runs through a text
           !note && 'min-[900px]:pr-[308px]',
         )}

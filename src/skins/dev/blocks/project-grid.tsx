@@ -11,6 +11,10 @@ import type { Doc } from '@/lib/content/schema';
 import { ProjectCard } from '@/skins/dev/blocks/project-card';
 import { DevProjectsToolbar } from '@/skins/dev/blocks/projects-toolbar';
 
+/** The columns of the grid of cards (shared with the loading skeleton). */
+export const PROJECT_CARD_GRID =
+  'grid grid-cols-[repeat(3,1fr)] gap-4 max-[900px]:grid-cols-[1fr_1fr] max-[620px]:grid-cols-[1fr]';
+
 /** The controls of the Projects page (search, order, filters) and the grid of cards under them. */
 export function ProjectGrid({
   projects,
@@ -27,7 +31,7 @@ export function ProjectGrid({
     <>
       <DevProjectsToolbar view={view} />
       {view.shown.length > 0 ? (
-        <div className='grid grid-cols-[repeat(3,1fr)] gap-4 max-[900px]:grid-cols-[1fr_1fr] max-[620px]:grid-cols-[1fr]'>
+        <div className={PROJECT_CARD_GRID}>
           {view.shown.map((project) => (
             <ProjectCard
               key={project.id}

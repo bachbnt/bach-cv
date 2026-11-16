@@ -5,6 +5,7 @@
 'use client';
 
 import { ProjectCover } from '@/components/projects/project-cover';
+import { ProjectStatus } from '@/components/projects/project-status';
 import { ProjectLinkItem } from '@/components/projects/project-link-item';
 import { ProjectTags } from '@/components/projects/project-tags';
 import { skillsOf } from '@/components/projects/project-helpers';
@@ -42,6 +43,7 @@ export function FeaturedProject({
           />
         </div>
         <ScreenshotsOverlay project={project} onOpen={onOpenScreenshots} />
+        <ProjectStatus project={project} />
       </div>
       <div className='flex min-w-0 flex-col gap-3'>
         <span className='inline-flex self-start rounded-full bg-page-tint px-2.5 py-[3px] text-[13px] font-semibold whitespace-nowrap text-page'>

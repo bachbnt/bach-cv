@@ -3,7 +3,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { kindCounts } from '@/lib/derive/payment-kinds';
+import { groupByKind, kindCounts } from '@/lib/derive/payment-kinds';
 
 describe('kindCounts', () => {
   it('counts every method of each kind, in the order of the filter', () => {
@@ -29,5 +29,30 @@ describe('kindCounts', () => {
 
   it('is empty for no methods', () => {
     expect(kindCounts([])).toEqual({ total: 0, kinds: [] });
+  });
+});
+
+describe('groupByKind', () => {
+  it('groups the methods by kind in the order of the filter and keeps their order inside a group', () => {
+    const methods = [
+      { id: 'a', kind: 'wallet' as const },
+      { id: 'b', kind: 'bank' as const },
+      { id: 'c', kind: 'wallet' as const },
+    ];
+    expect(groupByKind(methods)).toEqual([
+      { kind: 'bank', methods: [{ id: 'b', kind: 'bank' }] },
+      {
+        kind: 'wallet',
+        methods: [
+          { id: 'a', kind: 'wallet' },
+          { id: 'c', kind: 'wallet' },
+        ],
+      },
+    ]);
+  });
+
+  it('leaves out a kind that has none, and is empty for no methods', () => {
+    expect(groupByKind([{ kind: 'wallet' as const }])).toHaveLength(1);
+    expect(groupByKind([])).toEqual([]);
   });
 });

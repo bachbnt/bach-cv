@@ -21,7 +21,11 @@ import {
 import { projectsCopy } from '@/content/copy/projects';
 import { tradeDataCopy } from '@/content/copy/trade-data';
 import type { ProjectView } from '@/hooks/use-project-view';
-import { PROJECT_COLUMNS, type ProjectColumn } from '@/lib/derive/project-view';
+import {
+  PROJECT_COLUMNS,
+  type ProjectColumn,
+  activeFilterCount,
+} from '@/lib/derive/project-view';
 import { toggleValue } from '@/lib/derive/project-view';
 import { fill } from '@/lib/chat/fill';
 import { useCopy } from '@/lib/i18n/copy';
@@ -83,9 +87,7 @@ export function DataScreenerBar({
   const { groups, sort, search } = view;
   const [sortOpen, setSortOpen] = useState(false);
   const anyFilter = Object.values(groups).some((group) => group.visible);
-  const active = Object.values(groups)
-    .filter((group) => group.visible)
-    .reduce((sum, group) => sum + group.selected.length, 0);
+  const active = activeFilterCount(groups);
   /** The choices of a filter as chips, each with the number of projects it leaves, as a section of the menu of the filters. */
   const chips = (
     group: 'platform' | 'status' | 'tech',

@@ -16,6 +16,7 @@ import { useContentQuery } from '@/lib/query/use-content';
 import { DataCertsCalendar } from '@/skins/trade/blocks/data-certs-calendar';
 import type { CertDensity } from '@/skins/trade/blocks/data-certs-calendar';
 import { DataCertsFeed } from '@/skins/trade/blocks/data-certs-feed';
+import { DataCertsSkeleton } from '@/skins/trade/blocks/data-certs-skeleton';
 import {
   filterByIssuer,
   issuersOf,
@@ -29,7 +30,6 @@ import { useSkillMap } from '@/skins/trade/blocks/use-skill-map';
 import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvPanel } from '@/skins/trade/ui/tv-panel';
-import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 import { TvToggleChip } from '@/skins/trade/ui/tv-toggle-chip';
 
 type View = 'calendar' | 'feed';
@@ -87,15 +87,9 @@ export function DataCertsView() {
         count={all.length}
         empty='certificates'
         subject='certificates'
-        skeleton={
-          <div className='grid gap-3 p-3.5'>
-            <TvSkeleton className='h-[26px] w-64' />
-            {Array.from({ length: 3 }, (_, i) => (
-              <TvSkeleton key={i} className='h-[120px]' />
-            ))}
-          </div>
-        }
+        skeleton={<DataCertsSkeleton />}
         className='m-3.5'
+        skeletonClassName=''
       >
         <div className='flex flex-wrap items-center gap-x-2.5 gap-y-2 px-3.5 py-2'>
           {issuers.length > 1 && (

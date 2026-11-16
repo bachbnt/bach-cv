@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import { ContactForm } from '@/skins/dev/blocks/contact-form';
 import { ContactSent } from '@/skins/dev/blocks/contact-sent';
 import { TopicChips } from '@/skins/dev/blocks/topic-chips';
+import { TopicChipsSkeleton } from '@/skins/dev/blocks/topic-chips-skeleton';
 import { DevLinkButton } from '@/skins/dev/ui/dev-link';
 
 /** "What do you want to build?": topic chips on the left, the message form on the right. The target of `#contact-cta`. */
@@ -23,7 +24,7 @@ export function ContactSection() {
   const copy = useCopy(servicesCopy).cta;
   const { features } = useLive();
   const { openChat } = useChat();
-  const { data: services = [] } = useContentQuery('services');
+  const { data: services = [], isPending } = useContentQuery('services');
   const limits = useContactLimits();
   const form = useContactForm(limits);
 
@@ -41,11 +42,15 @@ export function ContactSection() {
         {features.contactForm ? (
           <>
             <p className='text-mute'>{copy.hint}</p>
-            <TopicChips
-              services={services}
-              topicId={form.topicId}
-              onSelect={form.selectTopic}
-            />
+            {isPending ? (
+              <TopicChipsSkeleton />
+            ) : (
+              <TopicChips
+                services={services}
+                topicId={form.topicId}
+                onSelect={form.selectTopic}
+              />
+            )}
           </>
         ) : (
           <Alert

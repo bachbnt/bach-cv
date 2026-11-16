@@ -32,6 +32,9 @@ import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 import { TvTile } from '@/skins/trade/ui/tv-tile';
 
+/** The hint over the list (its words are the skin's, so the skeleton shows them too). */
+const HINT = 'px-3.5 pt-2 pb-1 text-[11px]/[1.45] text-tv-mute';
+
 const TILE: Record<Skill['category'], Tile> = {
   mobile: 'up',
   web: 'sky',
@@ -87,18 +90,19 @@ export function WatchTech() {
         subject='skills'
         level={3}
         className='m-3'
+        skeletonClassName=''
         skeleton={
-          <div className='grid gap-1 p-3'>
-            {Array.from({ length: 8 }, (_, i) => (
-              <TvSkeleton key={i} className='h-6 border-0' />
+          <>
+            <p className={HINT}>{words.unitsHint}</p>
+            <TvSkeleton className='h-[27px] rounded-none border-0' />
+            {Array.from({ length: 10 }, (_, i) => (
+              <TvSkeleton key={i} className='h-7 rounded-none border-0' />
             ))}
-          </div>
+          </>
         }
       >
         <div className='min-h-0 flex-1 overflow-y-auto' onKeyDown={rovingKeys}>
-          <p className='px-3.5 pt-2 pb-1 text-[11px]/[1.45] text-tv-mute'>
-            {words.unitsHint}
-          </p>
+          <p className={HINT}>{words.unitsHint}</p>
           {groups.map((group) => (
             <section key={group.category} aria-label={areas[group.category]}>
               <h3 className='px-3.5 pt-2 pb-1 text-[11px] font-bold tracking-wide text-tv-mute uppercase'>

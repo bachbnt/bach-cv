@@ -48,9 +48,9 @@ export function ContactBand() {
             className='mt-6'
             skeleton={
               <>
-                <Skeleton className='h-9 w-[320px] max-w-full bg-white/10' />
-                <Skeleton className='mt-6 h-5 w-48 bg-white/10' />
-                <Skeleton className='mt-2 h-5 w-36 bg-white/10' />
+                <Skeleton className='h-[43px] w-[320px] max-w-full bg-white/10' />
+                <Skeleton className='mt-6 h-[27px] w-48 bg-white/10' />
+                <Skeleton className='h-[27px] w-36 bg-white/10' />
               </>
             }
           >

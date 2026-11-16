@@ -16,6 +16,7 @@ import { DeskCountUp } from '@/skins/trade/blocks/desk-count-up';
 import { useCareerYears } from '@/lib/query/use-career-years';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
 import { currentJob } from '@/lib/derive/current-job';
+import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
 /**
  * The Details widget under the watchlist: my photo, name and headline, the years in software, the role and company I am in now and
@@ -26,7 +27,8 @@ export function WatchDetails() {
   const common = useCopy(commonCopy);
   const { lang } = useLang();
   const now = useNow();
-  const { data: jobs = [] } = useContentQuery('experience');
+  const experience = useContentQuery('experience');
+  const jobs = experience.data ?? [];
   const { data: profile } = useProfileQuery();
   const years = useCareerYears();
   const current = currentJob(jobs);
@@ -56,6 +58,9 @@ export function WatchDetails() {
           </p>
         </div>
       </div>
+      {years === null && experience.isPending && (
+        <TvSkeleton className='mt-2.5 h-[33px] w-36 border-0' />
+      )}
       {years !== null && (
         <p className='mt-2.5 text-[26px] leading-tight font-semibold tabular-nums'>
           <span className='sr-only'>
@@ -69,8 +74,10 @@ export function WatchDetails() {
           </span>
         </p>
       )}
-      {facts.length > 0 && (
+      {(facts.length > 0 || experience.isPending) && (
         <dl className='mt-3 grid grid-cols-2 gap-x-3.5 gap-y-2.5'>
+          {experience.isPending &&
+            [0, 1].map((i) => <TvSkeleton key={i} className='h-8 border-0' />)}
           {facts.map(([label, value]) => (
             <div key={label} className='min-w-0 text-[11px] text-tv-mute'>
               <dt>{label}</dt>

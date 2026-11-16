@@ -11,11 +11,11 @@ import { formatPeriod } from '@/lib/format';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
 import { useContentQuery } from '@/lib/query/use-content';
+import { ResumeEducationSkeleton } from '@/skins/academic/blocks/resume-education-skeleton';
 import { ResumePhoto } from '@/skins/academic/blocks/resume-photo';
 import { ResumeTags } from '@/skins/academic/blocks/resume-tags';
 import { AcDataState } from '@/skins/academic/ui/ac-data-state';
 import { AcHeading } from '@/skins/academic/ui/ac-section';
-import { AcSkeleton } from '@/skins/academic/ui/ac-skeleton';
 import { AcIcon } from '@/skins/academic/ui/ac-icon';
 
 /** One degree: the school's logo, the degree, the school, the period, the major and the thesis with its technologies and links. */
@@ -102,13 +102,8 @@ export function ResumeEducation() {
         subject='education'
         level={3}
         className='mt-6'
-        skeleton={
-          <div className='mt-6 grid gap-3'>
-            <AcSkeleton className='h-8 w-1/2' />
-            <AcSkeleton className='w-2/5' />
-            <AcSkeleton className='w-3/5' />
-          </div>
-        }
+        skeleton={<ResumeEducationSkeleton />}
+        skeletonClassName=''
       >
         <div className='mt-6 grid gap-10'>
           {degrees.map((degree) => (

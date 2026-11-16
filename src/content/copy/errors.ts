@@ -48,6 +48,12 @@ export const errorsCopy = defineCopy(
       retry: 'Rebook',
       home: 'Terminal',
     },
+    phone: {
+      title: 'This app stopped',
+      body: 'The page could not be drawn. Reopen the app, or go back to the home screen.',
+      retry: 'Reopen',
+      home: 'Home screen',
+    },
   },
   {
     plain: {
@@ -87,6 +93,12 @@ export const errorsCopy = defineCopy(
       body: 'Không thể vẽ trang. Hãy đặt lại hoặc về nhà ga.',
       retry: 'Đặt lại',
       home: 'Nhà ga',
+    },
+    phone: {
+      title: 'Ứng dụng đã dừng',
+      body: 'Không thể vẽ trang. Hãy mở lại ứng dụng hoặc về màn hình chính.',
+      retry: 'Mở lại',
+      home: 'Màn hình chính',
     },
   },
 );

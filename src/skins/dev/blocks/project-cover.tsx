@@ -13,6 +13,7 @@ import { COVER } from '@/skins/dev/blocks/cover-styles';
 import { ProjectCoverArt } from '@/skins/dev/blocks/project-cover-art';
 import { DevIcon } from '@/skins/dev/icons/dev-icon';
 import { DevBadge } from '@/skins/dev/ui/dev-badge';
+import { DevStatus } from '@/skins/dev/ui/dev-status';
 
 /**
  * The cover of a project card. With screenshots it is the button that opens them (named "6 screenshots", with the count in a
@@ -35,26 +36,29 @@ export function ProjectCover({
     COVER,
     featured && 'aspect-auto h-full min-h-[260px] border-r border-b-0',
   );
-  if (project.images.length === 0) {
-    return (
-      <div data-slot='dev-cover' className={cn(frame, 'cursor-default')}>
-        <ProjectCoverArt project={project} firstSkill={firstSkill} />
-      </div>
-    );
-  }
   const label = screenshotsLabel(project.images.length, copy);
+  // the status lies beside the cover, not in its button, whose name would hide it from a screen reader
   return (
-    <button
-      type='button'
-      data-slot='dev-cover'
-      className={frame}
-      aria-label={label}
-      onClick={onOpen}
-    >
-      <ProjectCoverArt project={project} firstSkill={firstSkill} />
-      <DevBadge aria-hidden='true'>
-        <DevIcon name='file-media' /> {label}
-      </DevBadge>
-    </button>
+    <div className={cn('relative', featured && 'h-full')}>
+      {project.images.length === 0 ? (
+        <div data-slot='dev-cover' className={cn(frame, 'cursor-default')}>
+          <ProjectCoverArt project={project} firstSkill={firstSkill} />
+        </div>
+      ) : (
+        <button
+          type='button'
+          data-slot='dev-cover'
+          className={frame}
+          aria-label={label}
+          onClick={onOpen}
+        >
+          <ProjectCoverArt project={project} firstSkill={firstSkill} />
+          <DevBadge aria-hidden='true'>
+            <DevIcon name='file-media' /> {label}
+          </DevBadge>
+        </button>
+      )}
+      <DevStatus project={project} />
+    </div>
   );
 }

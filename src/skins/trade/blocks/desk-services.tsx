@@ -17,7 +17,8 @@ import { DeskTicket } from '@/skins/trade/blocks/desk-ticket';
  */
 export function DeskServices() {
   const { features } = useLive();
-  const { data: services = [] } = useContentQuery('services');
+  const query = useContentQuery('services');
+  const services = query.data ?? [];
   const limits = useContactLimits();
   const form = useContactForm(limits);
 
@@ -32,6 +33,7 @@ export function DeskServices() {
           form={form}
           limits={limits}
           services={services}
+          servicesPending={query.isPending}
           className='@[700px]:sticky @[700px]:top-3'
         />
       </div>

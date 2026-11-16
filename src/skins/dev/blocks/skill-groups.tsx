@@ -11,7 +11,8 @@ import { resumeCopy } from '@/content/copy/resume';
 import { useCopy } from '@/lib/i18n/copy';
 import { skillGroups } from '@/lib/derive/skill-groups';
 import { DevSkillChip } from '@/skins/dev/blocks/skill-chip';
-import { DevCardsSkeleton } from '@/skins/dev/ui/dev-skeleton';
+import { SKILL_GROUPS_GRID } from '@/skins/dev/blocks/skill-groups-grid';
+import { SkillGroupsSkeleton } from '@/skins/dev/blocks/skill-groups-skeleton';
 import { DevDataState } from '@/skins/dev/ui/dev-data-state';
 import { DevCard } from '@/skins/dev/ui/dev-card';
 
@@ -29,10 +30,10 @@ export function DevSkillGroups() {
       empty='skills'
       subject='skills'
       level={3}
-      skeleton={<DevCardsSkeleton count={4} min={200} height={260} />}
+      skeleton={<SkillGroupsSkeleton />}
     >
       <TooltipProvider delay={0}>
-        <div className='grid grid-cols-[repeat(4,1fr)] gap-4 max-[900px]:grid-cols-[1fr_1fr] max-[620px]:grid-cols-[1fr]'>
+        <div className={SKILL_GROUPS_GRID}>
           {groups.map(({ category, items }) => (
             <DevCard
               as='article'

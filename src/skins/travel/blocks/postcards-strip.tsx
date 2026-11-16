@@ -11,6 +11,7 @@ import { travelPostcardsCopy } from '@/content/copy/travel-postcards';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { Postcard } from '@/skins/travel/blocks/postcard';
+import { PostcardsSkeleton } from '@/skins/travel/blocks/postcards-skeleton';
 import { TlProjectsToolbar } from '@/skins/travel/blocks/projects-toolbar';
 import { useScreenshotsDialog } from '@/skins/travel/blocks/use-screenshots-dialog';
 import { useProjectView } from '@/hooks/use-project-view';
@@ -18,24 +19,9 @@ import { useReducedMotion } from '@/hooks/use-reduced-motion';
 import { TlButton } from '@/skins/travel/ui/tl-button';
 import { TlDataState } from '@/skins/travel/ui/tl-data-state';
 import { TlKicker } from '@/skins/travel/ui/tl-kicker';
-import { TlSkeleton } from '@/skins/travel/ui/tl-skeleton';
 
 /** The page's heading id: the panel is named by it. */
 export const PROJECTS_TITLE_ID = 'tl-projects-title';
-
-/** Three postcards' worth of grey while the projects load (same size as a postcard, so nothing jumps). */
-function PostcardsSkeleton() {
-  return (
-    <div className='flex flex-col gap-4 md:flex-row md:overflow-hidden'>
-      {[0, 1, 2].map((i) => (
-        <TlSkeleton
-          key={i}
-          className='h-[330px] w-full rounded-xl md:w-[262px] md:flex-none'
-        />
-      ))}
-    </div>
-  );
-}
 
 /**
  * The Projects page body: the heading, the controls (search, order, filters), and the postcards in a strip that scrolls sideways (a
@@ -118,6 +104,7 @@ export function PostcardsStrip() {
         empty='projects'
         subject='projects'
         skeleton={<PostcardsSkeleton />}
+        skeletonClassName='flex flex-col gap-3'
         level={2}
       >
         {shown.length === 0 && (

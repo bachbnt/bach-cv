@@ -120,5 +120,15 @@ describe('the palette of the Academic skin keeps its text readable (4.5:1)', () 
         ).toBeGreaterThanOrEqual(4.5);
       }
     });
+
+    it(`stamps the status of a project on its photo in ink that reads on the ${name}'s polaroid paper`, () => {
+      const paper = resolve(tokens['--ac-polaroid'], tokens);
+      for (const key of ['--ac-sheet-accent', '--ac-sheet-ink']) {
+        expect(
+          ratio(resolve(tokens[key], tokens), paper),
+          `${key} on the polaroid`,
+        ).toBeGreaterThanOrEqual(4.5);
+      }
+    });
   }
 });

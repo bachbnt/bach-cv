@@ -36,8 +36,14 @@ export function CertificateList() {
       subject='certificates'
       skeleton={
         <>
-          <Skeleton className='h-[420px] rounded-3xl' />
-          <CardsSkeleton count={2} min={360} height={320} className='mt-6' />
+          <Skeleton className='h-[441px] rounded-3xl min-[721px]:h-[390px]' />
+          <CardsSkeleton
+            count={2}
+            min={360}
+            fit='fill'
+            className='mt-6'
+            itemClassName='h-[384px] min-[721px]:h-[342px]'
+          />
         </>
       }
     >

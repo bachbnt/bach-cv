@@ -9,6 +9,7 @@ import { academicResumeCopy } from '@/content/copy/academic-resume';
 import { resumeCopy } from '@/content/copy/resume';
 import { evidenceLine } from '@/components/skills/skill-text';
 import { fill } from '@/lib/chat/fill';
+import type { SkillRow } from '@/lib/derive/skill-rows';
 import { tallyYears } from '@/lib/derive/tally';
 import { useCopy } from '@/lib/i18n/copy';
 import { useLang } from '@/lib/i18n/language';
@@ -20,7 +21,6 @@ import {
   filterRows,
   sortRows,
   type AreaFilter,
-  type SkillRow,
   type SortDir,
   type SortKey,
 } from '@/skins/academic/blocks/resume-skills-model';

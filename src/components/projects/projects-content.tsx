@@ -9,15 +9,16 @@ import { DataState } from '@/components/data-state';
 import { FeaturedProject } from '@/components/projects/featured-project';
 import { ProjectGrid } from '@/components/projects/project-grid';
 import { ScreenshotsDialog } from '@/components/projects/screenshots-dialog';
-import { CardsSkeleton } from '@/components/cards-skeleton';
+import {
+  PROJECTS_HEADING,
+  ProjectsSkeleton,
+} from '@/components/projects/projects-skeleton';
 import { projectsCopy } from '@/content/copy/projects';
 import { useCopy } from '@/lib/i18n/copy';
 import type { Doc } from '@/lib/content/schema';
 import { cn } from 'cn';
 import { useContentQuery } from '@/lib/query/use-content';
 import { highlighted } from '@/lib/derive/highlighted';
-
-const heading = 'text-[30px] min-[721px]:text-[40px]';
 
 /** Featured projects (by rank), then every project with the kind filter. */
 export function ProjectsContent() {
@@ -46,12 +47,13 @@ export function ProjectsContent() {
         count={projects.length}
         empty='projects'
         subject='projects'
-        skeleton={<CardsSkeleton count={3} min={320} height={380} />}
+        skeleton={<ProjectsSkeleton />}
         className='mt-2'
+        skeletonClassName='mt-0'
       >
         {featured.length > 0 && (
           <>
-            <h2 className={heading}>{copy.featured}</h2>
+            <h2 className={PROJECTS_HEADING}>{copy.featured}</h2>
             <div className='mt-6 flex flex-col gap-6'>
               {featured.map((project) => (
                 <FeaturedProject
@@ -64,7 +66,7 @@ export function ProjectsContent() {
             </div>
           </>
         )}
-        <h2 className={cn(heading, featured.length > 0 && 'mt-20')}>
+        <h2 className={cn(PROJECTS_HEADING, featured.length > 0 && 'mt-20')}>
           {copy.all}
         </h2>
         <ProjectGrid

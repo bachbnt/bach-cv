@@ -559,3 +559,11 @@ export const parseSavedView = (json: string | null): RawView => {
     return {};
   }
 };
+
+/** How many choices the filters that are shown hold: the number the Filters button of every skin carries. */
+export const activeFilterCount = (
+  groups: Record<string, { visible: boolean; selected: readonly string[] }>,
+): number =>
+  Object.values(groups)
+    .filter((group) => group.visible)
+    .reduce((sum, group) => sum + group.selected.length, 0);

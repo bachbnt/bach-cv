@@ -11,13 +11,20 @@ import { latestDegree } from '@/lib/derive/latest-degree';
 import { latestJob } from '@/lib/derive/current-job';
 import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery, useProfileQuery } from '@/lib/query/use-content';
+import { DevSkeletonCode } from '@/skins/dev/ui/dev-skeleton-bar';
+
+/** The length, in letters, of the role line and of the degree line of a typical profile (`Team Lead · FPT Software`, `Master of Science · Physics and Informatics`): blank while the roles and degrees load. */
+const BLANK_JOB = 24;
+const BLANK_DEGREE = 43;
 
 /** The photo with who I am beside it (under it on a narrow screen): name, current role, city and the latest degree, all read from the data. */
 export function HomePortrait() {
   const copy = useCopy(aboutCopy);
   const { data: profile } = useProfileQuery();
-  const { data: experience = [] } = useContentQuery('experience');
-  const { data: education = [] } = useContentQuery('education');
+  const experienceQuery = useContentQuery('experience');
+  const educationQuery = useContentQuery('education');
+  const { data: experience = [] } = experienceQuery;
+  const { data: education = [] } = educationQuery;
   const job = latestJob(experience);
   const degree = latestDegree(education);
 
@@ -37,13 +44,22 @@ export function HomePortrait() {
       )}
       <p className='m-0 min-w-0 flex-1 self-center px-4 py-3 max-[520px]:self-stretch max-[520px]:text-left text-[14px] leading-[1.6] text-mute'>
         <b className='font-code text-head'>{profile?.fullName || shell.name}</b>
-        {job && (
+        {experienceQuery.isPending ? (
           <>
             <br />
-            <span className='font-code text-[13px] text-signal'>
-              {job.role} · {job.company}
+            <span className='font-code text-[13px]'>
+              <DevSkeletonCode chars={BLANK_JOB} />
             </span>
           </>
+        ) : (
+          job && (
+            <>
+              <br />
+              <span className='font-code text-[13px] text-signal'>
+                {job.role} · {job.company}
+              </span>
+            </>
+          )
         )}
         {profile?.location && (
           <>
@@ -51,11 +67,18 @@ export function HomePortrait() {
             {profile.location}
           </>
         )}
-        {degree && (
+        {educationQuery.isPending ? (
           <>
             <br />
-            {degree.degree} · {degree.major}
+            <DevSkeletonCode chars={BLANK_DEGREE} />
           </>
+        ) : (
+          degree && (
+            <>
+              <br />
+              {degree.degree} · {degree.major}
+            </>
+          )
         )}
       </p>
     </div>

@@ -22,6 +22,9 @@ import { TvChip } from '@/skins/trade/ui/tv-chip';
 import { TvDataState } from '@/skins/trade/ui/tv-data-state';
 import { TvSkeleton } from '@/skins/trade/ui/tv-skeleton';
 
+/** The hint over the list (its words are the skin's, so the skeleton shows them too). */
+const HINT = 'px-3.5 pt-2 pb-1 text-[11px]/[1.45] text-tv-mute';
+
 /** The Roles list of the watchlist: my jobs as a compact timeline, newest first. A press opens that job on the Resume page. */
 export function WatchRoles() {
   const copy = useCopy(tradeShellCopy);
@@ -42,19 +45,23 @@ export function WatchRoles() {
         subject='work'
         level={3}
         className='m-3'
+        skeletonClassName=''
         skeleton={
-          <div className='grid gap-2 p-3'>
-            {Array.from({ length: 4 }, (_, i) => (
-              <TvSkeleton key={i} className='h-10 border-0' />
-            ))}
-          </div>
+          <>
+            {openable && <p className={HINT}>{copy.watch.rolesHint}</p>}
+            <div className='py-1'>
+              {[63, 60, 60, 60].map((height, i) => (
+                <TvSkeleton
+                  key={i}
+                  style={{ height }}
+                  className='rounded-none border-0'
+                />
+              ))}
+            </div>
+          </>
         }
       >
-        {openable && (
-          <p className='px-3.5 pt-2 pb-1 text-[11px]/[1.45] text-tv-mute'>
-            {copy.watch.rolesHint}
-          </p>
-        )}
+        {openable && <p className={HINT}>{copy.watch.rolesHint}</p>}
         <ol className='py-1' onKeyDown={rovingKeys}>
           {jobs.map((job, i) => {
             const current = isCurrent(job);

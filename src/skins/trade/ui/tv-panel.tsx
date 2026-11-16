@@ -15,13 +15,13 @@ export function TvPanel({
   children,
 }: {
   title: string;
-  intro?: string;
+  intro?: ReactNode;
   actions?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <>
-      <div className='flex min-h-[34px] flex-none flex-wrap items-center gap-x-2 gap-y-1 border-b border-tv-line px-2 py-0.5'>
+      <div className='flex min-h-[35px] flex-none flex-wrap items-center gap-x-2 gap-y-1 border-b border-tv-line px-2 py-0.5'>
         <h1 className='h-7 rounded bg-tv-hover px-2.5 text-[13px]/7 font-medium'>
           {title}
         </h1>

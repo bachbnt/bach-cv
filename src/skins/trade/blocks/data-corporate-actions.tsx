@@ -39,13 +39,18 @@ export function DataCorporateActions() {
       subject='education'
       level={3}
       skeleton={
-        <div className='grid gap-1 p-3.5'>
+        <div className='border-t border-tv-line'>
           {Array.from({ length: 2 }, (_, i) => (
-            <TvSkeleton key={i} className='h-20' />
+            <TvSkeleton
+              key={i}
+              data-skeleton={i === 0 ? 'item' : undefined}
+              className='h-[354px] rounded-none border-0 border-b min-[600px]:h-[338px] min-[901px]:h-[166px]'
+            />
           ))}
         </div>
       }
       className='m-3.5'
+      skeletonClassName=''
     >
       <ul className='m-0 list-none border-t border-tv-line p-0'>
         {degrees.map((degree, index) => (

@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import { CardsSkeleton } from '@/components/cards-skeleton';
 import { LoadingBlock } from '@/components/loading-block';
 import { ProjectCover } from '@/components/projects/project-cover';
+import { ProjectStatus } from '@/components/projects/project-status';
 import { skillsOf } from '@/components/projects/project-helpers';
 import { homeProjectsCopy } from '@/content/copy/home-projects';
 import { useCopy } from '@/lib/i18n/copy';
@@ -52,7 +53,7 @@ export function HomeProjects() {
       </div>
       {projectsQuery.isPending ? (
         <LoadingBlock>
-          <CardsSkeleton count={HOME_PROJECTS} min={280} height={440} />
+          <CardsSkeleton count={HOME_PROJECTS} min={280} height={503} />
         </LoadingBlock>
       ) : (
         <div className='grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-6'>
@@ -61,11 +62,14 @@ export function HomeProjects() {
             const href = projectHref(project);
             const card = (
               <>
-                <ProjectCover
-                  project={project}
-                  firstSkill={tags[0]}
-                  className='h-[300px] transition-transform duration-[600ms] ease-[cubic-bezier(.2,.7,.2,1)] motion-safe:group-hover:scale-105 motion-reduce:transition-none'
-                />
+                <div className='relative overflow-hidden'>
+                  <ProjectCover
+                    project={project}
+                    firstSkill={tags[0]}
+                    className='h-[300px] transition-transform duration-[600ms] ease-[cubic-bezier(.2,.7,.2,1)] motion-safe:group-hover:scale-105 motion-reduce:transition-none'
+                  />
+                  <ProjectStatus project={project} />
+                </div>
                 <div className='flex flex-col gap-2 px-7 pt-6 pb-7'>
                   <h3 className='text-[22px]'>{project.name}</h3>
                   {project.summary && (
