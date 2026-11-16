@@ -9,6 +9,7 @@ export const SKIN_IDS = [
   'trade',
   'academic',
   'travel',
+  'phone',
 ] as const;
 export type SkinId = (typeof SKIN_IDS)[number];
 

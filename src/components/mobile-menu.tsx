@@ -200,7 +200,7 @@ export function MobileMenu({
                       setSkin(id);
                       setMenuOpen(false);
                     }}
-                    className='min-h-11 min-w-0 cursor-pointer truncate rounded-[10px] px-0.5 text-[13px] font-semibold min-[360px]:text-sm text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
+                    className='min-h-11 min-w-0 cursor-pointer truncate rounded-[10px] px-0.5 text-xs font-semibold min-[360px]:text-sm text-muted-foreground aria-pressed:bg-foreground aria-pressed:text-background'
                   >
                     {skins.names[id].name}
                   </button>

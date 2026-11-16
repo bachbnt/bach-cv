@@ -1,0 +1,527 @@
+/*
+ * The look of the Phone skin: the site as the interface of a mobile operating system (a home screen, apps that open full screen, a status
+ * bar, sheets that rise from the bottom). Every class has the prefix ph- and every rule is scoped to .ph-root (or to html[data-skin='phone']
+ * for the palette, so portals see it). Dark values are the base; the light theme is `html:not(.dark)`. The colours as utilities
+ * (`text-ph-ink`, `bg-ph-sheet`) are in `app/tailwind-theme-phone.css`; their values are here, once.
+ * CSS is only for what utilities do not express: the palette, the shadcn tokens, the wallpaper, keyframes and reduced motion.
+ */
+html[data-skin='phone'] {
+  --ph-ink: #f3f4f8;
+  --ph-mute: #a9aec1;
+  --ph-line: rgba(255, 255, 255, 0.11);
+  --ph-accent: #7f89ff;
+  --ph-accent-ink: #a9b0ff;
+  --ph-on-accent: #0b0d1c;
+  --ph-ok: #4cd9a0;
+  /* the chips of a skill, by the area it belongs to: a soft tint of the hue over whatever surface the chip is on, and a text of the same hue that reads on it (4.5:1, `phone-contrast.test.ts`) */
+  --ph-tag-blue-bg: rgba(91, 147, 255, 0.18);
+  --ph-tag-blue-ink: #a9c4ff;
+  --ph-tag-green-bg: rgba(61, 219, 159, 0.18);
+  --ph-tag-green-ink: #7fe3b8;
+  --ph-tag-violet-bg: rgba(148, 119, 255, 0.18);
+  --ph-tag-violet-ink: #c0b0ff;
+  --ph-tag-amber-bg: rgba(255, 191, 61, 0.18);
+  --ph-tag-amber-ink: #ffd27a;
+  --ph-warn: #ffb454;
+  --ph-danger: #ff8791;
+  --ph-sheet: #12141d;
+  --ph-sheet-2: #1b1e2b;
+  --ph-sheet-3: #262a3b;
+  --ph-glass: rgba(255, 255, 255, 0.1);
+  --ph-glass-line: rgba(255, 255, 255, 0.2);
+  --ph-glass-ink: #ffffff;
+  --ph-backdrop: #07080d;
+  --ph-backdrop-2: #12141d;
+  /* the curve of the swing of the device and of the box of its display: gentle at both ends, so the halves never seem to stop and wait */
+  --ph-ease-fold: cubic-bezier(0.4, 0, 0.2, 1);
+  /* what lies over the page while a sheet or the viewer is open, and the white of paper and of a logo, the same in both themes */
+  --ph-scrim: rgba(0, 0, 0, 0.65);
+  --ph-paper: #ffffff;
+  /* the device: the body (three stops of a graphite gradient), the black glass behind the screen, the metal of
+     the hinge, the glare on the glass and the soft light that falls on the wallpaper */
+  --ph-body-1: #30343f;
+  --ph-body-2: #0b0c11;
+  --ph-body-3: #1c1e27;
+  --ph-body-rim: rgba(0, 0, 0, 0.35);
+  --ph-display: #04050a;
+  --ph-lens: #2a3050;
+  --ph-metal-1: #171923;
+  --ph-metal-2: #31364a;
+  --ph-glare: rgba(255, 255, 255, 0.06);
+  --ph-rim-light: rgba(255, 255, 255, 0.32);
+  --ph-frame: #3c404d;
+  --ph-seam: rgba(0, 0, 0, 0.62);
+  --ph-band: rgba(255, 255, 255, 0.2);
+  --ph-port: #020308;
+  --ph-glass-edge: rgba(255, 255, 255, 0.16);
+  --ph-bezel-shade: rgba(0, 0, 0, 0.6);
+  --ph-lens-shine: rgba(168, 156, 255, 0.6);
+  --ph-coat: #4a2f8a;
+  --ph-floor: rgba(0, 0, 0, 0.7);
+  --ph-floor-glow: rgba(150, 160, 255, 0.1);
+  --ph-crease-dark: rgba(0, 0, 0, 0.1);
+  --ph-crease-light: rgba(255, 255, 255, 0.035);
+  --ph-wall-ring: rgba(255, 255, 255, 0.09);
+  --ph-wall-swell-1: rgba(8, 112, 104, 0.55);
+  --ph-wall-swell-2: rgba(142, 42, 136, 0.5);
+  --ph-wall-vignette: rgba(3, 4, 18, 0.55);
+  --ph-wall-grain: rgba(255, 255, 255, 0.022);
+  --ph-wall-base: #11123a;
+  --ph-wall-1: #3b3fd6;
+  --ph-wall-2: #8e2a88;
+  --ph-wall-3: #087068;
+  /* the glyph on a tile is a graphical object: 3:1 against both stops of every gradient, checked in `phone-contrast.test.ts` */
+  --ph-on-tile: #ffffff;
+  --ph-tile-home-a: #1ca396;
+  --ph-tile-home-b: #0d7f87;
+  --ph-tile-about-a: #9477ff;
+  --ph-tile-about-b: #5a3fd6;
+  --ph-tile-resume-a: #588ff7;
+  --ph-tile-resume-b: #2552d9;
+  --ph-tile-projects-a: #e8663f;
+  --ph-tile-projects-b: #e0432b;
+  --ph-tile-certificates-a: #d97706;
+  --ph-tile-certificates-b: #b45309;
+  --ph-tile-services-a: #1da46c;
+  --ph-tile-services-b: #109560;
+  --ph-tile-payment-a: #e8609f;
+  --ph-tile-payment-b: #d1337c;
+  --ph-tile-settings-a: #8a91a2;
+  --ph-tile-settings-b: #5a6276;
+  --ph-tile-chat-a: #8d7dff;
+  --ph-tile-chat-b: #a24fff;
+  --ph-tile-connect-a: #2b95e0;
+  --ph-tile-connect-b: #2563eb;
+  --ph-tile-cv-a: #1f9f74;
+  --ph-tile-cv-b: #0f9468;
+  --ph-shadow-card:
+    0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 22px rgba(0, 0, 0, 0.28);
+  --ph-shadow-icon:
+    0 2px 4px rgba(0, 0, 0, 0.3), 0 8px 18px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+  --ph-shadow-float: 0 10px 34px rgba(0, 0, 0, 0.5);
+}
+
+html[data-skin='phone']:not(.dark) {
+  --ph-ink: #14161f;
+  --ph-mute: #4f566b;
+  --ph-line: rgba(20, 22, 40, 0.11);
+  --ph-accent: #4651e0;
+  --ph-accent-ink: #3640cf;
+  --ph-on-accent: #ffffff;
+  --ph-ok: #07603f;
+  --ph-tag-blue-bg: rgba(91, 147, 255, 0.14);
+  --ph-tag-blue-ink: #1f46b8;
+  --ph-tag-green-bg: rgba(61, 219, 159, 0.14);
+  --ph-tag-green-ink: #0b6b42;
+  --ph-tag-violet-bg: rgba(148, 119, 255, 0.14);
+  --ph-tag-violet-ink: #4b33b8;
+  --ph-tag-amber-bg: rgba(255, 191, 61, 0.14);
+  --ph-tag-amber-ink: #7a4300;
+  --ph-warn: #854600;
+  --ph-danger: #b01e30;
+  --ph-sheet: #ffffff;
+  --ph-sheet-2: #f2f3f9;
+  --ph-sheet-3: #e6e8f2;
+  --ph-glass: rgba(255, 255, 255, 0.55);
+  --ph-glass-line: rgba(255, 255, 255, 0.75);
+  --ph-glass-ink: #14161f;
+  --ph-backdrop: #dde2f0;
+  --ph-backdrop-2: #f1f3f9;
+  --ph-scrim: rgba(10, 12, 30, 0.45);
+  --ph-body-1: #4a4f62;
+  --ph-body-2: #1a1c25;
+  --ph-body-3: #2e3140;
+  --ph-glare: rgba(255, 255, 255, 0.1);
+  --ph-rim-light: rgba(255, 255, 255, 0.45);
+  --ph-frame: #565b6e;
+  --ph-floor: rgba(30, 36, 80, 0.36);
+  --ph-floor-glow: rgba(255, 255, 255, 0);
+  --ph-crease-dark: rgba(30, 36, 80, 0.045);
+  --ph-crease-light: rgba(255, 255, 255, 0.16);
+  --ph-wall-ring: rgba(70, 81, 224, 0.12);
+  --ph-wall-swell-1: rgba(120, 214, 190, 0.45);
+  --ph-wall-swell-2: rgba(255, 150, 200, 0.4);
+  --ph-wall-vignette: rgba(255, 255, 255, 0);
+  --ph-wall-grain: rgba(20, 22, 60, 0.02);
+  --ph-wall-base: #eef0ff;
+  --ph-wall-1: #b5bcff;
+  --ph-wall-2: #ffc1e0;
+  --ph-wall-3: #b3efe0;
+  --ph-shadow-card:
+    0 1px 2px rgba(30, 36, 80, 0.1), 0 8px 22px rgba(30, 36, 80, 0.1);
+  --ph-shadow-icon:
+    0 2px 4px rgba(30, 36, 80, 0.16), 0 8px 18px rgba(30, 36, 80, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  --ph-shadow-float: 0 10px 34px rgba(30, 36, 80, 0.22);
+}
+
+/* the shadcn tokens in the Phone palette: Dialog, Sheet, DropdownMenu, Popover, Tooltip, Skeleton, ... follow the skin, also in a portal */
+html[data-skin='phone'] {
+  --background: var(--ph-sheet);
+  --foreground: var(--ph-ink);
+  --card: var(--ph-sheet-2);
+  --card-foreground: var(--ph-ink);
+  --popover: var(--ph-sheet-2);
+  --popover-foreground: var(--ph-ink);
+  --primary: var(--ph-accent);
+  --primary-foreground: var(--ph-on-accent);
+  --secondary: var(--ph-sheet-3);
+  --secondary-foreground: var(--ph-ink);
+  --muted: var(--ph-sheet-3);
+  --muted-foreground: var(--ph-mute);
+  --accent: var(--ph-sheet-3);
+  --accent-foreground: var(--ph-ink);
+  --destructive: var(--ph-danger);
+  --border: var(--ph-line);
+  --input: var(--ph-line);
+  --ring: var(--ph-accent);
+}
+
+@layer base {
+  .ph-root {
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html:not(.dark) .ph-root {
+    color-scheme: light;
+  }
+  /* one focus ring for everything that can be reached by keys */
+  .ph-root :focus-visible {
+    outline: 2px solid var(--ph-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* The type of a phone is the one the device has. This rule is outside the layers so that it also wins over a `font-sans` on a frame that is itself a
+   `.ph-root` (the portals); the numbers of the clock stay the same width because the clock asks for tabular figures. */
+.ph-root {
+  font-family:
+    system-ui,
+    -apple-system,
+    'SF Pro Text',
+    Roboto,
+    'Segoe UI',
+    sans-serif;
+}
+
+/* The wallpaper of the home screen, drawn once and never animated. From the top: a faint grain (a conic checker 4 px wide), rings around a point
+   at the upper right, two swells that rise from the bottom edge, the three lights, and a vignette that settles the edges (dark theme only). */
+.ph-wallpaper {
+  background-color: var(--ph-wall-base);
+  background-image:
+    repeating-conic-gradient(var(--ph-wall-grain) 0 25%, transparent 0 50%),
+    repeating-radial-gradient(
+      circle at 74% 26%,
+      transparent 0 118px,
+      var(--ph-wall-ring) 118px 119.5px
+    ),
+    radial-gradient(
+      130% 34% at 28% 112%,
+      var(--ph-wall-swell-1),
+      transparent 74%
+    ),
+    radial-gradient(
+      120% 30% at 78% 108%,
+      var(--ph-wall-swell-2),
+      transparent 74%
+    ),
+    radial-gradient(60% 55% at 12% 8%, var(--ph-wall-1), transparent 70%),
+    radial-gradient(55% 60% at 92% 30%, var(--ph-wall-2), transparent 70%),
+    radial-gradient(70% 55% at 40% 100%, var(--ph-wall-3), transparent 72%),
+    radial-gradient(
+      140% 110% at 50% 38%,
+      transparent 58%,
+      var(--ph-wall-vignette)
+    );
+  background-size:
+    4px 4px,
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    auto;
+}
+
+/* what lies behind the device in a large window: a quiet light at the upper left over a slow diagonal */
+.ph-backdrop {
+  background-color: var(--ph-backdrop);
+  background-image:
+    radial-gradient(
+      1100px 700px at 15% 0%,
+      var(--ph-backdrop-2),
+      transparent 70%
+    ),
+    linear-gradient(160deg, var(--ph-backdrop), var(--ph-backdrop-2));
+}
+
+@keyframes ph-rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+    scale: 0.985;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+@keyframes ph-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ph-pop {
+  from {
+    opacity: 0;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+@keyframes ph-drop {
+  from {
+    opacity: 0.6;
+    translate: 0 -36px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+/* the light that sweeps across a skeleton */
+@keyframes ph-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes ph-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* a page change: the app opens from the home screen (it grows a little and fades in) and the old page fades out */
+::view-transition-old(.ph-vt-out) {
+  animation: ph-vt-out 180ms var(--ease-ph-out) both;
+}
+::view-transition-new(.ph-vt-in) {
+  animation: ph-vt-in 280ms var(--ease-ph-out) both;
+}
+@keyframes ph-vt-out {
+  to {
+    opacity: 0;
+    scale: 0.985;
+  }
+}
+@keyframes ph-vt-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+
+/* What the keyboard focus, an anchor or a scrollIntoView must keep clear of: the bars at the top (the status bar, and the app bar in an app) and the home bar at the foot,
+   in the one scroller of the skin that has no `--ph-bars` to read, the document of a phone's window. The scroller of a screen has the same padding, in `phone-shell.tsx`,
+   from `--ph-bars`. Whether the app bar has slid away or not, the padding is the whole reservation. */
+html[data-skin='phone'] {
+  scroll-padding-top: calc(2.5rem + env(safe-area-inset-top, 0px));
+  scroll-padding-bottom: calc(2.25rem + env(safe-area-inset-bottom, 0px));
+}
+html[data-skin='phone']:has([data-ph-app-bar]) {
+  scroll-padding-top: calc(5.25rem + env(safe-area-inset-top, 0px));
+}
+
+/* The scrollbars of the skin are those of a phone: a thin thumb that is there only while the thing scrolls (`data-scrolling`, put on it by `shell/use-scroll-cue.ts`
+   and taken off 800 ms after the last scroll) and fades in and out (180 ms); no track, no reserved gutter. The thumb is drawn with the WebKit pseudo-elements, a rounded 4 px
+   thumb in an 8 px bar with a transparent 2 px border; a browser without them (Firefox) gets the standard thin bar in the same colours, without the fade. */
+html[data-skin='phone'] {
+  --ph-thumb: color-mix(in srgb, var(--ph-ink) 28%, transparent);
+}
+html[data-skin='phone']::-webkit-scrollbar,
+.ph-root ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+html[data-skin='phone']::-webkit-scrollbar-track,
+.ph-root ::-webkit-scrollbar-track,
+.ph-root ::-webkit-scrollbar-corner {
+  background: transparent;
+}
+html[data-skin='phone']::-webkit-scrollbar-thumb,
+.ph-root ::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background-color: transparent;
+  background-clip: padding-box;
+  transition: background-color 180ms;
+}
+html[data-skin='phone'][data-scrolling]::-webkit-scrollbar-thumb,
+.ph-root [data-scrolling]::-webkit-scrollbar-thumb {
+  background-color: var(--ph-thumb);
+}
+@supports not selector(::-webkit-scrollbar) {
+  html[data-skin='phone'],
+  .ph-root {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  html[data-skin='phone'][data-scrolling],
+  .ph-root [data-scrolling] {
+    scrollbar-color: var(--ph-thumb) transparent;
+  }
+}
+
+/* The veil behind the status bar: the page's colour (the wallpaper's on the home screen) from 70% at the top to nothing, over the height of the bar and a tail
+   of 0.75 rem, in five stops so that the end is never an edge. There is one recipe for every width and for the device and the window alike. */
+.ph-strip {
+  --ph-strip-colour: var(--ph-sheet);
+  height: calc(var(--ph-bar-top) + 0.75rem);
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--ph-strip-colour) 70%, transparent) 0%,
+    color-mix(in srgb, var(--ph-strip-colour) 55%, transparent) 30%,
+    color-mix(in srgb, var(--ph-strip-colour) 30%, transparent) 60%,
+    color-mix(in srgb, var(--ph-strip-colour) 12%, transparent) 85%,
+    transparent 100%
+  );
+}
+.ph-strip-wall {
+  --ph-strip-colour: var(--ph-wall-base);
+}
+
+/* The veil of the app bar: ONE piece that is the bar's own, so that whatever the bar is doing the page is never legible between the status bar and the bar. Across the
+   44 px of its row, where the link, the title and the buttons sit, it is the page's colour at 88 to 92%; the same colour, as a layer BEHIND the bar (`::before`),
+   goes up from the bar by the height of the status bar, so that when the bar has slid part of the way away (it is moved with `transform`, which carries the veil with it)
+   the veil still comes up to the top of the screen and nothing of the page lies between the status bar and the foot of the bar; below the bar it falls to nothing over a
+   16 px tail (five stops), which is there until the bar is nearly out of sight (`--ph-bar-t`). Only the content of the bar fades (`--ph-bar-o`), never the veil.
+   One recipe for every width and mode, no blur. */
+.ph-bar-veil {
+  --ph-veil-colour: var(--ph-sheet);
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--ph-veil-colour) 88%, transparent) 0px,
+    color-mix(in srgb, var(--ph-veil-colour) 90%, transparent) 10px,
+    color-mix(in srgb, var(--ph-veil-colour) 92%, transparent) 34px,
+    color-mix(in srgb, var(--ph-veil-colour) 88%, transparent) 44px
+  );
+}
+.ph-bar-veil::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-inline: 0;
+  top: calc(-1 * var(--ph-bar-top, 2.5rem));
+  height: var(--ph-bar-top, 2.5rem);
+  pointer-events: none;
+  background-color: color-mix(in srgb, var(--ph-veil-colour) 88%, transparent);
+}
+.ph-bar-veil::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: 16px;
+  pointer-events: none;
+  opacity: var(--ph-bar-t, 1);
+  background-image: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--ph-veil-colour) 88%, transparent) 0%,
+    color-mix(in srgb, var(--ph-veil-colour) 55%, transparent) 30%,
+    color-mix(in srgb, var(--ph-veil-colour) 25%, transparent) 60%,
+    color-mix(in srgb, var(--ph-veil-colour) 8%, transparent) 85%,
+    transparent 100%
+  );
+}
+
+/* A short tooltip for the controls that are only a glyph (the apps of the rail, the round buttons of the bar), instead of the browser's own `title`:
+   a dark label that comes after 600 ms under a pointer or on keyboard focus, and never on a touch screen. The text is the control's name. */
+.ph-tip {
+  position: relative;
+}
+@media (hover: hover) {
+  .ph-tip::after {
+    content: attr(data-ph-tip);
+    position: absolute;
+    z-index: 40;
+    top: calc(100% + 6px);
+    right: 0;
+    padding: 4px 9px;
+    border-radius: 8px;
+    background: var(--ph-ink);
+    color: var(--ph-sheet);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 180ms var(--ease-ph-out);
+  }
+  .ph-tip.ph-tip-side::after {
+    top: 50%;
+    right: auto;
+    left: calc(100% + 8px);
+    translate: 0 -50%;
+  }
+  .ph-tip:hover::after,
+  .ph-tip:focus-visible::after {
+    opacity: 1;
+    transition-delay: 600ms;
+  }
+}
+
+/* An app opens from its tile and closes into it: the window grows out of the icon (PhAppMorph). The browser moves the two snapshots between
+   the rectangles; this gives them the pace of the skin. */
+::view-transition-group(.ph-morph) {
+  animation-duration: 280ms;
+  animation-timing-function: var(--ease-ph-out);
+}
+
+/* A page change is clipped to the display in a device (`shell/use-vt-clip.ts` writes the box and the corners): the pseudo-elements of a view transition
+   are painted over the whole viewport and are not clipped by the display that holds the page. The fold has its own transitions, marked with `data-ph-fold`. */
+html[data-skin='phone']:not([data-ph-fold])::view-transition {
+  clip-path: var(--ph-vt-clip, none);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-root,
+  .ph-root *,
+  .ph-root *::before,
+  .ph-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  ::view-transition-old(.ph-vt-out),
+  ::view-transition-new(.ph-vt-in),
+  ::view-transition-group(.ph-morph),
+  ::view-transition-old(.ph-morph),
+  ::view-transition-new(.ph-morph) {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ph-root ::-webkit-scrollbar-thumb,
+  html[data-skin='phone']::-webkit-scrollbar-thumb {
+    transition: none;
+  }
+  /* the banner of the toast does not slide: it is there where it stays and only fades (this beats the rule above, which stops every transition) */
+  .ph-root .ph-toast {
+    translate: 0 0 !important;
+    transition: opacity 180ms linear !important;
+  }
+}

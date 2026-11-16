@@ -1,0 +1,88 @@
+/* The theme colours of the `phone` skin as utilities (`bg-ph-sheet`, `text-ph-mute`). Their values are defined once on
+   html[data-skin='phone'] in skins/phone/phone.css (dark, and light as :not(.dark)). globals.css imports this file: one Tailwind build for
+   Standard and every skin. */
+@theme inline {
+  /* the page of an app: its ink, the quiet ink, the hairline, the accent and the ink that sits on it */
+  --color-ph-ink: var(--ph-ink);
+  --color-ph-mute: var(--ph-mute);
+  --color-ph-line: var(--ph-line);
+  --color-ph-accent: var(--ph-accent);
+  --color-ph-accent-ink: var(--ph-accent-ink);
+  --color-ph-on-accent: var(--ph-on-accent);
+  --color-ph-ok: var(--ph-ok);
+  --color-ph-warn: var(--ph-warn);
+  --color-ph-danger: var(--ph-danger);
+  /* the chips of a skill by its area (`blocks/skill-hue.ts`): the tint and the text on it */
+  --color-ph-tag-blue: var(--ph-tag-blue-bg);
+  --color-ph-tag-blue-ink: var(--ph-tag-blue-ink);
+  --color-ph-tag-green: var(--ph-tag-green-bg);
+  --color-ph-tag-green-ink: var(--ph-tag-green-ink);
+  --color-ph-tag-violet: var(--ph-tag-violet-bg);
+  --color-ph-tag-violet-ink: var(--ph-tag-violet-ink);
+  --color-ph-tag-amber: var(--ph-tag-amber-bg);
+  --color-ph-tag-amber-ink: var(--ph-tag-amber-ink);
+  /* the surfaces: the screen of an app, a card on it, a card that is pressed or raised, and the glass over the wallpaper */
+  --color-ph-sheet: var(--ph-sheet);
+  --color-ph-sheet-2: var(--ph-sheet-2);
+  --color-ph-sheet-3: var(--ph-sheet-3);
+  --color-ph-glass: var(--ph-glass);
+  --color-ph-glass-line: var(--ph-glass-line);
+  --color-ph-glass-ink: var(--ph-glass-ink);
+  /* what is behind the device, what lies over a page while a sheet is open, the white of paper and the base of the wallpaper (its three lights are
+     only used by the wallpaper itself, in `phone.css`) */
+  --color-ph-backdrop: var(--ph-backdrop);
+  --color-ph-scrim: var(--ph-scrim);
+  --color-ph-paper: var(--ph-paper);
+  --color-ph-wall-base: var(--ph-wall-base);
+  /* the tile of an app icon: two stops of its gradient, and the glyph on it */
+  --color-ph-on-tile: var(--ph-on-tile);
+  --color-ph-tile-about-a: var(--ph-tile-about-a);
+  --color-ph-tile-about-b: var(--ph-tile-about-b);
+  --color-ph-tile-resume-a: var(--ph-tile-resume-a);
+  --color-ph-tile-resume-b: var(--ph-tile-resume-b);
+  --color-ph-tile-projects-a: var(--ph-tile-projects-a);
+  --color-ph-tile-projects-b: var(--ph-tile-projects-b);
+  --color-ph-tile-certificates-a: var(--ph-tile-certificates-a);
+  --color-ph-tile-certificates-b: var(--ph-tile-certificates-b);
+  --color-ph-tile-services-a: var(--ph-tile-services-a);
+  --color-ph-tile-services-b: var(--ph-tile-services-b);
+  --color-ph-tile-payment-a: var(--ph-tile-payment-a);
+  --color-ph-tile-payment-b: var(--ph-tile-payment-b);
+  --color-ph-tile-home-a: var(--ph-tile-home-a);
+  --color-ph-tile-home-b: var(--ph-tile-home-b);
+  --color-ph-tile-settings-a: var(--ph-tile-settings-a);
+  --color-ph-tile-settings-b: var(--ph-tile-settings-b);
+  --color-ph-tile-chat-a: var(--ph-tile-chat-a);
+  --color-ph-tile-chat-b: var(--ph-tile-chat-b);
+  --color-ph-tile-connect-a: var(--ph-tile-connect-a);
+  --color-ph-tile-connect-b: var(--ph-tile-connect-b);
+  --color-ph-tile-cv-a: var(--ph-tile-cv-a);
+  --color-ph-tile-cv-b: var(--ph-tile-cv-b);
+
+  /* one shadow for a card, one for an icon and one for what floats over the page (menu, popover, toast) */
+  --shadow-ph-card: var(--ph-shadow-card);
+  --shadow-ph-icon: var(--ph-shadow-icon);
+  --shadow-ph-float: var(--ph-shadow-float);
+
+  /* the one scale of corners (`rounded-ph-*`): a panel is every card, glass, popover and banner on a page; a sheet is what opens over the page; the inner radius is
+     for what sits in a panel (a picture, a nested block, a thumbnail, a field) and is never larger than the panel less the room between them; a mark is a small
+     chip of colour. Tiles are `rounded-[30%]` squircles and controls and chips `rounded-full`; the corners of the screen itself are `--ph-screen-radius`. */
+  --radius-ph-panel: 1.5rem;
+  --radius-ph-sheet: 2rem;
+  --radius-ph-inner: 0.75rem;
+  --radius-ph-mark: 0.375rem;
+
+  --animate-ph-rise: ph-rise 280ms var(--ease-ph-out) both;
+  --animate-ph-fade: ph-fade 180ms var(--ease-ph-out) both;
+  --animate-ph-pop: ph-pop 180ms var(--ease-ph-out) both;
+  --animate-ph-blink: ph-blink 1.6s ease-in-out infinite;
+  --animate-ph-shimmer: ph-shimmer 1.4s ease-in-out infinite;
+  /* the quick settings pull down from the top */
+  --animate-ph-drop: ph-drop 280ms var(--ease-ph-out) both;
+}
+
+/* The curve of everything that arrives; `ease-out` is for a change of state. One scale of time: 100 ms for a press, 180 for a fade or a pop,
+   280 for an app or a sheet. */
+@theme {
+  --ease-ph-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}

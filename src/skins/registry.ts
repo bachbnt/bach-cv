@@ -14,6 +14,7 @@ export const SKIN_LOADERS: Record<Exclude<SkinId, 'standard'>, Loader> = {
   trade: () => import('@/skins/trade/skin'),
   academic: () => import('@/skins/academic/skin'),
   travel: () => import('@/skins/travel/skin'),
+  phone: () => import('@/skins/phone/skin'),
 };
 
 export const hasLoader = (id: SkinId): id is keyof typeof SKIN_LOADERS =>
