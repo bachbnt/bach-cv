@@ -81,6 +81,12 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
 - **Contact** (`blocks/contact-section.tsx`, `ContactSection`) is Standard's contact band (the question, the email, where I am, the phone and, with
   `features.chat` on, the BB Bot card), one component that ends Home and About, as the band ends both pages in Standard. Its data states
   (loading, empty, error) are the ones of `TlDataState`.
+- **A skeleton mirrors the loaded structure; a test measures it.** Each data block has a `*-skeleton.tsx` (`postcards-skeleton`, `trip-skeleton`, `luggage-skeleton`,
+  `tour-skeleton`, `passport-skeleton`, `payment-skeleton`, `home-*-skeleton`): the real titles and notes (`TripItineraryHead`, `PaymentNote`, `TripLuggageHead`), the lists
+  of the loaded block (`PASSPORT_STAMPS`) and blank `TlSkeletonBar` shapes as tall as the loaded rows (`max-md:` for the phone sheet). `data-skeleton="toolbar|item|detail"`
+  marks the control row, the first unit and the open stop card for the tests.
+  The sentence under the title on Home and Resume is `components/years-text.tsx` (shared by every skin): until the roles are read the years in it are a blank of the usual
+  length, so the line wraps as many times before the data as after it.
 - **The rights line** (`ui/tl-footer.tsx`) is Standard's footer, `© {year} {name}. {rights}` (`useNow()` for the year, `commonCopy.footer.rights`),
   at the end of the scrolling part of every card (`TlPanel`), so it never covers a control and cannot meet the map controls. The card stops
   24 px above the bottom of the map, so on a wide screen it keeps clear of the map credit. On a phone the sheet covers the map's credit line
@@ -98,6 +104,8 @@ changes. Every page is a real link in the rail (a bar of icons on a phone): the 
 Projects: one line (the strip needs the height) with a search field, a **Filters** button and a sorter, each letting down a card (the shadcn popover): in the filters a platform is a vehicle (phone, globe, screen,
 spark), a status says whether the trip goes on or has arrived (a route, a flag) and a technology is a **luggage tag**; a pin marks the line of how many postcards are left
 (`blocks/projects-toolbar.tsx`). The strip opens with the featured ones first (`fallbackSort`), unless the owner or the visitor says otherwise; the rules are `hooks/use-project-view.ts` and `lib/derive/project-view.ts`.
+Each postcard (and each small postcard on Home) carries `blocks/project-status.tsx`: the stub of a boarding pass on the corner of its photo, with a perforated edge, a route (teal) while the trip goes on or a flag (ink) once it
+has arrived, and the word (`statusOf`, `projectsCopy.statuses`; the same two signs as the status filter, `STATUS_ICON`). It is the same size for both words.
 
 Every page has an entrance of its own, in the voice of its metaphor, played once when it opens (Only transform properties and opacity move,
 nothing loops, and reduced motion shows the final page): Home is put together piece by piece (portrait stamped on, facts pop in), Resume draws

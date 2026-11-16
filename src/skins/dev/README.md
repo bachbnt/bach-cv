@@ -165,6 +165,14 @@ Components never import Firebase. Read through `@/lib/query/use-content` (`useCo
 helpers in `components/payment/*`, `components/projects/project-helpers.ts`. Loading, empty and error states follow the Standard blocks
 (`components/data-state.tsx`, `state-notice.tsx`); the Dev versions are `ui/dev-data-state.tsx` and `ui/dev-state-notice.tsx`.
 
+- **A skeleton mirrors the loaded structure; a test measures it.** Every data block has a `*-skeleton.tsx` beside it (`projects-skeleton`, `experience-skeleton`,
+  `certificate-skeleton`, `payment-skeleton`, `core-stack-skeleton`, ...): the real titles and notes (the same `DevSection`, `PaymentNote`), the grids shared with the loaded
+  block (`PROJECT_CARD_GRID`, `CORE_GRID`, `CERTIFICATE_GRID`, `ServiceGrid`, ...) and blank `DevSkeletonBar` shapes in the heights the loaded units have at each
+  width (`max-[1279px]:`, `max-[900px]:`, `max-[620px]:`). `data-skeleton="toolbar|item"` marks the control row and the first card for the tests.
+  The code window of Home (`home-profile-window`) and the line under the photo (`home-portrait`) have no block of their own: while the roles, skills and degrees load they
+  keep every line and show the values as `DevSkeletonCode` (letters in the code font, transparent, on a bar, so a long line wraps where the real one will); the sentence of the
+  years in software is `components/years-text.tsx`, the same in every skin (the number is a blank of the usual length until the roles are read).
+
 ## Projects: order and filters
 
 `blocks/projects-toolbar.tsx` is **one line of a terminal**: the prompt echoes the command the choice makes (`$ projects ls --sort=latest --platform=mobile "text"`, decoration,
@@ -172,6 +180,10 @@ helpers in `components/payment/*`, `components/projects/project-helpers.ts`. Loa
 `--flags` (`DevFilterGroup` with `caption`, `selected` and a count on each choice), the orders as a list. The rules (which order, "and" between filters, the owner's `site/live`
 `projects` settings, the address and the last choice) are `hooks/use-project-view.ts` and `lib/derive/project-view.ts`, the same in every skin; the shared checks are
 `tests/automation/support/projects-view-suite.ts`, called by `dev-projects-view.spec.ts`.
+
+**Status of a project.** Each cover (the card, the featured card, the card on Home) carries `ui/dev-status.tsx` in its top left corner: a token of the editor, `status: ongoing`, mono, a full green dot while
+it goes on and a grey check once it is done (`statusOf`, the words are `projectsCopy.statuses` and `filters.status`, lowercased by CSS). It lies beside the cover's button, not in it, so a reader gets it; both words
+are stacked in one cell, one unseen, so the token is the same size for both and in both languages. `tests/automation/support/project-status-suite.ts` checks it.
 
 ## Things to know
 

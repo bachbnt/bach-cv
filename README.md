@@ -2,7 +2,7 @@
 
 Personal portfolio and CV of Bach Bui, live at **https://bachbntdev.web.app**.
 
-One set of content in five skins (Standard, Dev, Trade, Academic and Travel), each its own interface, in English and Vietnamese.
+One set of content in six skins (Standard, Dev, Trade, Academic, Travel and Phone), each its own interface, in English and Vietnamese.
 It has an AI assistant (BB Bot) and a CV that downloads as a PDF, and it stays light: each skin loads only when it is chosen.
 
 It is a static Next.js site whose content lives in Firestore. Editing a document in the Firebase console changes the site within
@@ -41,7 +41,7 @@ The Home page of each skin, and the first version of the site.
 - **Static and cheap.** `output: 'export'` served by Firebase Hosting; the browser reads Firestore with the lite SDK and
   TanStack Query caches it (also in `localStorage`). Only `src/content/shell.json` (name, headline, avatar, SEO) is embedded at
   build time.
-- **One look for every state.** While data loads a block shows a skeleton of its own shape, with nothing to show it shows an
+- **One look for every state.** While data loads a block shows a skeleton with the structure of the loaded one (same columns, heights and page chrome, a typical number of rows with the first role open, so nothing jumps when the data arrives; a Playwright spec measures it in every skin; the years in software of a sentence are a blank of the usual length, `YearsText`, until the roles are read), with nothing to show it shows an
   explanatory card, and when a read fails it shows the same card with a Try again button. All of it goes through one component
   (`DataState`) and one copy file (`src/content/copy/states.ts`), so every page behaves the same way.
 - **Security headers.** `firebase.json` sends HSTS, `X-Frame-Options`, a Content-Security-Policy and more. The policy allows only this
@@ -64,8 +64,9 @@ The Home page of each skin, and the first version of the site.
   drawing tools and a bar replay; a symbol search, a ticker tape and a watchlist; a screener, financials and a calendar for the data pages).
   Academic is a chalkboard (dark) or whiteboard (light) with an annotated manuscript pinned to it (see `src/skins/academic/README.md`).
   Travel is a 2.5D trip map of Nha Trang drawn from OpenStreetMap data (© OpenStreetMap contributors, ODbL): the stops are the real roles, the pages are parts of the trip (see `src/skins/travel/README.md`).
-  The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`, `?skin=trade`, `?skin=academic`, `?skin=travel`) and the URL does not change. A skin is loaded only when it is chosen,
-  so Standard visitors download none of its scripts (its styles share the one Tailwind build: the main stylesheet is about 54 KB gzip, it was about 20 KB before skins). See `.ai/skins.md` and the README of each skin in `src/skins/<id>/`.
+  Phone is the interface of a mobile operating system on a foldable device: the Home page is the home screen (widgets, an app grid, a dock), every other page an app, quick settings a shade from the status bar, and the chat, CV, Connect and the viewer are sheets; on a desktop the screen is the inside of a device that can be folded (phone layout) or opened (tablet layout, with a hinge) (see `src/skins/phone/README.md`).
+  The choice is kept in the browser (`bach-cv-skin`, or `?skin=dev`, `?skin=trade`, `?skin=academic`, `?skin=travel`, `?skin=phone`) and the URL does not change. A skin is loaded only when it is chosen,
+  so Standard visitors download none of its scripts (its styles share the one Tailwind build: the main stylesheet is about 61 KB gzip with the six skins, it was about 20 KB before skins). See `.ai/skins.md` and the README of each skin in `src/skins/<id>/`.
 - **Card hover.** Cards rise 3px with a growing shadow (class `lift`) and light up where the mouse is: a soft spotlight inside and a
   lit edge, in the colour of the page (class `glow`, `<PointerGlow>`). The tinted head of each page also lights up softly under the
   mouse (class `band-glow`). Only for a mouse, and off for "reduce motion".
@@ -174,6 +175,8 @@ Common edits in the Firebase console:
   filter) and `.search` (`enabled`, `default`). A project's `platforms` (`mobile`, `web`, `desktop`, `ai`) feeds the platform filter, `startMonth` the orders by date.
   A visitor's choice is in the address (`/projects?sort=latest&platform=mobile&tech=angular`, which can be sent) and kept in this browser (`bach-cv-projects`); a
   value the owner forces always wins. Every skin draws its own controls (a search box, ONE Filters button and ONE Sort button that open menus) over the same rules (`lib/derive/project-view.ts`, `hooks/use-project-view.ts`).
+  Every project also says on itself whether it is **ongoing** or **finished** (a project with no `endMonth` is ongoing: `statusOf` in `lib/derive/project-view.ts`, the words are `projectsCopy.statuses`), in Standard and in
+  every skin, as a flag with a word and a shape in the idiom of the skin (never a colour alone) and a box of the same size for both, on the cards, rows and entries of the Projects page and of the featured projects of Home.
 - Maintenance: `site/live` → `maintenance.enabled = true` (message in `maintenance.message`, Vietnamese in `maintenance.l10n.vi.message`).
 - Translate: add `l10n.vi.<field>` on the document.
 - Skills: a skill with `listed: false` is not shown as a chip but can still be a technology tag on a project or a role.
@@ -195,7 +198,7 @@ src/lib/theme           theme provider and the no-flash script
 src/lib/derive          pure derivations shared by every skin (years, current job, stops, lists of Home...), each with a unit test
 src/lib/skin            the skin ids, the choice of the visitor and the loader of the lazy skin chunks
 src/hooks               hooks shared by the skins (live switches, now, clipboard, chat settings...)
-src/skins               one folder for each skin besides Standard (dev, trade, academic, travel), each with its own README
+src/skins               one folder for each skin besides Standard (dev, trade, academic, travel, phone), each with its own README
 src/lib/seo.ts          page metadata        src/lib/notify.ts   email request after a message        src/lib/content/app-check.ts   App Check
 tests/unit              Vitest        tests/automation   Playwright        tests/fixtures   Firestore snapshot for tests
 scripts/                Firestore backup, restore and test-fixture sync; scripts/docs builds the design documents; scripts/travel builds the map data

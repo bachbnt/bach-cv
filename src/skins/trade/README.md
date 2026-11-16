@@ -171,6 +171,14 @@ ui/                 tv-root, tv-button, tv-chip, tv-toggle-chip, tv-field, tv-me
   is off screen or one of its windows is open. The content of a block that showed a skeleton fades in over it (`TvFadeIn`, 240 ms, opacity only,
   a `display: contents` wrapper so the layout is the content's own, children that already arrive with an animation are left alone, off for
   reduced motion); a block that had its data from the cache just appears.
+- **Skeletons mirror the loaded structure; a test measures it.** A skeleton is the real page chrome (the headings, lead text, column names and
+  section titles are real text, through the same classes or components as the loaded page: `Section`, `DeskSection`, `DeskPaymentNote`) with
+  blank `TvSkeleton` shapes where the data goes, in the sizes the loaded blocks measure (the table grid comes from `gridStyle` of
+  `data-projects-grid.tsx`; the heights that depend on how text wraps are `@container` or `min-[..px]` classes, one per breakpoint), so the
+  panes and the page do not jump when the data arrives. `skeletonClassName` of `TvDataState` is empty where the skeleton lays out its own
+  spacing. A test compares the control row (`data-skeleton='toolbar'`) and the first unit (`data-skeleton='item'`) of the skeleton with the
+  loaded ones. The shimmer and the line stand still for reduced motion (the rule at the end of `trade.css`).
+  The sentence with the years in software (the hero note, the lead of Resume) is `components/years-text.tsx`, so it wraps before the data as after it.
 - **One look for each kind of control, defined once in `ui/`**: `tvButton` (primary, ghost, outline; sizes sm, default, lg, icon; 44px on
   touch and a press that scales), `TvChip` (a label; tones for state and for a skill's area; `sm` in dense rows), `TvToggleChip` and
   `TV_PILL` (a round chip that is pressed or not), `DataSegmented` (a few views side by side), `TV_FIELD` (every field and select: a line that
@@ -229,6 +237,9 @@ kind colours (`--tv-data-*`) are in `css/data.css`. Nothing reads as a quote: ev
   summary, tags, links) and **Heatmap** (a squarified treemap: **area is the number of technologies of the project, colour its kind**, both
   said in the legend; a tile opens the project below the map). Keys: arrows, Home and End move between rows, Enter opens, `/` focuses the
   filter (it takes the key before the symbol search does; Ctrl or Cmd with K still opens that), Esc clears the filters.
+  Whether a project is **ongoing** or **finished** is a flag of the row (`blocks/data-project-status.tsx`, a `TvChip`): a filled square and the word on the green of "up" while it goes on, a check on grey once it is done,
+  uppercase and always the same width (`statusOf`, the words are `projectsCopy.statuses`). It sits beside the name in the Table, in the kind line of a Cards card, of the opened row and of the idea card on Home; the
+  columns and their sorting are unchanged.
 - **Resume = statements** (`data-resume-view.tsx`). **Experience** is a grid of years (columns) and roles (rows) with a bar over the months
   each role ran (both end months count); hovering or focusing a bar reads company, role, dates and duration in the line above, a click
   opens the notes of the role. The period toggle switches to **By role**: each bar as long as the role lasted, against the longest.
@@ -311,8 +322,8 @@ layout is the skin's. Words only these screens have (the kickers, "Trade", "Reco
   (`desk-snackbar.tsx`, placed in the terminal root with a portal, because the page's rise animation would otherwise be the box
   `fixed` is measured from). Paused and error states keep the Standard link and Try again.
 - **System screens** (`ui/tv-*`): 404 is "Symbol not found" (with the path), Coming soon is "Pre-market" (no date), maintenance is "Market
-  closed", each with candles that draw themselves (`tv-candle-art.tsx`); loading is a chart of grid lines and breathing bars
-  (`tv-chart-skeleton.tsx`, `tv-skeleton.tsx`) with a line sweeping along the top, empty is "No data for this symbol" and an error
+  closed", each with candles that draw themselves (`tv-candle-art.tsx`); loading is the page itself with blank shapes in the place of the data
+  (`tv-skeleton.tsx`: grid lines and a shimmer, with a line sweeping along the top of the block), empty is "No data for this symbol" and an error
   is the widget error with Try again. A page that throws is the same screen with a "Feed error" tag and the code 500 (`TvStatusScreen`
   variant `error`, shown by `PageError`): Reconnect forgets the saved content and reloads, Home leaves it.
 - Motion is transform and opacity only (the count-up is the one script), all of it off for reduced motion (the rule at the end of

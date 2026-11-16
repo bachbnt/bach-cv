@@ -17,7 +17,7 @@
 - Keep the root providers to what every Standard page needs. A provider only a skin uses (the tooltip provider of Trade) lives
   in that skin's frame, so Standard does not download it.
 - First-load budget to keep an eye on (gzip/brotli, desktop `/`): about 370 KB of JavaScript in 19 requests (React and Next.js 180 KB,
-  Firebase lite 47 KB, zod 35 KB, base-ui 55 KB) and 54 KB of CSS. About 30 KB of that CSS is utilities that only the skins use: it
+  Firebase lite 47 KB, zod 35 KB, base-ui 55 KB) and 61 KB of CSS (with the six skins). About 30 KB of that CSS is utilities that only the skins use: it
   stays in the one Tailwind build on purpose (see "One Tailwind build" in `.ai/skins.md`).
 
 ## Rendering

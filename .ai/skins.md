@@ -48,6 +48,13 @@ Standard is the app itself (`app/**`, `components/**`); every other skin lives i
      to Standard and to EVERY skin (`SKIN_IDS`), with its copy keys (en and vi), tests and docs. Before finishing, search the other skins
      for the same concept (the hook, the helper, the copy key, the component) and say in the report what was done in each skin or why it
      does not apply. A change that touches how one skin presents data and not the others is not finished.
+- **A project says whether it is ongoing or finished on the project itself** (`statusOf` of `lib/derive/project-view.ts`, the words `projectsCopy.statuses`): a flag with a word and a shape (never a colour alone), the same
+  size for both states so nothing moves when a project ends, on every card, row, entry or detail of Projects and of the featured projects of Home, in the idiom of the skin. A new skin does the same as the filter it already has.
+- **A skeleton mirrors the loaded structure; a test measures it.** The loading state has the same columns, panes, heights, widths and page chrome as the loaded view at every
+  breakpoint of the skin (the headings and static copy are real, only data is a blank shape; reuse the layout constants and components of the loaded view, `skeletonClassName` of the
+  skin's data state when the skeleton lays out its own headings), a typical number of rows, shapes `aria-hidden` inside the busy block, no shimmer for reduced motion, tokens only.
+  A sentence that holds a number from the data (the years in software) is `components/years-text.tsx` (`YearsText`), not `useYearsText` alone: the number is a blank of the usual length until it is read, so the line wraps the same way. `tests/automation/skins/skeleton-shift.spec.ts` holds the data (`support/layout-shift.ts`) and compares the boxes of both states in every skin; mark the toolbar and the first
+  unit of a Projects skeleton with `data-skeleton="toolbar"` and `"item"` and add the loaded selectors to its table.
 - Data only through `lib/query` hooks; never Firebase. Interface copy in `content/copy/*` with `defineCopy` (en + vi). A string that
   only a skin has goes in `content/copy/<skin>.ts`; decoration (a command line) is `aria-hidden`.
 - A control that looks different keeps the Standard accessible name (`aria-label`), so tests and screen readers find the same control.
@@ -103,5 +110,17 @@ See `src/skins/travel/README.md`. A 2.5D trip map of Nha Trang: the map is real 
 is never the only way to anything. The map's weight is kept down: about 4,800 elements, only transform and opacity animate (a unit test enforces it),
 what moves stops when the whole map is on screen (`tl-whole`), and a state class of the map root (`tl-moving`, `tl-close`, `tl-whole`) is never also a drawing class. Styling: Tailwind with the `--tl-*` tokens (`travel.css`, night base and day `:not(.dark)`), CSS only for
 keyframes and the map, class prefix `tl-`.
+
+## The Phone skin
+
+See `src/skins/phone/README.md`. The site as the interface of a mobile operating system ("BachOS") on a **foldable device**: the Home page is the home screen (wallpaper, widgets
+from the real data, an app grid, a dock), every other page is an app with a back button and a home bar, quick settings are a shade that pulls down from the status
+bar, and the chat, CV, Connect and the picture viewer are bottom sheets (a panel or a card on a wide screen). **The layout follows the screen, not the window**: the
+screen is a CSS container (`@min-[900px]:` and friends, `useScreenAtLeast` in scripts; never `min-[..]`, `md:` or `matchMedia` for layout). In a window of at
+least 1100 x 600 px the screen is the inside of a foldable device that can be folded (cover screen, phone layout) or open (inner screen, tablet layout, a hinge
+between the two halves of the master-detail pages), kept in `bach-cv-phone-fold`; in a smaller window there is no device and the screen is the window. Sheets,
+popovers and the viewer are put inside the screen (`usePhScreen().root`, positioned `absolute`: a container does not contain `position: fixed`). Text on the
+wallpaper always lies on glass (a unit test measures the contrast of every pair), the shade rows keep the Standard names (`Language: English`, `Skin: Phone`,
+`Theme`), the type is the system's (no font is loaded), and the motion is `opacity`, `translate` and `scale` only. Styling: Tailwind with the `--ph-*` palette on `html[data-skin='phone']`, class prefix `ph-`, colours `ph-*`.
 
 A new skin follows the skill `.claude/skills/build-skin` (read its SKILL.md first).

@@ -1,6 +1,6 @@
 ---
 name: build-skin
-description: Build, extend or finish a skin of the site in src/skins/<id>/ (the ids so far are standard, dev, trade, academic, travel, and stream and moba on their own branches), from a design/skins/*.html mock or from a brief. Use when asked to "make / implement / build / finish a skin", to turn a mock into a real skin, to add a feature to every skin, or to review a skin against the project's skin rules.
+description: Build, extend or finish a skin of the site in src/skins/<id>/ (the ids so far are standard, dev, trade, academic, travel, phone, and stream and moba on their own branches), from a design/skins/*.html mock or from a brief. Use when asked to "make / implement / build / finish a skin", to turn a mock into a real skin, to add a feature to every skin, or to review a skin against the project's skin rules.
 ---
 
 # Build a skin
@@ -18,6 +18,7 @@ components and interaction are the skin's own. Reply in Vietnamese.
 | `stream`   | branch `feat/stream-skin` (based on an older `dev`)     | video platform: watch page, Shorts, live chat, Live page | `references/stream.md`                               |
 | `moba`     | branch `feat/moba-skin`                                 | arena map you walk, pages are stations of the map        | `references/moba.md`                                 |
 | `travel`   | on `dev`                                                | 2.5D trip map of Nha Trang from OpenStreetMap            | `references/travel.md`, `src/skins/travel/README.md` |
+| `phone`    | on `dev` (branch `feat/phone-skin`)                     | mobile OS on a foldable device, pages are apps           | `src/skins/phone/README.md`                          |
 
 No id: ask which one. One skin per run.
 
@@ -91,7 +92,7 @@ No id: ask which one. One skin per run.
   (dark, and light as `:not(.dark)`), names that never clash with shadcn tokens. Never a second Tailwind stylesheet. No raw colour or
   shadow in TSX: tokens (`--shadow-<prefix>-card`...).
 - **CSS only for what utilities cannot say**: keyframes, view transitions, token colours, base rules, in `<id>.css` and `css/<area>.css`,
-  classes with the skin prefix (`dv-` dev, `tv-` trade, `sm-` stream, `mb-` moba, `tl-` travel). **Unlayered CSS beats utilities**: put
+  classes with the skin prefix (`dv-` dev, `tv-` trade, `sm-` stream, `mb-` moba, `tl-` travel, `ph-` phone). **Unlayered CSS beats utilities**: put
   base rules (focus ring, links) in `@layer base`, never leave a rule on an element that carries utilities, and never repeat a
   `@keyframes` name across files.
 - **Motion.** Hover only under `hover:` / `@media (hover: hover)`, plus an `active:` pressed state for touch. One motion scale and

@@ -89,6 +89,15 @@ Projects: the search is a line written on the paper (`ui/ac-line-input`), the fi
 hand-drawn chips and the number each leaves in small writing, and **how many are left and the way back ("Clear filters") are a note in the margin** (`AcRow`), tied to the controls by the bracket
 (`blocks/projects-toolbar.tsx`). The rules are `hooks/use-project-view.ts` and `lib/derive/project-view.ts`; neither filtering nor sorting renumbers the references.
 
+Whether a project goes on or is done is a **rubber stamp** pressed on the corner of its photo (`blocks/project-status.tsx`, on the figure of an entry and on the taped photo of Home): red ink, a full dot and a
+solid frame while it goes on, dark ink, a tick and a dashed frame once it is done, in the hand font (`statusOf`, the words are `projectsCopy.statuses`). It is the same size for both, so nothing moves when a project ends.
+The period stays in the margin note of a featured entry.
+
+Loading: a skeleton mirrors the loaded structure (the same grid, margin notes, taped paper and sizes at every width, the page's own words kept as text, only the data as blank
+shapes `ui/ac-skeleton` / `ui/ac-skeleton-line`); a test measures it (`data-skeleton` marks the control row and the first entry of Projects). The files are `blocks/*-skeleton*.tsx`;
+the margin notes that come with data (the years on Home, the current role, the seal, the count of services) show a blank line while the roles load. Heights of text are in `em` so they follow the font of the page.
+The sentence of the abstract and the lead of Resume are `components/years-text.tsx`: while the roles load the number is a skeleton shape of the usual width (`blank`) on Home and an invisible blank on Resume.
+
 Words only this skin has: `content/copy/academic*.ts` (shell, home and about, resume, projects, certificates and services, payment,
 overlays), en and vi; Standard's own copy is reused wherever Standard has the word.
 

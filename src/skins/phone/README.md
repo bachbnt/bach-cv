@@ -1,0 +1,219 @@
+# The Phone skin
+
+The site as the interface of a **mobile operating system** ("BachOS"): the Home page is the home screen (a wallpaper, widgets, a grid of apps and
+a dock), every other page is an app that opens full screen (it grows out of its icon) with a back button and a home bar, the settings are a shade that pulls
+down from the status bar, and the chat, CV, Connect and the picture viewer are sheets. In a large window (1100 x 600 and up) the screen is the display of a
+**foldable device** in the middle of it, open (the tablet layout, a crease down the middle) or folded (the phone layout); an open app has the rail of the other
+apps at its side on a tablet layout. It is one of the **skins** of the site (see `src/skins/types.ts` and `.ai/skins.md`); the visitor picks it
+in the Settings sheet and the URL does not change. Id `phone`, class prefix `ph-`, colours `ph-*`.
+
+Same information and features as Standard; only the presentation is its own. The look was designed as a mock (`design/skins/phone-os.html`, local
+and untracked) and the real content, copy and behaviour were read from the Standard components, like every skin.
+
+## The metaphor
+
+| Page         | In the Phone skin                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Home         | **The home screen.** A headline on the wallpaper, widgets (the current role, years in software, projects by platform), the app grid, the dock, then the rest of Standard's Home as a feed of glass cards ("Today"): technologies, how a bug becomes a merge request, where I worked, what I built at FPT, featured projects, contact. There is no separate Home app: the home screen is the page.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| About        | "About this device": the owner card, the summary, specialties, a list of facts in the style of a settings list, the core stack, the photos.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Resume       | A **Files** app: the roles as a list (the current one first) with the detail at its side (a tablet) or on its own screen (a phone), the skills, the education, Download CV.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Projects     | A **Store** app: a search field, one Filters and one Sort button (popovers on a tablet, bottom sheets on a phone), the list and a project's detail.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Certificates | A **Wallet**: a card for every certificate, newest first, with the picture, the skills and Open PDF.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Services     | An app store list: a card for every service with a Discuss action, then the contact form.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Payment      | **Wallet > Payments**: the preferred methods as bank cards with the QR and the Copy buttons, the others grouped by kind.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Settings     | The quick settings **shade**, from the status bar (a tap, or a drag down on a touch screen) or the Settings tile of the dock: on an open device it is the whole RIGHT half of the display (from the crease at `left: 50%` to the right edge, flush at the top, rounded at the foot, as the shade of the cover screen fills its screen) and the left half stays under the scrim, and it is EXACTLY the shade of the cover screen (560 x the same height, the same radius, tiles, 3 columns, padding, status row, handle: nothing in `ph-shade*.tsx` changes size with the width of the screen, only where it sits), so a fold changes nothing about it; it closes where a fold begins (`shell/ph-fold-guard.tsx`) and the visitor opens it again on the screen that is there; the three menus of Standard's header as tiles, in this order: Language, Skin, Theme, then Ask BB Bot, Connect and Download CV. |
+
+**Projects in detail.** The order and the filters are the shared hook `use-project-view` (the URL, the remembered choice and the owner's `site/live` settings work as in every
+skin) and the page opens in "Featured first" unless the owner says otherwise. Above the list: the count and Clear filters, the search field, the Filters and Sort buttons
+and the filters that are on as chips that remove themselves. A phone opens Filters and Sort as bottom sheets, a tablet as popovers under the buttons (they never cover the
+detail pane; `blocks/raise-toolbar.ts` scrolls the toolbar up so the popover has room below it), and a project opens as its own screen on a phone (the list keeps its place)
+or in the pane at the right of a tablet. The selected row has an edge and a stronger ground, not only a colour. With `data-hinge` (an open device) the list and the
+detail are two equal halves with the crease between them (`blocks/projects-pane.tsx`). What scrolls the page is asked of the shell, not guessed: `usePhScreen().scroller`
+through `blocks/screen-scroller.ts` (the element when it has an overflow of its own, the document of a phone's window otherwise), `blocks/use-pane-fit.ts` cuts the open
+project to what that scroller shows, and a popover uses `collisionAvoidance` (`blocks/popover-avoidance.ts`) and `--available-height`, so that it always sits under its button and shrinks to the room left instead of flipping beside it.
+
+**Certificates in detail.** Every certificate is one pass (the face with the issuer, the name and the date, then the picture, then the skills and Open PDF). In two
+columns the card lends its three parts to the rows of the gallery grid (`grid-rows-subgrid`, `row-span-3`), so the faces of the two cards of a row are as tall as the taller one
+and the pictures and the buttons start at the same height whatever the length of the titles; the card that spans both columns (the newest, when the number is odd) keeps its
+own two-column layout. Between the face and the picture there is only the join (the gradient of the face ends, the quiet ground of the picture starts): no cut-out, line or ornament, and the
+card keeps the one `shadow-ph-card` at every width.
+
+**Loading skeletons.** A skeleton mirrors the loaded structure and a test measures it: the page's own words (titles, leads, the names of facts, the note of Payment) are real
+text, only the data are blank shapes (`ui/ph-skeleton.tsx`, and `ui/ph-skeleton-line.tsx` for a line of text, which takes the height of the line it stands for), and the grid, the columns
+and the heights are the loaded ones: where a block has a layout it shares it (`HINGE_PANES`, `certificate-layout.ts`, `resume-layout.ts`, the `PAYMENT_*` and `SERVICE_*` constants) instead of copying it.
+The number of rows is what the seed has (4 roles, 2 degrees, 3 certificates, 5 services, 1 method of each kind), and a narrow screen (`@max-[449px]`) shows the extra lines its wrapped text takes.
+Reduced motion stops the shimmer with every other animation (`phone.css`).
+The years in software of the sentences under the titles of Home and Resume are `components/years-text.tsx` (the number is an invisible blank of the usual length until the roles are read, so the line wraps as it will). A clamped text (`line-clamp-N`) never carries `block`, which would undo the clamp.
+
+Ask BB Bot, Connect and Download CV are tiles of the dock on the home screen and round buttons in the bar of every app; they open the chat (a bottom
+sheet, or a panel at the right of a tablet), the Connect sheet and the CV sheet.
+
+## Rules of the skin
+
+1. **The layout follows the screen, not the window.** `shell/phone-shell.tsx` has two modes (`shell/fold-mode.ts`, pure and tested): in a window of at least
+   1100 x 600 the screen is the display of a device (`css/device.css`); in any other window the screen is the window (`full-bleed`, no `data-hinge`). Everything
+   that depends on a width is a container query on the screen (`@min-[900px]:`) or, in a script, `usePhScreen()` / `useScreenAtLeast(px)`; never a viewport
+   variant or the size of the window (the shell is the one place that reads it, `use-window-mode.ts`). Where the screen has a size of its own (the device, a tablet
+   layout in a window) the page scrolls inside it, in the element `usePhScreen().scroller`; on a phone's window the document scrolls. The status bar and the app bar
+   LIE OVER the page, which is edge to edge and scrolls under them: `--ph-bar-top` (2.5 rem, the height of the status bar) is where the app bar starts and
+   `--ph-bars` (5.25 rem, the 40 px status bar and the 44 px app bar; 2.5 rem on the home screen) where the first content starts, which is what an anchor (`scroll-mt-(--ph-bars)`) or a sticky column
+   (`top-[calc(var(--ph-bars)+1rem)]`) has to clear. The app bar follows the scroll like the bar of a real OS (`shell/use-bar-hide.ts`; the pure rule is `shell/bar-scroll.ts`): one
+   `requestAnimationFrame` per frame writes `--ph-bar-y` and `--ph-bar-o` on the bar, which slides up by as much as the page goes down and back by as much as it
+   comes up (from 32 px of scroll), and settles fully in place or fully out of sight 120 ms after the scrolling stops (`data-snap` gives that one move a
+   transition); only `transform` and `opacity` change, no render is made. Focus inside it, a sheet that opens and a new page put it in place. The screen has
+   `data-bar="hidden"` once the bar is more than half away, and `--ph-bar-shown` is the top that a sticky pane has to keep clear of: `--ph-bars` while the bar is
+   there and `--ph-bar-top` while it is not. The status bar and the home bar are sticky in a window (the document scrolls) and ABSOLUTE at the head and the foot of the screen in a device (which does not scroll): a sticky box takes the window for its scrolling box and would be pulled up by the layout height of a scaled device that is taller than the window (the layout is not scaled). `--ph-home-bar` is the room of the home bar at the foot (the scroller has `scroll-padding` for both ends, `--ph-bars` and `--ph-home-bar`), and under `data-hinge`
+   `--ph-pane-gap` (1.5 rem, the crease) and `--ph-pane-left` (the width of the left pane: half the screen less the rail, the padding and half the gap) say where the panes fall, so a page
+   needs no padding of its own for the hinge (`PhPage` is as wide as the screen there, with the same padding in every mode). A scrollbar thumb shows ONLY while something scrolls (`shell/use-scroll-cue.ts` sets
+   `data-scrolling` on the scrolling element and takes it off 800 ms after the last scroll event; the pure rule is `shell/scroll-cue.ts`): never on hover or focus. The bar is a light glass, the same at every width: a gradient veil of the page's colour
+   (at least 88% across the 44 px of the row, so the text of the page never reads through its title, with a 16 px tail) and no `backdrop-filter` (a live blur is the
+   dearest thing a scroll paints); the veil is ONE piece with the bar: a layer behind it goes up by the height of the status bar and the soft end below it is there until the bar is nearly out of sight (`--ph-bar-t`), and only the CONTENT of the bar fades (`--ph-bar-o`), so at every point of the slide (the bar is moved by `transform`) the veil reaches from the top of the screen to the foot of the bar and no page shows between the status bar and the bar; the bar never rests half way: after the scrolling has been still for 120 ms it goes all the way in place (the last move was up, or it is more than half there) or all the way out (`barSettle`), and not under a finger that is held still (it settles when the finger is lifted); it lies fully under the status bar, whose frosted strip is a layer BELOW the bar, and the large title fades out as the small one comes in (`ui/ph-page.tsx`), so only one is read at a time; the glass of the content is off for the 500 ms of a fold.
+2. **The device.** Two identical halves, each the screen of an A4 sheet in portrait (560 x 792, 1 : 1.414) in a bezel of 10 px, 580 x 812, with large corners (44 px)
+   on the outer side and almost square ones (8 px) on the side of the hinge; the buttons (the volume rocker and the power button with its fingerprint ridges) are on the
+   RIGHT edge, so the right half is the one that stays. FOLDED the device is that half on its own, the same object, with its own display (560 wide: the phone layout,
+   the cover screen). OPEN it is ONE slab, 1140 x 812, with ONE continuous display (1120 wide: the tablet layout, `data-hinge`): the hinge is behind the display, nothing
+   is drawn across it but a very faint crease (the master-detail panes of Resume and Projects meet there, as two equal halves, and every wide page has
+   `pr-[calc(2rem+var(--ph-rail))]` more on its right, `ui/ph-page.tsx`) and a hairline seam on the frame at the top and bottom edge. The camera is one round
+   punch hole at the top centre of the display of the right half (of the cover screen when folded), drawn in DEVICE mode only: in a window of its own the
+   visitor's phone or tablet is the device, so no camera is drawn and the bars start below the safe area (`env(safe-area-inset-top)` is part of `--ph-bar-top` and `--ph-bars`). The left edge has no button and no handle: the handle that
+   drags the device is an invisible hit area on it. The hardware (frame, bands, openings, keys, glass edge, floor shadow) is decoration, `aria-hidden`.
+3. **Scale, not shrink.** The device has ONE logical size (1140 x 812); a window that is too small scales the whole stage (`shell/use-device-scale.ts` sets
+   `--ph-scale`, never above 1, and the stage reserves the scaled box), so the folded screen stays under 600 px and the open one over 900 whatever the window, and
+   container queries keep their meaning. A box of the page is smaller than the screen's layout when it is scaled (a test reads `offsetWidth`). Popovers and sheets
+   are positioned correctly under the scale.
+4. **Fold.** The state is `bach-cv-phone-fold` in localStorage (`shell/fold-storage.ts`). It changes with the `Fold` button in the top left corner of the window,
+   off the device (a toggle button: the name is always `Fold`, `aria-pressed` says that the device is folded, `F` does the same, not in a field and not while a
+   dialog is open) or a drag on the left edge. The device opens like a book from its cover (about 560 ms): the closed device slides right to where the half that stays is and
+   its screen goes dark (180 ms); the cover half then lifts and turns TOWARD the viewer about the hinge (a `rotateY` of -180 degrees about a point 10 px inside its
+   left edge, with a perspective: edge-on at 90 degrees, in front of the device, cover face first and inner face after the vertical) and lands flat on the left (380 ms);
+   when it has turned past the vertical the layout changes from the phone's to the tablet's in ONE update inside a view transition (`shell/use-fold.ts`: the display
+   is named `ph-display`, its box grows to the left with its right edge fixed, the pictures kept at their own size and anchored at the right, the inner display coming on
+   as the new picture fades in over the dark one), so no frame shows a half-laid-out page; at the end the two halves give way to the open slab. FOLD is the reverse: the
+   display goes dark under a view transition while the left half swings back up and over onto the right one, the cover screen comes on, the device slides back to the
+   middle. The parts that swing are `transform` and `opacity` only (the stacking of the swinging half is flipped at the vertical), with `will-change` only while they
+   move; with reduced motion, and in a browser without view transitions, the layout swaps at once.
+5. **Everything that opens goes in the layer over the screen** (`usePhScreen().root`, the `container` of a Base UI portal): it is as big as the screen and has
+   layout containment, so what is inside it is positioned against it and not the window. Use `absolute inset-0`, never window units (`dvh`, `vw`). A container
+   alone does not contain `position: fixed`. The toast is a banner that slides in from the top under the camera and the status bar, in front of the layer.
+6. **Text on the wallpaper sits on glass.** Small text never lies straight on the wallpaper; the `ph-glass` and `ph-sheet/75` cards give it a ground
+   (`phone-contrast.test.ts` measures every pair: surfaces, buttons, chips and the wallpaper).
+7. **One shape language.** Tiles are squircles (a 30% corner, `corner-shape: squircle` as an enhancement) with the calm gradient of their page, one soft line of light along the top edge and the soft shadow, and one bold drawn glyph (`ui/ph-icon-tile.tsx`; the glyphs are inline SVGs on a 48 x 48 box in `ui/ph-app-glyphs.tsx`: solid shapes with round joins, white, and at most one quieter detail; a press shrinks the tile, a pointer brightens it by a hair), cards and sheets as in the radius scale below, with a
+   grabber, buttons pills 44 px high; the type 12, 13, 14, 15, 16, 17, 19, 22, 26, 34 and 40 px, the icons 16, 20 and 24 px; the pressed state shrinks a control (`active:scale`), hover only exists where there is a pointer (`hover:`).
+8. **The names of the menus are Standard's.** In the shade the tiles are `Language: English`, `Skin: Phone`, `Theme` (`shell/ph-shade.tsx`); a tile opens its
+   choices as a radio group, and a menu the owner has fixed in `site/live` `prefs` is left out. The skin tile is how a visitor leaves. Esc, a tap outside and a
+   drag up on its handle close it and the focus goes back to the status bar.
+9. **A page that throws** shows `PageError` (the status screen with the code 500, the voice of the skin in `content/copy/errors.ts`) inside the frame;
+   the Standard words for 404, Coming soon and maintenance are used as they are.
+10. **Everything that opens** (the sheets, the chat, the viewer) is built on the shadcn dialog (`components/ui`) through `shell/ph-overlay-frame.tsx`, loaded
+    with `next/dynamic` the first time it is opened (`shell/overlays.tsx`), with one toolbar family (`shell/ph-overlay-bar.tsx`) for the chat, the viewer,
+    the CV and the Connect sheet. They reuse the pure windows and hooks of Standard (the chat session, the CV sheets and the PDF, the contacts, the clipboard).
+11. **Derived data is shared.** Nothing is worked out in the skin: the lists and numbers come from `lib/derive` (this skin added `skill-rows`, `platform-counts`
+    and `groupByKind` of `payment-kinds`; Academic now shares `skill-rows`), and the Projects order and filters from `use-project-view`.
+12. **Motion** is `opacity`, `translate` and `scale` only (`phone.css`: `ph-rise`, `ph-fade`, `ph-pop`, `ph-drop`), on one scale of time (100 ms a press, 180 ms a fade or a pop, 280 ms an app or a sheet; the fold has its own phases) and one curve (`--ease-ph-out`), the page change is a view transition
+    (`ph-vt-in`, `ph-vt-out`) and an app grows out of its icon (`ui/ph-app-morph.tsx`, `::view-transition-group(.ph-morph)`, 280 ms). The partner of the icon in that morph is NOT the
+    app (as tall as its page, with square corners) but `PhAppFrame`: a screen-sized, rounded, inert layer (`bg-ph-sheet`, `border-radius: var(--ph-screen-radius)`, set on `.ph-display`) that the
+    shell renders first in the screen on an app page. The pseudo-elements of a view transition are painted over the whole viewport and the `overflow: clip` of the display does not hold them, so
+    `shell/use-vt-clip.ts` (with the pure `shell/vt-clip.ts`) writes `--ph-vt-clip` (an `inset(... round ...)` of the display, its corner radii times the scale) on `<html>` and `phone.css` clips the whole
+    `::view-transition` with it, for the page change in and out, open or folded (not during a fold, which has its own view transition). The fold is a swing of
+    `transform` and `opacity` (`css/device.css`), and all of it is off under `prefers-reduced-motion` (also on the portal frames, which are themselves `.ph-root`).
+13. **Type is the system's** (`system-ui, -apple-system, "SF Pro Text", Roboto, "Segoe UI"`, a rule of `phone.css` on `.ph-root`): the look is a phone's, which
+    uses the fonts the device has, so the skin loads no font; the clock has tabular figures.
+14. **The system chrome is real.** The status bar is a transparent overlay with the real time and SVG glyphs and a veil behind it (the page's colour, the wallpaper's on the home screen, from 70% at the top to nothing over the 40 px of the bar and a 12 px tail, in five stops: ONE recipe for every width and for the device and the window alike, no blur, no mask, so it has no edge anywhere; `.ph-strip` in `phone.css`), so a line of content never reads through the clock, and is one button (the shade); the bars are the SAME SIZE on the cover screen and on the inner one, and at every width, so that a fold makes nothing jump (the row of 44 px, the pill of 36 px in a target of 44, the round buttons of 36 px in 44, the way back always with its word, the OS name always next to the clock, the same type and gaps; only the side padding differs, 12 px and 24 px, as the page's does, so the distance to the content is the same; pinned by `phone-fold.spec.ts`); the app bar is a translucent veil (20% at its top, where the veil of the status bar has come to, 50% in the middle, 30% at the foot) with a hairline once content is under it, and the back link is a quiet pill like the round buttons; the large title of a page and the line under it fade in proportion to how much of them is still below the bar (an observer with fine steps, `use-large-title` in `shell/title-context.tsx`, opacity written without a render) and are gone before they reach the text of the bar, where the small title takes over (`--ph-large-r` on the screen); the glyphs of the status bar are ALIVE but only as decoration (nothing real is read from the device): the mobile data (1 to 4 bars) and the Wi-Fi (1 to 3 arcs) rise and fall a step every 3 to 8 s (what is not lit is the same shape, dimmed), and the battery tells a looping story: it drains from 100% by 1% every 1.5 s, turns red (`--ph-danger`) at 20% and below, is plugged in at 1% and charges green (`--ph-ok`) with a bolt, FAST (1% every 0.25 s, two bolts) below 80% and NORMAL from 80% (1% every 1.25 s, 2 s from 95%, one bolt), stays at 100% for 2 s with the charger in, then it is out and the battery drains again. The story is one pure machine (`shell/status-sim.ts`: `step(state, random)`, a tick of 250 ms, the thresholds as named constants), kept in one store with ONE timer (`shell/use-status-sim.ts`, a `useSyncExternalStore` that only `status-glyphs.tsx` and `status-summary.tsx` subscribe to, so no page renders; the timer runs only while something listens, not in a hidden tab and not under `prefers-reduced-motion`, where the glyphs are still: a full battery and the best signal). The fill is the `scaleX` of an inline rect with a 280 ms transition of the level and the colour (the scale of time has no 300), so nothing moves around it. The bar says nothing aloud and has no live region: the quick settings carry the same state as words (`status-summary.tsx`, `sr-only`: "Fast charging, 34%", "Charging, 91%", "Battery 63%", the mobile data and the Wi-Fi, in English and Vietnamese, `content/copy/phone.ts`); there are no native tooltips, only a short one (`ph-tip`, after 600 ms, only under a pointer) on the controls that are just a glyph; the home bar takes a tap or a drag up
+    (pointer events) home and a swipe from the left edge of the screen goes back on a touch screen (`shell/gestures.ts`, pure and tested; `shell/use-back.ts`
+    counts the pages visited, so a page opened by its address goes home); the large title of an app collapses into the app bar with an `IntersectionObserver`
+    (`shell/title-context.tsx`). Every gesture has a button as well.
+
+## Radius scale
+
+One scale of corners, defined once in `app/tailwind-theme-phone.css` and used as `rounded-ph-*`; `tests/unit/skin/phone-radius.test.ts` fails on a raw rem radius or a stock size (`rounded-xl`, `-2xl`, `-md`...) in the TSX
+and on a token that is not in the theme.
+
+| Token              | Value    | Where                                                                                                                                                   |
+| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rounded-ph-panel` | 1.5rem   | every card, glass card (`HomeGlass`, the dock), popover, banner, list group, tile of the shade, chat bubble, the detail pane, and the skeletons of them |
+| `rounded-ph-sheet` | 2rem     | what opens over the page: the sheets, the chat, the viewer frame, the shade (its lower corners)                                                         |
+| `rounded-ph-inner` | 0.75rem  | what sits in a panel: a picture, a nested block, a thumbnail, a field, a row of a menu                                                                  |
+| `rounded-ph-mark`  | 0.375rem | a small chip of colour (the marks of a keyboard key, a focus outline)                                                                                   |
+
+Apart from the scale: tiles are `rounded-[30%]` squircles, controls and chips `rounded-full`, the tail corner of a chat bubble `0.3rem`, the corners of the screen `--ph-screen-radius`.
+The rule behind it is that **the same role has the same corner** (a card is a card wherever it is) and **a nested corner is never larger than its container's**, with at least the container's radius
+less the room between them, so no corner looks pinched: a picture or a block inside a panel with 12 px or more of padding uses the inner radius (12 is not below 24 less the padding); a list in a card
+is clipped by the card, so only its first and last rows meet its corners. A one-off radius is wrong; a new role gets a new token and a line here.
+
+## Skill chips
+
+The chips of a skill take a soft tint from the **area** the skill belongs to (its `category`, the groups `skillGroups` makes): mobile blue, web green, AI violet, tools amber (`blocks/skill-hue.ts` is
+the one place that says so; an area it does not know stays neutral). The tint is only the fill and the text of the chip (`--ph-tag-<hue>-bg` / `-ink` in `phone.css` for both themes, `bg-ph-tag-<hue>` in the theme, a `hue` prop of
+`PhChip`): the same shape and size, no border, and the word is always there, so colour is never the only carrier. It is on the technologies of Home, the tags of a project (row and detail), the technologies of a role and of a thesis,
+the skills of a certificate, the areas in the facts of About and the technology choices of the Projects filter while they are off; a choice that is on keeps the accent, so selection is not mistaken for a hue.
+`phone-contrast.test.ts` holds every pair at 4.5:1 over the three surfaces in both themes, `phone-skill-hue.test.ts` the map.
+
+## The two stat widgets
+
+The widgets of the home screen under the role card ("In software" and "Projects") are two equal columns (`grid-cols-2`, stretched, the same gap as every card): the same width and height at every width,
+the same padding, radius and small-caps title (`home-widget-title.tsx`) and the same large number (`home-widget-number.tsx`). Both have the same inside (`home-widget-layout.ts`): the title, a **hero block** of one fixed height
+that holds the large number, and a **footer block** of one fixed height, so the titles, the centres of the two numbers (the `7` and the `10`) and the starts of the footers are at the same height in both. The years widget has
+a **segmented ring** in its hero with one arc for each year of the career (`home-year-ring.tsx`; the geometry is the pure `year-ring.ts`: up to 12 years wide arcs, up to 24 thin ones, one unbroken circle for a single year and
+past 24), with the number exactly in its middle and the word under it (kept for readers only when the ring is narrower than 7rem, at 320 px), the last arc (the year I am in) in the full accent and the others at 75%, so every
+arc keeps 3:1 against the card in both themes; its footer says the years it spans, from the year of the first role to this one. The ring is `aria-hidden`. The projects widget has the count in its hero and the four bars of 6 px,
+one for each platform, in its footer. If one of the two is left out (the page is off, the data cannot be read) the other takes the whole row.
+
+## Content the mock had and Standard has not
+
+Dropped or made decoration: the big clock on the home screen (the status bar has the real time), a separate Home app, the fake battery level (the glyph is
+decoration), the placeholder certificates, services, payment methods and contacts, the canned chat answers, and every number, date and name that was a placeholder.
+The marks beside the years and the platform bars are `aria-hidden`; the number next to them is the data.
+
+## Files
+
+```
+skin.tsx            SkinDefinition: Frame (PhoneShell) + one component for each page + NotFound + PageError + Maintenance
+config.ts           page and action -> drawn glyph (`PAGE_ICONS`, `ACTION_GLYPHS`; `ACTION_ICONS` stays the line icons of the round buttons), tile gradients (spelled out so the build finds the classes)
+phone.css           palette (dark base, light on html:not(.dark)), the device colours, the tile gradients (3:1 against the glyph in both themes), the shadcn tokens, the system type, the wallpaper,
+                    the status strip and the bar veil, the scrollbar cue, the clip of the page-change view transition (`--ph-vt-clip`), keyframes, reduced motion
+css/device.css      the foldable device: body, hinge, display, camera, crease, handle and the swing (keyframes)
+css/overlays.css    the typing dots of the chat (keyframes)
+shell/              phone-shell (the two modes, the screen, the layer), fold-mode (pure), fold-motion (pure), use-fold*, use-window-mode, use-fold-key, ph-device-*, ph-fold-control,
+                    status-bar, status-glyphs, status-summary, status-sim (pure), use-status-sim, app-bar, app-window, home-bar, rail, ph-shade* (the quick settings), ph-action (dock tile, round button or quick tile),
+                    gestures (pure), use-back, use-edge-swipe, title-context, screen-context, overlay-context, overlays (the lazy host), ph-toast, and the overlays:
+                    ph-overlay-frame / ph-overlay-bar, ph-chat*, ph-viewer*, ph-cv-*, ph-connect-*
+ui/                 ph-root, ph-button, ph-chip, ph-card, ph-section, ph-icon-tile, ph-app-glyphs, ph-glyph-frame, ph-sheet, ph-page, ph-data-state, ph-skeleton, ph-skeleton-line, ph-state-notice,
+                    status screens (ph-status-screen, ph-not-found, ph-page-error, ph-maintenance-screen)
+pages/              one file for each page
+blocks/             home-*, about-*, resume-*, project-*, projects-*, certificate-*, service-*, contact-*, payment-*, and the small parts the pages share:
+                    fact-row, section-link, owner-avatar, toggle-chip, list-row (the inset separator), use-wide-screen / use-screen-sizes (the screen as a container),
+                    popover-avoidance, raise-toolbar, screen-scroller, use-pane-fit, projects-pane, projects-layout, hinge-panes (the Projects popovers and panes)
+```
+
+Words only this skin has: `content/copy/phone.ts` (the shell), `phone-home.ts`, `phone-projects.ts`, `phone-pay.ts`, `phone-overlays.ts` (en and vi); everything else
+reuses the copy of Standard. The colours as utilities are in `app/tailwind-theme-phone.css`, their values in `phone.css`.
+
+## Motion performance
+
+Measured with Chrome tracing through CDP (`Tracing`, the timeline, `cc` and `gpu` categories, plus a `requestAnimationFrame` probe as a second opinion) on a **production build** in a
+1440 x 900 window, on Projects and Certificates, at 1x and with the CPU throttled 4x: a scroll of about 3 s in small wheel steps (the app bar hides, shows and settles), six folds and
+unfolds, and three opens of an app from home and back. **This is a desktop, headless, software-rendered Chrome, not a phone GPU**: its frames come every 33 ms even when idle, so
+the numbers say where the main thread is busy and what is repainted, not how smooth a real phone is. What they show, and what the code is held to:
+
+- The scroll costs next to nothing beyond what an idle page costs (the clock and the status glyphs): 38 layouts and 42 paints in a scroll of 4.6 s against 27 and 13 in 3 s of nothing, no task over 50 ms at 1x
+  on Projects (the 44 to 80 ms of the first frame at 4x is in the idle page too) and no frame over 33 ms; the DOM sees about 48 changes in the whole scroll (the bar's variables, the bar state, the glyphs): no page renders.
+  Certificates has ONE task of 80 to 130 ms on the first scroll (lazy images) and none on the next two passes (16 ms at most): content, not the bar.
+- Only the app bar is promoted in advance (`will-change: transform, opacity`, 1032 x 44, one element in the screen); its veil, the layer behind it and the soft end below are part of that one layer and never
+  animate by themselves. A guard in `phone-fold.spec.ts` holds this (one promoted element, `transition-property: transform, opacity`, no `backdrop-filter` and no `filter` in the screen of an app).
+- A fold or an unfold has ONE long frame, where the layout is swapped inside the view transition (a React render and a layout of 14 to 40 ms, 90 to 130 ms at 4x, under the frozen snapshot); the swing
+  itself is `transform` and `opacity` on the compositor (the paints in a fold are those of the layout swap and of the device layers, a few dozen for each fold, not one for each frame of the page). An app opening from its icon: the longest task is 15 to 17 ms at 1x and 69 ms at 4x.
+- `backdrop-blur-xl` of the home glass was measured with and without at 4x (scroll and fold on the home screen): 3 and 5 frames over 50 ms in the scroll, 6 and 8 in the folds, paint 384 and 332 ms: the same
+  within the noise, so it stays (the cost of a blur is the GPU's, which this machine does not have). `use-bar-hide`, `use-large-title` (an observer, no scroll listener) and `use-scroll-cue` read no layout in
+  the scroll; `use-pane-fit` of Projects reads two rects on a scroll event but the layout it reads is clean, and no extra layout shows in the trace.
+- Nothing was changed for speed on these numbers, because none showed a cost to remove. The raw summaries are kept with the work of the session (one JSON for each scenario).
+
+## Tests
+
+- Unit (`tests/unit/skin/`): `phone-fold-mode` (the window thresholds, the remembered fold, the edge drag), `phone-fold-motion` (when the layout swaps), `phone-gestures`, `phone-skill-hue` (the hue of every area, its tokens), `phone-radius` (one scale of corners, every token in the theme), `phone-year-ring` (the geometry of the years ring), `phone-css` (hover only under `@media (hover: hover)`, the `ph-` prefix, no repeated keyframes, the compositor only, reduced motion, every colour
+  utility has a theme colour, no raw colour in the TSX), `phone-contrast` (4.5:1 in both themes, 3:1 for both stops of every tile), `phone-bar-scroll`, `phone-scroll-cue`, `phone-vt-clip`, `phone-status-sim` (the story of the status bar: monotonic drain, red at 20%, plug-in at 1%, fast and normal charge, the loop, a signal that moves a step at a time), `phone-copy` (both languages, same keys), `phone-swipe` (the viewer's
+  swipe); `tests/unit/lib/derive/` for `skill-rows`, `platform-counts` and `groupByKind`.
+- Playwright (`tests/automation/skins/`): `phone-shell.spec.ts` (the home screen, the apps and the rail, the quick settings shade, 404, Coming soon, hidden pages,
+  maintenance, the fixed menus, no sideways scroll at 320 px), `phone-device-scroll.spec.ts` (the backdrop around the device is `overflow: clip`, never `hidden`: a hidden box is scrolled by a focus or a `scrollIntoView` inside it, which pushed the device and the Fold button up out of the window), `phone-fold.spec.ts` (the device: open and folded, remembered, the F key, the edge drag, reduced motion,
+  a window without room, what opens stays inside the screen, the home bar, the collapsing title, the app morph), `phone-projects*.spec.ts` (the shared Projects suite and the page's own checks), `phone-pay.spec.ts`
+  (Certificates, Services with the contact form, Payment), `phone-home.spec.ts` (the launcher, the panes of Resume, Home and About on an open device, the role under the bars, the stat widgets and the corners of the home screen), `phone-overlays.spec.ts` (the chat, the CV, Connect and the viewer), `phone-status.spec.ts` (the status bar story with a fake clock: red, fast and normal charge, the words of the quick settings, a hidden tab, reduced motion); `errors.spec.ts` covers a page that
+  throws and a browser that blocks its storage in this skin too.

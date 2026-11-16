@@ -20,7 +20,7 @@ const FIELD_NOTES = {
   sort: 'Manual order, ascending. Collections with dates sort by their date instead.',
   l10n: 'Translations: <code>l10n.vi.&lt;field&gt;</code> overrides the same field. Only the listed fields can be translated.',
   startMonth: 'Period start, <code>YYYY-MM</code>.',
-  endMonth: 'Period end, <code>YYYY-MM</code>; null means current.',
+  endMonth: 'Period end, <code>YYYY-MM</code>; null means current. A project with no end month is shown as Ongoing and the others as Finished (the status filter and the flag on each project read it).',
   technologies: 'Ids of documents in <code>skills</code>.',
   platforms: 'What a project runs on: <code>mobile</code>, <code>web</code>, <code>desktop</code> or <code>ai</code>, any number. The filter of the Projects page reads it.',
   skills: 'Ids of documents in <code>skills</code>.',
