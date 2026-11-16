@@ -13,6 +13,7 @@ import { ServicesPage } from '@/skins/travel/pages/services';
 import { TravelShell } from '@/skins/travel/shell/travel-shell';
 import { TlMaintenanceScreen } from '@/skins/travel/ui/tl-maintenance-screen';
 import { TlNotFound } from '@/skins/travel/ui/tl-not-found';
+import { TlPageError } from '@/skins/travel/ui/tl-page-error';
 import '@/skins/travel/travel.css';
 import '@/skins/travel/css/map.css';
 import '@/skins/travel/css/sky.css';
@@ -41,6 +42,7 @@ const travelSkin: SkinDefinition = {
     payment: PaymentPage,
   },
   NotFound: TlNotFound,
+  PageError: TlPageError,
   Maintenance: TlMaintenanceScreen,
 };
 

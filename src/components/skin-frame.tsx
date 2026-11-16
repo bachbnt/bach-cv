@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState, ViewTransition, type ReactNode } from 'react';
 import { ChatWidget } from '@/components/chat/chat-widget';
 import { MaintenanceGate } from '@/components/maintenance-gate';
+import { PageErrorBoundary } from '@/components/page-error-boundary';
 import { useMaintenance } from '@/components/use-maintenance';
 import { skinsCopy } from '@/content/copy/skins';
 import { useCopy } from '@/lib/i18n/copy';
@@ -120,7 +121,10 @@ export function SkinFrame({ children }: { children: ReactNode }) {
   return (
     <>
       <active.Frame page={page}>
-        <Page />
+        {/* a page that throws gives its place to the screen of the skin for an error; the frame stays, and another path puts the page back */}
+        <PageErrorBoundary resetKey={pathname} fallback={<active.PageError />}>
+          <Page />
+        </PageErrorBoundary>
       </active.Frame>
       {note}
     </>

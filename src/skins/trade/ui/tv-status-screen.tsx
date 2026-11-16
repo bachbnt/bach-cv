@@ -7,8 +7,10 @@
 import { usePathname } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { commonCopy } from '@/content/copy/common';
+import { errorsCopy } from '@/content/copy/errors';
 import { tradeDeskCopy } from '@/content/copy/trade-desk';
 import { useGoBack } from '@/hooks/use-go-back';
+import { recover } from '@/lib/error/recover';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from '@/lib/utils';
 import { TvButton, TvLink } from '@/skins/trade/ui/tv-button';
@@ -72,12 +74,36 @@ export function TvStatusBody({
   );
 }
 
-/** The 404 ("Symbol not found") and Coming soon ("Pre-market") screens: the Standard words and the same two ways out. */
-export function TvStatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
+/** The 404 ("Symbol not found"), Coming soon ("Pre-market") and error ("Feed error") screens: the Standard words and the same two ways out. */
+export function TvStatusScreen({
+  variant,
+}: {
+  variant: 'notFound' | 'soon' | 'error';
+}) {
   const copy = useCopy(commonCopy);
   const states = useCopy(tradeDeskCopy).states;
+  const errors = useCopy(errorsCopy).trade;
   const goBack = useGoBack();
   const pathname = usePathname();
+  if (variant === 'error')
+    return (
+      <TvStatusBody
+        code='500'
+        title={errors.title}
+        body={errors.body}
+        kicker={errors.kicker}
+        art='closed'
+      >
+        <div className='mt-2 flex flex-wrap gap-2'>
+          <TvButton variant='primary' onClick={recover}>
+            {errors.retry}
+          </TvButton>
+          <TvLink variant='outline' href='/'>
+            {errors.home}
+          </TvLink>
+        </div>
+      </TvStatusBody>
+    );
   const text = copy.status[variant];
   return (
     <TvStatusBody

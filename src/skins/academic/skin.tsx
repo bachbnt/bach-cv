@@ -13,6 +13,7 @@ import { ServicesPage } from '@/skins/academic/pages/services';
 import { AcademicShell } from '@/skins/academic/shell/academic-shell';
 import { AcMaintenanceScreen } from '@/skins/academic/ui/ac-maintenance-screen';
 import { AcNotFound } from '@/skins/academic/ui/ac-not-found';
+import { AcPageError } from '@/skins/academic/ui/ac-page-error';
 import '@/skins/academic/academic.css';
 
 /** The Academic skin: the site as a chalkboard (or a whiteboard) with an annotated manuscript pinned to it. */
@@ -29,6 +30,7 @@ const academicSkin: SkinDefinition = {
     payment: PaymentPage,
   },
   NotFound: AcNotFound,
+  PageError: AcPageError,
   Maintenance: AcMaintenanceScreen,
 };
 

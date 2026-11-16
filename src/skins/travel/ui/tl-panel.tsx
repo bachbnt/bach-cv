@@ -38,15 +38,18 @@ export function TlPanel({
   side,
   labelledBy,
   className,
+  startTall = false,
   children,
 }: {
   side: keyof typeof SIDE;
   labelledBy: string;
   className?: string;
+  /** a phone opens the sheet at its tall height (a screen that has a button to press, which the short one would hide) */
+  startTall?: boolean;
   children: ReactNode;
 }) {
   const words = useCopy(travelShellCopy).panel;
-  const [tall, setTall] = useState(false);
+  const [tall, setTall] = useState(startTall);
   const sheet = useRef<HTMLElement>(null);
   // the drag that is under way: where it began, the two heights in px, whether it has gone past a tap, and the last few places of the finger
   const drag = useRef<{

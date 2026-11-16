@@ -13,6 +13,7 @@ import { ServicesPage } from '@/skins/dev/pages/services';
 import { DevShell } from '@/skins/dev/shell/dev-shell';
 import { DevMaintenanceScreen } from '@/skins/dev/ui/dev-maintenance-screen';
 import { DevNotFound } from '@/skins/dev/ui/dev-not-found';
+import { DevPageError } from '@/skins/dev/ui/dev-page-error';
 import '@/skins/dev/dev.css';
 import '@/skins/dev/dev-extra.css';
 import '@/skins/dev/css/home-about.css';
@@ -32,6 +33,7 @@ const devSkin: SkinDefinition = {
     payment: PaymentPage,
   },
   NotFound: DevNotFound,
+  PageError: DevPageError,
   Maintenance: DevMaintenanceScreen,
 };
 

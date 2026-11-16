@@ -7,19 +7,28 @@
 import { IntentLink } from '@/components/intent-link';
 import { GoBackButton } from '@/components/go-back-button';
 import { buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { commonCopy } from '@/content/copy/common';
+import { errorsCopy } from '@/content/copy/errors';
+import { recover } from '@/lib/error/recover';
 import { useCopy } from '@/lib/i18n/copy';
 import { cn } from 'cn';
 
-/** The big-number screen used by 404 and Coming soon (the design mockup, coming-soon.html). */
-export function StatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
+/** The big-number screen used by 404, Coming soon and a page that threw (the design mockup, coming-soon.html). */
+export function StatusScreen({
+  variant,
+}: {
+  variant: 'notFound' | 'soon' | 'error';
+}) {
   const copy = useCopy(commonCopy);
-  const text = copy.status[variant];
+  const errors = useCopy(errorsCopy).standard;
+  const failed = variant === 'error';
+  const text = failed ? errors : copy.status[variant];
   return (
     <div className='band-glow rounded-b-[40px] bg-page-tint'>
       <section className='mx-auto flex w-full max-w-[1200px] flex-col items-start gap-6 px-5 pt-24 pb-[120px] min-[721px]:px-12'>
         <p className='font-heading text-[80px] leading-none font-bold tracking-[-0.04em] text-brand-ink min-[721px]:text-[120px]'>
-          {variant === 'soon' ? copy.soon : '404'}
+          {failed ? '500' : variant === 'soon' ? copy.soon : '404'}
         </p>
         <h1 className='text-[36px] leading-[1.05] min-[721px]:text-5xl'>
           {text.title}
@@ -28,13 +37,31 @@ export function StatusScreen({ variant }: { variant: 'notFound' | 'soon' }) {
           {text.body}
         </p>
         <div className='mt-2 flex flex-col gap-3 max-[480px]:self-stretch min-[481px]:flex-row'>
-          <IntentLink
-            href='/'
-            className={cn(buttonVariants({ variant: 'brand', size: 'lg' }))}
-          >
-            {copy.status.home}
-          </IntentLink>
-          <GoBackButton>{copy.status.back}</GoBackButton>
+          {failed ? (
+            <>
+              <Button variant='brand' size='lg' onClick={recover}>
+                {errors.retry}
+              </Button>
+              <IntentLink
+                href='/'
+                className={cn(
+                  buttonVariants({ variant: 'outline', size: 'lg' }),
+                )}
+              >
+                {errors.home}
+              </IntentLink>
+            </>
+          ) : (
+            <>
+              <IntentLink
+                href='/'
+                className={cn(buttonVariants({ variant: 'brand', size: 'lg' }))}
+              >
+                {copy.status.home}
+              </IntentLink>
+              <GoBackButton>{copy.status.back}</GoBackButton>
+            </>
+          )}
         </div>
       </section>
     </div>

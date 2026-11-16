@@ -13,6 +13,7 @@ import { ServicesPage } from '@/skins/trade/pages/services';
 import { TradeShell } from '@/skins/trade/shell/trade-shell';
 import { TvMaintenanceScreen } from '@/skins/trade/ui/tv-maintenance-screen';
 import { TvNotFound } from '@/skins/trade/ui/tv-not-found';
+import { TvPageError } from '@/skins/trade/ui/tv-page-error';
 import '@/skins/trade/trade.css';
 import '@/skins/trade/css/chart.css';
 import '@/skins/trade/css/shell.css';
@@ -33,6 +34,7 @@ const tradeSkin: SkinDefinition = {
     payment: PaymentPage,
   },
   NotFound: TvNotFound,
+  PageError: TvPageError,
   Maintenance: TvMaintenanceScreen,
 };
 

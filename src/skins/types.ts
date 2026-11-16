@@ -16,6 +16,8 @@ export interface SkinDefinition {
   pages: Record<PageKey, ComponentType>;
   /** The screen for a path that is not a page (inside the frame). */
   NotFound: ComponentType;
+  /** The screen for a page that threw while it rendered (inside the frame, in the place of the page). */
+  PageError: ComponentType;
   /** The screen that replaces the whole site while maintenance is on (no frame). */
   Maintenance: ComponentType<Pick<Maintenance, 'message' | 'email'>>;
 }

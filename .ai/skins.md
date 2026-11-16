@@ -11,8 +11,12 @@ Standard is the app itself (`app/**`, `components/**`); every other skin lives i
   same in every language) so the page is not blank on a slow connection. Standard visitors get nothing: no attribute, no delay.
 - `lib/skin/skin.tsx` holds the choice; `components/skin-frame.tsx` shows Standard (`children`) or the skin: its `Frame` around the
   component of the current page, its `NotFound` for a path that is not a page, its `Maintenance` instead of everything.
-- A skin is a `SkinDefinition` (`skins/types.ts`): `Frame`, `pages: Record<PageKey, …>`, `NotFound`, `Maintenance`. A missing page does
-  not compile. `skins/registry.ts` lists the loaders; `lib/skin/skins.ts` the ids; `content/copy/skins.ts` the names of the menu.
+- A skin is a `SkinDefinition` (`skins/types.ts`): `Frame`, `pages: Record<PageKey, …>`, `NotFound`, `PageError`, `Maintenance`. A missing page does
+  not compile.
+- A page that throws gives its place (inside the frame) to the skin's `PageError`: `SkinFrame` wraps the page in `PageErrorBoundary`, and another path puts
+  the page back. Standard has `app/error.tsx` for the same. If the frame, a provider or a `PageError` throws, `app/global-error.tsx` shows: plain markup, own
+  styles, no skin, no provider, no data, so nothing in it can fail. "Try again" is `lib/error/recover.ts` (forgets the content the browser kept, then reloads);
+  the words are in `content/copy/errors.ts`, one voice for each skin. `skins/registry.ts` lists the loaders; `lib/skin/skins.ts` the ids; `content/copy/skins.ts` the names of the menu.
 
 ## Add a skin
 
