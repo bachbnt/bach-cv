@@ -24,7 +24,7 @@ import { ThemeProvider } from '@/lib/theme/theme';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 /** Bump when a schema change makes cached data unreadable. */
-const CACHE_VERSION = 'v2-2';
+const CACHE_VERSION = 'v2-3';
 
 /** While prerendering there is no `window`, so nothing is persisted or restored. */
 const noopPersister: Persister = {
