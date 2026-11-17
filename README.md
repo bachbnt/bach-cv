@@ -25,6 +25,10 @@ The Home page of each skin, and the first version of the site.
     <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/04.webp" alt="Home in the Academic skin, light theme"><br><sub><b>Academic</b>, light: a manuscript on a whiteboard.</sub></td>
     <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/05.webp" alt="Home in the Travel skin, light theme"><br><sub><b>Travel</b>, light: a trip map, the roles are the stops.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/06.webp" alt="Home in the Phone skin, light theme, on the open foldable device"><br><sub><b>Phone</b>, light: a phone operating system on a foldable device, open.</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/07.webp" alt="Home in the Phone skin, dark theme, on the folded device"><br><sub><b>Phone</b>, dark: the same device folded, the cover screen with the phone layout.</sub></td>
+  </tr>
 </table>
 
 ## Highlights
