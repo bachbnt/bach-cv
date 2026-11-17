@@ -84,7 +84,8 @@
 }
 
 /* The curve of everything that arrives; `ease-out` is for a change of state. One scale of time: 100 ms for a press, 180 for a fade or a pop,
-   280 for an app or a sheet. */
+   280 for a sheet, 360 for an app that opens or closes (its own curve: it covers a whole screen, so it starts fast and settles for longer). */
 @theme {
   --ease-ph-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-ph-app: cubic-bezier(0.22, 1, 0.36, 1);
 }

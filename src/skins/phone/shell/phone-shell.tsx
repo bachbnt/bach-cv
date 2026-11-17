@@ -143,8 +143,8 @@ export function PhoneShell({
                         {home ? (
                           <ViewTransition
                             key='home'
-                            enter='ph-vt-in'
-                            exit='ph-vt-out'
+                            enter='ph-vt-return'
+                            exit='ph-vt-recede'
                             default='none'
                           >
                             <div className='flex flex-1 flex-col pt-(--ph-bar-top)'>
@@ -154,8 +154,8 @@ export function PhoneShell({
                         ) : (
                           <ViewTransition
                             key={page ?? 'none'}
-                            enter='ph-vt-in'
-                            exit='ph-vt-out'
+                            enter='ph-vt-app-in'
+                            exit='ph-vt-app-out'
                             default='none'
                           >
                             <div className='flex flex-1 flex-col'>

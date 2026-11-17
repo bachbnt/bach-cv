@@ -144,8 +144,8 @@ describe('the CSS of the Phone skin', () => {
 });
 
 describe('the motion of the Phone skin', () => {
-  /** The scale of time of the skin: a press, a fade or a pop, an app or a sheet; the phases of the fold have their own (`css/device.css`). */
-  const SCALE = new Set(['100ms', '180ms', '280ms']);
+  /** The scale of time of the skin: a press, a fade or a pop, a sheet, an app that opens or closes; the phases of the fold have their own (`css/device.css`). */
+  const SCALE = new Set(['100ms', '180ms', '280ms', '360ms']);
 
   it('uses `!important` only to switch the motion off', () => {
     const found: string[] = [];

@@ -9,6 +9,8 @@ export interface TransitionAnimation {
   pseudo: string;
   keyframes: string;
   duration: number;
+  /** How long the animation waits before it starts. */
+  delay: number;
 }
 
 interface Tracker {
@@ -46,6 +48,7 @@ export async function trackViewTransitions(page: Page) {
               pseudo: effect.pseudoElement,
               keyframes: (animation as CSSAnimation).animationName ?? '',
               duration: Number(effect.getComputedTiming().duration),
+              delay: Number(effect.getComputedTiming().delay),
             });
           }
         })

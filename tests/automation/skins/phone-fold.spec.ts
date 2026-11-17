@@ -584,7 +584,7 @@ test.describe('the system gestures and chrome', () => {
     await expect(small).toHaveAttribute('data-ph-bar-title', 'shown');
   });
 
-  test('an app grows out of its icon and shrinks back into it, in about 280 ms', async ({
+  test('an app grows out of its icon in 360 ms, the home screen recedes behind it and the page comes in after the window has grown; closing is the other way round', async ({
     page,
   }) => {
     const views = await trackViewTransitions(page);
@@ -596,16 +596,37 @@ test.describe('the system gestures and chrome', () => {
       .click();
     await expect(page).toHaveURL(/\/resume$/);
     await expect.poll(() => views.started()).toBeGreaterThan(0);
-    const morph = async () =>
-      (await views.animations()).filter((a) =>
-        a.pseudo.includes('::view-transition-group(ph-app-resume)'),
+    const named = async (pseudo: string, keyframes?: string) =>
+      (await views.animations()).filter(
+        (a) =>
+          a.pseudo.includes(pseudo) &&
+          (keyframes === undefined || a.keyframes === keyframes),
       );
+    const morph = () => named('::view-transition-group(ph-app-resume)');
     await expect.poll(async () => (await morph()).length).toBeGreaterThan(0);
-    expect((await morph())[0].duration).toBe(280);
-    // and back
+    // the window: 360 ms; the icon and the blank window cross over at the start, while the group is small
+    expect((await morph())[0].duration).toBe(360);
+    for (const side of ['old', 'new'])
+      for (const animation of await named(
+        `::view-transition-${side}(ph-app-resume)`,
+      ))
+        expect(animation.duration).toBe(100);
+    // the home screen recedes, the page of the app waits 100 ms for the window and then comes in, so it never shows before the window is there
+    const [recede] = await named('::view-transition-old(', 'ph-vt-recede');
+    expect(recede?.duration).toBe(280);
+    const [arrive] = await named('::view-transition-new(', 'ph-vt-app-in');
+    expect(arrive?.delay).toBe(100);
+    expect(arrive.delay + arrive.duration).toBeLessThanOrEqual(400);
+    // and back: the page of the app goes out at once, the home screen returns, the window shrinks into the icon
     await page.getByRole('link', { name: 'Home', exact: true }).first().click();
     await expect(page).toHaveURL(/\/$/);
     await expect.poll(async () => (await morph()).length).toBeGreaterThan(1);
+    expect(
+      (await named('::view-transition-old(', 'ph-vt-app-out'))[0]?.duration,
+    ).toBe(100);
+    expect(
+      (await named('::view-transition-new(', 'ph-vt-return'))[0]?.duration,
+    ).toBe(280);
   });
 
   test('the status bar shows the time and the quick settings button opens the shade by a tap', async ({
