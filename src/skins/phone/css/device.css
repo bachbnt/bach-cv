@@ -202,8 +202,7 @@
   box-shadow: 0 0 0 1px var(--ph-seam);
 }
 
-/* the buttons on the right edge: a volume rocker (two keys and a hairline between them) and the power button, which has the fine ridges of a
-   fingerprint sensor; they stand out of the frame, in the same place on the half, on the cover and on the open slab */
+/* the buttons on the right edge: a volume rocker (two keys and a hairline between them) and the power button, a plain key of the same metal; they stand out of the frame, in the same place on the half, on the cover and on the open slab */
 .ph-volume,
 .ph-power {
   position: absolute;
@@ -230,18 +229,104 @@
 .ph-power {
   top: 262px;
   height: 50px;
-  background:
-    repeating-linear-gradient(
-      180deg,
-      transparent 0 2px,
-      var(--ph-seam) 2px 3px
-    ),
-    linear-gradient(
-      90deg,
-      var(--ph-metal-1),
-      var(--ph-metal-2) 55%,
-      var(--ph-metal-1)
-    );
+  background: linear-gradient(
+    90deg,
+    var(--ph-metal-1),
+    var(--ph-metal-2) 55%,
+    var(--ph-metal-1)
+  );
+}
+
+/* The REAL keys (`PhDeviceKeys`): buttons that look as the keys above, in a layer of the rig, in front of the display (so that their tooltip opens over the
+   screen), at the right edge of the right half: 859 px of the rig on the cover (the cover is at 280 + 580) and 1139 px on the open slab. At rest they are
+   drawn and the keys of the slabs are not; while a fold plays the slabs move and the keys of the slabs are drawn (the real ones are invisible and out
+   of the pointer's way, but keep the focus). Hit area: an invisible `::before` of 44 px or more in height. A press sinks the key into the frame (100 ms). */
+.ph-keys {
+  position: absolute;
+  z-index: 7;
+  top: 0;
+  left: 859px;
+  width: 6px;
+  height: 100%;
+  pointer-events: none;
+}
+.ph-rig[data-fold='open'] .ph-keys {
+  left: 1139px;
+}
+.ph-rig[data-phase]:not([data-phase='idle']) .ph-keys {
+  opacity: 0;
+}
+.ph-rig[data-phase='idle'] .ph-volume,
+.ph-rig[data-phase='idle'] .ph-power {
+  visibility: hidden;
+}
+.ph-keys .ph-key {
+  position: absolute;
+  left: 0;
+  width: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 0 3px 3px 0;
+  cursor: pointer;
+  pointer-events: auto;
+  background: linear-gradient(
+    90deg,
+    var(--ph-metal-1),
+    var(--ph-metal-2) 55%,
+    var(--ph-metal-1)
+  );
+  transition: transform 100ms var(--ease-ph-out);
+}
+.ph-rig[data-phase]:not([data-phase='idle']) .ph-keys .ph-key {
+  pointer-events: none;
+}
+.ph-keys .ph-key::before {
+  content: '';
+  position: absolute;
+  inset: -3px -8px;
+}
+.ph-keys .ph-key:active {
+  transform: translateX(-1.5px);
+}
+.ph-keys .ph-key:focus-visible {
+  outline: 2px solid var(--ph-accent);
+  outline-offset: 2px;
+}
+.ph-volume-rocker {
+  position: absolute;
+  top: 150px;
+  left: 0;
+  width: 6px;
+  height: 82px;
+  border-radius: 0 3px 3px 0;
+  /* what shows between the two keys: the hairline of the rocker */
+  background: var(--ph-seam);
+  pointer-events: none;
+}
+.ph-keys .ph-key-up {
+  top: 0;
+  height: 39px;
+}
+.ph-keys .ph-key-down {
+  bottom: 0;
+  height: 41px;
+}
+.ph-keys .ph-key-power {
+  top: 262px;
+  height: 50px;
+}
+
+/* the volume pill shakes by 2 px when a key is pressed at the end of its range */
+@keyframes ph-hud-shake {
+  25% {
+    translate: -2px 0;
+  }
+  75% {
+    translate: 2px 0;
+  }
+}
+.ph-hud-shake {
+  animation: ph-hud-shake 120ms var(--ease-ph-out);
 }
 
 /* ---------- the cover half, seen only while a fold plays ----------

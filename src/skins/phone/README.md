@@ -69,14 +69,14 @@ sheet, or a panel at the right of a tablet), the Connect sheet and the CV sheet.
    (at least 88% across the 44 px of the row, so the text of the page never reads through its title, with a 16 px tail) and no `backdrop-filter` (a live blur is the
    dearest thing a scroll paints); the veil is ONE piece with the bar: a layer behind it goes up by the height of the status bar and the soft end below it is there until the bar is nearly out of sight (`--ph-bar-t`), and only the CONTENT of the bar fades (`--ph-bar-o`), so at every point of the slide (the bar is moved by `transform`) the veil reaches from the top of the screen to the foot of the bar and no page shows between the status bar and the bar; the bar never rests half way: after the scrolling has been still for 120 ms it goes all the way in place (the last move was up, or it is more than half there) or all the way out (`barSettle`), and not under a finger that is held still (it settles when the finger is lifted); it lies fully under the status bar, whose frosted strip is a layer BELOW the bar, and the large title fades out as the small one comes in (`ui/ph-page.tsx`), so only one is read at a time; the glass of the content is off for the 500 ms of a fold.
 2. **The device.** Two identical halves, each the screen of an A4 sheet in portrait (560 x 792, 1 : 1.414) in a bezel of 10 px, 580 x 812, with large corners (44 px)
-   on the outer side and almost square ones (8 px) on the side of the hinge; the buttons (the volume rocker and the power button with its fingerprint ridges) are on the
+   on the outer side and almost square ones (8 px) on the side of the hinge; the keys (the volume rocker and the power button, plain metal keys of the same kind) are on the
    RIGHT edge, so the right half is the one that stays. FOLDED the device is that half on its own, the same object, with its own display (560 wide: the phone layout,
    the cover screen). OPEN it is ONE slab, 1140 x 812, with ONE continuous display (1120 wide: the tablet layout, `data-hinge`): the hinge is behind the display, nothing
    is drawn across it but a very faint crease (the master-detail panes of Resume and Projects meet there, as two equal halves, and every wide page has
    `pr-[calc(2rem+var(--ph-rail))]` more on its right, `ui/ph-page.tsx`) and a hairline seam on the frame at the top and bottom edge. The camera is one round
    punch hole at the top centre of the display of the right half (of the cover screen when folded), drawn in DEVICE mode only: in a window of its own the
    visitor's phone or tablet is the device, so no camera is drawn and the bars start below the safe area (`env(safe-area-inset-top)` is part of `--ph-bar-top` and `--ph-bars`). The left edge has no button and no handle: the handle that
-   drags the device is an invisible hit area on it. The hardware (frame, bands, openings, keys, glass edge, floor shadow) is decoration, `aria-hidden`.
+   drags the device is an invisible hit area on it. The hardware (frame, bands, openings, glass edge, floor shadow) is decoration, `aria-hidden`; the keys on the right edge are real buttons (rule 15).
 3. **Scale, not shrink.** The device has ONE logical size (1140 x 812); a window that is too small scales the whole stage (`shell/use-device-scale.ts` sets
    `--ph-scale`, never above 1, and the stage reserves the scaled box), so the folded screen stays under 600 px and the open one over 900 whatever the window, and
    container queries keep their meaning. A box of the page is smaller than the screen's layout when it is scaled (a test reads `offsetWidth`). Popovers and sheets
@@ -122,6 +122,22 @@ sheet, or a panel at the right of a tablet), the Connect sheet and the CV sheet.
     (pointer events) home and a swipe from the left edge of the screen goes back on a touch screen (`shell/gestures.ts`, pure and tested; `shell/use-back.ts`
     counts the pages visited, so a page opened by its address goes home); the large title of an app collapses into the app bar with an `IntersectionObserver`
     (`shell/title-context.tsx`). Every gesture has a button as well.
+15. **The hardware keys.** The volume rocker and the power button on the right edge of the device are REAL buttons (`shell/ph-device-keys.tsx`, only in a device: a window of its own has none, the visitor's
+    device has its own), named `Power`, `Volume up` and `Volume down` (`content/copy/phone.ts`, English and Vietnamese), in the tab order right after the Fold control, with a visible focus ring, a short tooltip to the left
+    (`ph-tip ph-tip-left`), a hit area of at least 44 px in height (an invisible `::before`) and a press that sinks the key 1.5 px into the frame for 100 ms (`transform` only). They are a layer of the rig in front of the
+    display, at 859 px on the cover and 1139 px on the open slab, and they look as the keys that the slabs draw (`.ph-volume`, `.ph-power`), which are drawn only while a fold plays (the slabs move; the real keys are invisible then but
+    keep the focus). **It is decoration with a visible effect: nothing real is switched off or turned down, and the site has no sound.**
+    - **Power** is lock and wake (`shell/screen-power.ts`, a pure machine with three states, `on`, `off` and `locked`; `shell/use-screen-power.ts` keeps it in memory only, so a reload shows the page, and nothing locks or wakes by itself).
+      A press turns the screen off: the black glass (`ph-screen-off.tsx`) fades in over the display in 180 ms, under the camera and the glare, and the page and the layer are `inert`; whatever was open (the shade, a sheet, the viewer,
+      the chat) is closed and the volume HUD goes (`ph-power-guard.tsx`); the status simulation stops while it is off. Power again, a click on the black screen, or Enter or Space while it has the focus, wake it to the LOCK SCREEN, never
+      to the page (`ph-lock-screen.tsx`): the wallpaper of the home screen, a large clock that is the status bar's time, the date (`Intl`, in the language of the page), the glyphs and `Swipe up to unlock`, a button. A drag up (`isUpDrag`, the gesture of the home bar), a click on
+      the hint, Enter or Space unlock it with a short rise (`translate` and `opacity`) and the focus goes to the first control of the page (`shell/focus-page.ts`). The focus is on that button when the lock screen comes, everything
+      behind it is inert so Tab stays on it, Esc does nothing and the way out is one obvious action. The fold control and the `F` key work in every state (the device folds, the screen stays off or locked); the shade cannot open from a
+      screen that is off or locked, and the volume keys do nothing while it is off.
+    - **Volume** is 15 steps, starting at 8 (`shell/volume.ts`, pure, tested: clamp, the glyph, the repeat schedule), in one small store (`shell/use-volume.ts`, in memory, which the pages do not subscribe to). A press steps it and shows the
+      HUD (`ph-volume-hud.tsx`): a vertical glass pill on the right edge inside the display, with a speaker that changes (crossed at 0, one wave up to the middle, two above) and a level bar, which slides in with `translate` and `opacity` and goes
+      1.4 s after the last press; a key held with a pointer repeats after 400 ms and then every 150 ms; ArrowUp and ArrowDown on a focused key step it and Enter steps once; a press at the end of the range shakes the pill by 2 px for 120 ms. A polite
+      live region says `Volume 9 of 15` for each press and only for a press. Reduced motion has no slide and no shake (the rule of the root).
 
 ## Radius scale
 
@@ -150,13 +166,14 @@ the skills of a certificate, the areas in the facts of About and the technology 
 
 ## The two stat widgets
 
-The widgets of the home screen under the role card ("In software" and "Projects") are two equal columns (`grid-cols-2`, stretched, the same gap as every card): the same width and height at every width,
-the same padding, radius and small-caps title (`home-widget-title.tsx`) and the same large number (`home-widget-number.tsx`). Both have the same inside (`home-widget-layout.ts`): the title, a **hero block** of one fixed height
-that holds the large number, and a **footer block** of one fixed height, so the titles, the centres of the two numbers (the `7` and the `10`) and the starts of the footers are at the same height in both. The years widget has
-a **segmented ring** in its hero with one arc for each year of the career (`home-year-ring.tsx`; the geometry is the pure `year-ring.ts`: up to 12 years wide arcs, up to 24 thin ones, one unbroken circle for a single year and
-past 24), with the number exactly in its middle and the word under it (kept for readers only when the ring is narrower than 7rem, at 320 px), the last arc (the year I am in) in the full accent and the others at 75%, so every
-arc keeps 3:1 against the card in both themes; its footer says the years it spans, from the year of the first role to this one. The ring is `aria-hidden`. The projects widget has the count in its hero and the four bars of 6 px,
-one for each platform, in its footer. If one of the two is left out (the page is off, the data cannot be read) the other takes the whole row.
+The widgets of the home screen under the role card ("In software" and "Projects") are two equal columns (`grid-cols-2` from a screen of 380 px, stretched, the same gap as every card; on a narrower screen they
+are stacked, one under the other, in rows of the same height): the same width and height, the same padding, radius and small-caps title (`home-widget-title.tsx`), the same large number (`home-widget-number.tsx`) and
+the same inside (`home-widget-layout.ts`): a title row, then a body that is as tall as what it holds and nothing under it. They are small like the widgets of a home screen, about 13rem tall, with no room that is not used
+(the Playwright check: at most 14rem, and what they hold ends within 24 px of their lower edge). The years widget is a **segmented ring** with one arc for each year of the career (`home-year-ring.tsx`; the geometry is the
+pure `year-ring.ts`: up to 12 years wide arcs, up to 24 thin ones, one unbroken circle for a single year and past 24) that fills the body, the number exactly in its middle and the word under it (kept for readers only when the ring
+is narrower than 7rem), the last arc (the year I am in) in the full accent and the others at 75%, so every arc keeps 3:1 against the card in both themes; when the widget is 12.5rem wide or more the years it spans (from the
+year of the first role to this one) stand at the end of its title row. The ring is `aria-hidden`. The projects widget has the count and, right under it, the four bars of 7 px, one for each platform, with the label and the
+count on a line above each. The two numbers are not on one line: that would leave the bars or the ring a void. If one of the two is left out (the page is off, the data cannot be read) the other takes the whole row.
 
 ## Content the mock had and Standard has not
 
@@ -171,9 +188,11 @@ skin.tsx            SkinDefinition: Frame (PhoneShell) + one component for each 
 config.ts           page and action -> drawn glyph (`PAGE_ICONS`, `ACTION_GLYPHS`; `ACTION_ICONS` stays the line icons of the round buttons), tile gradients (spelled out so the build finds the classes)
 phone.css           palette (dark base, light on html:not(.dark)), the device colours, the tile gradients (3:1 against the glyph in both themes), the shadcn tokens, the system type, the wallpaper,
                     the status strip and the bar veil, the scrollbar cue, the clip of the page-change view transition (`--ph-vt-clip`), keyframes, reduced motion
-css/device.css      the foldable device: body, hinge, display, camera, crease, handle and the swing (keyframes)
+css/device.css      the foldable device: body, hinge, display, camera, crease, handle, the hardware keys (decoration and real) and the swing (keyframes)
 css/overlays.css    the typing dots of the chat (keyframes)
 shell/              phone-shell (the two modes, the screen, the layer), fold-mode (pure), fold-motion (pure), use-fold*, use-window-mode, use-fold-key, ph-device-*, ph-fold-control,
+                    the hardware keys: ph-device-keys (the real buttons), ph-device-key, ph-volume-key, ph-device-keys-decor (the slabs' own), screen-power (pure), use-screen-power, volume (pure), use-volume,
+                    ph-screen-off, ph-lock-screen, focus-page, ph-volume-hud, ph-power-guard,
                     status-bar, status-glyphs, status-summary, status-sim (pure), use-status-sim, app-bar, app-window, home-bar, rail, ph-shade* (the quick settings), ph-action (dock tile, round button or quick tile),
                     gestures (pure), use-back, use-edge-swipe, title-context, screen-context, overlay-context, overlays (the lazy host), ph-toast, and the overlays:
                     ph-overlay-frame / ph-overlay-bar, ph-chat*, ph-viewer*, ph-cv-*, ph-connect-*
@@ -210,10 +229,10 @@ the numbers say where the main thread is busy and what is repainted, not how smo
 ## Tests
 
 - Unit (`tests/unit/skin/`): `phone-fold-mode` (the window thresholds, the remembered fold, the edge drag), `phone-fold-motion` (when the layout swaps), `phone-gestures`, `phone-skill-hue` (the hue of every area, its tokens), `phone-radius` (one scale of corners, every token in the theme), `phone-year-ring` (the geometry of the years ring), `phone-css` (hover only under `@media (hover: hover)`, the `ph-` prefix, no repeated keyframes, the compositor only, reduced motion, every colour
-  utility has a theme colour, no raw colour in the TSX), `phone-contrast` (4.5:1 in both themes, 3:1 for both stops of every tile), `phone-bar-scroll`, `phone-scroll-cue`, `phone-vt-clip`, `phone-status-sim` (the story of the status bar: monotonic drain, red at 20%, plug-in at 1%, fast and normal charge, the loop, a signal that moves a step at a time), `phone-copy` (both languages, same keys), `phone-swipe` (the viewer's
+  utility has a theme colour, no raw colour in the TSX), `phone-contrast` (4.5:1 in both themes, 3:1 for both stops of every tile), `phone-bar-scroll`, `phone-scroll-cue`, `phone-vt-clip`, `phone-volume` (the 15 steps, the end of the range, the glyph, the held-key schedule), `phone-screen-power` (on, off and locked: the legal transitions and the swipe), `phone-status-sim` (the story of the status bar: monotonic drain, red at 20%, plug-in at 1%, fast and normal charge, the loop, a signal that moves a step at a time), `phone-copy` (both languages, same keys), `phone-swipe` (the viewer's
   swipe); `tests/unit/lib/derive/` for `skill-rows`, `platform-counts` and `groupByKind`.
 - Playwright (`tests/automation/skins/`): `phone-shell.spec.ts` (the home screen, the apps and the rail, the quick settings shade, 404, Coming soon, hidden pages,
   maintenance, the fixed menus, no sideways scroll at 320 px), `phone-device-scroll.spec.ts` (the backdrop around the device is `overflow: clip`, never `hidden`: a hidden box is scrolled by a focus or a `scrollIntoView` inside it, which pushed the device and the Fold button up out of the window), `phone-fold.spec.ts` (the device: open and folded, remembered, the F key, the edge drag, reduced motion,
   a window without room, what opens stays inside the screen, the home bar, the collapsing title, the app morph), `phone-projects*.spec.ts` (the shared Projects suite and the page's own checks), `phone-pay.spec.ts`
-  (Certificates, Services with the contact form, Payment), `phone-home.spec.ts` (the launcher, the panes of Resume, Home and About on an open device, the role under the bars, the stat widgets and the corners of the home screen), `phone-overlays.spec.ts` (the chat, the CV, Connect and the viewer), `phone-status.spec.ts` (the status bar story with a fake clock: red, fast and normal charge, the words of the quick settings, a hidden tab, reduced motion); `errors.spec.ts` covers a page that
+  (Certificates, Services with the contact form, Payment), `phone-home.spec.ts` (the launcher, the panes of Resume, Home and About on an open device, the role under the bars, the stat widgets and the corners of the home screen), `phone-overlays.spec.ts` (the chat, the CV, Connect and the viewer), `phone-status.spec.ts` (the status bar story with a fake clock: red, fast and normal charge, the words of the quick settings, a hidden tab, reduced motion), `phone-keys.spec.ts` (the keys as buttons, their place and hit area and tab order, power: off, lock, swipe, Enter, the shade, a fold while off; volume: the HUD, the level said, the held key, the shake, reduced motion; no keys in a window of its own); `errors.spec.ts` covers a page that
   throws and a browser that blocks its storage in this skin too.

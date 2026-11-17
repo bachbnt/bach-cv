@@ -477,6 +477,13 @@ html[data-skin='phone'][data-scrolling]::-webkit-scrollbar-thumb,
     left: calc(100% + 8px);
     translate: 0 -50%;
   }
+  /* a tooltip to the left of the control, for the keys on the right edge of the device */
+  .ph-tip.ph-tip-left::after {
+    top: 50%;
+    right: calc(100% + 10px);
+    left: auto;
+    translate: 0 -50%;
+  }
   .ph-tip:hover::after,
   .ph-tip:focus-visible::after {
     opacity: 1;

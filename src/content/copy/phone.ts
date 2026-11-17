@@ -21,6 +21,17 @@ export const phoneCopy = defineCopy(
     foldOpen: 'Inner screen, tablet layout',
     foldCover: 'Cover screen, phone layout',
     closeQuick: 'Close quick settings',
+    /** the hardware keys on the right edge of the device (names for readers and the short tooltips) */
+    keyPower: 'Power',
+    keyVolumeUp: 'Volume up',
+    keyVolumeDown: 'Volume down',
+    /** the black screen, a button that wakes it */
+    screenOff: 'Screen off. Press to wake',
+    /** the lock screen: its name, the hint that is also its button, and the date under the clock */
+    lockScreen: 'Lock screen',
+    unlock: 'Swipe up to unlock',
+    /** said once for each press of a volume key */
+    volumeLevel: (level: number, of: number) => `Volume ${level} of ${of}`,
     /** what the glyphs of the status bar show, read out on the quick settings only (the bar itself is not announced) */
     batteryLevel: (level: number) => `Battery ${level}%`,
     batteryFast: (level: number) => `Fast charging, ${level}%`,
@@ -41,6 +52,13 @@ export const phoneCopy = defineCopy(
     foldOpen: 'Màn hình trong, bố cục máy tính bảng',
     foldCover: 'Màn hình ngoài, bố cục điện thoại',
     closeQuick: 'Đóng cài đặt nhanh',
+    keyPower: 'Nút nguồn',
+    keyVolumeUp: 'Tăng âm lượng',
+    keyVolumeDown: 'Giảm âm lượng',
+    screenOff: 'Màn hình tắt. Nhấn để bật',
+    lockScreen: 'Màn hình khóa',
+    unlock: 'Vuốt lên để mở khóa',
+    volumeLevel: (level: number, of: number) => `Âm lượng ${level} trên ${of}`,
     batteryLevel: (level: number) => `Pin ${level}%`,
     batteryFast: (level: number) => `Sạc nhanh, ${level}%`,
     batteryCharging: (level: number) => `Đang sạc, ${level}%`,

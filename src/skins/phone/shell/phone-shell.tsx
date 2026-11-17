@@ -14,6 +14,11 @@ import { PhOverlayProvider } from '@/skins/phone/shell/overlay-context';
 import { PhOverlays } from '@/skins/phone/shell/overlays';
 import { PhDeviceBody } from '@/skins/phone/shell/ph-device-body';
 import { PhDeviceDetails } from '@/skins/phone/shell/ph-device-details';
+import { PhDeviceKeys } from '@/skins/phone/shell/ph-device-keys';
+import { PhLockScreen } from '@/skins/phone/shell/ph-lock-screen';
+import { PhPowerGuard } from '@/skins/phone/shell/ph-power-guard';
+import { PhScreenOff } from '@/skins/phone/shell/ph-screen-off';
+import { PhVolumeHud } from '@/skins/phone/shell/ph-volume-hud';
 import { PhFoldControl } from '@/skins/phone/shell/ph-fold-control';
 import { PhToast } from '@/skins/phone/shell/ph-toast';
 import { PhScreenProvider } from '@/skins/phone/shell/screen-context';
@@ -24,6 +29,7 @@ import { useEdgeSwipe } from '@/skins/phone/shell/use-edge-swipe';
 import { useDeviceScale } from '@/skins/phone/shell/use-device-scale';
 import { useFold } from '@/skins/phone/shell/use-fold';
 import { useFoldKey } from '@/skins/phone/shell/use-fold-key';
+import { useScreenPower } from '@/skins/phone/shell/use-screen-power';
 import { useScrollCue } from '@/skins/phone/shell/use-scroll-cue';
 import { useVtClip } from '@/skins/phone/shell/use-vt-clip';
 import { useWindowMode } from '@/skins/phone/shell/use-window-mode';
@@ -57,6 +63,8 @@ export function PhoneShell({
   const fold = useFold(mode, display);
   const folded = fold.target === 'folded';
   const hinge = device && fold.drawn === 'open';
+  // the screen of the device is off or on its lock screen: what is in it cannot be reached (the power button, `use-screen-power.ts`)
+  const dark = useScreenPower() !== 'on' && device;
   const back = useBack(page);
   // the layer over the screen is where the sheets, the popovers and the viewer are put; the screen is where the gestures are caught
   const [layer, setLayer] = useState<HTMLElement | null>(null);
@@ -102,9 +110,11 @@ export function PhoneShell({
                 onAnimationEnd={(event) => fold.end(event.animationName)}
               >
                 {device && <PhDeviceBody />}
+                {device && <PhDeviceKeys />}
                 <div ref={setDisplay} className='ph-display'>
                   <div
                     ref={setScreen}
+                    inert={dark}
                     data-ph-screen=''
                     data-mode={mode}
                     data-hinge={hingeAttribute}
@@ -160,12 +170,21 @@ export function PhoneShell({
                   {/* the layer: the sheets and the popovers, as big as the screen and in front of it (the toast is in front of that) */}
                   <div
                     ref={setLayer}
+                    inert={dark}
                     data-mode={mode}
                     data-hinge={hingeAttribute}
                     className='@container group/ph pointer-events-none z-50 contain-layout *:pointer-events-auto data-[mode=device]:absolute data-[mode=device]:inset-0 data-[mode=full-bleed]:fixed data-[mode=full-bleed]:inset-0'
                   />
                   {/* the banner of a toast: under the camera, in front of the layer */}
                   <PhToast hinge={hinge} />
+                  {/* the hardware of the display: the black glass of a screen that is off, the lock screen, the volume HUD (all of them above the page) */}
+                  {device && (
+                    <>
+                      <PhScreenOff />
+                      <PhLockScreen />
+                      <PhVolumeHud />
+                    </>
+                  )}
                 </div>
                 {device && (
                   <PhDeviceDetails
@@ -178,6 +197,7 @@ export function PhoneShell({
             </div>
             <PhOverlays />
             {device && <PhFoldGuard target={fold.target} />}
+            {device && <PhPowerGuard />}
           </PhRoot>
         </PhTitleProvider>
       </PhScreenProvider>

@@ -214,6 +214,32 @@ describe('the chrome of the Phone skin keeps its text readable (4.5:1)', () => {
       ).toBeGreaterThanOrEqual(3);
     });
 
+    it(`reads the lock screen (the clock, the date and the hint on the wallpaper, the hint on its glass) and the volume HUD (its glyph and bar on glass over a page) in the ${name} theme`, () => {
+      for (const spot of SPOTS) {
+        const wall = color(spot);
+        const glass = color('--ph-glass', wall);
+        const ink = color('--ph-glass-ink', glass);
+        // the large clock and the date lie on the wallpaper itself: the size of the text of the lock screen is 19 px and up
+        expect(
+          ratio(color('--ph-glass-ink', wall), wall),
+          `clock over ${spot}`,
+        ).toBeGreaterThanOrEqual(4.5);
+        expect(
+          ratio(ink, glass),
+          `hint on its glass over ${spot}`,
+        ).toBeGreaterThanOrEqual(4.5);
+      }
+      for (const surface of SURFACES) {
+        const page = color(surface);
+        const glass = color('--ph-glass', page);
+        // the glyph and the bar of the HUD are not text: 3:1
+        expect(
+          ratio(color('--ph-glass-ink', glass), glass),
+          `HUD glyph over ${surface}`,
+        ).toBeGreaterThanOrEqual(3);
+      }
+    });
+
     it(`reads the tooltip (the sheet colour on the ink), the badge of the toast and the error notes in the ${name} theme`, () => {
       const ink = color('--ph-ink');
       expect(ratio(color('--ph-sheet'), ink)).toBeGreaterThanOrEqual(4.5);

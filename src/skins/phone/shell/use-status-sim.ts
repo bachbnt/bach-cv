@@ -26,6 +26,8 @@ let state: StatusState = INITIAL_STATE;
 let view: StatusView = viewOf(INITIAL_STATE);
 const listeners = new Set<() => void>();
 let timer: ReturnType<typeof setInterval> | undefined;
+/** the screen of the device is off: nothing is drawn, so the timer has nothing to do (`use-screen-power.ts`) */
+let paused = false;
 
 const still = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,12 +42,18 @@ function tick() {
 
 /** Starts or stops the timer for what is the case now: someone is listening, the tab is shown, and the visitor has not asked for a still page. */
 function update() {
-  const run = listeners.size > 0 && !document.hidden && !still();
+  const run = listeners.size > 0 && !document.hidden && !paused && !still();
   if (run && timer === undefined) timer = setInterval(tick, TICK_MS);
   if (!run && timer !== undefined) {
     clearInterval(timer);
     timer = undefined;
   }
+}
+
+/** Stops the story while the screen is off and goes on when it is on again. */
+export function pauseStatusSim(value: boolean) {
+  paused = value;
+  if (typeof document !== 'undefined') update();
 }
 
 function subscribe(notify: () => void) {

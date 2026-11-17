@@ -28,6 +28,8 @@
   --color-ph-glass: var(--ph-glass);
   --color-ph-glass-line: var(--ph-glass-line);
   --color-ph-glass-ink: var(--ph-glass-ink);
+  /* the black glass of the display, seen when the screen is off */
+  --color-ph-display: var(--ph-display);
   /* what is behind the device, what lies over a page while a sheet is open, the white of paper and the base of the wallpaper (its three lights are
      only used by the wallpaper itself, in `phone.css`) */
   --color-ph-backdrop: var(--ph-backdrop);
