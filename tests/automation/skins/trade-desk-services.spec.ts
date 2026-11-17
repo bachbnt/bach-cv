@@ -129,6 +129,8 @@ test.describe('Services as a broker catalogue', () => {
     await ticket(page)
       .getByRole('button', { name: 'Blog Writing', exact: true })
       .click();
+    // choosing a topic moves the focus to the message on the next frame: wait for it, or on a busy machine it arrives after the send below
+    await expect(page.getByLabel('Message', { exact: true })).toBeFocused();
     await page.getByLabel('Name').fill('Ada');
     await page.getByLabel('Email').fill('ada@example.com');
     await send(page).click();

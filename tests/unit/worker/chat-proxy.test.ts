@@ -45,7 +45,17 @@ const memoryKv = (): KvLike & { data: Map<string, string> } => {
   };
 };
 
-beforeEach(clearPromptMemory);
+beforeEach(() => {
+  clearPromptMemory();
+  // no test may reach a provider: the network is off unless a test stubs the upstream itself (`stubUpstream`, or its own stub). A test that
+  // forgot to stub used to call Google with a fake key and time out whenever the network was slow.
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => {
+      throw new TypeError('the network is off in the unit tests');
+    }),
+  );
+});
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
