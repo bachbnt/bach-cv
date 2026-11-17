@@ -83,12 +83,14 @@ test.describe('what arrives on a page of the board', () => {
     await page.getByRole('link', { name: 'Certificates' }).first().click();
     await expect(page).toHaveURL(/\/certificates$/);
     await expect(sheets(page).first()).toHaveAttribute('data-in', 'still');
-    expect(await animationOf(page, `${LIVE} [data-reveal="paper"]`)).toBe(
-      'none',
-    );
-    expect(
-      await animationOf(page, `${LIVE} [data-reveal="line"]`, '::after'),
-    ).toBe('none');
+    // read again until it settles: the page may swap an element for a new one right after the route changes, and a style read on the old,
+    // detached element is an empty string, not 'none'
+    await expect
+      .poll(() => animationOf(page, `${LIVE} [data-reveal="paper"]`))
+      .toBe('none');
+    await expect
+      .poll(() => animationOf(page, `${LIVE} [data-reveal="line"]`, '::after'))
+      .toBe('none');
     // and at no moment is a sheet that is in view less than whole
     await expect(sheets(page).first()).toHaveCSS('opacity', '1');
     await animationsSettled(page);
