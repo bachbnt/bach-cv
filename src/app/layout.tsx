@@ -71,7 +71,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         {imageOrigin && <link rel='preconnect' href={imageOrigin} />}
         <script dangerouslySetInnerHTML={{ __html: PREFS_SCRIPT }} />
       </head>
-      <body className='flex min-h-full flex-col'>
+      {/* browser extensions (Grammarly, password managers, colour pickers) put their own attributes on <body> before React hydrates; only the
+          attributes of this element are exempt, its children are still checked */}
+      <body className='flex min-h-full flex-col' suppressHydrationWarning>
         <script
           type='application/ld+json'
           dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }}
