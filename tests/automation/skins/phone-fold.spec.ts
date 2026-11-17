@@ -220,7 +220,7 @@ test.describe('the device', () => {
     expect(steps[3]).toMatchObject({ fold: 'open', width: OPEN_WIDTH });
   });
 
-  test('folds in two steps: the left half closes and the layout becomes the phone one, then the device slides back to the middle', async ({
+  test('folds in three steps: the left half closes over the open layout, the layout becomes the phone one at the vertical, then the device slides back to the middle', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -230,11 +230,13 @@ test.describe('the device', () => {
     const steps = await recorded(page);
     expect(steps.map((step) => step.phase)).toEqual([
       'folding',
+      'closing',
       'returning',
       'idle',
     ]);
-    // the layout changed at the start, in one step, and stays
-    for (const step of steps)
+    // the layout is the open one while the half starts to close (the screen dims), and changes once, at the start of closing, and stays
+    expect(steps[0]).toMatchObject({ fold: 'open', width: OPEN_WIDTH });
+    for (const step of steps.slice(1))
       expect(step).toMatchObject({
         fold: 'folded',
         width: FOLDED_WIDTH,
@@ -1997,7 +1999,7 @@ test.describe('the hinge edges while a fold plays', () => {
           await expect(rig(page)).toHaveAttribute('data-phase', 'idle');
           await foldButton(page).click();
           await page.waitForFunction(() =>
-            /swinging|landing|folding/.test(
+            /swinging|landing|folding|closing/.test(
               document.querySelector('.ph-rig')?.getAttribute('data-phase') ??
                 '',
             ),
@@ -2022,6 +2024,354 @@ test.describe('the hinge edges while a fold plays', () => {
           expect(at.radii.back).toEqual(['0px', '0px']);
           expect(at.radii.front).toEqual(['0px', '0px']);
           expect(at.clip).toBe('inset(0px 9px 0px 0px)');
+        }
+      });
+});
+
+test.describe('the swing of a fold, with the clock stopped', () => {
+  // The screen is never black while the device folds or unfolds (a dark glass over it makes one continuous curve), the hinge side of a half keeps the cover's rounded
+  // corner while the half lies over the other one, and the half that comes toward the viewer stays inside the window. Every step is read with the animations paused at a
+  // time or an angle, and the clock of the page stopped, so that the phases do not move while the test looks.
+  const ORIGIN = Date.parse('2026-06-01T10:00:00Z');
+  /** where the layout is swapped, in ms into the swing (`PHASES`: the end of swinging when unfolding, of folding when folding) */
+  const SWAP = { unfold: 120, fold: 160 };
+
+  /** Opens the skin and starts a fold with the clock stopped; returns when the first phase of the swing is on (the slide of an unfold has played). */
+  async function start(
+    page: Page,
+    size: { width: number; height: number },
+    folding: boolean,
+  ) {
+    await page.addInitScript(
+      ([key, value]) => localStorage.setItem(key, value),
+      [FOLD_KEY, folding ? 'open' : 'folded'],
+    );
+    await page.setViewportSize(size);
+    await page.clock.install({ time: ORIGIN });
+    await gotoSkin(page, '/about');
+    await page.waitForTimeout(700);
+    await page.clock.pauseAt(ORIGIN + 600_000);
+    await foldButton(page).click();
+    await page.waitForFunction(
+      (phase) =>
+        document.querySelector('.ph-rig')?.getAttribute('data-phase') === phase,
+      folding ? 'folding' : 'swinging',
+    );
+  }
+
+  /** Winds the stopped clock on to a later phase, one step at a time (each phase sets the timer of the next only once it has been drawn). */
+  async function toPhase(
+    page: Page,
+    target: 'landing' | 'closing' | 'returning',
+  ) {
+    const steps: [number, string][] =
+      target === 'landing'
+        ? [[SWAP.unfold + 5, 'landing']]
+        : target === 'closing'
+          ? [[SWAP.fold + 5, 'closing']]
+          : [
+              [SWAP.fold + 5, 'closing'],
+              [155, 'returning'],
+            ];
+    for (const [ms, phase] of steps) {
+      await page.clock.runFor(ms);
+      await page.waitForFunction(
+        (name) =>
+          document.querySelector('.ph-rig')?.getAttribute('data-phase') ===
+          name,
+        phase,
+      );
+    }
+  }
+
+  /** Pauses every animation and puts them at `time` ms of the swing (the ones of a view transition at the time since the swap). */
+  const seek = (page: Page, time: number, swap: number) =>
+    page.evaluate(
+      ([at, swapAt]) => {
+        const isTransition = (animation: Animation) =>
+          (
+            (animation.effect as KeyframeEffect | null)?.pseudoElement ?? ''
+          ).startsWith('::view-transition');
+        document.getAnimations().forEach((animation) => {
+          animation.pause();
+          try {
+            animation.currentTime = isTransition(animation)
+              ? Math.max(0, at - swapAt)
+              : at;
+          } catch {
+            /* an animation that cannot be set stays where it is */
+          }
+        });
+      },
+      [time, swap] as const,
+    );
+
+  /** Pauses and seeks the swing to the time at which the left half is at `angle` degrees. */
+  const seekAngle = (
+    page: Page,
+    angle: number,
+    folding: boolean,
+    swap: number,
+  ) =>
+    page.evaluate(
+      ([target, reverse, swapAt]) => {
+        const half = document.querySelector<HTMLElement>('.ph-half-l');
+        if (!half) throw new Error('no half');
+        const animations = document.getAnimations();
+        animations.forEach((animation) => animation.pause());
+        const isTransition = (animation: Animation) =>
+          (
+            (animation.effect as KeyframeEffect | null)?.pseudoElement ?? ''
+          ).startsWith('::view-transition');
+        const set = (time: number) =>
+          animations.forEach((animation) => {
+            try {
+              animation.currentTime = isTransition(animation)
+                ? Math.max(0, time - swapAt)
+                : time;
+            } catch {
+              /* an animation that cannot be set stays where it is */
+            }
+          });
+        const read = () =>
+          (Math.acos(
+            Math.max(
+              -1,
+              Math.min(1, new DOMMatrix(getComputedStyle(half).transform).m11),
+            ),
+          ) *
+            180) /
+          Math.PI;
+        let low = 0;
+        let high = 380;
+        for (let i = 0; i < 26; i++) {
+          const middle = (low + high) / 2;
+          set(middle);
+          if (read() < target !== reverse) low = middle;
+          else high = middle;
+        }
+        // an angle of 0 is the very start of an unfold and the very end of a fold
+        set(target === 0 ? (reverse ? 379 : 0) : (low + high) / 2);
+        return read();
+      },
+      [angle, folding, swap] as const,
+    );
+
+  /** What the glass over the screen and the screen itself are at the moment. */
+  const light = (page: Page) =>
+    page.evaluate(() => ({
+      dim: Number(
+        getComputedStyle(document.querySelector('.ph-screen-dim') as Element)
+          .opacity,
+      ),
+      screen: Number(
+        getComputedStyle(document.querySelector('[data-ph-screen]') as Element)
+          .opacity,
+      ),
+    }));
+
+  for (const size of [
+    { width: 1440, height: 900 },
+    { width: 1280, height: 720 },
+  ])
+    for (const folding of [false, true])
+      test(`${size.width}x${size.height}, ${folding ? 'folding' : 'unfolding'}: the screen dims and lights continuously and is never black`, async ({
+        page,
+      }) => {
+        test.setTimeout(120_000);
+        const swap = folding ? SWAP.fold : SWAP.unfold;
+        const step = 28;
+        const curve: number[] = [];
+        const screens: number[] = [];
+        // the swing: from the start of the first phase, in steps of 5% of the whole motion (about 28 ms)
+        await start(page, size, folding);
+        for (let time = 0; time <= 380; time += step) {
+          await seek(page, time, swap);
+          const at = await light(page);
+          curve.push(at.dim);
+          screens.push(at.screen);
+        }
+        const swinging = [...curve];
+        // the other step, the slide: the cover screen dims at the start of an unfold and lights again at the end of a fold
+        let slide: number[] = [];
+        if (folding) {
+          await start(page, size, true);
+          await toPhase(page, 'returning');
+        } else {
+          await start(page, size, false);
+          // the slide is the step before the swing: start() has waited for the swing, the slide is played again from the start of a new unfold
+          await page.reload();
+          await page.waitForTimeout(700);
+          await foldButton(page).click();
+          await page.waitForFunction(
+            () =>
+              document.querySelector('.ph-rig')?.getAttribute('data-phase') ===
+              'sliding',
+          );
+        }
+        for (let time = 0; time <= 180; time += step) {
+          await seek(page, time, 0);
+          const at = await light(page);
+          slide.push(at.dim);
+          screens.push(at.screen);
+        }
+        await seek(page, 180, 0);
+        slide = [...slide, (await light(page)).dim];
+        // one curve, in the order of the motion
+        const motion = folding
+          ? [...swinging, ...slide]
+          : [...slide, ...swinging];
+        expect(motion[0]).toBeCloseTo(0, 2);
+        expect(motion.at(-1)).toBeCloseTo(0, 2);
+        // the screen itself is never taken away: only the glass over it changes
+        for (const value of screens) expect(value).toBe(1);
+        // never black, and at its dimmest (12% of the light) in the middle
+        const dimmest = Math.max(...motion);
+        expect(dimmest).toBeGreaterThan(0.85);
+        expect(dimmest).toBeLessThanOrEqual(0.881);
+        // no step of more than a fifth between two samples
+        for (let i = 1; i < motion.length; i++)
+          expect(
+            Math.abs(motion[i] - motion[i - 1]),
+            `step ${i} of ${motion.map((v) => v.toFixed(2)).join(' ')}`,
+          ).toBeLessThanOrEqual(0.21);
+      });
+
+  test('the layout is swapped while the glass is at its dimmest, unfolding and folding', async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+    // unfolding: the swap is at the start of landing, 120 ms into the swing, and the glass is at its maximum until 35% of it
+    await start(page, { width: 1440, height: 900 }, false);
+    await toPhase(page, 'landing');
+    await seek(page, SWAP.unfold, SWAP.unfold);
+    expect((await light(page)).dim).toBeGreaterThan(0.87);
+    // folding: the swap is at the start of closing, 160 ms into the swing, when the glass has reached its maximum
+    await page.reload();
+    await page.evaluate(() =>
+      localStorage.setItem('bach-cv-phone-fold', 'open'),
+    );
+    await start(page, { width: 1440, height: 900 }, true);
+    await toPhase(page, 'closing');
+    await seek(page, SWAP.fold, SWAP.fold);
+    expect((await light(page)).dim).toBeGreaterThan(0.87);
+  });
+
+  for (const size of [
+    { width: 1440, height: 900 },
+    { width: 1280, height: 720 },
+  ])
+    for (const folding of [false, true])
+      test(`${size.width}x${size.height}, ${folding ? 'folding' : 'unfolding'}: the hinge side keeps the cover's rounded corner at small angles and is square from the hinge-meeting angles on`, async ({
+        page,
+      }) => {
+        test.setTimeout(120_000);
+        const swap = folding ? SWAP.fold : SWAP.unfold;
+        const radii = () =>
+          page.evaluate(() => {
+            const radius = (selector: string, corners: string[]) => {
+              const style = getComputedStyle(
+                document.querySelector(selector) as Element,
+              );
+              return corners.map((corner) =>
+                parseFloat(style[corner as 'borderTopLeftRadius'] as string),
+              );
+            };
+            return {
+              stays: radius('.ph-half-r', [
+                'borderTopLeftRadius',
+                'borderBottomLeftRadius',
+              ]),
+              front: radius('.ph-face-front', [
+                'borderTopLeftRadius',
+                'borderBottomLeftRadius',
+              ]),
+              back: radius('.ph-face-back', [
+                'borderTopRightRadius',
+                'borderBottomRightRadius',
+              ]),
+              glass: parseFloat(
+                getComputedStyle(
+                  document.querySelector('.ph-half-r') as Element,
+                  '::before',
+                ).borderTopLeftRadius,
+              ),
+            };
+          });
+        let radiusAt = 100;
+        const seen: Record<number, number> = {};
+        for (const angle of [0, 10, 20, 30, 100, 120, 150, 165]) {
+          await start(page, size, folding);
+          // past the swap the layout is the other one: the clock goes on to it
+          const later = folding ? angle <= 68 : angle >= 76;
+          if (later) await page.clock.runFor(swap + 5);
+          await seekAngle(page, angle, folding, swap);
+          const at = await radii();
+          if (angle <= 30) {
+            // slightly rounded, like the cover screen (8 px for the slab, 4 for its glass)
+            for (const value of [...at.stays, ...at.front, ...at.back])
+              expect(
+                value,
+                `radius at ${angle} degrees`,
+              ).toBeGreaterThanOrEqual(6);
+            expect(at.glass).toBeGreaterThanOrEqual(3);
+          } else {
+            for (const value of [...at.stays, ...at.front, ...at.back])
+              expect(value, `radius at ${angle} degrees`).toBeLessThan(0.1);
+          }
+          seen[angle] = at.stays[0];
+          radiusAt = angle;
+          await page.reload();
+        }
+        // from the cover's corner to square, never up again as the angle opens
+        const order = Object.entries(seen).sort(
+          (a, b) => Number(a[0]) - Number(b[0]),
+        );
+        for (let i = 1; i < order.length; i++)
+          expect(order[i][1]).toBeLessThanOrEqual(order[i - 1][1]);
+        expect(radiusAt).toBe(165);
+      });
+
+  for (const size of [
+    { width: 1100, height: 600 },
+    { width: 1280, height: 720 },
+    { width: 1440, height: 900 },
+  ])
+    for (const folding of [false, true])
+      test(`${size.width}x${size.height}, ${folding ? 'folding' : 'unfolding'}: the swinging half stays inside the window at every angle`, async ({
+        page,
+      }) => {
+        test.setTimeout(180_000);
+        const swap = folding ? SWAP.fold : SWAP.unfold;
+        for (const angle of [90, 100, 110, 120, 130, 140, 150, 160, 170]) {
+          await start(page, size, folding);
+          if (folding ? angle <= 68 : angle >= 76)
+            await page.clock.runFor(swap + 5);
+          await seekAngle(page, angle, folding, swap);
+          const box = await page.evaluate(() => {
+            const boxes = ['.ph-half-l', '.ph-face-front', '.ph-face-back'].map(
+              (selector) =>
+                (
+                  document.querySelector(selector) as Element
+                ).getBoundingClientRect(),
+            );
+            return {
+              top: Math.min(...boxes.map((b) => b.top)),
+              bottom: Math.max(...boxes.map((b) => b.bottom)),
+              left: Math.min(...boxes.map((b) => b.left)),
+              height: innerHeight,
+            };
+          });
+          // the projection of the near edge, with the pull-back of the device, is inside the window with room to spare: the corners are never cut
+          expect(box.top, `top at ${angle} degrees`).toBeGreaterThanOrEqual(8);
+          expect(
+            box.height - box.bottom,
+            `bottom at ${angle} degrees`,
+          ).toBeGreaterThanOrEqual(8);
+          expect(box.left, `left at ${angle} degrees`).toBeGreaterThanOrEqual(
+            0,
+          );
+          await page.reload();
         }
       });
 });

@@ -17,6 +17,7 @@ import { PhDeviceDetails } from '@/skins/phone/shell/ph-device-details';
 import { PhDeviceKeys } from '@/skins/phone/shell/ph-device-keys';
 import { PhLockScreen } from '@/skins/phone/shell/ph-lock-screen';
 import { PhPowerGuard } from '@/skins/phone/shell/ph-power-guard';
+import { PhScreenDim } from '@/skins/phone/shell/ph-screen-dim';
 import { PhScreenOff } from '@/skins/phone/shell/ph-screen-off';
 import { PhVolumeHud } from '@/skins/phone/shell/ph-volume-hud';
 import { PhFoldControl } from '@/skins/phone/shell/ph-fold-control';
@@ -183,6 +184,7 @@ export function PhoneShell({
                       <PhScreenOff />
                       <PhLockScreen />
                       <PhVolumeHud />
+                      <PhScreenDim />
                     </>
                   )}
                 </div>

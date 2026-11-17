@@ -30,19 +30,39 @@ describe('the motion of an unfold', () => {
 });
 
 describe('the motion of a fold', () => {
-  it('changes the layout at the start, while the half swings back, then slides back to the middle', () => {
+  it('swings the half back over the open layout, changes the layout at the vertical, then slides back to the middle', () => {
     const folding = request(foldRest('open'), 'folded');
-    expect(folding).toEqual({ drawn: 'folded', phase: 'folding' });
-    const returning = end(folding);
+    // the layout is still the open one while the half starts to close, and the screen dims
+    expect(folding).toEqual({ drawn: 'open', phase: 'folding' });
+    const closing = end(folding);
+    expect(closing).toEqual({ drawn: 'folded', phase: 'closing' });
+    const returning = end(closing);
     expect(returning).toEqual({ drawn: 'folded', phase: 'returning' });
     expect(end(returning)).toEqual(foldRest('folded'));
+  });
+
+  it('changes the layout once each way, at the dimmest point of the screen (the start of landing, the start of closing)', () => {
+    const changes = (to: 'open' | 'folded') => {
+      let state = request(foldRest(to === 'open' ? 'folded' : 'open'), to);
+      const at: string[] = [];
+      for (let i = 0; i < 6 && state.phase !== 'idle'; i++) {
+        const next = end(state);
+        if (next.drawn !== state.drawn) at.push(next.phase);
+        state = next;
+      }
+      return at;
+    };
+    expect(changes('open')).toEqual(['landing']);
+    expect(changes('folded')).toEqual(['closing']);
   });
 
   it('takes about half a second either way: 180 and 380 to unfold, 310 and 180 to fold', () => {
     expect(PHASES.sliding.ms + PHASES.swinging.ms + PHASES.landing.ms).toBe(
       560,
     );
-    expect(PHASES.folding.ms + PHASES.returning.ms).toBe(490);
+    expect(PHASES.folding.ms + PHASES.closing.ms + PHASES.returning.ms).toBe(
+      490,
+    );
   });
 });
 
@@ -93,7 +113,9 @@ describe('the other cases', () => {
     expect(endsPhase(end(swinging), 'ph-fold-open-flap')).toBe(true);
     const folding = request(foldRest('open'), 'folded');
     expect(endsPhase(folding, 'ph-fold-close-flap')).toBe(false);
-    expect(endsPhase(end(folding), 'ph-fold-return-display')).toBe(true);
+    // the swing back is handed over by the clock, through folding and closing; the slide back ends the returning
+    expect(endsPhase(end(folding), 'ph-fold-close-flap')).toBe(false);
+    expect(endsPhase(end(end(folding)), 'ph-fold-return-display')).toBe(true);
     expect(endsPhase(foldRest('open'), 'ph-fold-open-flap')).toBe(false);
   });
 
