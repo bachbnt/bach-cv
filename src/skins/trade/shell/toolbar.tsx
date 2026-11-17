@@ -26,7 +26,8 @@ export const CHART_CONTROLS_ID = 'tv-chart-controls';
  * The top toolbar of the terminal, one row as in a chart terminal: my logo (a link home), the symbol button that opens the search, a strip
  * the chart fills with its own controls (interval, chart type, Indicators, bar replay, undo and redo), then Layout, full screen, the
  * language, skin and theme menus (in the order of the other skins) and the CV button. On a phone the chart's strip is a row of its own
- * under them that scrolls sideways. The menus stay on a
+ * under them that scrolls sideways. On a wide screen the strip never shrinks: when the row is full the symbol button gives way first (its
+ * headline is cut, then its `/` hint goes), so Redo is never under Layout. The menus stay on a
  * phone, so a visitor can always leave the skin. Chat and Connect are in the rail (or in the row under the watchlist on a phone).
  */
 export function Toolbar() {
@@ -57,7 +58,7 @@ export function Toolbar() {
         id={CHART_CONTROLS_ID}
         role='group'
         aria-label={words.chartControls}
-        className='flex min-w-0 items-center gap-0.5 min-[1101px]:empty:hidden max-[1100px]:order-last max-[1100px]:min-h-11 max-[1100px]:basis-full max-[1100px]:overflow-x-auto max-[1100px]:border-t max-[1100px]:border-tv-line'
+        className='flex min-w-0 items-center gap-0.5 min-[1101px]:shrink-0 min-[1101px]:empty:hidden max-[1100px]:order-last max-[1100px]:min-h-11 max-[1100px]:basis-full max-[1100px]:overflow-x-auto max-[1100px]:border-t max-[1100px]:border-tv-line'
       />
       <span className='flex-1' />
       <LayoutMenu />

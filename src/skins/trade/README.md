@@ -115,7 +115,7 @@ wording is in `content/copy/trade-chart.ts` (en and vi).
   cancels, Delete removes the chosen drawing, Ctrl or Cmd+Z undoes, Shift+Ctrl+Z redoes, Shift+R is the replay. Shortcuts that work anywhere
   ignore fields and open windows.
 - **Controls place.** The interval, the chart type, Indicators, Replay, undo and redo are portalled into the strip `#tv-chart-controls` of the
-  top toolbar, which is one row (on a phone the strip is a row of its own that scrolls); zoom and the shortcuts button are in the range bar under
+  top toolbar, which is one row (on a phone the strip is a row of its own that scrolls; on a wide screen the strip never shrinks, the symbol button gives way first, so no chart button lies under Layout); zoom and the shortcuts button are in the range bar under
   the chart, and the ticker tape is a thin strip under that (the Layout menu turns it off). With no such strip (the chart mounted alone) the
   buttons make their own bar at the top of the chart.
 - **Speed.** Candles, wicks, volume and bars are a few `<path>`s per colour (about 4 for candles), only the bars on screen are drawn,

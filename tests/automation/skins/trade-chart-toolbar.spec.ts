@@ -103,6 +103,35 @@ test.describe('one toolbar', () => {
     expect(new Set(xs).size).toBe(3);
   });
 
+  test('no button of the strip lies under a neighbour, at the common laptop widths', async ({
+    page,
+  }) => {
+    await ready(page);
+    const bar = header(page);
+    const strip = bar.getByRole('group', { name: 'Chart controls' });
+    const redo = strip.getByRole('button', { name: 'Redo' });
+    const layout = bar.getByRole('button', {
+      name: 'Choose what the terminal shows',
+    });
+    for (const width of [1101, 1280, 1350, 1366, 1440]) {
+      await page.setViewportSize({ width, height: 800 });
+      // the strip keeps its whole content (it is not squeezed) ...
+      await expect
+        .poll(() => strip.evaluate((el) => el.scrollWidth - el.clientWidth), {
+          message: `the strip is squeezed at ${width}px`,
+        })
+        .toBe(0);
+      // ... so Redo, its last button, ends before Layout begins, and the row does not run past the window
+      const [r, l] = await Promise.all(
+        [redo, layout].map((b) => b.boundingBox()),
+      );
+      expect(r!.x + r!.width, `${width}px`).toBeLessThanOrEqual(l!.x);
+      expect(
+        await bar.evaluate((el) => el.scrollWidth - el.clientWidth),
+      ).toBeLessThanOrEqual(0);
+    }
+  });
+
   test('undo and redo are in it and work', async ({ page }) => {
     await ready(page);
     const undo = header(page).getByRole('button', {
