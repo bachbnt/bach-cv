@@ -406,7 +406,7 @@
 
 /* ---------- the display ---------- */
 .ph-display {
-  /* the corners of the display, which a sheet that grows into the screen must have too (`PhAppFrame`) */
+  /* the corners of the display, which the zoom of an app grows to (`shell/use-app-zoom.ts` reads them) */
   --ph-screen-radius: 4px 34px 34px 4px;
   position: absolute;
   z-index: 4;

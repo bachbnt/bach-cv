@@ -7,6 +7,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import type { PageKey } from '@/lib/content/schema';
+import { armAppClose } from '@/skins/phone/shell/app-zoom-intent';
 
 /**
  * "Back" of the system gesture: the page before this one if the visitor came to it from another page of the skin, the home screen
@@ -26,6 +27,8 @@ export function useBack(page: PageKey | null): () => void {
     seen.current = page;
   }, [page]);
   return useCallback(() => {
+    // a picture of the app that is left, for the zoom back into its icon
+    armAppClose();
     if (trail.current > 0) {
       going.current = true;
       router.back();

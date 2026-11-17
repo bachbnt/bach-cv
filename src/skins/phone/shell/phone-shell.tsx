@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useEffect, useState, ViewTransition, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import type { PageKey } from '@/lib/content/schema';
 import { cn } from '@/lib/utils';
 import { AppWindow } from '@/skins/phone/shell/app-window';
@@ -25,6 +25,7 @@ import { PhToast } from '@/skins/phone/shell/ph-toast';
 import { PhScreenProvider } from '@/skins/phone/shell/screen-context';
 import { StatusBar } from '@/skins/phone/shell/status-bar';
 import { PhTitleProvider } from '@/skins/phone/shell/title-context';
+import { useAppZoom } from '@/skins/phone/shell/use-app-zoom';
 import { useBack } from '@/skins/phone/shell/use-back';
 import { useEdgeSwipe } from '@/skins/phone/shell/use-edge-swipe';
 import { useDeviceScale } from '@/skins/phone/shell/use-device-scale';
@@ -32,9 +33,7 @@ import { useFold } from '@/skins/phone/shell/use-fold';
 import { useFoldKey } from '@/skins/phone/shell/use-fold-key';
 import { useScreenPower } from '@/skins/phone/shell/use-screen-power';
 import { useScrollCue } from '@/skins/phone/shell/use-scroll-cue';
-import { useVtClip } from '@/skins/phone/shell/use-vt-clip';
 import { useWindowMode } from '@/skins/phone/shell/use-window-mode';
-import { PhAppFrame } from '@/skins/phone/ui/ph-app-morph';
 import { PhRoot } from '@/skins/phone/ui/ph-root';
 
 /**
@@ -81,7 +80,7 @@ export function PhoneShell({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
   useScrollCue();
-  useVtClip(display, device, fold.phase === 'idle');
+  useAppZoom({ page, screen, scroller: scrolling, device });
   useFoldKey(device, () => fold.set(folded ? 'open' : 'folded'));
   useEdgeSwipe(screen, home ? null : back);
 
@@ -124,7 +123,12 @@ export function PhoneShell({
                       home ? 'ph-wallpaper text-ph-glass-ink' : 'bg-ph-sheet',
                     )}
                   >
-                    {!home && page && <PhAppFrame page={page} />}
+                    {/* where the pictures of a zoom are put (`app-zoom-intent.ts`): its own children are not React's */}
+                    <div
+                      data-ph-zoom-host=''
+                      aria-hidden='true'
+                      className='contents'
+                    />
                     <div
                       data-ph-body=''
                       className={cn(
@@ -139,30 +143,25 @@ export function PhoneShell({
                       <StatusBar onWallpaper={home} />
                       <div
                         ref={setScrolling}
+                        data-ph-scroller=''
                         className='flex min-h-0 flex-1 flex-col scroll-pt-(--ph-bars) scroll-pb-(--ph-home-bar) group-data-[mode=device]/ph:overflow-y-auto group-data-[mode=device]/ph:overscroll-contain @min-[900px]:overflow-y-auto @min-[900px]:overscroll-contain'
                       >
                         {home ? (
-                          <ViewTransition
+                          <div
                             key='home'
-                            enter='ph-vt-return'
-                            exit='ph-vt-recede'
-                            default='none'
+                            data-ph-zoom-content=''
+                            className='flex flex-1 flex-col pt-(--ph-bar-top)'
                           >
-                            <div className='flex flex-1 flex-col pt-(--ph-bar-top)'>
-                              {children}
-                            </div>
-                          </ViewTransition>
+                            {children}
+                          </div>
                         ) : (
-                          <ViewTransition
+                          <div
                             key={page ?? 'none'}
-                            enter='ph-vt-app-in'
-                            exit='ph-vt-app-out'
-                            default='none'
+                            data-ph-zoom-content=''
+                            className='flex flex-1 flex-col'
                           >
-                            <div className='flex flex-1 flex-col'>
-                              <AppWindow page={page}>{children}</AppWindow>
-                            </div>
-                          </ViewTransition>
+                            <AppWindow page={page}>{children}</AppWindow>
+                          </div>
                         )}
                       </div>
                       {!home && <HomeBar />}

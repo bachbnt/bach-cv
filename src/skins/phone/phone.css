@@ -313,51 +313,6 @@ html[data-skin='phone'] {
   }
 }
 
-/* A page change, in four parts, each with its own job (the classes are on the `ViewTransition`s of `shell/phone-shell.tsx`):
-   - the home screen RECEDES when an app opens (it grows a little, towards the viewer, and fades out behind the growing window) and
-     RETURNS the other way round when the app closes;
-   - the app's page comes IN after the window has grown (it waits 100 ms, so the window is a blank sheet first, as a real app's first
-     frame is) and goes OUT at once when the app closes (so what shrinks back into the icon is the empty window, not a page squeezed small).
-   The page of an app that is left for another app (the rail of a tablet) goes out and the next comes in, one after the other.
-   The home screen scales UP: that part of the snapshot lies outside the display, and `html::view-transition` is clipped to the display
-   (`--ph-vt-clip`, below), so nothing of it is ever seen outside the screen of the device. */
-::view-transition-old(.ph-vt-recede) {
-  animation: ph-vt-recede 280ms var(--ease-ph-out) both;
-}
-::view-transition-new(.ph-vt-return) {
-  animation: ph-vt-return 280ms var(--ease-ph-out) both;
-}
-::view-transition-old(.ph-vt-app-out) {
-  animation: ph-vt-app-out 100ms var(--ease-ph-out) both;
-}
-::view-transition-new(.ph-vt-app-in) {
-  animation: ph-vt-app-in 280ms var(--ease-ph-out) 100ms both;
-}
-@keyframes ph-vt-recede {
-  to {
-    opacity: 0;
-    scale: 1.08;
-  }
-}
-@keyframes ph-vt-return {
-  from {
-    opacity: 0;
-    scale: 1.08;
-  }
-}
-@keyframes ph-vt-app-out {
-  to {
-    opacity: 0;
-    scale: 0.96;
-  }
-}
-@keyframes ph-vt-app-in {
-  from {
-    opacity: 0;
-    scale: 0.94;
-  }
-}
-
 /* What the keyboard focus, an anchor or a scrollIntoView must keep clear of: the bars at the top (the status bar, and the app bar in an app) and the home bar at the foot,
    in the one scroller of the skin that has no `--ph-bars` to read, the document of a phone's window. The scroller of a screen has the same padding, in `phone-shell.tsx`,
    from `--ph-bars`. Whether the app bar has slid away or not, the padding is the whole reservation. */
@@ -516,23 +471,27 @@ html[data-skin='phone'][data-scrolling]::-webkit-scrollbar-thumb,
   }
 }
 
-/* An app opens from its tile and closes into it: the window grows out of the icon (PhAppMorph). The browser moves the two snapshots between
-   the rectangles; this gives them the pace of the skin: 360 ms on the curve of an app (fast to start, settling softly), and the icon and
-   the blank window cross over in the first 100 ms, while the group is still small, so the tile of the icon is never seen stretched over the
-   screen. */
-::view-transition-group(.ph-morph) {
-  animation-duration: 360ms;
-  animation-timing-function: var(--ease-ph-app);
+/* The pictures of an app's zoom (`shell/app-zoom-intent.ts`, `shell/use-app-zoom.ts`): a copy of the page that is left, in a layer of the size of the window of the zoom, which has the
+   ground of the screen. It is hidden from readers and from the pointer (`aria-hidden`, `inert`) and put away when the zoom ends. The frame is the window (it is what is scaled and cut) and the page
+   is in it, laid out as it was and as far up as the document was scrolled. In a window of its own the window of the zoom is the viewport. */
+.ph-zoom-layer {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
 }
-::view-transition-old(.ph-morph),
-::view-transition-new(.ph-morph) {
-  animation-duration: 100ms;
+[data-ph-screen][data-mode='full-bleed'] .ph-zoom-layer {
+  position: fixed;
 }
-
-/* A page change is clipped to the display in a device (`shell/use-vt-clip.ts` writes the box and the corners): the pseudo-elements of a view transition
-   are painted over the whole viewport and are not clipped by the display that holds the page. The fold has its own transitions, marked with `data-ph-fold`. */
-html[data-skin='phone']:not([data-ph-fold])::view-transition {
-  clip-path: var(--ph-vt-clip, none);
+.ph-zoom-frame {
+  position: absolute;
+  inset: 0;
+}
+.ph-zoom-page {
+  position: absolute;
+  left: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -542,15 +501,6 @@ html[data-skin='phone']:not([data-ph-fold])::view-transition {
   .ph-root *::after {
     animation: none !important;
     transition: none !important;
-  }
-  ::view-transition-old(.ph-vt-recede),
-  ::view-transition-new(.ph-vt-return),
-  ::view-transition-old(.ph-vt-app-out),
-  ::view-transition-new(.ph-vt-app-in),
-  ::view-transition-group(.ph-morph),
-  ::view-transition-old(.ph-morph),
-  ::view-transition-new(.ph-morph) {
-    animation: none;
   }
 }
 

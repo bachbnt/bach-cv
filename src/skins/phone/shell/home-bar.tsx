@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import { phoneCopy } from '@/content/copy/phone';
 import { useCopy } from '@/lib/i18n/copy';
+import { armAppClose } from '@/skins/phone/shell/app-zoom-intent';
 import { isUpDrag } from '@/skins/phone/shell/gestures';
 
 /**
@@ -22,7 +23,10 @@ export function HomeBar() {
   const from = useRef<{ x: number; y: number } | null>(null);
   const dragged = useRef(false);
   return (
-    <div className='pointer-events-none sticky bottom-0 z-30 h-0 shrink-0 group-data-[mode=device]/ph:absolute group-data-[mode=device]/ph:inset-x-0'>
+    <div
+      data-ph-home-bar=''
+      className='pointer-events-none sticky bottom-0 z-30 h-0 shrink-0 group-data-[mode=device]/ph:absolute group-data-[mode=device]/ph:inset-x-0'
+    >
       <div className='absolute inset-x-0 bottom-0 flex h-[calc(2.25rem+env(safe-area-inset-bottom,0px))] items-start pointer-coarse:h-[calc(2.75rem+env(safe-area-inset-bottom,0px))] justify-center bg-linear-to-t from-ph-sheet/80 to-transparent group-data-[hinge]/ph:justify-start group-data-[hinge]/ph:pl-[calc(75%-5rem)]'>
         <Link
           href='/'
@@ -43,6 +47,7 @@ export function HomeBar() {
               isUpDrag(event.clientX - start.x, event.clientY - start.y)
             ) {
               dragged.current = true;
+              armAppClose();
               router.push('/');
             }
           }}

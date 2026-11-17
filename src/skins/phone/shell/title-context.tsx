@@ -103,6 +103,8 @@ export function useLargeTitle(title: string): {
     };
     const observers = [
       new IntersectionObserver(([entry]) => {
+        // while the page is scaled by the zoom of an app the heading is where the zoom puts it, not where the page does: nothing is said until it is over
+        if (screen?.hasAttribute('data-ph-zoom')) return;
         const visible = entry.intersectionRatio;
         heading.style.setProperty(
           'opacity',
@@ -119,6 +121,7 @@ export function useLargeTitle(title: string): {
     observers[0].observe(heading);
     if (lead) {
       const second = new IntersectionObserver(([entry]) => {
+        if (screen?.hasAttribute('data-ph-zoom')) return;
         lead.style.setProperty(
           'opacity',
           String(largeTitleOpacity(entry.intersectionRatio)),
@@ -127,7 +130,18 @@ export function useLargeTitle(title: string): {
       second.observe(lead);
       observers.push(second);
     }
+    // the zoom is over: what was not said is asked again (observing a target again reports where it is)
+    const again = () => {
+      observers[0].unobserve(heading);
+      observers[0].observe(heading);
+      if (lead && observers[1]) {
+        observers[1].unobserve(lead);
+        observers[1].observe(lead);
+      }
+    };
+    screen?.addEventListener('ph-zoom-end', again);
     return () => {
+      screen?.removeEventListener('ph-zoom-end', again);
       observers.forEach((observer) => observer.disconnect());
       heading.style.removeProperty('opacity');
       lead?.style.removeProperty('opacity');
