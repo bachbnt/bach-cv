@@ -15,8 +15,8 @@ import { useCareerYears } from '@/lib/query/use-career-years';
 import { useContentQuery } from '@/lib/query/use-content';
 import { HomeGlass } from '@/skins/phone/blocks/home-glass';
 import {
-  WIDGET_FOOTER,
-  WIDGET_HERO,
+  WIDGET_BODY,
+  WIDGET_TITLE_ROW,
 } from '@/skins/phone/blocks/home-widget-layout';
 import { HomeWidgetNumber } from '@/skins/phone/blocks/home-widget-number';
 import { HomeWidgetTitle } from '@/skins/phone/blocks/home-widget-title';
@@ -26,8 +26,8 @@ import { cn } from '@/lib/utils';
 
 /**
  * The widget of the years in software: the number Standard states in the middle of a ring that has an arc for each year (decoration, the
- * number is the datum), and under it the years it spans (from the year of the first role to this one). It has the same inside as the widget
- * of the projects beside it (`home-widget-layout.ts`), so the two numbers line up.
+ * number is the datum). When the widget is wide enough the years it spans (from the year of the first role to this one) are at the end of
+ * its title row. The ring takes the whole body, so there is no room left over (`home-widget-layout.ts`).
  */
 export function HomeYears() {
   const copy = useCopy(phoneHomeCopy).home;
@@ -41,11 +41,8 @@ export function HomeYears() {
       <LoadingBlock className='min-w-0'>
         <HomeGlass className='flex h-full flex-col'>
           <HomeWidgetTitle>{copy.inSoftware}</HomeWidgetTitle>
-          <div className={WIDGET_HERO}>
+          <div className={cn(WIDGET_BODY, 'items-center justify-center')}>
             <PhSkeleton className='aspect-square w-full max-w-36 rounded-full' />
-          </div>
-          <div className={cn(WIDGET_FOOTER, 'flex items-end justify-center')}>
-            <PhSkeleton className='h-3 w-24' />
           </div>
         </HomeGlass>
       </LoadingBlock>
@@ -56,19 +53,19 @@ export function HomeYears() {
   const unit = yearsPhrase(years, lang).replace(String(years), '').trim();
   const first = careerFacts(jobs.data ?? [], [], now).first;
   return (
-    <HomeGlass className='flex h-full min-w-0 flex-col'>
-      <HomeWidgetTitle>{copy.inSoftware}</HomeWidgetTitle>
-      <div className={WIDGET_HERO}>
-        <HomeYearRing years={years} unit={unit}>
-          <HomeWidgetNumber>{years}</HomeWidgetNumber>
-        </HomeYearRing>
-      </div>
-      <div className={cn(WIDGET_FOOTER, 'flex items-end justify-center')}>
+    <HomeGlass className='@container flex h-full min-w-0 flex-col'>
+      <div className={WIDGET_TITLE_ROW}>
+        <HomeWidgetTitle>{copy.inSoftware}</HomeWidgetTitle>
         {first && (
-          <p className='text-[13px]/[1.2] font-semibold text-ph-mute tabular-nums'>
+          <p className='hidden text-[12px]/[1.3] font-semibold text-ph-mute tabular-nums @min-[12.5rem]:block'>
             {first.year} – {now.getFullYear()}
           </p>
         )}
+      </div>
+      <div className={cn(WIDGET_BODY, 'items-center justify-center')}>
+        <HomeYearRing years={years} unit={unit}>
+          <HomeWidgetNumber>{years}</HomeWidgetNumber>
+        </HomeYearRing>
       </div>
     </HomeGlass>
   );

@@ -53,7 +53,7 @@ export function HomeYearRing({
       <div className='absolute inset-0 grid place-content-center text-center'>
         {children}
       </div>
-      <span className='absolute inset-x-0 top-[calc(50%+1.5rem)] text-center text-[13px]/[1.2] font-semibold text-ph-mute @max-[7rem]:sr-only'>
+      <span className='absolute inset-x-0 top-[calc(50%+1.3rem)] text-center text-[13px]/[1.2] font-semibold text-ph-mute @max-[7rem]:sr-only'>
         {unit}
       </span>
     </div>

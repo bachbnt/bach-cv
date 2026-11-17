@@ -58,7 +58,7 @@ export function HomePage() {
           <div className='flex min-w-0 flex-col gap-4 @min-[900px]:col-start-1 @min-[900px]:row-start-1'>
             <HomeHero />
             <HomeNow />
-            <div className='grid grid-cols-2 items-stretch gap-4 [&>*:only-child]:col-span-2'>
+            <div className='grid auto-rows-fr grid-cols-1 items-stretch gap-4 @min-[380px]:grid-cols-2 @min-[380px]:[&>*:only-child]:col-span-2'>
               <HomeYears />
               <HomePlatforms />
             </div>

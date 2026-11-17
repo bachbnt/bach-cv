@@ -14,10 +14,7 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { HomeGlass } from '@/skins/phone/blocks/home-glass';
-import {
-  WIDGET_FOOTER,
-  WIDGET_HERO,
-} from '@/skins/phone/blocks/home-widget-layout';
+import { WIDGET_BODY } from '@/skins/phone/blocks/home-widget-layout';
 import { HomeWidgetNumber } from '@/skins/phone/blocks/home-widget-number';
 import { HomeWidgetTitle } from '@/skins/phone/blocks/home-widget-title';
 import { PhSkeleton } from '@/skins/phone/ui/ph-skeleton';
@@ -45,16 +42,16 @@ export function HomePlatforms() {
       <LoadingBlock className='min-w-0'>
         <HomeGlass className='flex h-full flex-col'>
           <HomeWidgetTitle>{common.nav.projects}</HomeWidgetTitle>
-          <div className={WIDGET_HERO}>
+          <div className={cn(WIDGET_BODY, 'justify-between')}>
             <PhSkeletonLine line='h-9' className='w-12' />
-          </div>
-          <div className={cn(WIDGET_FOOTER, 'space-y-1')}>
-            {Array.from({ length: PLATFORMS }, (_, index) => (
-              <div key={index}>
-                <PhSkeletonLine line='h-4' className='w-2/3' />
-                <PhSkeleton className='mt-0.5 h-1.5 w-full' />
-              </div>
-            ))}
+            <div className='space-y-1'>
+              {Array.from({ length: PLATFORMS }, (_, index) => (
+                <div key={index}>
+                  <PhSkeletonLine line='h-4' className='w-2/3' />
+                  <PhSkeleton className='mt-1 h-[7px] w-full' />
+                </div>
+              ))}
+            </div>
           </div>
         </HomeGlass>
       </LoadingBlock>
@@ -64,28 +61,28 @@ export function HomePlatforms() {
   const body = (
     <>
       <HomeWidgetTitle>{common.nav.projects}</HomeWidgetTitle>
-      <div className={WIDGET_HERO}>
+      <div className={cn(WIDGET_BODY, 'justify-between')}>
         <HomeWidgetNumber>{list.length}</HomeWidgetNumber>
-      </div>
-      <ul className={cn(WIDGET_FOOTER, 'm-0 list-none space-y-1 p-0')}>
-        {counts.map(({ platform, count }) => (
-          <li key={platform}>
-            <span className='flex items-baseline justify-between gap-2 text-[13px]/[1.2] font-semibold'>
-              <span className='truncate'>{copy.platforms[platform]}</span>
-              <span className='tabular-nums'>{count}</span>
-            </span>
-            <span
-              aria-hidden='true'
-              className='mt-0.5 block h-1.5 rounded-ph-inner bg-ph-sheet-3'
-            >
+        <ul className='m-0 mt-2 list-none space-y-0.5 p-0'>
+          {counts.map(({ platform, count }) => (
+            <li key={platform}>
+              <span className='flex items-baseline justify-between gap-2 text-[14px]/[1.15] font-semibold'>
+                <span className='truncate'>{copy.platforms[platform]}</span>
+                <span className='tabular-nums'>{count}</span>
+              </span>
               <span
-                className='block h-full rounded-ph-inner bg-ph-accent'
-                style={{ width: `${(count / widest) * 100}%` }}
-              />
-            </span>
-          </li>
-        ))}
-      </ul>
+                aria-hidden='true'
+                className='mt-[3px] block h-[7px] rounded-ph-inner bg-ph-sheet-3'
+              >
+                <span
+                  className='block h-full rounded-ph-inner bg-ph-accent'
+                  style={{ width: `${(count / widest) * 100}%` }}
+                />
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
   const className = 'h-full min-w-0';

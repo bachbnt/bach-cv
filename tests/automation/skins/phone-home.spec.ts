@@ -207,7 +207,7 @@ test.describe('the cards of the home screen', () => {
       await page.setViewportSize({ width, height });
     };
 
-    test(`on ${name} the two stat widgets are the same width and height, their titles and large numbers are at the same height, and nothing overflows`, async ({
+    test(`on ${name} the two stat widgets are the same size, small, full of what they hold, with their titles level, and nothing overflows`, async ({
       page,
     }) => {
       await show(page);
@@ -222,31 +222,51 @@ test.describe('the cards of the home screen', () => {
       if (!a || !b) throw new Error('the widgets are not there');
       expect(Math.abs(a.width - b.width)).toBeLessThanOrEqual(1);
       expect(Math.abs(a.height - b.height)).toBeLessThanOrEqual(1);
-      // the titles and the large numbers share their height: the centre of the number, and its size
-      const yOf = async (locator: Locator) => {
-        const box = await locator.boundingBox();
-        if (!box) throw new Error('not there');
-        return box.y + box.height / 2;
-      };
-      const titles = [
-        page.getByRole('heading', { name: 'In software' }),
-        page.getByRole('heading', { name: 'Projects', exact: true }),
-      ];
-      const numbers = [years, projects].map((widget) =>
-        widget.locator('p').first(),
-      );
-      expect(
-        Math.abs((await yOf(titles[0])) - (await yOf(titles[1]))),
-      ).toBeLessThanOrEqual(1);
-      expect(
-        Math.abs((await yOf(numbers[0])) - (await yOf(numbers[1]))),
-      ).toBeLessThanOrEqual(1);
-      const sizes = await Promise.all(
-        numbers.map((n) =>
-          n.evaluate((el) => {
-            const style = getComputedStyle(el);
-            return `${style.fontSize}/${style.lineHeight}`;
+      // a widget of a home screen, not a column: at most 14rem tall (the device is drawn at its own scale)
+      const scale = await page
+        .locator('[data-ph-screen]')
+        .evaluate((el) => el.getBoundingClientRect().width / el.clientWidth);
+      expect(a.height).toBeLessThanOrEqual(14 * 16 * scale);
+      // side by side the titles are level; on a narrow screen the widgets are stacked, one under the other
+      const level = Math.abs(a.x - b.x) > 1;
+      if (level) {
+        const titles = [
+          page.getByRole('heading', { name: 'In software' }),
+          page.getByRole('heading', { name: 'Projects', exact: true }),
+        ];
+        const ys = await Promise.all(
+          titles.map(async (title) => {
+            const box = await title.boundingBox();
+            if (!box) throw new Error('not there');
+            return box.y + box.height / 2;
           }),
+        );
+        expect(Math.abs(ys[0] - ys[1])).toBeLessThanOrEqual(1);
+      } else expect(Math.abs(a.x - b.x)).toBeLessThanOrEqual(1);
+      // what the widget holds goes to within 24 px of its lower edge: no room is left unused under it
+      for (const widget of [years, projects]) {
+        const room = await widget.evaluate((el) => {
+          const edge = el.getBoundingClientRect().bottom;
+          let lowest = 0;
+          for (const part of el.querySelectorAll('*')) {
+            const box = part.getBoundingClientRect();
+            if (box.height > 0 && box.width > 0)
+              lowest = Math.max(lowest, box.bottom);
+          }
+          return edge - lowest;
+        });
+        expect(room).toBeLessThanOrEqual(24 * scale);
+      }
+      // the two large numbers are one size
+      const sizes = await Promise.all(
+        [years, projects].map((widget) =>
+          widget
+            .locator('p', { hasText: /^\d+$/ })
+            .first()
+            .evaluate((el) => {
+              const style = getComputedStyle(el);
+              return `${style.fontSize}/${style.lineHeight}`;
+            }),
         ),
       );
       expect(sizes[0]).toBe(sizes[1]);
