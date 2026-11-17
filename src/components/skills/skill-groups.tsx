@@ -70,7 +70,7 @@ export function SkillGroups({ className }: { className?: string }) {
           min={250}
           gap={20}
           // the cards are as tall as their chips wrap: four across (1156px and up) they are the tallest, two or three across two rows share the height
-          itemClassName='h-[270px] min-[721px]:h-[307px] min-[1156px]:h-[454px]'
+          itemClassName='h-[270px] max-[359px]:h-[335px] min-[721px]:h-[307px] min-[1156px]:h-[454px]'
         />
       }
     >

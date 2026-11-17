@@ -36,6 +36,13 @@ export function ResumeSkillGroupsSkeleton() {
                   {row % 3 !== 2 && (
                     <PhSkeletonLine line='mt-0.5 h-[21px]' className='w-3/5' />
                   )}
+                  {/* where the skill was used takes a second line on the narrowest screen */}
+                  {row % 3 === 0 && (
+                    <PhSkeletonLine
+                      line='hidden h-[21px] @max-[359px]:flex'
+                      className='w-2/5'
+                    />
+                  )}
                 </div>
                 <PhSkeleton className='mt-1 h-4 w-14 shrink-0' />
               </li>

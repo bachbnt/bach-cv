@@ -31,10 +31,10 @@ const DOT: Record<Skill['category'], string> = {
 
 /** The heights of the four areas of a typical list while it loads: the tiles wrap into more lines in a narrower box. */
 const GROUPS = [
-  'h-[160px] min-[600px]:h-[84px]',
-  'h-[274px] min-[600px]:h-[160px] min-[901px]:h-[122px]',
-  'h-[160px] min-[600px]:h-[122px] min-[901px]:h-[84px]',
-  'h-[198px] min-[600px]:h-[122px] min-[901px]:h-[84px]',
+  'h-[160px] max-[359px]:h-[198px] min-[600px]:h-[84px]',
+  'h-[274px] max-[359px]:h-[312px] min-[600px]:h-[160px] min-[901px]:h-[122px]',
+  'h-[160px] max-[359px]:h-[198px] min-[600px]:h-[122px] min-[901px]:h-[84px]',
+  'h-[198px] max-[359px]:h-[236px] min-[600px]:h-[122px] min-[901px]:h-[84px]',
 ];
 
 /**

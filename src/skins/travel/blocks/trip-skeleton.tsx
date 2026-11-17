@@ -8,11 +8,11 @@ import { TripStopListSkeleton } from '@/skins/travel/blocks/trip-stop-list-skele
 
 /** What each stop of the itinerary measures once loaded (the first one is taller: it has the Current flag). */
 const STOP_HEIGHTS = [
-  'h-[68px]',
-  'h-[52px]',
-  'h-[52px]',
-  'h-[52px]',
-  'h-[52px]',
+  'h-[68px] max-[359px]:h-[85px]',
+  'h-[52px] max-[359px]:h-[68px]',
+  'h-[52px] max-[359px]:h-[68px]',
+  'h-[52px] max-[359px]:h-[68px]',
+  'h-[52px] max-[359px]:h-[68px]',
 ] as const;
 
 /** The itinerary of Resume and the open stop, laid out as the loaded page does; the title and the hint are real. */

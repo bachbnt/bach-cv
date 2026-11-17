@@ -168,7 +168,7 @@ helpers in `components/payment/*`, `components/projects/project-helpers.ts`. Loa
 - **A skeleton mirrors the loaded structure; a test measures it.** Every data block has a `*-skeleton.tsx` beside it (`projects-skeleton`, `experience-skeleton`,
   `certificate-skeleton`, `payment-skeleton`, `core-stack-skeleton`, ...): the real titles and notes (the same `DevSection`, `PaymentNote`), the grids shared with the loaded
   block (`PROJECT_CARD_GRID`, `CORE_GRID`, `CERTIFICATE_GRID`, `ServiceGrid`, ...) and blank `DevSkeletonBar` shapes in the heights the loaded units have at each
-  width (`max-[1279px]:`, `max-[900px]:`, `max-[620px]:`). `data-skeleton="toolbar|item"` marks the control row and the first card for the tests.
+  width (`max-[1279px]:`, `max-[900px]:`, `max-[620px]:`, and `max-[359px]:` for the narrowest phone, which the test measures too). `data-skeleton="toolbar|item"` marks the control row and the first card for the tests.
   The code window of Home (`home-profile-window`) and the line under the photo (`home-portrait`) have no block of their own: while the roles, skills and degrees load they
   keep every line and show the values as `DevSkeletonCode` (letters in the code font, transparent, on a bar, so a long line wraps where the real one will); the sentence of the
   years in software is `components/years-text.tsx`, the same in every skin (the number is a blank of the usual length until the roles are read).

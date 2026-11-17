@@ -25,10 +25,10 @@ function ChipRows({ className }: { className: string }) {
 
 /** What each group of skills measures once loaded (the heading and the rows of its chips), one class each. */
 const GROUPS = [
-  'h-[87px]',
-  'h-[155px] max-md:h-[189px]',
-  'h-[121px]',
-  'h-[121px]',
+  'h-[87px] max-[359px]:h-[121px]',
+  'h-[155px] max-md:h-[189px] max-[359px]:h-[258px]',
+  'h-[121px] max-[359px]:h-[155px]',
+  'h-[121px] max-[359px]:h-[155px]',
 ] as const;
 
 /**
@@ -39,7 +39,7 @@ export function LuggageSkeleton({ coreOnly = false }: { coreOnly?: boolean }) {
   return (
     <TlSkeleton data-skeleton='item' className='bg-transparent'>
       {!coreOnly && <TripLuggageHead />}
-      <ChipRows className='h-[62px]' />
+      <ChipRows className='h-[62px] max-[359px]:h-[97px]' />
       {!coreOnly &&
         GROUPS.map((height, i) => (
           <div key={i} className={cn('mt-4 overflow-hidden', height)}>

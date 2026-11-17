@@ -6,6 +6,12 @@ import { cn } from '@/lib/utils';
 import { DevSkeletonBar } from '@/skins/dev/ui/dev-skeleton-bar';
 
 /**
+ * The lines of each responsibility of the open role, more than any width needs: the box has the height of the loaded role and clips the rest
+ * so a narrow screen, where the text wraps into many lines, is filled like the real one and a wide one shows the first few.
+ */
+const POINT_LINES = [10, 12, 11, 13, 12, 14, 10, 12, 11, 13, 12, 10];
+
+/**
  * One role of the Source Control graph before its data arrives: the node, the period at the top right, the lines of the text and the
  * picture of the company, in the grid of the real row. `open` is the first role, whose responsibilities are listed and which has no picture.
  */
@@ -40,9 +46,19 @@ export function DevExperienceRowSkeleton({
           <DevSkeletonBar className='h-[26px] w-[72px]' />
         </div>
         {open && (
-          <div className='mt-4 grid gap-3'>
-            {Array.from({ length: 12 }, (_, i) => (
-              <DevSkeletonBar key={i} className='h-[17px] max-w-[540px]' />
+          <div className='mt-4 grid gap-5'>
+            {POINT_LINES.map((lines, point) => (
+              <div key={point} className='grid gap-2.5'>
+                {Array.from({ length: lines }, (_, i) => (
+                  <DevSkeletonBar
+                    key={i}
+                    className={cn(
+                      'h-[17px] max-w-[540px]',
+                      i === lines - 1 && 'w-3/5',
+                    )}
+                  />
+                ))}
+              </div>
             ))}
           </div>
         )}

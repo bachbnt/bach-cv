@@ -21,8 +21,9 @@ export function ContactTopicsSkeleton() {
       aria-label={states.loading}
       className='mt-5 flex flex-wrap gap-2.5'
     >
-      {CHIPS.map((width) => (
-        <AcSkeleton key={width} className={`h-[34px] ${width}`} />
+      {CHIPS.map((width, i) => (
+        // two chips have the same width: the width cannot be the key
+        <AcSkeleton key={i} className={`h-[34px] ${width}`} />
       ))}
     </div>
   );

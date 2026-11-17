@@ -15,20 +15,21 @@ const ROLES_COUNT = 4;
 const TECH_WIDTHS = [64, 56, 72, 60, 80, 52, 68, 76, 58, 64];
 
 /**
- * A text takes more lines as its column gets narrower: a line is always there (0), or only under 1100px (1), or only under 721px (2),
- * which are the widths where the loaded text wraps once and twice more.
+ * A text takes more lines as its column gets narrower: a line is always there (0), or only under 1100px (1), or only under 721px (2), or only under 360px (3),
+ * which are the widths where the loaded text wraps once, twice and more.
  */
-type From = 0 | 1 | 2;
+type From = 0 | 1 | 2 | 3;
 const SHOWN: Record<From, string> = {
   0: 'flex items-center',
   1: 'hidden max-[1099px]:flex max-[1099px]:items-center',
   2: 'hidden max-[720px]:flex max-[720px]:items-center',
+  3: 'hidden max-[359px]:flex max-[359px]:items-center',
 };
 
 const SUMMARY_SHUT: From[] = [0, 0, 2];
-const SUMMARY_OPEN: From[] = [0, 0, 0, 2, 2];
-const PROJECT_LINES: From[] = [0, 0, 1, 1, 2];
-const POINT_LINES: From[] = [0, 0, 0, 1, 1, 2, 2];
+const SUMMARY_OPEN: From[] = [0, 0, 0, 2, 2, 3, 3];
+const PROJECT_LINES: From[] = [0, 0, 1, 1, 2, 3, 3];
+const POINT_LINES: From[] = [0, 0, 0, 1, 1, 2, 2, 3, 3];
 const POINTS_COUNT = 7;
 
 /** Lines of text as the page sets them (`leading` is the height of a line), a bar the height of the letters in each. */

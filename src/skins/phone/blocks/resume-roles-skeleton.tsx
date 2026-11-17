@@ -32,6 +32,10 @@ export function ResumeRolesSkeleton() {
                     <PhSkeletonLine line='h-[20.8px]' className='w-2/5' />
                     <PhSkeletonLine line='mt-0.5 h-[21px]' className='w-3/5' />
                     <PhSkeletonLine
+                      line='hidden h-[21px] @max-[359px]:flex'
+                      className='w-2/5'
+                    />
+                    <PhSkeletonLine
                       line='mt-0.5 h-[18.2px]'
                       className='w-1/3'
                     />

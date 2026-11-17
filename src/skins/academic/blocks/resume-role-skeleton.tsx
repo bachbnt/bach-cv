@@ -59,6 +59,11 @@ export function ResumeRoleSkeleton({ first }: { first: boolean }) {
               barClassName={i === (first ? 2 : 1) ? 'w-3/5' : undefined}
             />
           ))}
+          {/* on the narrowest phone (under 360px) the summary takes a line more */}
+          <AcSkeletonLine
+            className='hidden h-[1.58em] max-[359px]:flex'
+            barClassName='w-2/5'
+          />
         </div>
         {first && (
           <div className='mt-4 border-l-[3px] border-ac-faint py-1 pl-4'>
@@ -71,6 +76,12 @@ export function ResumeRoleSkeleton({ first }: { first: boolean }) {
               className='hidden h-[1.5em] max-[760px]:flex'
               barClassName='w-2/5'
             />
+            {Array.from({ length: 2 }, (_, i) => (
+              <AcSkeletonLine
+                key={i}
+                className='hidden h-[1.5em] max-[359px]:flex'
+              />
+            ))}
           </div>
         )}
         <div className='mt-4 flex flex-wrap gap-x-2 gap-y-[9px]'>
@@ -91,7 +102,13 @@ export function ResumeRoleSkeleton({ first }: { first: boolean }) {
                       barClassName={line === lines - 1 ? 'w-2/3' : undefined}
                     />
                   ))}
-                  {/* the points are longer on a narrow page, where the text is narrower */}
+                  {/* the points are longer on a narrow page, where the text is narrower: two lines more under 360px */}
+                  {Array.from({ length: 2 }, (_, line) => (
+                    <AcSkeletonLine
+                      key={`narrowest-${line}`}
+                      className='hidden h-[1.5em] max-[359px]:flex'
+                    />
+                  ))}
                   {Array.from(
                     { length: Math.round(lines * 0.7) },
                     (_, line) => (

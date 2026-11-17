@@ -30,7 +30,7 @@ export function ResumeEducationSkeleton() {
             <AcSkeletonLine className='h-[34px]' barClassName='h-6 w-1/2' />
             <AcSkeletonLine className='mt-1 h-[33px]' barClassName='w-3/5' />
             <AcSkeletonLine className='h-[27px]' barClassName='w-2/5' />
-            <div className='mt-4 h-[179px] max-[760px]:h-[235px] min-[761px]:max-[899px]:h-[229px] rounded-[10px_5px_12px_6px/6px_12px_5px_10px] border-2 border-dashed border-ac-rule px-4 pt-3 pb-4'>
+            <div className='mt-4 h-[179px] max-[760px]:h-[235px] max-[359px]:h-[290px] min-[761px]:max-[899px]:h-[229px] rounded-[10px_5px_12px_6px/6px_12px_5px_10px] border-2 border-dashed border-ac-rule px-4 pt-3 pb-4'>
               <span className='font-ac-note text-[16px] text-ac-md'>
                 {copy.thesis}
               </span>

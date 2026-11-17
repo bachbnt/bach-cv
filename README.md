@@ -41,7 +41,7 @@ The Home page of each skin, and the first version of the site.
 - **Static and cheap.** `output: 'export'` served by Firebase Hosting; the browser reads Firestore with the lite SDK and
   TanStack Query caches it (also in `localStorage`). Only `src/content/shell.json` (name, headline, avatar, SEO) is embedded at
   build time.
-- **One look for every state.** While data loads a block shows a skeleton with the structure of the loaded one (same columns, heights and page chrome, a typical number of rows with the first role open, so nothing jumps when the data arrives; a Playwright spec measures it in every skin; the years in software of a sentence are a blank of the usual length, `YearsText`, until the roles are read), with nothing to show it shows an
+- **One look for every state.** While data loads a block shows a skeleton with the structure of the loaded one (same columns, heights and page chrome, a typical number of rows with the first role open, so nothing jumps when the data arrives; a Playwright spec measures it in every skin at 1440, 800, 390 and (Home, Projects, Resume) 320 px; the years in software of a sentence are a blank of the usual length, `YearsText`, until the roles are read), with nothing to show it shows an
   explanatory card, and when a read fails it shows the same card with a Try again button. All of it goes through one component
   (`DataState`) and one copy file (`src/content/copy/states.ts`), so every page behaves the same way.
 - **Security headers.** `firebase.json` sends HSTS, `X-Frame-Options`, a Content-Security-Policy and more. The policy allows only this

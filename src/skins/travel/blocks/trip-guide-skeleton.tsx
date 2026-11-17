@@ -10,7 +10,7 @@ export function TripGuideSkeleton() {
   return (
     <TlSkeleton
       data-skeleton='detail'
-      className='h-[603px] border border-tl-line bg-tl-panel-2 p-4'
+      className='h-[603px] max-[359px]:h-[724px] border border-tl-line bg-tl-panel-2 p-4'
     >
       <TlSkeletonBar className='h-[14px] w-24' />
       <TlSkeletonBar className='mt-2 h-[23px] w-3/5' />
