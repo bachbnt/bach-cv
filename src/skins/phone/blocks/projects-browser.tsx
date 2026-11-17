@@ -4,7 +4,7 @@
 
 'use client';
 
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useProjectView } from '@/hooks/use-project-view';
 import type { Doc } from '@/lib/content/schema';
 import { cn } from '@/lib/utils';
@@ -93,6 +93,38 @@ export function ProjectsBrowser({
     setMove('pop');
     setPushed(false);
   };
+
+  // `?project=<id>` (the link of a featured project on Home) opens that project once, on arrival, and is then taken off the address: a filter that hides
+  // it is cleared, a phone pushes its screen and the list scrolls to its row. Run after every render but it does anything only the first time.
+  const arrival = useRef<string | null | undefined>(undefined);
+  useEffect(() => {
+    if (arrival.current === undefined) {
+      const params = new URLSearchParams(window.location.search);
+      arrival.current = params.get('project');
+      if (arrival.current !== null) {
+        params.delete('project');
+        const { pathname, hash } = window.location;
+        const query = params.toString();
+        window.history.replaceState(
+          null,
+          '',
+          `${pathname}${query ? `?${query}` : ''}${hash}`,
+        );
+      }
+    }
+    const id = arrival.current;
+    if (!id) return;
+    arrival.current = null;
+    const project = projects.find((item) => item.id === id);
+    if (!project) return;
+    if (!view.shown.some((item) => item.id === id)) view.clear();
+    select(project);
+    requestAnimationFrame(() =>
+      document
+        .getElementById(`ph-project-${id}`)
+        ?.scrollIntoView({ block: 'nearest' }),
+    );
+  });
 
   return (
     <div className={PROJECTS_GRID}>

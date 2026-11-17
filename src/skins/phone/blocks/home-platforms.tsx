@@ -14,7 +14,11 @@ import { useCopy } from '@/lib/i18n/copy';
 import { useContentQuery } from '@/lib/query/use-content';
 import { cn } from '@/lib/utils';
 import { HomeGlass } from '@/skins/phone/blocks/home-glass';
+import '@/skins/phone/css/stats.css';
 import { WIDGET_BODY } from '@/skins/phone/blocks/home-widget-layout';
+import { delayStyle } from '@/skins/phone/blocks/css-vars';
+import { barDelays } from '@/skins/phone/blocks/reveal-schedule';
+import { useReveal } from '@/skins/phone/blocks/use-reveal';
 import { HomeWidgetNumber } from '@/skins/phone/blocks/home-widget-number';
 import { HomeWidgetTitle } from '@/skins/phone/blocks/home-widget-title';
 import { PhSkeleton } from '@/skins/phone/ui/ph-skeleton';
@@ -34,6 +38,8 @@ export function HomePlatforms() {
   const projects = useContentQuery('projects');
   const list = projects.data ?? [];
   const counts = platformCounts(list);
+  const delays = barDelays(counts.length);
+  const { ref, played } = useReveal();
   const widest = Math.max(1, ...counts.map(({ count }) => count));
 
   if (live.pages.projects === 'hidden') return null;
@@ -62,9 +68,9 @@ export function HomePlatforms() {
     <>
       <HomeWidgetTitle>{common.nav.projects}</HomeWidgetTitle>
       <div className={cn(WIDGET_BODY, 'justify-between')}>
-        <HomeWidgetNumber>{list.length}</HomeWidgetNumber>
+        <HomeWidgetNumber value={list.length} play={played} />
         <ul className='m-0 mt-2 list-none space-y-0.5 p-0'>
-          {counts.map(({ platform, count }) => (
+          {counts.map(({ platform, count }, index) => (
             <li key={platform}>
               <span className='flex items-baseline justify-between gap-2 text-[14px]/[1.15] font-semibold'>
                 <span className='truncate'>{copy.platforms[platform]}</span>
@@ -75,8 +81,11 @@ export function HomePlatforms() {
                 className='mt-[3px] block h-[7px] rounded-ph-inner bg-ph-sheet-3'
               >
                 <span
-                  className='block h-full rounded-ph-inner bg-ph-accent'
-                  style={{ width: `${(count / widest) * 100}%` }}
+                  className='ph-bar block h-full rounded-ph-inner bg-ph-accent'
+                  style={{
+                    width: `${(count / widest) * 100}%`,
+                    ...delayStyle(delays[index]),
+                  }}
                 />
               </span>
             </li>
@@ -87,7 +96,11 @@ export function HomePlatforms() {
   );
   const className = 'h-full min-w-0';
   return live.pages.projects === 'on' ? (
-    <HomeGlass className={cn(className, 'p-0')}>
+    <HomeGlass
+      ref={ref}
+      data-reveal={played ? 'play' : 'idle'}
+      className={cn(className, 'ph-reveal p-0')}
+    >
       <Link
         href='/projects'
         className='flex h-full flex-col rounded-ph-panel p-4 no-underline transition-[scale] duration-100 active:scale-[0.99]'
@@ -96,6 +109,12 @@ export function HomePlatforms() {
       </Link>
     </HomeGlass>
   ) : (
-    <HomeGlass className={cn(className, 'flex flex-col')}>{body}</HomeGlass>
+    <HomeGlass
+      ref={ref}
+      data-reveal={played ? 'play' : 'idle'}
+      className={cn(className, 'ph-reveal flex flex-col')}
+    >
+      {body}
+    </HomeGlass>
   );
 }

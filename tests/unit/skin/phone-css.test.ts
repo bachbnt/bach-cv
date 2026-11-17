@@ -24,7 +24,14 @@ const COMPOSITOR = new Set([
   'scale',
   'transform',
 ]);
-const ARRIVALS = ['ph-rise', 'ph-fade', 'ph-pop', 'ph-drop'];
+const ARRIVALS = [
+  'ph-rise',
+  'ph-fade',
+  'ph-pop',
+  'ph-drop',
+  'ph-arc-in',
+  'ph-bar-grow',
+];
 
 const tsxFiles = (dir: string): string[] =>
   readdirSync(dir).flatMap((name) => {

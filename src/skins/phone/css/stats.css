@@ -1,0 +1,73 @@
+/* What arrives in the two stat widgets of the home screen, once, when they are first on screen (`blocks/use-reveal.ts` sets `data-reveal` on the
+   widget): the arcs of the years ring draw in one after another, clockwise from the top, and the bars of the projects grow from the left. Only `opacity`
+   and `transform`, and the delays are the pure `blocks/reveal-schedule.ts`, set by the widget as `--ph-delay`. Before it plays the ring is empty and
+   the bars are at 0, but only for a visitor who gets motion: with `prefers-reduced-motion` everything is in its final state at once. */
+.ph-arc {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+.ph-bar {
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ph-reveal[data-reveal='idle'] .ph-arc {
+    opacity: 0;
+  }
+  .ph-reveal[data-reveal='idle'] .ph-bar {
+    transform: scaleX(0);
+  }
+}
+
+.ph-reveal[data-reveal='play'] .ph-arc {
+  animation: ph-arc-in 280ms var(--ease-ph-out) both;
+  animation-delay: var(--ph-delay, 0ms);
+}
+.ph-reveal[data-reveal='play'] .ph-bar {
+  animation: ph-bar-grow 600ms var(--ease-ph-out) both;
+  animation-delay: var(--ph-delay, 0ms);
+}
+
+@keyframes ph-arc-in {
+  from {
+    opacity: 0;
+    transform: rotate(-24deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+}
+@keyframes ph-bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* The list of technologies on the home screen: folded to its first rows (`--ph-fold-h`, measured by `blocks/home-skills.tsx`) with a soft fade at the foot, it
+   opens to its whole height (`--ph-full-h`) and the fade goes with it. Only a list that has more rows than it shows is folded (`data-fold`). */
+@property --ph-fade {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+.ph-fold[data-fold] {
+  --ph-fade: 1.25rem;
+  overflow: hidden;
+  max-height: var(--ph-fold-h);
+  mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - var(--ph-fade)),
+    transparent
+  );
+  transition:
+    max-height 280ms var(--ease-ph-out),
+    --ph-fade 280ms var(--ease-ph-out);
+}
+.ph-fold[data-fold][data-open='true'] {
+  --ph-fade: 0px;
+  max-height: var(--ph-full-h);
+}

@@ -18,6 +18,7 @@ import {
   WIDGET_BODY,
   WIDGET_TITLE_ROW,
 } from '@/skins/phone/blocks/home-widget-layout';
+import { useReveal } from '@/skins/phone/blocks/use-reveal';
 import { HomeWidgetNumber } from '@/skins/phone/blocks/home-widget-number';
 import { HomeWidgetTitle } from '@/skins/phone/blocks/home-widget-title';
 import { HomeYearRing } from '@/skins/phone/blocks/home-year-ring';
@@ -35,6 +36,7 @@ export function HomeYears() {
   const now = useNow();
   const jobs = useContentQuery('experience');
   const years = useCareerYears();
+  const { ref, played } = useReveal();
 
   if (jobs.isPending)
     return (
@@ -53,7 +55,11 @@ export function HomeYears() {
   const unit = yearsPhrase(years, lang).replace(String(years), '').trim();
   const first = careerFacts(jobs.data ?? [], [], now).first;
   return (
-    <HomeGlass className='@container flex h-full min-w-0 flex-col'>
+    <HomeGlass
+      ref={ref}
+      data-reveal={played ? 'play' : 'idle'}
+      className='ph-reveal @container flex h-full min-w-0 flex-col'
+    >
       <div className={WIDGET_TITLE_ROW}>
         <HomeWidgetTitle>{copy.inSoftware}</HomeWidgetTitle>
         {first && (
@@ -64,7 +70,7 @@ export function HomeYears() {
       </div>
       <div className={cn(WIDGET_BODY, 'items-center justify-center')}>
         <HomeYearRing years={years} unit={unit}>
-          <HomeWidgetNumber>{years}</HomeWidgetNumber>
+          <HomeWidgetNumber value={years} play={played} />
         </HomeYearRing>
       </div>
     </HomeGlass>

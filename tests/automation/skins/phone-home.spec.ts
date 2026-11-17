@@ -76,6 +76,9 @@ test.describe('the device', () => {
     );
     await page.setViewportSize({ width: 1440, height: 900 });
     await gotoSkin(page, '/');
+    await expect(
+      page.getByRole('heading', { name: 'In software' }),
+    ).toBeVisible();
     const years = await page
       .getByRole('heading', { name: 'In software' })
       .boundingBox();
@@ -261,7 +264,7 @@ test.describe('the cards of the home screen', () => {
       const sizes = await Promise.all(
         [years, projects].map((widget) =>
           widget
-            .locator('p', { hasText: /^\d+$/ })
+            .getByTestId('stat-number')
             .first()
             .evaluate((el) => {
               const style = getComputedStyle(el);
@@ -362,6 +365,283 @@ test.describe('the chips of the technologies', () => {
       );
       expect(new Set(heights).size).toBe(1);
     });
+});
+
+/** Holds every arrival of the stat widgets at its start, so that a test can look at a moment of it (the page is loaded with them paused). */
+const pauseArrivals = (page: Page) =>
+  page.addInitScript(() => {
+    const hold = () => {
+      const style = document.createElement('style');
+      style.textContent =
+        '.ph-arc, .ph-bar { animation-play-state: paused !important; }';
+      document.documentElement.appendChild(style);
+    };
+    if (document.documentElement) hold();
+    else
+      new MutationObserver((_, observer) => {
+        if (!document.documentElement) return;
+        observer.disconnect();
+        hold();
+      }).observe(document, { childList: true });
+  });
+
+/** The animations of the arcs and the bars, as the page has them now. */
+const arrivals = (page: Page) =>
+  page.evaluate(() =>
+    document
+      .getAnimations()
+      .filter(
+        (a) =>
+          a instanceof CSSAnimation &&
+          (a.animationName === 'ph-arc-in' ||
+            a.animationName === 'ph-bar-grow'),
+      )
+      .map((a) => ({
+        name: a instanceof CSSAnimation ? a.animationName : '',
+        time: Number(a.currentTime ?? 0),
+        end: Number(a.effect?.getComputedTiming().endTime ?? 0),
+        state: a.playState,
+      })),
+  );
+
+/** How drawn in each arc is (its opacity) and how grown each bar is (its horizontal scale), and how wide each bar is against its track. */
+const widgetsNow = (page: Page) =>
+  page.evaluate(() => {
+    const arcs = [
+      ...document.querySelectorAll('[data-testid="years-ring"] .ph-arc'),
+    ].map((arc) => Number(getComputedStyle(arc).opacity));
+    const bars = [...document.querySelectorAll('.ph-bar')].map((bar) => {
+      const track = bar.parentElement?.getBoundingClientRect().width ?? 1;
+      return {
+        scale: new DOMMatrix(getComputedStyle(bar).transform).a,
+        share: (bar.getBoundingClientRect().width / track) * 1,
+        width: Number.parseFloat(getComputedStyle(bar).width) / track,
+      };
+    });
+    return { arcs, bars };
+  });
+
+test.describe('the stat widgets arrive', () => {
+  for (const [name, width, height, fold] of HOME_SCREENS.filter(
+    ([, w]) => w !== 320,
+  )) {
+    const show = async (page: Page) => {
+      await page.addInitScript(
+        ([key, state]) => localStorage.setItem(key, state),
+        [FOLD_KEY, fold],
+      );
+      await page.setViewportSize({ width, height });
+    };
+
+    test(`on ${name} the ring has all its arcs and the bars their width when it is over`, async ({
+      page,
+    }) => {
+      await show(page);
+      await gotoSkin(page, '/');
+      await expect(page.getByTestId('years-ring')).toBeVisible();
+      await page.waitForTimeout(2000);
+      const { arcs, bars } = await widgetsNow(page);
+      expect(arcs).toHaveLength(7);
+      for (const opacity of arcs) expect(opacity).toBe(1);
+      expect(bars).toHaveLength(4);
+      for (const bar of bars) {
+        expect(bar.scale).toBeCloseTo(1, 3);
+        // the bar is as wide as its value; the widest fills its track
+        expect(bar.share).toBeCloseTo(bar.width, 2);
+      }
+      expect(Math.max(...bars.map((bar) => bar.share))).toBeCloseTo(1, 2);
+      // the number has counted up to the real one, and a reader got the real one all along
+      await expect(page.getByTestId('stat-number').first()).toContainText('7');
+      const reader = await page
+        .getByTestId('stat-number')
+        .evaluateAll((all) =>
+          all.map((n) => n.querySelector('.sr-only')?.textContent),
+        );
+      expect(reader).toEqual(['7', '10']);
+    });
+
+    test(`on ${name} a moment early in the arrival has the arcs partly drawn and the bars partly grown`, async ({
+      page,
+    }) => {
+      await pauseArrivals(page);
+      await show(page);
+      await gotoSkin(page, '/');
+      await expect(page.getByTestId('years-ring')).toBeVisible();
+      await page.waitForTimeout(500);
+      await page.evaluate(() => {
+        for (const a of document.getAnimations()) a.currentTime = 400;
+      });
+      const { arcs, bars } = await widgetsNow(page);
+      // the first arc is on its way (it began at 160 ms), the last has not begun (580 ms)
+      expect(arcs[0]).toBeGreaterThan(0);
+      expect(arcs[0]).toBeLessThanOrEqual(1);
+      expect(arcs.at(-1)).toBe(0);
+      expect(arcs).toHaveLength(7);
+      // the first bar is part of the way, the last has not begun
+      expect(bars[0].scale).toBeGreaterThan(0);
+      expect(bars[0].scale).toBeLessThan(1);
+      expect(bars.at(-1)?.scale).toBe(0);
+    });
+
+    test(`on ${name} with reduced motion everything is in its final state at once`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await show(page);
+      await gotoSkin(page, '/');
+      await expect(page.getByTestId('years-ring')).toBeVisible();
+      const { arcs, bars } = await widgetsNow(page);
+      expect(arcs).toHaveLength(7);
+      for (const opacity of arcs) expect(opacity).toBe(1);
+      for (const bar of bars) expect(bar.scale).toBeCloseTo(1, 3);
+      expect(await arrivals(page)).toEqual([]);
+      await expect(page.getByTestId('stat-number').first()).toContainText('7');
+    });
+
+    test(`on ${name} it plays once: scrolling away and back does not play it again`, async ({
+      page,
+    }) => {
+      await show(page);
+      await gotoSkin(page, '/');
+      await expect(page.getByTestId('years-ring')).toBeVisible();
+      await page.waitForTimeout(2000);
+      const before = await arrivals(page);
+      expect(before.length).toBeGreaterThan(0);
+      for (const a of before) expect(a.time).toBeGreaterThanOrEqual(a.end);
+      await page.locator('#contact').scrollIntoViewIfNeeded();
+      await page.waitForTimeout(300);
+      await page.getByTestId('years-ring').scrollIntoViewIfNeeded();
+      await page.waitForTimeout(800);
+      const after = await arrivals(page);
+      expect(after).toHaveLength(before.length);
+      for (const a of after) expect(a.time).toBeGreaterThanOrEqual(a.end);
+    });
+  }
+});
+
+test.describe('the technologies of the home screen', () => {
+  for (const [name, width, height, fold] of HOME_SCREENS.filter(
+    ([, w]) => w !== 320,
+  )) {
+    test(`on ${name} the list is folded to its first rows, all of it is one tap away and the hidden chips cannot be reached`, async ({
+      page,
+    }) => {
+      await page.addInitScript(
+        ([key, state]) => localStorage.setItem(key, state),
+        [FOLD_KEY, fold],
+      );
+      await page.setViewportSize({ width, height });
+      await gotoSkin(page, '/');
+      const list = page.locator('#ph-tech-list');
+      const button = page.getByRole('button', { name: /^Show all \d+$/ });
+      await expect(button).toBeVisible();
+      await expect(button).toHaveAttribute('aria-expanded', 'false');
+      await expect(button).toHaveAttribute('aria-controls', 'ph-tech-list');
+      const total = await list.locator('li').count();
+      expect(total).toBeGreaterThan(20);
+      // the number in the button is the number of the skills there are
+      expect(await button.textContent()).toBe(`Show all ${total}`);
+      // three rows of chips, 28 px and 8 px apart (the device is drawn at its own scale)
+      const scale = await page
+        .locator('[data-ph-screen]')
+        .evaluate((el) => el.getBoundingClientRect().width / el.clientWidth);
+      const folded = await list.boundingBox();
+      expect(folded?.height ?? 0).toBeLessThanOrEqual(104 * scale);
+      const hidden = await list.locator('li[inert]').count();
+      expect(hidden).toBeGreaterThan(0);
+      expect(hidden).toBeLessThan(total);
+      // a chip that is folded away is not in the order of the keyboard
+      expect(
+        await list.evaluate((el) =>
+          [...el.querySelectorAll('li[inert]')].every(
+            (li) =>
+              li.matches(':not(:focus-within)') && li.hasAttribute('inert'),
+          ),
+        ),
+      ).toBe(true);
+
+      await button.click();
+      await expect(
+        page.getByRole('button', { name: 'Show less' }),
+      ).toHaveAttribute('aria-expanded', 'true');
+      await page.waitForTimeout(450);
+      expect(await list.locator('li[inert]').count()).toBe(0);
+      const open = await list.boundingBox();
+      expect(open?.height ?? 0).toBeGreaterThan(
+        (folded?.height ?? 0) + 20 * scale,
+      );
+      // every chip is inside the opened list, none of them cut
+      expect(
+        await list.evaluate((el) => {
+          const bottom = el.getBoundingClientRect().bottom;
+          const last = el
+            .querySelector('li:last-child')
+            ?.getBoundingClientRect();
+          return last !== undefined && last.bottom <= bottom + 1;
+        }),
+      ).toBe(true);
+
+      const less = page.getByRole('button', { name: 'Show less' });
+      await less.click();
+      await expect(button).toHaveAttribute('aria-expanded', 'false');
+      await page.waitForTimeout(450);
+      await expect(button).toBeFocused();
+      await expect(button).toBeInViewport();
+      expect((await list.boundingBox())?.height ?? 0).toBeLessThanOrEqual(
+        104 * scale,
+      );
+    });
+  }
+
+  test('speaks Vietnamese', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('bach-cv-lang', 'vi'));
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoSkin(page, '/');
+    await expect(
+      page.getByRole('button', { name: /^Xem tất cả \d+$/ }),
+    ).toBeVisible();
+  });
+});
+
+test.describe('the featured projects of the home screen', () => {
+  for (const [name, width, height, fold] of HOME_SCREENS.filter(
+    ([, w]) => w !== 320,
+  )) {
+    test(`on ${name} a row opens that project in the Projects app, and Back comes to Home`, async ({
+      page,
+    }) => {
+      await page.addInitScript(
+        ([key, state]) => localStorage.setItem(key, state),
+        [FOLD_KEY, fold],
+      );
+      await page.setViewportSize({ width, height });
+      await gotoSkin(page, '/');
+      const rows = page
+        .getByRole('region', { name: 'Featured projects' })
+        .getByRole('listitem')
+        .getByRole('link');
+      const last = rows.last();
+      // an internal link, with the name of the project in it
+      await expect(last).toHaveAttribute('href', /^\/projects\?project=/);
+      const name_ =
+        (await last.locator('span.font-semibold').first().textContent()) ?? '';
+      expect(name_).not.toBe('');
+      await last.focus();
+      await page.keyboard.press('Enter');
+      await expect(page).toHaveURL(/\/projects$/);
+      // the project is open: its name is the title of the detail, which is the only heading of that name
+      await expect(
+        page
+          .getByRole('region', { name: 'Project details' })
+          .getByRole('heading', { name: name_, exact: true }),
+      ).toBeVisible();
+      await page.goBack();
+      await expect(page).toHaveURL(/\/$/);
+      await expect(
+        page.getByRole('heading', { name: 'Featured projects' }),
+      ).toBeVisible();
+    });
+  }
 });
 
 test.describe('the role under the bars', () => {

@@ -18,6 +18,9 @@ export const phoneHomeCopy = defineCopy(
       inSoftware: 'In software',
       /** the name of the group of apps, for assistive technology */
       apps: 'Apps',
+      /** the button that opens the whole list of technologies, and the one that folds it again */
+      techShowAll: 'Show all {count}',
+      techShowLess: 'Show less',
     },
     about: {
       specialties: 'Specialties',
@@ -56,6 +59,8 @@ export const phoneHomeCopy = defineCopy(
       feed: 'Hôm nay',
       inSoftware: 'Trong ngành phần mềm',
       apps: 'Ứng dụng',
+      techShowAll: 'Xem tất cả {count}',
+      techShowLess: 'Thu gọn',
     },
     about: {
       specialties: 'Chuyên môn',

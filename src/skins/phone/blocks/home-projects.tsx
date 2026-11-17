@@ -120,7 +120,11 @@ export function HomeProjects() {
         <ul className='m-0 -mt-1 list-none p-0'>
           {featured.map((project) => {
             const tags = skillsOf(project.technologies, skills);
-            const href = projectHref(project);
+            // with the Projects app on, a row opens that project in it (the links of the project are in its detail); without it the row is what Standard's is
+            const inApp = live.pages.projects === 'on';
+            const href = inApp
+              ? `/projects?project=${encodeURIComponent(project.id)}`
+              : projectHref(project);
             const card = (
               <>
                 <ProjectCover

@@ -3,7 +3,12 @@
  */
 
 import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+import { delayStyle } from '@/skins/phone/blocks/css-vars';
+import { arcDelays } from '@/skins/phone/blocks/reveal-schedule';
 import { RING_RADIUS, arcPath, ringOf } from '@/skins/phone/blocks/year-ring';
+
+import '@/skins/phone/css/stats.css';
 
 /**
  * The ring of the years widget: one arc for each year of the career (the last one, the year I am in, in the full accent and the others a
@@ -21,6 +26,7 @@ export function HomeYearRing({
   children: ReactNode;
 }) {
   const ring = ringOf(years);
+  const delays = arcDelays(Math.max(1, ring.arcs.length));
   return (
     <div className='@container relative aspect-square w-full max-w-36'>
       <svg
@@ -35,18 +41,21 @@ export function HomeYearRing({
             cx='50'
             cy='50'
             r={RING_RADIUS}
-            className='stroke-ph-accent'
+            className='ph-arc stroke-ph-accent'
+            style={delayStyle(delays[0])}
           />
         )}
         {ring.arcs.map((arc, index) => (
           <path
             key={arc.from}
             d={arcPath(arc)}
-            className={
+            className={cn(
+              'ph-arc',
               index === ring.arcs.length - 1
                 ? 'stroke-ph-accent'
-                : 'stroke-ph-accent/75'
-            }
+                : 'stroke-ph-accent/75',
+            )}
+            style={delayStyle(delays[index])}
           />
         ))}
       </svg>
