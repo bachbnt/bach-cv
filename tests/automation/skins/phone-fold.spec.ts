@@ -1871,3 +1871,136 @@ test.describe('the motion of the bars costs little', () => {
       expect(at.filtered).toBe(0);
     });
 });
+
+test.describe('the hinge edges while a fold plays', () => {
+  // The two halves are ONE hinged object: the hinge side of every piece is square, and the rims of the swinging half and of the half that stays meet at the axis,
+  // at the same height and with an overlap of a px, at every angle. The swing is paused at an angle and the browser's own projection says where the rims are.
+  const ANGLES = [120, 135, 150, 165];
+
+  /** Pauses every animation and sets the swing of the left half to `angle` degrees: it grows with the time when it opens and falls with it when it folds. */
+  const atAngle = (page: Page, angle: number, folding: boolean) =>
+    page.evaluate(
+      ([target, reverse]) => {
+        const half = document.querySelector<HTMLElement>('.ph-half-l');
+        if (!half) throw new Error('no half');
+        const animations = document.getAnimations();
+        animations.forEach((animation) => animation.pause());
+        const set = (time: number) =>
+          animations.forEach((animation) => {
+            try {
+              animation.currentTime = time;
+            } catch {
+              /* an animation that cannot be set stays where it is */
+            }
+          });
+        const read = () =>
+          (Math.acos(
+            Math.max(
+              -1,
+              Math.min(1, new DOMMatrix(getComputedStyle(half).transform).m11),
+            ),
+          ) *
+            180) /
+          Math.PI;
+        let low = 0;
+        let high = 380;
+        for (let i = 0; i < 24; i++) {
+          const middle = (low + high) / 2;
+          set(middle);
+          if (read() < target !== reverse) low = middle;
+          else high = middle;
+        }
+        set((low + high) / 2);
+        return read();
+      },
+      [angle, folding] as const,
+    );
+
+  /** Where the rim of the swinging face and the rim of the half that stays end, at the top and at the bottom of the hinge, as the browser draws them. */
+  const rims = (page: Page) =>
+    page.evaluate(() => {
+      const probe = (parent: Element, left: number, top: string) => {
+        const mark = document.createElement('i');
+        mark.style.cssText = `position:absolute;left:${left}px;top:${top};width:1px;height:1px;pointer-events:none`;
+        parent.appendChild(mark);
+        const box = mark.getBoundingClientRect();
+        mark.remove();
+        return { x: box.left, y: box.top };
+      };
+      const stays = document.querySelector('.ph-half-r');
+      const back = document.querySelector('.ph-face-back');
+      const rigBox = document.querySelector('.ph-rig')?.getBoundingClientRect();
+      if (!stays || !back || !rigBox) throw new Error('no halves');
+      const scale = rigBox.width / 1140;
+      // the axis is 10 px in from the edge of the half that stays; the inner face of the swinging half has it 10 px in from its right edge
+      const style = (element: Element) => getComputedStyle(element);
+      return {
+        scale,
+        top: [probe(back, 571, '0px'), probe(stays, 10, '0px')],
+        bottom: [probe(back, 571, '811px'), probe(stays, 10, '811px')],
+        radii: {
+          stays: [
+            style(stays).borderTopLeftRadius,
+            style(stays).borderBottomLeftRadius,
+          ],
+          back: [
+            style(back).borderTopRightRadius,
+            style(back).borderBottomRightRadius,
+          ],
+          front: [
+            style(document.querySelector('.ph-face-front') as Element)
+              .borderTopLeftRadius,
+            style(document.querySelector('.ph-face-front') as Element)
+              .borderBottomLeftRadius,
+          ],
+        },
+        clip: style(back).clipPath,
+      };
+    });
+
+  for (const size of [
+    { width: 1440, height: 900 },
+    { width: 1280, height: 720 },
+  ])
+    for (const folding of [false, true])
+      test(`${size.width}x${size.height}, ${folding ? 'folding' : 'unfolding'}: the rims meet at the hinge at every angle, with a square hinge side`, async ({
+        page,
+      }) => {
+        await page.addInitScript(
+          ([key, value]) => localStorage.setItem(key, value),
+          [FOLD_KEY, folding ? 'open' : 'folded'],
+        );
+        await page.setViewportSize(size);
+        for (const angle of ANGLES) {
+          await gotoSkin(page, '/about');
+          await expect(rig(page)).toHaveAttribute('data-phase', 'idle');
+          await foldButton(page).click();
+          await page.waitForFunction(() =>
+            /swinging|landing|folding/.test(
+              document.querySelector('.ph-rig')?.getAttribute('data-phase') ??
+                '',
+            ),
+          );
+          const got = await atAngle(page, angle, folding);
+          expect(Math.abs(got - angle)).toBeLessThan(1);
+          const at = await rims(page);
+          for (const [index, place] of ['top', 'bottom'].entries()) {
+            const [swinging, staying] = place === 'top' ? at.top : at.bottom;
+            // the same height (a step needs depth, and the rims meet at the axis), and no gap or overlap of more than a few px across the hinge
+            expect(
+              Math.abs(swinging.y - staying.y) / at.scale,
+              `${place} rims at ${angle} degrees`,
+            ).toBeLessThan(0.6);
+            expect(
+              Math.abs(swinging.x - staying.x) / at.scale,
+              `${place} hinge at ${angle} degrees (${index})`,
+            ).toBeLessThan(3);
+          }
+          // the hinge side is square on every piece, and the swinging half is cut 1 px past the axis (an overlap of a px, never a gap)
+          expect(at.radii.stays).toEqual(['0px', '0px']);
+          expect(at.radii.back).toEqual(['0px', '0px']);
+          expect(at.radii.front).toEqual(['0px', '0px']);
+          expect(at.clip).toBe('inset(0px 9px 0px 0px)');
+        }
+      });
+});

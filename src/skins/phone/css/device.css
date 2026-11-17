@@ -105,12 +105,32 @@
 .ph-open-body::before {
   border-radius: 34px;
 }
+/* While a fold plays the two halves are ONE hinged object, so the hinge side of every piece of it is SQUARE (a rounded corner there would be a hook at the
+   top and the bottom of the hinge, where the rim of one half has to meet the rim of the other). The swinging half and the half that stays are cut at the hinge:
+   the swinging one 1 px past the axis it turns about (the faces are 580 px wide with the axis 10 px in; the cut is at 9), so its rim ends at the axis, where it
+   is at the same height as the rim of the other half whatever the angle (a perspective step needs depth, and there is none at the axis), and overlaps it by
+   a px, so that no hairline of the ground shows between them; the half that stays goes 10 px past the axis under it. The cover at rest (and while it slides) keeps its
+   almost square corners: it is a device of its own, and the half that stays is the same object at rest, so it is square only while a fold plays. */
+.ph-rig[data-phase]:not([data-phase='idle']) .ph-half-r {
+  border-radius: 0 44px 44px 0;
+}
+.ph-rig[data-phase]:not([data-phase='idle']) .ph-half-r::before {
+  border-radius: 0 34px 34px 0;
+}
+.ph-face-front {
+  border-radius: 0 44px 44px 0;
+  clip-path: inset(0 0 0 9px);
+}
+.ph-face-front::before {
+  border-radius: 0 34px 34px 0;
+}
 .ph-face-back {
   /* the inner face of the cover half, which lands on the left: its hinge side is the right one */
-  border-radius: 44px 8px 8px 44px;
+  border-radius: 44px 0 0 44px;
+  clip-path: inset(0 9px 0 0);
 }
 .ph-face-back::before {
-  border-radius: 34px 4px 4px 34px;
+  border-radius: 34px 0 0 34px;
 }
 
 /* the floor: a contact shadow, tight and dark, and a wider haze, drawn once as gradients; they belong to the slabs that stay on the table */
