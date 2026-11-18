@@ -117,7 +117,7 @@ test.describe('notes', () => {
     await expect(
       page.getByText('Own delivery of the FPT-scope functions'),
     ).toBeVisible();
-    await expect(page.getByText('EasyGDS')).toHaveCount(0);
+    await expect(page.getByText('Altovo')).toHaveCount(0);
 
     const second = notes.nth(1);
     const button = second.getByRole('button', {

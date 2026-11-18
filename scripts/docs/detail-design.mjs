@@ -452,7 +452,7 @@ npm run test:automation          # PW_CHANNEL=chrome uses an installed Chrome`)}
 <div class="card"><h3>Known limits</h3><ul>
 <li>The static HTML (search results, link previews) carries English titles and descriptions; only the tab title follows the language.</li>
 <li>The illustrations on the Services page keep their own colours in dark mode (they are drawings of an app window); they sit on a tinted tile.</li>
-<li>The CV and PDF omit hidden roles (TMA, EasyGDS, Freelancer).</li>
+<li>The CV and PDF omit hidden roles (TMA, Altovo, Freelancer).</li>
 <li>Switches fall back to "on" while loading, so a maintenance screen can appear a moment after the content.</li>
 <li>No Firestore emulator run for the rules; they are checked against the real project.</li>
 <li>The Gemini key in the Worker is currently invalid, so the chat depends on the Workers AI daily allowance; its small free models answer Vietnamese less well than Gemini.</li>
