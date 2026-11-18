@@ -98,6 +98,8 @@ export const EXPERIENCE_KINDS = [
 ] as const;
 /** how an entry appears in the generated CV PDF */
 export const CV_MODES = ['full', 'compact', 'off'] as const;
+/** how a project or a certificate appears in the CV: they have nothing to shorten, so no `compact` */
+export const CV_SWITCH = ['full', 'off'] as const;
 
 export const experienceProjectSchema = z.object({
   name: text,
@@ -228,6 +230,7 @@ export const projectSchema = z.object({
     )
     .default([]),
   links: z.array(projectLinkSchema).default([]),
+  cv: z.enum(CV_SWITCH).default('full'),
   l10n: l10nOf({ summary: z.string() }),
 });
 export type Project = z.output<typeof projectSchema>;
@@ -245,6 +248,7 @@ export const certificateSchema = z.object({
   credentialUrl: text,
   /** what the certificate covers, shown as tags */
   skills: skillIds,
+  cv: z.enum(CV_SWITCH).default('full'),
   l10n: l10nOf({ name: z.string() }),
 });
 export type Certificate = z.output<typeof certificateSchema>;

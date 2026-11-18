@@ -184,6 +184,23 @@ describe('buildCv', () => {
     );
   });
 
+  it('leaves out certificates and projects whose cv mode is off', () => {
+    const data = input();
+    const cert = data.certificates[0];
+    const project = data.projects[0];
+    data.certificates = data.certificates.map((c) =>
+      c.id === cert.id ? { ...c, cv: 'off' } : c,
+    );
+    data.projects = data.projects.map((p) =>
+      p.id === project.id ? { ...p, cv: 'off' } : p,
+    );
+    const cv = build(data);
+    expect(cv.certificates).toHaveLength(data.certificates.length - 1);
+    expect(cv.certificates.some((c) => c.id === cert.id)).toBe(false);
+    expect(cv.projects).toHaveLength(data.projects.length - 1);
+    expect(cv.projects.some((p) => p.id === project.id)).toBe(false);
+  });
+
   it('groups only listed skills by category, in sort order', () => {
     const groups = build(input()).skills;
     expect(groups.map((g) => g.id)).toEqual(['mobile', 'web', 'ai', 'tools']);

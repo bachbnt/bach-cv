@@ -1342,6 +1342,7 @@
     "bachbntdev": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "sort": 70,
       "name": "bachbntdev",
       "kind": "personal",
@@ -1384,6 +1385,7 @@
     "beli-coffee": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "sort": 10,
       "name": "Beli Coffee",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/belicoffee.webp",
@@ -1411,6 +1413,7 @@
     "comchay-rop": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "sort": 90,
       "name": "Com Chay Rop",
       "kind": "freelance",
@@ -1436,6 +1439,7 @@
     },
     "devcmd": {
       "visible": true,
+      "cv": "full",
       "sort": 20,
       "name": "DevCmd",
       "kind": "personal",
@@ -1476,6 +1480,7 @@
     "devpad": {
       "visible": true,
       "highlight": 3,
+      "cv": "full",
       "sort": 30,
       "name": "DevPad",
       "kind": "personal",
@@ -1520,6 +1525,7 @@
     "finhub": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "sort": 50,
       "name": "FinHub MCP",
       "kind": "personal",
@@ -1553,6 +1559,7 @@
     },
     "goodmorningcoffeetea": {
       "highlight": null,
+      "cv": "full",
       "sort": 100,
       "name": "Good Morning Coffee & Tea",
       "kind": "freelance",
@@ -1580,6 +1587,7 @@
     "jp-marugoto": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "sort": 110,
       "name": "JP Marugoto",
       "kind": "personal",
@@ -1615,6 +1623,7 @@
     "pc-dashboard": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "sort": 40,
       "name": "P&C Dashboard",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/pcdashboard.webp",
@@ -1635,6 +1644,7 @@
     "venus-ai": {
       "visible": true,
       "highlight": 1,
+      "cv": "full",
       "sort": 80,
       "name": "VenusAI",
       "kind": "freelance",
@@ -1669,6 +1679,7 @@
     "yoga-lasyn": {
       "visible": true,
       "highlight": 2,
+      "cv": "full",
       "sort": 60,
       "name": "Yoga Lasyn",
       "kind": "freelance",
@@ -1704,6 +1715,7 @@
     "claude-architect": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "name": "Claude Certified Architect - Professional",
       "issuer": "Anthropic",
       "issuedAt": "2026-10-31",
@@ -1716,6 +1728,7 @@
     "google-ai": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "name": "Google AI Professional Certificate",
       "issuer": "Google / Coursera",
       "issuedAt": "2026-04-30",
@@ -1728,6 +1741,7 @@
     "google-pm": {
       "visible": true,
       "highlight": null,
+      "cv": "full",
       "name": "Google Project Management Professional Certificate",
       "issuer": "Google / Coursera",
       "issuedAt": "2026-05-01",

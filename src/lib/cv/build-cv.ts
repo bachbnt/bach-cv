@@ -99,7 +99,7 @@ const rank = (highlight: number | null) =>
  * `copy` and `lang` give the interface words and the date format. The browser can only read documents marked `visible`,
  * so anything hidden in the data never reaches the CV either.
  * `experience.cv` and `education.cv` decide how much of an entry is printed: full, compact (no summary,
- * no responsibilities, only highlighted projects described) or off.
+ * no responsibilities, only highlighted projects described) or off. `projects.cv` and `certificates.cv` are full or off.
  */
 export const buildCv = (input: CvInput, copy: CvCopy, lang: Lang): CvModel => {
   const skillName = new Map(input.skills.map((s) => [s.id, s.name]));
@@ -162,7 +162,7 @@ export const buildCv = (input: CvInput, copy: CvCopy, lang: Lang): CvModel => {
   }));
 
   const certificates = issuedNewestFirst(
-    input.certificates.filter((c) => c.visible),
+    input.certificates.filter((c) => c.visible && c.cv !== 'off'),
   ).map((c) => ({
     id: c.id,
     date: formatMonth(c.issuedAt, lang),
@@ -179,7 +179,7 @@ export const buildCv = (input: CvInput, copy: CvCopy, lang: Lang): CvModel => {
   })).filter((group) => group.skills.length > 0);
 
   const projects = input.projects
-    .filter((p) => p.visible)
+    .filter((p) => p.visible && p.cv !== 'off')
     .sort((a, b) => a.sort - b.sort || a.id.localeCompare(b.id))
     .map((p): CvProjectItem => ({
       id: p.id,

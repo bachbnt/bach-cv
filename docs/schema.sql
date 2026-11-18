@@ -104,6 +104,7 @@ CREATE TABLE projects (
   end_month   TEXT,
   visible     INTEGER NOT NULL DEFAULT 1,
   highlight   INTEGER,
+  cv          TEXT NOT NULL DEFAULT 'full' CHECK (cv IN ('full', 'off')),
   sort        INTEGER NOT NULL DEFAULT 0
 );
 CREATE TABLE project_image (
@@ -141,7 +142,8 @@ CREATE TABLE certificates (
   pdf_url        TEXT NOT NULL DEFAULT '',
   credential_url TEXT NOT NULL DEFAULT '',
   visible        INTEGER NOT NULL DEFAULT 1,
-  highlight      INTEGER
+  highlight      INTEGER,
+  cv             TEXT NOT NULL DEFAULT 'full' CHECK (cv IN ('full', 'off'))
 );
 CREATE TABLE certificate_skill (
   certificate_id TEXT NOT NULL REFERENCES certificates (id) ON DELETE CASCADE,

@@ -27,7 +27,7 @@ const FIELD_NOTES = {
   projectId: 'Optional id of a document in <code>projects</code>.',
   listed: 'false: a tag only, not shown as a chip in the Skills section.',
   category: 'Colours the skill: ai, mobile, web or tools.',
-  cv: 'How the entry appears in the CV: full, compact or off.',
+  cv: 'How the entry appears in the CV: full, compact or off. A project and a certificate have only full or off.',
   shortName: 'Short label used in "Used at FPT · MoMo".',
   tagline: 'One line shown on the Home page and in lists.',
   issuedAt: 'Issue date, <code>YYYY-MM-DD</code>.',

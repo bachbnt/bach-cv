@@ -38,11 +38,11 @@ const CARDS = {
     f('startMonth', 'YYYY-MM | null'), f('endMonth', 'YYYY-MM | null'), f('technologies', 'skill id[]', 'skills'),
     f('platforms', 'mobile|web|desktop|ai[]'),
     f('links', 'object[]'), f('label', '', '', true), f('url', '', '', true), f('kind', '', '', true),
-    ...SHARED, f('sort', 'int'), f('l10n', '{ summary }'),
+    ...SHARED, f('cv', 'full|off'), f('sort', 'int'), f('l10n', '{ summary }'),
   ] },
   certificates: { x: 920, y: 520, w: 290, layer: 'runtime', sql: 'certificates + 1 child table', fields: [
     f('id', 'PK slug'), f('name'), f('issuer'), f('issuedAt', 'YYYY-MM-DD'), f('image'), f('pdfUrl'), f('credentialUrl'),
-    f('skills', 'skill id[]', 'skills'), ...SHARED, f('l10n', '{ name }'),
+    f('skills', 'skill id[]', 'skills'), ...SHARED, f('cv', 'full|off'), f('l10n', '{ name }'),
   ] },
   services: { x: 1660, y: 70, w: 290, layer: 'runtime', sql: 'services', fields: [
     f('id', 'PK slug'), f('name'), f('description'), f('art', 'app|web|oss|...'), f('starter'), ...SHARED, f('sort', 'int'),
