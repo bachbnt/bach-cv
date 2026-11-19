@@ -18,12 +18,14 @@ import type { CvModel, CvRole } from '@/lib/cv/build-cv';
 import { CONTACT_ICON_PATHS } from '@/lib/cv/icon-paths';
 
 // Loaded by URL from /public/fonts, only when the PDF is created. NotoSans covers Vietnamese.
+// `scripts/cv-pdf.mjs` makes the PDF in Node, where the fonts are files: it sets CV_FONT_DIR to that folder.
+const FONT_DIR = process.env.CV_FONT_DIR ?? '/fonts';
 Font.register({
   family: 'NotoSans',
   fonts: [
-    { src: '/fonts/NotoSans-Regular.ttf', fontWeight: 400 },
-    { src: '/fonts/NotoSans-Bold.ttf', fontWeight: 700 },
-    { src: '/fonts/NotoSans-Italic.ttf', fontStyle: 'italic' },
+    { src: `${FONT_DIR}/NotoSans-Regular.ttf`, fontWeight: 400 },
+    { src: `${FONT_DIR}/NotoSans-Bold.ttf`, fontWeight: 700 },
+    { src: `${FONT_DIR}/NotoSans-Italic.ttf`, fontStyle: 'italic' },
   ],
 });
 Font.registerHyphenationCallback((word) => [word]);

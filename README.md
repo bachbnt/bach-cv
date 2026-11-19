@@ -111,6 +111,7 @@ npm run dev                  # http://localhost:3000
 | `npm run backup:firestore`            | download every v2 collection into `backup/`                                               |
 | `npm run restore:firestore -- <file>` | plan (add `--apply` to write) a restore from a backup                                     |
 | `npm run sync:fixture`                | refresh `tests/fixtures/seed.json` from the latest backup (payment numbers are replaced)  |
+| `npm run cv:pdf`                      | make the CV PDF locally from `local/cv-seed.json` (see `scripts/cv-pdf.mjs`)              |
 | `npm run docs`                        | rebuild `docs/data-design.html` and `docs/detail-design.html`                             |
 
 Before finishing a change: `npm run typecheck && npm run lint && npm run test:unit:run`, and `npm run test:automation` for UI changes.

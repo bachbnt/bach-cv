@@ -20,7 +20,8 @@
     "backup:firestore": "node scripts/firestore-backup.mjs",
     "restore:firestore": "node scripts/firestore-restore.mjs",
     "docs": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --disable-warning=ExperimentalWarning scripts/build-docs.mjs",
-    "sync:fixture": "node scripts/firestore-fixture.mjs"
+    "sync:fixture": "node scripts/firestore-fixture.mjs",
+    "cv:pdf": "node scripts/cv-pdf.mjs"
   },
   "lint-staged": {
     "{src,tests}/**/*.{ts,tsx}": [
