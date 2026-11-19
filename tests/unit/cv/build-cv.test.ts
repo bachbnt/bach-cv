@@ -189,7 +189,8 @@ describe('buildCv', () => {
   it('leaves out certificates and projects whose cv mode is off', () => {
     const data = input();
     const cert = data.certificates[0];
-    const project = data.projects[0];
+    // the first project of the seed may already be off in the CV: take one that is printed
+    const project = data.projects.find((p) => p.cv !== 'off')!;
     data.certificates = data.certificates.map((c) =>
       c.id === cert.id ? { ...c, cv: 'off' } : c,
     );
@@ -199,7 +200,10 @@ describe('buildCv', () => {
     const cv = build(data);
     expect(cv.certificates).toHaveLength(data.certificates.length - 1);
     expect(cv.certificates.some((c) => c.id === cert.id)).toBe(false);
-    expect(cv.projects).toHaveLength(data.projects.length - 1);
+    // `data.projects` already has the project switched off
+    expect(cv.projects).toHaveLength(
+      data.projects.filter((p) => p.cv !== 'off').length,
+    );
     expect(cv.projects.some((p) => p.id === project.id)).toBe(false);
   });
 
@@ -222,8 +226,8 @@ describe('buildCv', () => {
     const devcmd = projects.find((p) => p.id === 'devcmd')!;
     expect(devcmd.period).toBe('Feb 2024 – Present');
     expect(devcmd.technologies).toEqual(['NodeJS', 'MCP']);
-    expect(projects.find((p) => p.id === 'beli-coffee')!.period).toBe(
-      'Sep 2019 – Mar 2022',
+    expect(projects.find((p) => p.id === 'yoga-lasyn')!.period).toBe(
+      'Jan 2021 – Jan 2023',
     );
     // no dates: no period
     expect(projects.find((p) => p.id === 'venus-ai')!.period).toBe('');

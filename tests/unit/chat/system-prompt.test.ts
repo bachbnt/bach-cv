@@ -53,7 +53,12 @@ describe('buildSystemPrompt', () => {
     const hidden = docs('experience').map((e) => ({ ...e, visible: false }));
     const prompt = buildSystemPrompt({ ...context, experience: hidden });
     expect(prompt).not.toContain('## Work Experience');
-    expect(prompt).not.toMatch(/account|payment/i);
+    // the payment methods of the seed (their numbers and holders) never reach the prompt
+    for (const method of docs('payments')) {
+      expect(prompt).not.toContain(method.account);
+      expect(prompt).not.toContain(method.holder);
+    }
+    expect(prompt).not.toContain('## Payment');
   });
 
   it('works with nothing loaded', () => {

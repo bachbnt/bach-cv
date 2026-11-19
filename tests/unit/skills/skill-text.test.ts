@@ -123,6 +123,6 @@ describe('the seed', () => {
     const map = skillEvidence(docs('experience'), docs('projects'));
     expect(map.get('kotlin')).toEqual({ usedAt: ['FPT', 'MoMo'], since: 2022 });
     expect(map.get('python')?.usedAt).toEqual(['FPT', 'Side projects']);
-    expect(map.get('claude-code')?.usedAt).toEqual(['FPT']);
+    expect(map.get('claude-code')?.usedAt).toEqual(['FPT', 'Side projects']);
   });
 });

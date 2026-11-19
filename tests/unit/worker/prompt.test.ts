@@ -192,8 +192,11 @@ describe('buildPrompt from Firestore documents', () => {
   });
 
   it('leaves out an item that is switched off', async () => {
-    const [key] = Object.keys(seed.experience);
-    const { company } = seed.experience[key] as { company: string };
+    // the first role of the seed may be hidden itself: take one that is shown
+    const [key, role] = Object.entries(seed.experience).find(
+      ([, e]) => (e as { visible: boolean }).visible,
+    )!;
+    const { company } = role as { company: string };
     expect(promptFromSeed('en')).toContain(`- ${company} |`);
     vi.stubGlobal('fetch', firestoreFor([`experience/${key}`]));
     const { prompt } = await buildPrompt(env, 'en');

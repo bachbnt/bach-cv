@@ -20,6 +20,23 @@
         "message": "",
         "l10n": {},
         "enabled": false
+      },
+      "prefs": {
+        "language": {
+          "force": "",
+          "default": "",
+          "off": []
+        },
+        "theme": {
+          "force": "",
+          "default": "",
+          "off": []
+        },
+        "skin": {
+          "off": [],
+          "default": "",
+          "force": ""
+        }
       }
     },
     "profile": {
@@ -74,26 +91,26 @@
     },
     "shell": {
       "name": "Bach Bui",
+      "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.webp",
+      "defaultLanguage": "en",
+      "languages": ["en", "vi"],
+      "ogImage": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
       "alternateNames": [
         "Bùi Ngô Tôn Bách",
         "Bách Bùi",
         "Tôn Bách",
         "Bách Dev"
       ],
-      "avatar": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.webp",
-      "defaultLanguage": "en",
-      "languages": ["en", "vi"],
-      "ogImage": "https://raw.githubusercontent.com/bachbnt/assets/main/profile/avatar.jpeg",
+      "headline": "Software Engineer",
+      "seoTitle": "Bach Bui - Software Engineer",
       "l10n": {
         "vi": {
-          "seoDescription": "Bach Bui (Bùi Ngô Tôn Bách, Bách Bùi, Tôn Bách, Bách Dev): Team Lead tại FPT Software với 7 năm làm việc trong ngành phần mềm, dẫn dắt 10 lập trình viên và xây dựng công cụ AI.",
+          "headline": "Kỹ sư phần mềm",
           "seoTitle": "Bach Bui - Kỹ sư phần mềm",
-          "headline": "Kỹ sư phần mềm"
+          "seoDescription": "Bach Bui (Bùi Ngô Tôn Bách, Bách Bùi, Tôn Bách, Bách Dev): Team Lead tại FPT Software với 7 năm làm việc trong ngành phần mềm, dẫn dắt 10 lập trình viên và xây dựng công cụ AI."
         }
       },
-      "seoDescription": "Bach Bui (Bùi Ngô Tôn Bách, Bách Bùi, Tôn Bách, Bách Dev): Team Lead at FPT Software with 7 years in software, leading 10 developers and building AI tooling.",
-      "seoTitle": "Bach Bui - Software Engineer",
-      "headline": "Software Engineer"
+      "seoDescription": "Bach Bui (Bùi Ngô Tôn Bách, Bách Bùi, Tôn Bách, Bách Dev): Team Lead at FPT Software with 7 years in software, leading 10 developers and building AI tooling."
     }
   },
   "skills": {
@@ -863,6 +880,30 @@
     }
   },
   "experience": {
+    "altovo": {
+      "visible": false,
+      "highlight": null,
+      "role": "Frontend Developer",
+      "kind": "full-time",
+      "startMonth": "2024-03",
+      "summary": "Developing websites",
+      "tagline": "",
+      "team": "",
+      "logo": "",
+      "bullets": [],
+      "technologies": [],
+      "projects": [],
+      "cv": "off",
+      "l10n": {
+        "vi": {
+          "role": "Lập trình viên Frontend",
+          "summary": "Phát triển website"
+        }
+      },
+      "company": "Altovo (EasyGDS)",
+      "shortName": "Altovo",
+      "endMonth": "2026-06"
+    },
     "american-code-lab": {
       "visible": true,
       "highlight": null,
@@ -992,30 +1033,6 @@
               "projectId": ""
             }
           ]
-        }
-      }
-    },
-    "altovo": {
-      "visible": false,
-      "highlight": null,
-      "company": "Altovo (EasyGDS)",
-      "shortName": "Altovo",
-      "role": "Frontend Developer",
-      "kind": "full-time",
-      "startMonth": "2024-03",
-      "endMonth": "2026-06",
-      "summary": "Developing websites",
-      "tagline": "",
-      "team": "",
-      "logo": "",
-      "bullets": [],
-      "technologies": [],
-      "projects": [],
-      "cv": "off",
-      "l10n": {
-        "vi": {
-          "role": "Lập trình viên Frontend",
-          "summary": "Phát triển website"
         }
       }
     },
@@ -1339,31 +1356,45 @@
     }
   },
   "projects": {
-    "bachbntdev": {
+    "altovo": {
       "visible": true,
       "highlight": null,
       "cv": "full",
+      "sort": 130,
+      "kind": "company",
+      "startMonth": "2024-03",
+      "technologies": ["vuejs"],
+      "platforms": ["web"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://altovo.com/",
+          "kind": "site"
+        }
+      ],
+      "summary": "A travel commerce platform that airlines and travel agents use to sell flights, hotels, tours, transfers and cars under their own brand, with booking engines, agent networks, payments and loyalty. I build its web frontends with Vue.",
+      "l10n": {
+        "vi": {
+          "summary": "Nền tảng thương mại du lịch để hãng hàng không và đại lý bán vé máy bay, khách sạn, tour, đưa đón và thuê xe dưới thương hiệu riêng, gồm booking engine, mạng đại lý, thanh toán và loyalty. Tôi phát triển các giao diện web của nền tảng bằng Vue."
+        }
+      },
+      "name": "Altovo (EasyGDS)",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/altovo/altovo.webp",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/altovo/01.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/altovo/02.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/altovo/03.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/altovo/04.webp"
+      ],
+      "endMonth": "2026-06"
+    },
+    "bachbntdev": {
+      "visible": true,
       "sort": 70,
       "name": "bachbntdev",
       "kind": "personal",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.webp",
-      "images": [
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.webp",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/01.webp",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/02.webp",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/03.webp",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/04.webp",
-        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/05.webp"
-      ],
-      "startMonth": null,
       "endMonth": null,
-      "links": [
-        {
-          "label": "Website",
-          "url": "https://bachbntdev.web.app/",
-          "kind": "site"
-        }
-      ],
       "technologies": [
         "nextjs",
         "reactjs",
@@ -1372,26 +1403,47 @@
         "shadcn-ui",
         "tanstack-query",
         "zod",
-        "firebase"
+        "firebase",
+        "claude-code"
       ],
-      "platforms": ["web", "ai"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://bachbntdev.web.app/",
+          "kind": "site"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/bachbnt/bach-cv",
+          "kind": "github"
+        }
+      ],
       "summary": "My portfolio and CV in five skins: Standard, Dev, Trade, Academic and Travel. One set of content, five different interfaces, in English and Vietnamese, with BB Bot, an AI chat assistant, and a CV that downloads as a PDF. Light by design: each skin loads only when it is chosen.",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/01.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/02.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/03.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/04.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/bachbntdev/05.webp"
+      ],
       "l10n": {
         "vi": {
           "summary": "Trang portfolio và CV của mình với năm skin: Standard, Dev, Trade, Academic và Travel. Cùng một nội dung, năm giao diện khác nhau, có tiếng Anh và tiếng Việt, kèm BB Bot (trợ lý chat AI) và CV tải về dạng PDF. Nhẹ ngay từ thiết kế: mỗi skin chỉ được tải khi chọn."
         }
-      }
+      },
+      "platforms": ["web", "ai"],
+      "cv": "full",
+      "highlight": 2,
+      "startMonth": "2021-04"
     },
     "beli-coffee": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "sort": 10,
       "name": "Beli Coffee",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/belicoffee.webp",
       "images": [],
-      "startMonth": "2019-09",
-      "endMonth": "2022-03",
       "technologies": [
         "android",
         "nodejs",
@@ -1400,7 +1452,6 @@
         "webrtc",
         "socketio"
       ],
-      "platforms": ["mobile"],
       "links": [],
       "summary": "An Android app for ordering coffee, built with a Node.js and MongoDB backend and Firebase.",
       "l10n": {
@@ -1408,21 +1459,21 @@
           "summary": "Ứng dụng Android đặt cà phê, xây dựng với backend Node.js và MongoDB cùng Firebase."
         }
       },
-      "kind": "freelance"
+      "platforms": ["mobile"],
+      "cv": "off",
+      "kind": "academic",
+      "startMonth": "2019-06",
+      "endMonth": "2019-09"
     },
     "comchay-rop": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "sort": 90,
       "name": "Com Chay Rop",
       "kind": "freelance",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/comchayrop.webp",
       "images": [],
-      "startMonth": "2022-03",
-      "endMonth": "2022-08",
       "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
-      "platforms": ["web"],
       "links": [
         {
           "label": "Website",
@@ -1435,18 +1486,20 @@
         "vi": {
           "summary": "Website bán đồ ăn vặt kèm trang quản trị, xây dựng bằng React, Material UI, Redux và Node.js."
         }
-      }
+      },
+      "startMonth": "2022-03",
+      "endMonth": "2022-08",
+      "platforms": ["web"],
+      "cv": "full"
     },
     "devcmd": {
       "visible": true,
-      "cv": "full",
       "sort": 20,
       "name": "DevCmd",
       "kind": "personal",
       "startMonth": "2024-02",
       "endMonth": null,
       "technologies": ["nodejs", "mcp"],
-      "platforms": ["desktop", "ai"],
       "links": [
         {
           "label": "GitHub",
@@ -1475,19 +1528,19 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/devcmd/06.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/devcmd/07.webp"
       ],
-      "highlight": 4
+      "highlight": 4,
+      "platforms": ["desktop", "ai"],
+      "cv": "full"
     },
     "devpad": {
       "visible": true,
       "highlight": 3,
-      "cv": "full",
       "sort": 30,
       "name": "DevPad",
       "kind": "personal",
       "startMonth": "2026-05",
       "endMonth": null,
       "technologies": ["swift", "swiftui", "appkit", "macos"],
-      "platforms": ["desktop"],
       "links": [
         {
           "label": "GitHub",
@@ -1520,19 +1573,19 @@
         "vi": {
           "summary": "Ứng dụng macOS native trên thanh menu, giúp các công cụ hằng ngày của lập trình viên nằm trong tầm một cú nhấp: định dạng JSON, XML và SQL, phân tích URL, tạo và quét QR, giải mã, ký và xác minh JWT, thử Regex, tạo Hash (8 thuật toán), so sánh Diff, lịch sử Clipboard với Pure Paste và Drop Shelf để kéo thả hàng loạt tệp. Có tiếng Anh và tiếng Việt."
         }
-      }
+      },
+      "platforms": ["desktop"],
+      "cv": "full"
     },
     "finhub": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "sort": 50,
       "name": "FinHub MCP",
       "kind": "personal",
       "startMonth": "2026-05",
       "endMonth": null,
       "technologies": ["python", "mcp", "vnstock", "ccxt"],
-      "platforms": ["ai"],
       "links": [
         {
           "label": "GitHub",
@@ -1555,20 +1608,18 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/finhub/05.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/finhub/06.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/finhub/07.webp"
-      ]
+      ],
+      "platforms": ["ai"],
+      "cv": "full"
     },
     "goodmorningcoffeetea": {
       "highlight": null,
-      "cv": "full",
       "sort": 100,
       "name": "Good Morning Coffee & Tea",
       "kind": "freelance",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/goodmorningcoffeetea.webp",
       "images": [],
-      "startMonth": "2022-07",
-      "endMonth": "2022-08",
       "technologies": ["reactjs", "material-ui", "redux", "nodejs"],
-      "platforms": ["web"],
       "links": [
         {
           "label": "Website",
@@ -1582,27 +1633,22 @@
         "vi": {
           "summary": "Website bán đồ uống kèm trang quản trị, xây dựng bằng React, Material UI, Redux và Node.js."
         }
-      }
+      },
+      "startMonth": "2022-07",
+      "endMonth": "2022-08",
+      "platforms": ["web"],
+      "cv": "off"
     },
     "jp-marugoto": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "sort": 110,
-      "name": "JP Marugoto",
       "kind": "personal",
       "startMonth": "2026-11",
       "endMonth": null,
-      "technologies": ["angular", "typescript", "tailwindcss", "firebase"],
-      "platforms": ["web"],
-      "links": [
-        {
-          "label": "Website",
-          "url": "https://jp-marugoto.web.app/",
-          "kind": "site"
-        }
-      ],
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/jpmarugoto.webp",
+      "summary": "A web app for learning Japanese with the Marugoto A1 textbook: lessons, spaced-repetition review, flashcards, quizzes, listening and handwriting practice, with progress that syncs across devices. Built with Angular, Tailwind CSS and Firebase, and installable as an offline app.",
+      "technologies": ["angular", "typescript", "tailwindcss", "firebase"],
       "images": [
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/01.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/02.webp",
@@ -1613,25 +1659,30 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/07.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/jpmarugoto/08.webp"
       ],
-      "summary": "A web app for learning Japanese with the Marugoto A1 textbook: lessons, spaced-repetition review, flashcards, quizzes, listening and handwriting practice, with progress that syncs across devices. Built with Angular, Tailwind CSS and Firebase, and installable as an offline app.",
       "l10n": {
         "vi": {
           "summary": "Web học tiếng Nhật theo giáo trình Marugoto A1: bài học, ôn tập lặp lại ngắt quãng, thẻ ghi nhớ, trắc nghiệm, luyện nghe và luyện viết, tiến độ đồng bộ giữa các thiết bị. Xây dựng bằng Angular, Tailwind CSS và Firebase, cài được như ứng dụng dùng offline."
         }
-      }
+      },
+      "name": "JP Marugoto",
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://jp-marugoto.web.app/",
+          "kind": "site"
+        }
+      ],
+      "platforms": ["web"],
+      "cv": "full"
     },
     "pc-dashboard": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "sort": 40,
       "name": "P&C Dashboard",
       "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/pcdashboard.webp",
       "images": [],
-      "startMonth": "2022-03",
-      "endMonth": "2022-03",
       "technologies": ["flutter", "bloc", "react-native", "redux"],
-      "platforms": ["mobile"],
       "links": [],
       "summary": "An internal social network app, built with Flutter and BLoC and with React Native and Redux.",
       "l10n": {
@@ -1639,12 +1690,52 @@
           "summary": "Ứng dụng mạng xã hội nội bộ, xây dựng bằng Flutter với BLoC và bằng React Native với Redux."
         }
       },
-      "kind": "freelance"
+      "platforms": ["mobile"],
+      "cv": "off",
+      "kind": "academic",
+      "startMonth": "2019-12",
+      "endMonth": "2020-02"
+    },
+    "stock-prediction-msc": {
+      "visible": true,
+      "sort": 120,
+      "name": "Stock Prediction",
+      "kind": "academic",
+      "endMonth": "2023-06",
+      "technologies": ["python", "keras", "lstm", "matplotlib", "vnstock"],
+      "platforms": ["ai"],
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/bachbnt/stock-prediction-msc",
+          "kind": "github"
+        },
+        {
+          "label": "Thesis",
+          "url": "http://ir.vnulib.edu.vn/handle/VNUHCM/31347",
+          "kind": "other"
+        }
+      ],
+      "summary": "My master's thesis: predicting the next-day return of eight Vietnamese HOSE stocks with LSTM, BiLSTM, CNN-LSTM and other deep models in Python and Keras. The models are tested with walk-forward validation over several years and seeds, compared with random-walk, drift and ARIMA baselines, checked for significance with the Diebold-Mariano test, and backtested after HOSE costs, T+2 settlement and the ±7% price band.",
+      "l10n": {
+        "vi": {
+          "summary": "Đồ án thạc sĩ của tôi: dự đoán lợi suất ngày kế tiếp của tám cổ phiếu HOSE bằng LSTM, BiLSTM, CNN-LSTM và các mô hình học sâu khác, viết bằng Python và Keras. Các mô hình được kiểm tra bằng walk-forward qua nhiều năm và nhiều seed, so với các mô hình cơ sở random walk, drift và ARIMA, kiểm định ý nghĩa thống kê bằng Diebold-Mariano, và backtest sau chi phí giao dịch HOSE, thanh toán T+2 và biên độ giá ±7%."
+        }
+      },
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/stockprediction/stockprediction.webp",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/stockprediction/01.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/stockprediction/02.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/stockprediction/03.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/stockprediction/04.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/stockprediction/05.webp"
+      ],
+      "cv": "full",
+      "highlight": 1,
+      "startMonth": "2022-01"
     },
     "venus-ai": {
       "visible": true,
-      "highlight": 1,
-      "cv": "full",
       "sort": 80,
       "name": "VenusAI",
       "kind": "freelance",
@@ -1658,10 +1749,7 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/06.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/venusai/07.webp"
       ],
-      "startMonth": "2022-12",
-      "endMonth": "2024-04",
       "technologies": ["flutter", "firebase"],
-      "platforms": ["mobile", "ai"],
       "links": [
         {
           "label": "Website",
@@ -1674,12 +1762,15 @@
         "vi": {
           "summary": "Ứng dụng tạo avatar bằng AI, xây dựng bằng Flutter và Firebase."
         }
-      }
+      },
+      "highlight": null,
+      "platforms": ["mobile", "ai"],
+      "startMonth": "2022-12",
+      "endMonth": "2024-04",
+      "cv": "full"
     },
     "yoga-lasyn": {
       "visible": true,
-      "highlight": 2,
-      "cv": "full",
       "sort": 60,
       "name": "Yoga Lasyn",
       "kind": "freelance",
@@ -1692,10 +1783,7 @@
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/05.webp",
         "https://raw.githubusercontent.com/bachbnt/assets/main/project/yogalasyn/06.webp"
       ],
-      "startMonth": "2021-01",
-      "endMonth": "2023-01",
       "technologies": ["flutter", "provider", "bloc", "firebase"],
-      "platforms": ["mobile"],
       "links": [
         {
           "label": "Website",
@@ -1708,14 +1796,18 @@
         "vi": {
           "summary": "Ứng dụng dạy yoga xây dựng bằng Flutter và Firebase."
         }
-      }
+      },
+      "highlight": null,
+      "startMonth": "2021-01",
+      "platforms": ["mobile"],
+      "endMonth": "2023-01",
+      "cv": "full"
     }
   },
   "certificates": {
     "claude-architect": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "name": "Claude Certified Architect - Professional",
       "issuer": "Anthropic",
       "issuedAt": "2026-10-31",
@@ -1723,12 +1815,12 @@
       "pdfUrl": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/certificate/claude-architect.pdf",
       "credentialUrl": "",
       "skills": ["claude-code", "mcp", "ai-agents"],
-      "l10n": {}
+      "l10n": {},
+      "cv": "full"
     },
     "google-ai": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "name": "Google AI Professional Certificate",
       "issuer": "Google / Coursera",
       "issuedAt": "2026-04-30",
@@ -1736,12 +1828,12 @@
       "pdfUrl": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/certificate/google-ai.pdf",
       "credentialUrl": "",
       "skills": ["generative-ai", "prompt-design", "responsible-ai"],
-      "l10n": {}
+      "l10n": {},
+      "cv": "full"
     },
     "google-pm": {
       "visible": true,
       "highlight": null,
-      "cv": "full",
       "name": "Google Project Management Professional Certificate",
       "issuer": "Google / Coursera",
       "issuedAt": "2026-05-01",
@@ -1749,7 +1841,8 @@
       "pdfUrl": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/certificate/google-pm.pdf",
       "credentialUrl": "",
       "skills": ["project-planning", "agile", "risk-management"],
-      "l10n": {}
+      "l10n": {},
+      "cv": "full"
     }
   },
   "services": {
