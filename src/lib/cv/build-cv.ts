@@ -8,13 +8,14 @@ import { foldText } from '@/lib/fold-text';
 import { formatMonth, formatPeriod } from '@/lib/format';
 import { issuedNewestFirst, newestFirst } from '@/lib/derive/recency';
 import { STRIP_ORDER } from '@/lib/derive/skill-strip';
+import { SITE_URL } from '@/lib/seo';
 
 /**
  * The CV as plain data. The preview sheets and the PDF both render this one model,
  * so what you see is what you download.
  */
 export interface CvContact {
-  kind: 'phone' | 'email' | 'location';
+  kind: 'phone' | 'email' | 'location' | 'website';
   value: string;
 }
 
@@ -115,6 +116,10 @@ export const buildCv = (input: CvInput, copy: CvCopy, lang: Lang): CvModel => {
     input.profile?.location ||
     input.contacts.find((c) => c.kind === 'address')?.label;
   if (location) contacts.push({ kind: 'location', value: location });
+  contacts.push({
+    kind: 'website',
+    value: SITE_URL.replace(/^https?:\/\//, ''),
+  });
 
   const experience = newestFirst(
     input.experience.filter((e) => e.visible && e.cv !== 'off'),

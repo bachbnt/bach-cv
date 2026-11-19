@@ -48,15 +48,17 @@ describe('buildCv', () => {
     expect(cv.summary).toContain('Master of Science');
   });
 
-  it('lists phone, email and location', () => {
+  it('lists phone, email, location and website', () => {
     const cv = build(input());
     expect(cv.contacts.map((c) => c.kind)).toEqual([
       'phone',
       'email',
       'location',
+      'website',
     ]);
     expect(cv.contacts[1].value).toBe('bachbnt@gmail.com');
     expect(cv.contacts[2].value).toBe('Ho Chi Minh City, Vietnam');
+    expect(cv.contacts[3].value).toBe('bachbntdev.web.app');
   });
 
   it('lists roles newest first and leaves out entries whose cv mode is off', () => {
