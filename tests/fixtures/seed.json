@@ -543,6 +543,17 @@
       "listed": true,
       "l10n": {}
     },
+    "nuxt": {
+      "visible": true,
+      "highlight": null,
+      "sort": 231,
+      "name": "Nuxt",
+      "category": "web",
+      "icon": "nuxt",
+      "url": "https://nuxt.com/",
+      "listed": true,
+      "l10n": {}
+    },
     "project-planning": {
       "visible": true,
       "highlight": null,
@@ -1464,6 +1475,47 @@
       "kind": "academic",
       "startMonth": "2019-06",
       "endMonth": "2019-09"
+    },
+    "bokedex": {
+      "visible": true,
+      "sort": 140,
+      "name": "Bokedex",
+      "kind": "personal",
+      "startMonth": "2026-11",
+      "endMonth": null,
+      "platforms": ["web"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://bokedex.web.app/",
+          "kind": "site"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/bachbnt/bokedex",
+          "kind": "github"
+        }
+      ],
+      "cover": "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/home.webp",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/home.webp",
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/detail.webp",
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/evolution.webp",
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/team.webp",
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/types.webp",
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/game-silhouette-reveal.webp",
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/mobile-home.webp",
+        "https://raw.githubusercontent.com/bachbnt/bokedex/main/docs/screenshots/mobile-detail.webp"
+      ],
+      "summary": "A fast, animated Pokédex and game companion: every Pokémon with search, type and generation filters and favorites, animated stats and evolution trees, a type chart with a defensive calculator, a team builder with weakness and coverage analysis, and two quizzes. Built with Nuxt and Vue on live PokeAPI data, as a static site with dark mode and a mobile layout.",
+      "l10n": {
+        "vi": {
+          "summary": "Pokédex nhanh, nhiều hiệu ứng và là bạn đồng hành khi chơi game: mọi Pokémon với tìm kiếm, lọc theo hệ và thế hệ, mục yêu thích, chỉ số và cây tiến hóa có hoạt ảnh, bảng khắc hệ kèm công cụ tính phòng thủ, trình dựng đội hình phân tích điểm yếu và độ phủ, cùng hai trò đố vui. Xây dựng bằng Nuxt và Vue trên dữ liệu PokeAPI trực tiếp, là trang tĩnh có chế độ tối và giao diện di động."
+        }
+      },
+      "cv": "off",
+      "highlight": null,
+      "technologies": ["vuejs", "nuxt", "typescript", "tailwindcss"]
     },
     "comchay-rop": {
       "visible": true,
