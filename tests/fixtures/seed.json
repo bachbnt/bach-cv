@@ -1748,6 +1748,44 @@
       "startMonth": "2019-12",
       "endMonth": "2020-02"
     },
+    "porodex": {
+      "visible": true,
+      "highlight": null,
+      "sort": 150,
+      "name": "Porodex",
+      "kind": "personal",
+      "startMonth": "2026-11",
+      "endMonth": null,
+      "technologies": ["vuejs", "nuxt", "typescript", "tailwindcss"],
+      "platforms": ["web"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://porodex.web.app/",
+          "kind": "site"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/bachbnt/porodex",
+          "kind": "github"
+        }
+      ],
+      "cover": "https://raw.githubusercontent.com/bachbnt/porodex/main/docs/screenshots/home.jpg",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/porodex/main/docs/screenshots/lol-champion.jpg",
+        "https://raw.githubusercontent.com/bachbnt/porodex/main/docs/screenshots/tft-builder.jpg",
+        "https://raw.githubusercontent.com/bachbnt/porodex/main/docs/screenshots/tft-items.jpg",
+        "https://raw.githubusercontent.com/bachbnt/porodex/main/docs/screenshots/quiz.jpg",
+        "https://raw.githubusercontent.com/bachbnt/porodex/main/docs/screenshots/mobile.jpg"
+      ],
+      "summary": "A Hextech-styled field guide for League of Legends and Teamfight Tactics, in English and Vietnamese: champions with abilities, stats and skins, Summoner's Rift items with build paths, TFT traits with activation breakpoints, an item recipe chart, a team builder that shares a comp as a link, and quizzes. Built with Nuxt on Riot's public static data, with no backend or API key, as plain static pages.",
+      "l10n": {
+        "vi": {
+          "summary": "Cẩm nang phong cách Hextech cho Liên Minh Huyền Thoại và Đấu Trường Chân Lý, có tiếng Anh và tiếng Việt: tướng với kỹ năng, chỉ số và trang phục, trang bị Summoner's Rift kèm đường lên đồ, tộc hệ ĐTCL với mốc kích hoạt, bảng công thức trang bị, trình dựng đội hình chia sẻ qua đường dẫn và các trò đố vui. Xây dựng bằng Nuxt trên dữ liệu tĩnh công khai của Riot, không cần backend hay API key, là các trang tĩnh."
+        }
+      },
+      "cv": "off"
+    },
     "stock-prediction-msc": {
       "visible": true,
       "sort": 120,
