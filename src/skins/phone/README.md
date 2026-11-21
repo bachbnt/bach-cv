@@ -41,7 +41,7 @@ card keeps the one `shadow-ph-card` at every width.
 **Loading skeletons.** A skeleton mirrors the loaded structure and a test measures it: the page's own words (titles, leads, the names of facts, the note of Payment) are real
 text, only the data are blank shapes (`ui/ph-skeleton.tsx`, and `ui/ph-skeleton-line.tsx` for a line of text, which takes the height of the line it stands for), and the grid, the columns
 and the heights are the loaded ones: where a block has a layout it shares it (`HINGE_PANES`, `certificate-layout.ts`, `resume-layout.ts`, the `PAYMENT_*` and `SERVICE_*` constants) instead of copying it.
-The number of rows is what the seed has (4 roles, 2 degrees, 3 certificates, 5 services, 1 method of each kind), and a narrow screen (`@max-[449px]`) shows the extra lines its wrapped text takes.
+The number of rows is what the seed has (4 roles, 2 degrees, 4 certificates, 5 services, 1 method of each kind), and a narrow screen (`@max-[449px]`) shows the extra lines its wrapped text takes.
 Reduced motion stops the shimmer with every other animation (`phone.css`).
 The years in software of the sentences under the titles of Home and Resume are `components/years-text.tsx` (the number is an invisible blank of the usual length until the roles are read, so the line wraps as it will). A clamped text (`line-clamp-N`) never carries `block`, which would undo the clamp.
 

@@ -177,11 +177,15 @@ describe('buildCv', () => {
   it('formats certificates as month and year, newest first', () => {
     const cv = build(input());
     expect(cv.certificates.map((c) => c.date)).toEqual([
+      'Nov 2026',
       'Oct 2026',
       'May 2026',
       'Apr 2026',
     ]);
     expect(cv.certificates[0].name).toBe(
+      'Claude Certified Developer - Professional',
+    );
+    expect(cv.certificates[1].name).toBe(
       'Claude Certified Architect - Professional',
     );
   });
@@ -303,6 +307,7 @@ describe('buildCv in Vietnamese', () => {
     expect(cv.experience[1].period).toBe('Thg 5 2022 – Thg 1 2026');
     expect(cv.education[0].period).toBe('Thg 12 2020 – Thg 6 2023');
     expect(cv.certificates.map((c) => c.date)).toEqual([
+      'Thg 11 2026',
       'Thg 10 2026',
       'Thg 5 2026',
       'Thg 4 2026',

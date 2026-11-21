@@ -1870,6 +1870,19 @@
       "l10n": {},
       "cv": "full"
     },
+    "claude-developer": {
+      "visible": true,
+      "highlight": null,
+      "name": "Claude Certified Developer - Professional",
+      "issuer": "Anthropic",
+      "issuedAt": "2026-11-20",
+      "image": "https://raw.githubusercontent.com/bachbnt/assets/main/certificate/claude-developer.webp",
+      "pdfUrl": "https://cdn.jsdelivr.net/gh/bachbnt/assets@main/certificate/claude-developer.pdf",
+      "credentialUrl": "https://www.credly.com/go/ON6VpJIp",
+      "skills": ["claude-code", "mcp", "ai-agents"],
+      "l10n": {},
+      "cv": "full"
+    },
     "google-ai": {
       "visible": true,
       "highlight": null,
