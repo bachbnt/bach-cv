@@ -27,7 +27,8 @@ export interface AiBinding {
 }
 
 /** Any model of the Workers AI catalog can be set with CLOUDFLARE_AI_MODEL; check the catalog for current names. */
-export const DEFAULT_CLOUDFLARE_MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8';
+export const DEFAULT_CLOUDFLARE_MODEL =
+  '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 
 const ensureKey = (key: string | undefined, providerName: string): string => {
   if (!key) throw new HttpError(500, `Missing ${providerName} API key`);
@@ -219,6 +220,7 @@ export const callCloudflareAI = async (
   } catch (error) {
     if (error instanceof HttpError) throw error;
     const reason = String((error as Error)?.message ?? error);
+    console.error('workers_ai_error', model, reason);
     throw new HttpError(
       /limit|quota|capacity|neuron|429/i.test(reason) ? 429 : 502,
       'Workers AI error',

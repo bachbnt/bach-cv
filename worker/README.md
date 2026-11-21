@@ -59,7 +59,7 @@ npx wrangler kv:namespace create CHAT_RATE_LIMIT
 
 `wrangler.toml` already has `[ai] binding = "AI"`, so the Worker can use Workers AI. The free plan includes a daily pool of
 10,000 Neurons shared by all models; once it is spent Workers AI answers an error (no charge) and the Worker falls back to Gemini.
-`CLOUDFLARE_AI_MODEL` picks a model from the Workers AI catalog (default `@cf/meta/llama-3.1-8b-instruct-fp8`: check the catalog for
+`CLOUDFLARE_AI_MODEL` picks a model from the Workers AI catalog (default `@cf/meta/llama-3.3-70b-instruct-fp8-fast`: check the catalog for
 current names). Small free models answer Vietnamese less well than Gemini; put `gemini,cloudflare` in `ALLOWED_PROVIDERS` to try Gemini first.
 
 ## Email notification (Resend, free: 100 emails a day)

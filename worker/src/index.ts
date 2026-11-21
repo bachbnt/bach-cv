@@ -218,6 +218,13 @@ const handleChat = async (
       );
       return json({ text, provider: candidate }, { headers: cors });
     } catch (error) {
+      // what the provider said stays in the Worker's log; the visitor is only told `upstream_error`
+      console.error(
+        'chat_provider_error',
+        candidate,
+        error instanceof HttpError ? error.status : '',
+        error,
+      );
       failure =
         error instanceof HttpError
           ? error

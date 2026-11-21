@@ -13,7 +13,7 @@ RATE_LIMIT_PER_MINUTE = "10"
 # Add claude / openai only if you want to pay for them.
 ALLOWED_PROVIDERS = "cloudflare,gemini"
 # Optional: another model from the Workers AI catalog.
-# CLOUDFLARE_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8"
+# CLOUDFLARE_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 
 # The Firebase project whose public site content the Worker reads (Firestore REST) to build the chat system prompt itself.
 FIREBASE_PROJECT_ID = "bachbntdev"

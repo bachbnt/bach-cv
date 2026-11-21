@@ -236,7 +236,7 @@ describe('Workers AI and the fallback', () => {
       string,
       { messages: { role: string; content: string }[]; max_tokens: number },
     ];
-    expect(model).toBe('@cf/meta/llama-3.1-8b-instruct-fp8');
+    expect(model).toBe('@cf/meta/llama-3.3-70b-instruct-fp8-fast');
     expect(input.max_tokens).toBe(1024);
     // the Worker's own prompt (no Firestore project set here: the short fallback), never the text of a request
     expect(input.messages[0].role).toBe('system');
