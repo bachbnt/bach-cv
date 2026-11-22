@@ -1770,23 +1770,23 @@
           "kind": "github"
         }
       ],
-      "cover": "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/home.jpg",
-      "images": [
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/projectile.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/pendulum.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/interference.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/orbit.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/rlc.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/lens.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/mobile.jpg"
-      ],
       "summary": "Interactive physics simulations for high-school students, in English and Vietnamese: projectile motion, satellite orbits, a pendulum you can pick up, wave interference, an RLC circuit and a thin lens, each with live measurements, formulas and challenges whose answers are checked by tests. Built with Angular and a tested RK4 physics core, drawn on a chalkboard, as plain static pages.",
       "l10n": {
         "vi": {
           "summary": "Mô phỏng vật lý tương tác cho học sinh trung học, có tiếng Anh và tiếng Việt: ném xiên, quỹ đạo vệ tinh, con lắc kéo thả được, giao thoa sóng, mạch RLC và thấu kính, mỗi bài có số đo trực tiếp, công thức và thử thách có đáp án được kiểm thử. Xây dựng bằng Angular với lõi vật lý RK4 được kiểm thử, vẽ trên bảng đen phấn trắng, là các trang tĩnh."
         }
       },
-      "cv": "off"
+      "cv": "off",
+      "cover": "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/interference.jpg",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/home.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/projectile.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/pendulum.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/orbit.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/rlc.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/lens.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/mobile.jpg"
+      ]
     },
     "porodex": {
       "visible": true,
