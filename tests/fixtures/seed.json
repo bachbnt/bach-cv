@@ -1748,6 +1748,46 @@
       "startMonth": "2019-12",
       "endMonth": "2020-02"
     },
+    "physdex": {
+      "visible": true,
+      "highlight": null,
+      "sort": 160,
+      "name": "Physdex",
+      "kind": "personal",
+      "startMonth": "2026-11",
+      "endMonth": null,
+      "technologies": ["angular", "typescript", "tailwindcss", "firebase"],
+      "platforms": ["web"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://physdex.web.app/",
+          "kind": "site"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/bachbnt/physdex",
+          "kind": "github"
+        }
+      ],
+      "cover": "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/home.jpg",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/projectile.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/pendulum.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/interference.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/orbit.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/rlc.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/lens.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/mobile.jpg"
+      ],
+      "summary": "Interactive physics simulations for high-school students, in English and Vietnamese: projectile motion, satellite orbits, a pendulum you can pick up, wave interference, an RLC circuit and a thin lens, each with live measurements, formulas and challenges whose answers are checked by tests. Built with Angular and a tested RK4 physics core, drawn on a chalkboard, as plain static pages.",
+      "l10n": {
+        "vi": {
+          "summary": "Mô phỏng vật lý tương tác cho học sinh trung học, có tiếng Anh và tiếng Việt: ném xiên, quỹ đạo vệ tinh, con lắc kéo thả được, giao thoa sóng, mạch RLC và thấu kính, mỗi bài có số đo trực tiếp, công thức và thử thách có đáp án được kiểm thử. Xây dựng bằng Angular với lõi vật lý RK4 được kiểm thử, vẽ trên bảng đen phấn trắng, là các trang tĩnh."
+        }
+      },
+      "cv": "off"
+    },
     "porodex": {
       "visible": true,
       "highlight": null,
