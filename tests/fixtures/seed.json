@@ -1748,11 +1748,11 @@
       "startMonth": "2019-12",
       "endMonth": "2020-02"
     },
-    "physdex": {
+    "physboard": {
       "visible": true,
       "highlight": null,
       "sort": 160,
-      "name": "Physdex",
+      "name": "Physboard",
       "kind": "personal",
       "startMonth": "2026-11",
       "endMonth": null,
@@ -1761,12 +1761,12 @@
       "links": [
         {
           "label": "Website",
-          "url": "https://physdex.web.app/",
+          "url": "https://physboard.web.app/",
           "kind": "site"
         },
         {
           "label": "GitHub",
-          "url": "https://github.com/bachbnt/physdex",
+          "url": "https://github.com/bachbnt/physboard",
           "kind": "github"
         }
       ],
@@ -1777,15 +1777,15 @@
         }
       },
       "cv": "off",
-      "cover": "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/interference.jpg",
+      "cover": "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/interference.jpg",
       "images": [
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/home.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/projectile.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/pendulum.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/orbit.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/rlc.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/lens.jpg",
-        "https://raw.githubusercontent.com/bachbnt/physdex/main/docs/screenshots/mobile.jpg"
+        "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/home.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/projectile.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/pendulum.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/orbit.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/rlc.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/lens.jpg",
+        "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/mobile.jpg"
       ]
     },
     "porodex": {
