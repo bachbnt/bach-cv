@@ -1502,15 +1502,25 @@
           "kind": "site"
         }
       ],
-      "cover": "",
-      "images": [],
-      "summary": "A Vietnamese-first web site to play board and card games online with friends, with no account needed: 14 games including Tiến Lên, cờ tướng, cờ vua, cờ caro and Ma Sói, rooms joined by a four-character code, a link or a QR code, quick play, bots, chat and spectators. Built with Next.js and React as a static site, on Cloudflare Workers where each room is a Durable Object acting as the authoritative server, with the rules of every game written once in TypeScript, shared by the server and the browser, and checked by simulation tests.",
       "l10n": {
         "vi": {
           "summary": "Web chơi board game và card game online với bạn bè, ưu tiên tiếng Việt, không cần tài khoản: 14 game gồm Tiến Lên, cờ tướng, cờ vua, cờ caro và Ma Sói, vào phòng bằng mã 4 ký tự, đường dẫn hoặc mã QR, chơi nhanh, bot, chat và khán giả. Xây dựng bằng Next.js và React thành trang tĩnh, chạy trên Cloudflare Workers với mỗi phòng là một Durable Object đóng vai máy chủ có thẩm quyền, luật của mọi game được viết một lần bằng TypeScript dùng chung cho máy chủ và trình duyệt, và được kiểm thử bằng mô phỏng."
         }
       },
-      "cv": "full"
+      "cv": "full",
+      "cover": "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/boardgameshnt.webp",
+      "images": [
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/01.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/02.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/03.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/04.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/05.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/06.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/07.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/08.webp",
+        "https://raw.githubusercontent.com/bachbnt/assets/main/project/boardgameshnt/09.webp"
+      ],
+      "summary": "A Vietnamese-first web site to play board and card games online with friends, with no account needed: 14 games including Tiến Lên (a Vietnamese card game), xiangqi, chess, caro (gomoku) and Werewolf, rooms joined by a four-character code, a link or a QR code, quick play, bots, chat and spectators. Built with Next.js and React as a static site, on Cloudflare Workers where each room is a Durable Object acting as the authoritative server, with the rules of every game written once in TypeScript, shared by the server and the browser, and checked by simulation tests."
     },
     "bokedex": {
       "visible": true,
