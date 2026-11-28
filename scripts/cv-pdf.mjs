@@ -73,10 +73,14 @@ const { CvPdfDocument } = await jiti.import('@/components/cv/cv-pdf-document');
 const { renderToBuffer } = await jiti.import('@react-pdf/renderer');
 const { createElement } = await import('react');
 
-/** What a visitor's browser reads: the documents that are `visible`, parsed with the schema. */
+/**
+ * What a visitor's browser reads: the documents that are `visible`, parsed with the schema and laid over with the chosen language
+ * (a document with `l10n`, like the site does in `useContentQuery`; payments carry no translations).
+ */
 const visible = (name) =>
   Object.entries(seed[name] ?? {})
     .map(([id, doc]) => ({ id, ...COLLECTIONS[name].parse(doc) }))
+    .map((doc) => ('l10n' in doc ? localize(doc, lang) : doc))
     .filter((doc) => doc.visible);
 
 const profile = profileSchema.parse(seed.site.profile);

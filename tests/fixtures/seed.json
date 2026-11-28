@@ -1476,13 +1476,48 @@
       "startMonth": "2019-06",
       "endMonth": "2019-09"
     },
+    "boardgames-hnt": {
+      "visible": true,
+      "highlight": 5,
+      "sort": 170,
+      "name": "BoardgamesHNT",
+      "kind": "personal",
+      "startMonth": "2026-11",
+      "endMonth": null,
+      "technologies": [
+        "nextjs",
+        "reactjs",
+        "typescript",
+        "tailwindcss",
+        "shadcn-ui",
+        "tanstack-query",
+        "firebase",
+        "webrtc"
+      ],
+      "platforms": ["web"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://boardgames-hnt.web.app/",
+          "kind": "site"
+        }
+      ],
+      "cover": "",
+      "images": [],
+      "summary": "A Vietnamese-first web site to play board and card games online with friends, with no account needed: 14 games including Tiến Lên, cờ tướng, cờ vua, cờ caro and Ma Sói, rooms joined by a four-character code, a link or a QR code, quick play, bots, chat and spectators. Built with Next.js and React as a static site, on Cloudflare Workers where each room is a Durable Object acting as the authoritative server, with the rules of every game written once in TypeScript, shared by the server and the browser, and checked by simulation tests.",
+      "l10n": {
+        "vi": {
+          "summary": "Web chơi board game và card game online với bạn bè, ưu tiên tiếng Việt, không cần tài khoản: 14 game gồm Tiến Lên, cờ tướng, cờ vua, cờ caro và Ma Sói, vào phòng bằng mã 4 ký tự, đường dẫn hoặc mã QR, chơi nhanh, bot, chat và khán giả. Xây dựng bằng Next.js và React thành trang tĩnh, chạy trên Cloudflare Workers với mỗi phòng là một Durable Object đóng vai máy chủ có thẩm quyền, luật của mọi game được viết một lần bằng TypeScript dùng chung cho máy chủ và trình duyệt, và được kiểm thử bằng mô phỏng."
+        }
+      },
+      "cv": "full"
+    },
     "bokedex": {
       "visible": true,
       "sort": 140,
       "name": "Bokedex",
       "kind": "personal",
       "startMonth": "2026-11",
-      "endMonth": null,
       "platforms": ["web"],
       "links": [
         {
@@ -1515,7 +1550,8 @@
       },
       "cv": "off",
       "highlight": null,
-      "technologies": ["vuejs", "nuxt", "typescript", "tailwindcss"]
+      "technologies": ["vuejs", "nuxt", "typescript", "tailwindcss"],
+      "endMonth": "2026-12"
     },
     "comchay-rop": {
       "visible": true,
@@ -1755,7 +1791,6 @@
       "name": "Physboard",
       "kind": "personal",
       "startMonth": "2026-11",
-      "endMonth": null,
       "technologies": ["angular", "typescript", "tailwindcss", "firebase"],
       "platforms": ["web"],
       "links": [
@@ -1786,7 +1821,8 @@
         "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/rlc.jpg",
         "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/lens.jpg",
         "https://raw.githubusercontent.com/bachbnt/physboard/main/docs/screenshots/mobile.jpg"
-      ]
+      ],
+      "endMonth": "2026-12"
     },
     "porodex": {
       "visible": true,
@@ -1795,7 +1831,6 @@
       "name": "Porodex",
       "kind": "personal",
       "startMonth": "2026-11",
-      "endMonth": null,
       "technologies": ["vuejs", "nuxt", "typescript", "tailwindcss"],
       "platforms": ["web"],
       "links": [
@@ -1824,7 +1859,8 @@
           "summary": "Cẩm nang phong cách Hextech cho Liên Minh Huyền Thoại và Đấu Trường Chân Lý, có tiếng Anh và tiếng Việt: tướng với kỹ năng, chỉ số và trang phục, trang bị Summoner's Rift kèm đường lên đồ, tộc hệ ĐTCL với mốc kích hoạt, bảng công thức trang bị, trình dựng đội hình chia sẻ qua đường dẫn và các trò đố vui. Xây dựng bằng Nuxt trên dữ liệu tĩnh công khai của Riot, không cần backend hay API key, là các trang tĩnh."
         }
       },
-      "cv": "off"
+      "cv": "off",
+      "endMonth": "2026-12"
     },
     "stock-prediction-msc": {
       "visible": true,
